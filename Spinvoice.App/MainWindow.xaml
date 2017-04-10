@@ -4,12 +4,40 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:Spinvoice.App"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        Title="MainWindow"
+        Title="Spinvoice"
         Width="525"
         Height="350"
         d:DataContext="{d:DesignInstance Type=local:AppViewModel}"
+        Topmost="True"
         mc:Ignorable="d">
     <Grid>
-        <TextBox IsReadOnly="True" Text="{Binding ClipboardText}" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBox Grid.Row="0"
+                 Grid.ColumnSpan="2"
+                 MaxLines="1"
+                 Text="{Binding ClipboardText}" />
+
+        <Button Grid.Row="1"
+                Command="{Binding ChangeDateCommand}"
+                Content="Date" />
+        <Button Grid.Row="2"
+                Command="{Binding ChangeCompanyNameCommand}"
+                Content="Company" />
+        <Button Grid.Row="3"
+                Command="{Binding ChangeNetAmountCommand}"
+                Content="Amount" />
+
+        <DataGrid Grid.Row="4"
+                  AutoGenerateColumns="True"
+                  IsReadOnly="True"
+                  ItemsSource="{Binding Invoices}" />
+
     </Grid>
 </Window>
