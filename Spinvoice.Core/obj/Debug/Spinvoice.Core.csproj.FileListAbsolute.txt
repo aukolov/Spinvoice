@@ -1,5 +1,0 @@
-C:\Projects\my\Spinvoice\Spinvoice.Core\bin\Debug\Spinvoice.Core.dll
-C:\Projects\my\Spinvoice\Spinvoice.Core\bin\Debug\Spinvoice.Core.pdb
-C:\Projects\my\Spinvoice\Spinvoice.Core\obj\Debug\Spinvoice.Core.csprojResolveAssemblyReference.cache
-C:\Projects\my\Spinvoice\Spinvoice.Core\obj\Debug\Spinvoice.Core.dll
-C:\Projects\my\Spinvoice\Spinvoice.Core\obj\Debug\Spinvoice.Core.pdb
