@@ -6,38 +6,135 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         Title="Spinvoice"
         Width="525"
-        Height="350"
+        Height="280"
         d:DataContext="{d:DesignInstance Type=local:AppViewModel}"
         Topmost="True"
         mc:Ignorable="d">
-    <Grid>
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <Thickness x:Key="GridLinesMargin"
+                       Bottom="5"
+                       Left="0"
+                       Right="0"
+                       Top="5" />
+
+            <Style TargetType="{x:Type RadioButton}">
+                <Setter Property="VerticalAlignment" Value="Center" />
+            </Style>
+
+            <Style TargetType="{x:Type TextBlock}">
+                <Setter Property="VerticalAlignment" Value="Center" />
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-
         <TextBox Grid.Row="0"
                  Grid.ColumnSpan="2"
+                 IsReadOnly="True"
                  MaxLines="1"
                  Text="{Binding ClipboardText}" />
+        <Grid Grid.Row="1" Margin="0,10,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <RadioButton Grid.Row="0"
+                         Grid.Column="0"
+                         GroupName="Field"
+                         IsChecked="{Binding Index,
+                                             Converter={x:Static local:IndexToCheckedConverter.Instance},
+                                             ConverterParameter=0}" />
+            <TextBlock Grid.Row="0"
+                       Grid.Column="1"
+                       Text="Date:" />
+            <DatePicker Grid.Row="0"
+                        Grid.Column="2"
+                        Margin="{StaticResource GridLinesMargin}"
+                        SelectedDate="{Binding Invoice.Date}" />
 
-        <Button Grid.Row="1"
-                Command="{Binding ChangeDateCommand}"
-                Content="Date" />
-        <Button Grid.Row="2"
-                Command="{Binding ChangeCompanyNameCommand}"
-                Content="Company" />
-        <Button Grid.Row="3"
-                Command="{Binding ChangeNetAmountCommand}"
-                Content="Amount" />
+            <RadioButton Grid.Row="1"
+                         Grid.Column="0"
+                         GroupName="Field"
+                         IsChecked="{Binding Index,
+                                             Converter={x:Static local:IndexToCheckedConverter.Instance},
+                                             ConverterParameter=1}" />
+            <TextBlock Grid.Row="1"
+                       Grid.Column="1"
+                       Text="Company:" />
+            <TextBox Grid.Row="1"
+                     Grid.Column="2"
+                     Margin="{StaticResource GridLinesMargin}"
+                     Text="{Binding Invoice.CompanyName}" />
 
-        <DataGrid Grid.Row="4"
-                  AutoGenerateColumns="True"
-                  IsReadOnly="True"
-                  ItemsSource="{Binding Invoices}" />
+            <RadioButton Grid.Row="2"
+                         Grid.Column="0"
+                         GroupName="Field"
+                         IsChecked="{Binding Index,
+                                             Converter={x:Static local:IndexToCheckedConverter.Instance},
+                                             ConverterParameter=2}" />
+            <TextBlock Grid.Row="2"
+                       Grid.Column="1"
+                       Text="Invoice:" />
+            <TextBox Grid.Row="2"
+                     Grid.Column="2"
+                     Margin="{StaticResource GridLinesMargin}"
+                     Text="{Binding Invoice.InvoiceNumber}" />
 
+            <RadioButton Grid.Row="3"
+                         Grid.Column="0"
+                         GroupName="Field"
+                         IsChecked="{Binding Index,
+                                             Converter={x:Static local:IndexToCheckedConverter.Instance},
+                                             ConverterParameter=3}" />
+            <TextBlock Grid.Row="3"
+                       Grid.Column="1"
+                       Text="Currency:" />
+            <TextBox Grid.Row="3"
+                     Grid.Column="2"
+                     Margin="{StaticResource GridLinesMargin}"
+                     Text="{Binding Invoice.Currency}" />
+
+            <RadioButton Grid.Row="4"
+                         Grid.Column="0"
+                         GroupName="Field"
+                         IsChecked="{Binding Index,
+                                             Converter={x:Static local:IndexToCheckedConverter.Instance},
+                                             ConverterParameter=4}" />
+            <TextBlock Grid.Row="4"
+                       Grid.Column="1"
+                       Text="NET Amount:" />
+            <TextBox Grid.Row="4"
+                     Grid.Column="2"
+                     Margin="{StaticResource GridLinesMargin}"
+                     Text="{Binding Invoice.NetAmount}" />
+
+            <RadioButton Grid.Row="5"
+                         Grid.Column="0"
+                         GroupName="Field"
+                         IsChecked="{Binding Index,
+                                             Converter={x:Static local:IndexToCheckedConverter.Instance},
+                                             ConverterParameter=5}" />
+            <TextBlock Grid.Row="5"
+                       Grid.Column="1"
+                       Text="VAT:" />
+            <TextBox Grid.Row="5"
+                     Grid.Column="2"
+                     Margin="{StaticResource GridLinesMargin}"
+                     Text="{Binding Invoice.VatAmount}" />
+        </Grid>
     </Grid>
 </Window>

@@ -10,12 +10,11 @@ namespace Spinvoice.App
 {
     public sealed class AppViewModel : INotifyPropertyChanged, IDisposable
     {
-        private RelayCommand[] _commands;
-        private int _index = 0;
+        private readonly Action[] _commands;
 
         private ClipboardService _clipboardService;
         private string _clipboardText;
-        public Invoice Invoice { get; private set; }
+        private int _index;
 
         public AppViewModel()
         {
@@ -26,46 +25,30 @@ namespace Spinvoice.App
             }, DispatcherPriority.Loaded);
 
             Invoice = new Invoice();
-            Invoices = new[] { Invoice };
-            ChangeDateCommand = new RelayCommand(ChangeDate);
-            ChangeCompanyNameCommand = new RelayCommand(ChangeCompanyName);
-            ChangeNetAmountCommand = new RelayCommand(ChangeNetAmount);
+            Invoices = new[] {Invoice};
 
-            _commands = new[] { ChangeDateCommand, ChangeCompanyNameCommand, ChangeNetAmountCommand };
-        }
-
-        private void ChangeNetAmount()
-        {
-            Invoice.NetAmount = decimal.Parse(ClipboardText);
-        }
-
-        private void ChangeCompanyName()
-        {
-            Invoice.CompanyName = ClipboardText;
-        }
-
-        private void ChangeDate()
-        {
-            Invoice.Date = ParseDate(ClipboardText);
-        }
-
-        private DateTime ParseDate(string text)
-        {
-            DateTime dateTime;
-            if (DateTime.TryParseExact(text, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateTime))
+            _commands = new Action[]
             {
-                return dateTime;
-            }
-            if (DateTime.TryParse(text, out dateTime))
-            {
-                return dateTime;
-            }
-            return new DateTime();
+                () => ChangeDate(),
+                () => ChangeCompanyName(),
+                () => ChangeInvoiceNumber(),
+                () => ChangeCurrency(),
+                () => ChangeNetAmount(),
+                () => ChangeVatAmount()
+            };
         }
 
-        public RelayCommand ChangeCompanyNameCommand { get; private set; }
-        public RelayCommand ChangeDateCommand { get; private set; }
-        public RelayCommand ChangeNetAmountCommand { get; private set; }
+        public int Index
+        {
+            get { return _index; }
+            set
+            {
+                _index = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Invoice Invoice { get; }
 
         public Invoice[] Invoices { get; private set; }
 
@@ -80,7 +63,53 @@ namespace Spinvoice.App
             }
         }
 
+        public void Dispose()
+        {
+            _clipboardService?.Dispose();
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
+
+        private void ChangeDate()
+        {
+            Invoice.Date = ParseDate(ClipboardText);
+        }
+
+        private void ChangeCompanyName()
+        {
+            Invoice.CompanyName = ClipboardText;
+        }
+
+        private void ChangeInvoiceNumber()
+        {
+            Invoice.InvoiceNumber = ClipboardText;
+        }
+
+        private void ChangeCurrency()
+        {
+            Invoice.Currency = ClipboardText;
+        }
+
+        private void ChangeNetAmount()
+        {
+            Invoice.NetAmount = decimal.Parse(ClipboardText);
+        }
+
+        private void ChangeVatAmount()
+        {
+            Invoice.VatAmount = decimal.Parse(ClipboardText);
+        }
+
+        private DateTime ParseDate(string text)
+        {
+            DateTime dateTime;
+            if (DateTime.TryParseExact(text, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None,
+                out dateTime))
+                return dateTime;
+            if (DateTime.TryParse(text, out dateTime))
+                return dateTime;
+            return new DateTime();
+        }
 
         private void OnClipboardChanged()
         {
@@ -88,9 +117,7 @@ namespace Spinvoice.App
             {
                 var text = Clipboard.GetText();
                 if (text == ClipboardText)
-                {
                     return;
-                }
                 ClipboardText = text;
             }
             else
@@ -101,23 +128,24 @@ namespace Spinvoice.App
 
             try
             {
-                _commands[_index].Execute(null);
+                _commands[Index]();
+                Index = (Index + 1) % _commands.Length;
             }
-            catch
+            catch (Exception ex)
             {
+                MessageBox.Show(
+                    Application.Current.MainWindow,
+                    "Something went wrong... " + ex.Message,
+                    "Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
             }
-            _index = (_index + 1) % _commands.Length;
         }
 
         [NotifyPropertyChangedInvocator]
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public void Dispose()
-        {
-            _clipboardService?.Dispose();
         }
     }
 }
