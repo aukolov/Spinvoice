@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Threading;
 using Spinvoice.App.Annotations;
 
@@ -15,6 +16,7 @@ namespace Spinvoice.App
         private ClipboardService _clipboardService;
         private string _clipboardText;
         private int _index;
+        private string _clipboardTextToIgnore;
 
         public AppViewModel()
         {
@@ -25,7 +27,6 @@ namespace Spinvoice.App
             }, DispatcherPriority.Loaded);
 
             Invoice = new Invoice();
-            Invoices = new[] {Invoice};
 
             _commands = new Action[]
             {
@@ -36,6 +37,8 @@ namespace Spinvoice.App
                 () => ChangeNetAmount(),
                 () => ChangeVatAmount()
             };
+
+            CopyCommand = new RelayCommand(CopyToClipboard);
         }
 
         public int Index
@@ -50,8 +53,6 @@ namespace Spinvoice.App
 
         public Invoice Invoice { get; }
 
-        public Invoice[] Invoices { get; private set; }
-
         public string ClipboardText
         {
             get { return _clipboardText; }
@@ -62,6 +63,8 @@ namespace Spinvoice.App
                 OnPropertyChanged();
             }
         }
+
+        public ICommand CopyCommand { get; }
 
         public void Dispose()
         {
@@ -117,7 +120,14 @@ namespace Spinvoice.App
             {
                 var text = Clipboard.GetText();
                 if (text == ClipboardText)
+                {
                     return;
+                }
+                if (text == _clipboardTextToIgnore)
+                {
+                    return;
+                }
+
                 ClipboardText = text;
             }
             else
@@ -140,6 +150,19 @@ namespace Spinvoice.App
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
+        }
+
+        private void CopyToClipboard()
+        {
+            var text =
+                $"{Invoice.Date:dd.MM.yyyy}\t" +
+                $"{Invoice.CompanyName}\t" +
+                $"{Invoice.InvoiceNumber}\t" +
+                $"{Invoice.Currency}\t" +
+                $"{Invoice.NetAmount}\t\t\t" +
+                $"{Invoice.VatAmount}";
+            _clipboardTextToIgnore = text;
+            Clipboard.SetText(text);
         }
 
         [NotifyPropertyChangedInvocator]

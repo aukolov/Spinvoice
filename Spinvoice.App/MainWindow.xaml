@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         Title="Spinvoice"
         Width="525"
-        Height="280"
+        Height="300"
         d:DataContext="{d:DesignInstance Type=local:AppViewModel}"
         Topmost="True"
         mc:Ignorable="d">
@@ -32,6 +32,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <TextBox Grid.Row="0"
                  Grid.ColumnSpan="2"
@@ -136,5 +137,9 @@
                      Margin="{StaticResource GridLinesMargin}"
                      Text="{Binding Invoice.VatAmount}" />
         </Grid>
+
+        <Button Grid.Row="2"
+                Command="{Binding CopyCommand}"
+                Content="Copy" />
     </Grid>
 </Window>
