@@ -7,6 +7,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using Spinvoice.App.Annotations;
 using Spinvoice.App.Services;
+using Spinvoice.Domain;
 
 namespace Spinvoice.App.ViewModels
 {

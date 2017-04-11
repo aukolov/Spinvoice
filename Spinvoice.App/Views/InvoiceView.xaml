@@ -37,12 +37,15 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+
         <RadioButton Grid.Row="0"
                      Grid.Column="0"
                      GroupName="Field"
@@ -51,11 +54,12 @@
                                          ConverterParameter=0}" />
         <TextBlock Grid.Row="0"
                    Grid.Column="1"
-                   Text="Date:" />
-        <DatePicker Grid.Row="0"
-                    Grid.Column="2"
-                    Margin="{StaticResource GridLinesMargin}"
-                    SelectedDate="{Binding Invoice.Date}" />
+                   Text="Company:" />
+        <TextBox Grid.Row="0"
+                 Grid.Column="2"
+                 Margin="{StaticResource GridLinesMargin}"
+                 Text="{Binding Invoice.CompanyName}" />
+
 
         <RadioButton Grid.Row="1"
                      Grid.Column="0"
@@ -65,11 +69,12 @@
                                          ConverterParameter=1}" />
         <TextBlock Grid.Row="1"
                    Grid.Column="1"
-                   Text="Company:" />
+                   Text="Country:" />
         <TextBox Grid.Row="1"
                  Grid.Column="2"
                  Margin="{StaticResource GridLinesMargin}"
-                 Text="{Binding Invoice.CompanyName}" />
+                 Text="{Binding Invoice.Country}" />
+
 
         <RadioButton Grid.Row="2"
                      Grid.Column="0"
@@ -79,11 +84,12 @@
                                          ConverterParameter=2}" />
         <TextBlock Grid.Row="2"
                    Grid.Column="1"
-                   Text="Invoice:" />
+                   Text="Currency:" />
         <TextBox Grid.Row="2"
                  Grid.Column="2"
                  Margin="{StaticResource GridLinesMargin}"
-                 Text="{Binding Invoice.InvoiceNumber}" />
+                 Text="{Binding Invoice.Currency}" />
+
 
         <RadioButton Grid.Row="3"
                      Grid.Column="0"
@@ -93,11 +99,12 @@
                                          ConverterParameter=3}" />
         <TextBlock Grid.Row="3"
                    Grid.Column="1"
-                   Text="Currency:" />
-        <TextBox Grid.Row="3"
-                 Grid.Column="2"
-                 Margin="{StaticResource GridLinesMargin}"
-                 Text="{Binding Invoice.Currency}" />
+                   Text="Date:" />
+        <DatePicker Grid.Row="3"
+                    Grid.Column="2"
+                    Margin="{StaticResource GridLinesMargin}"
+                    SelectedDate="{Binding Invoice.Date}" />
+
 
         <RadioButton Grid.Row="4"
                      Grid.Column="0"
@@ -107,11 +114,12 @@
                                          ConverterParameter=4}" />
         <TextBlock Grid.Row="4"
                    Grid.Column="1"
-                   Text="NET Amount:" />
+                   Text="Rate:" />
         <TextBox Grid.Row="4"
                  Grid.Column="2"
                  Margin="{StaticResource GridLinesMargin}"
-                 Text="{Binding Invoice.NetAmount}" />
+                 Text="{Binding Invoice.ExchangeRate}" />
+
 
         <RadioButton Grid.Row="5"
                      Grid.Column="0"
@@ -121,8 +129,38 @@
                                          ConverterParameter=5}" />
         <TextBlock Grid.Row="5"
                    Grid.Column="1"
-                   Text="VAT:" />
+                   Text="Invoice:" />
         <TextBox Grid.Row="5"
+                 Grid.Column="2"
+                 Margin="{StaticResource GridLinesMargin}"
+                 Text="{Binding Invoice.InvoiceNumber}" />
+
+
+        <RadioButton Grid.Row="6"
+                     Grid.Column="0"
+                     GroupName="Field"
+                     IsChecked="{Binding Index,
+                                         Converter={x:Static local:IndexToCheckedConverter.Instance},
+                                         ConverterParameter=6}" />
+        <TextBlock Grid.Row="6"
+                   Grid.Column="1"
+                   Text="NET Amount:" />
+        <TextBox Grid.Row="6"
+                 Grid.Column="2"
+                 Margin="{StaticResource GridLinesMargin}"
+                 Text="{Binding Invoice.NetAmount}" />
+
+
+        <RadioButton Grid.Row="7"
+                     Grid.Column="0"
+                     GroupName="Field"
+                     IsChecked="{Binding Index,
+                                         Converter={x:Static local:IndexToCheckedConverter.Instance},
+                                         ConverterParameter=7}" />
+        <TextBlock Grid.Row="7"
+                   Grid.Column="1"
+                   Text="VAT:" />
+        <TextBox Grid.Row="7"
                  Grid.Column="2"
                  Margin="{StaticResource GridLinesMargin}"
                  Text="{Binding Invoice.VatAmount}" />
