@@ -86,6 +86,10 @@
     </ApplicationDefinition>
     <Compile Include="ViewModels\RelayCommand.cs" />
     <Compile Include="Views\IndexToCheckedConverter.cs" />
+    <Page Include="Views\InvoiceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -98,6 +102,9 @@
     <Compile Include="ViewModels\AppViewModel.cs" />
     <Compile Include="Services\ClipboardService.cs" />
     <Compile Include="Invoice.cs" />
+    <Compile Include="Views\InvoiceView.xaml.cs">
+      <DependentUpon>InvoiceView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
