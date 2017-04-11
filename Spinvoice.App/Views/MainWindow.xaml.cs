@@ -1,4 +1,6 @@
-﻿namespace Spinvoice.App
+﻿using Spinvoice.App.ViewModels;
+
+namespace Spinvoice.App.Views
 {
     public partial class MainWindow
     {

@@ -2,8 +2,9 @@
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
+using Spinvoice.App.Utils;
 
-namespace Spinvoice.App
+namespace Spinvoice.App.Services
 {
     class ClipboardService : IDisposable
     {

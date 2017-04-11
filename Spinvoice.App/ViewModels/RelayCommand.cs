@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace Spinvoice.App
+namespace Spinvoice.App.ViewModels
 {
     public class RelayCommand : ICommand
     {

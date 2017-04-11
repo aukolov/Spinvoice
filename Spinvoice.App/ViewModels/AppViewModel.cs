@@ -6,8 +6,9 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Spinvoice.App.Annotations;
+using Spinvoice.App.Services;
 
-namespace Spinvoice.App
+namespace Spinvoice.App.ViewModels
 {
     public sealed class AppViewModel : INotifyPropertyChanged, IDisposable
     {
