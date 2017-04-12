@@ -40,7 +40,7 @@ namespace Spinvoice.Infrastructure.DataAccess
             }
         }
 
-        public void Add(Company company)
+        public void AddOrUpdate(Company company)
         {
             using (var session = _documentStore.OpenSession())
             {

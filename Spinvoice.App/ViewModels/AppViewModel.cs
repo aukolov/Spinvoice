@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
@@ -8,39 +9,46 @@ using System.Windows.Threading;
 using Spinvoice.App.Annotations;
 using Spinvoice.App.Services;
 using Spinvoice.Domain;
+using Spinvoice.Domain.Company;
 
 namespace Spinvoice.App.ViewModels
 {
     public sealed class AppViewModel : INotifyPropertyChanged, IDisposable
     {
+        private readonly ICompanyRepository _companyRepository;
         private readonly Action[] _commands;
 
         private ClipboardService _clipboardService;
         private string _clipboardText;
         private int _index;
         private string _clipboardTextToIgnore;
+        private Invoice _invoice;
 
-        public AppViewModel()
+        public AppViewModel(ICompanyRepository companyRepository)
         {
+            _companyRepository = companyRepository;
             Dispatcher.CurrentDispatcher.InvokeAsync(() =>
             {
                 _clipboardService = new ClipboardService();
                 _clipboardService.ClipboardChanged += OnClipboardChanged;
             }, DispatcherPriority.Loaded);
 
-            Invoice = new Invoice();
+            _invoice = new Invoice();
 
             _commands = new Action[]
             {
-                () => ChangeDate(),
                 () => ChangeCompanyName(),
-                () => ChangeInvoiceNumber(),
+                () => ChangeCountry(),
                 () => ChangeCurrency(),
+                () => ChangeDate(),
+                () => {},
+                () => ChangeInvoiceNumber(),
                 () => ChangeNetAmount(),
                 () => ChangeVatAmount()
             };
 
             CopyCommand = new RelayCommand(CopyToClipboard);
+            ClearCommand = new RelayCommand(() => Clear());
         }
 
         public int Index
@@ -53,7 +61,15 @@ namespace Spinvoice.App.ViewModels
             }
         }
 
-        public Invoice Invoice { get; }
+        public Invoice Invoice
+        {
+            get { return _invoice; }
+            set
+            {
+                _invoice = value;
+                OnPropertyChanged();
+            }
+        }
 
         public string ClipboardText
         {
@@ -67,6 +83,8 @@ namespace Spinvoice.App.ViewModels
         }
 
         public ICommand CopyCommand { get; }
+
+        public ICommand ClearCommand { get; }
 
         public void Dispose()
         {
@@ -83,6 +101,14 @@ namespace Spinvoice.App.ViewModels
         private void ChangeCompanyName()
         {
             Invoice.CompanyName = ClipboardText;
+
+            var company = _companyRepository.GetByName(Invoice.CompanyName);
+            if (company != null)
+            {
+                Invoice.Country = company.Country;
+                Invoice.Currency = company.Currency;
+                Index += 2;
+            }
         }
 
         private void ChangeInvoiceNumber()
@@ -93,6 +119,11 @@ namespace Spinvoice.App.ViewModels
         private void ChangeCurrency()
         {
             Invoice.Currency = ClipboardText;
+        }
+
+        private void ChangeCountry()
+        {
+            Invoice.Country = ClipboardText;
         }
 
         private void ChangeNetAmount()
@@ -164,7 +195,21 @@ namespace Spinvoice.App.ViewModels
                 $"{Invoice.NetAmount}\t\t\t" +
                 $"{Invoice.VatAmount}";
             _clipboardTextToIgnore = text;
+
+            Company company;
+            using (_companyRepository.GetByNameForUpdateOrCreate(Invoice.CompanyName, out company))
+            {
+                company.Country = Invoice.Country;
+                company.Currency = Invoice.Currency;
+            }
+
             Clipboard.SetText(text);
+        }
+
+        private void Clear()
+        {
+            Invoice = new Invoice();
+            Index = 0;
         }
 
         [NotifyPropertyChangedInvocator]

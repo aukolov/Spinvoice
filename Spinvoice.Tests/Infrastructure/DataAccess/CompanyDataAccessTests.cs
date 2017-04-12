@@ -43,7 +43,7 @@ namespace Spinvoice.Tests.Infrastructure.DataAccess
             {
                 Name = GetCaller()
             };
-            _companyDataAccess.Add(company);
+            _companyDataAccess.AddOrUpdate(company);
 
             var loadedCompany = _companyDataAccess.Get(company.Id);
 
@@ -57,7 +57,7 @@ namespace Spinvoice.Tests.Infrastructure.DataAccess
             {
                 Name = GetCaller()
             };
-            _companyDataAccess.Add(company);
+            _companyDataAccess.AddOrUpdate(company);
 
             Assert.IsTrue(!string.IsNullOrEmpty(company.Id));
         }
@@ -71,7 +71,7 @@ namespace Spinvoice.Tests.Infrastructure.DataAccess
                 Country = "Germany",
                 Currency = "EUR"
             };
-            _companyDataAccess.Add(company);
+            _companyDataAccess.AddOrUpdate(company);
 
             var loadedCompany = _companyDataAccess.Get(company.Id);
 
@@ -91,7 +91,7 @@ namespace Spinvoice.Tests.Infrastructure.DataAccess
                 Country = "Germany",
                 Currency = "EUR"
             };
-            _companyDataAccess.Add(company);
+            _companyDataAccess.AddOrUpdate(company);
 
             var companies = _companyDataAccess.GetAll();
 
@@ -104,7 +104,7 @@ namespace Spinvoice.Tests.Infrastructure.DataAccess
         {
             for (var i = 0; i < 20; i++)
             {
-                _companyDataAccess.Add(new Company
+                _companyDataAccess.AddOrUpdate(new Company
                 {
                     Name = GetCaller() + i
                 });
@@ -113,6 +113,60 @@ namespace Spinvoice.Tests.Infrastructure.DataAccess
             var companies = _companyDataAccess.GetAll();
 
             Assert.AreEqual(20, companies.Length);
+        }
+
+        [Test]
+        public void UpdatesSameCompany()
+        {
+            var company = new Company
+            {
+                Name = "name1"
+            };
+            _companyDataAccess.AddOrUpdate(company);
+            var companyId = company.Id;
+
+            company.Name = "name2";
+            _companyDataAccess.AddOrUpdate(company);
+
+            Assert.AreEqual(companyId, company.Id);
+        }
+
+        [Test]
+        public void UpdatesExistingCompany()
+        {
+            var company = new Company
+            {
+                Country = "Cyprus",
+                Currency = "EUR",
+                Name = "Name1"
+            };
+            _companyDataAccess.AddOrUpdate(company);
+
+            company.Country = "Russia";
+            company.Currency = "RUB";
+            company.Name = "Name2";
+            _companyDataAccess.AddOrUpdate(company);
+
+            var loadedCompany = _companyDataAccess.Get(company.Id);
+            Assert.AreEqual("Russia", loadedCompany.Country);
+            Assert.AreEqual("RUB", loadedCompany.Currency);
+            Assert.AreEqual("Name2", loadedCompany.Name);
+        }
+
+        [Test]
+        public void DoesNotCreateNewCompanyOnUpdate()
+        {
+            var company = new Company
+            {
+                Name = "name1"
+            };
+            _companyDataAccess.AddOrUpdate(company);
+
+            company.Name = "name2";
+            _companyDataAccess.AddOrUpdate(company);
+
+            var companies = _companyDataAccess.GetAll();
+            Assert.AreEqual(1, companies.Length);
         }
     }
 }

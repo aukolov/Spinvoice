@@ -1,4 +1,6 @@
 ﻿using Spinvoice.App.ViewModels;
+using Spinvoice.Domain.Company;
+using Spinvoice.Infrastructure.DataAccess;
 
 namespace Spinvoice.App.Views
 {
@@ -7,7 +9,9 @@ namespace Spinvoice.App.Views
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new AppViewModel();
+
+            var companyRepository = new CompanyRepository(new CompanyDataAccess());
+            DataContext = new AppViewModel(companyRepository);
         }
     }
 }

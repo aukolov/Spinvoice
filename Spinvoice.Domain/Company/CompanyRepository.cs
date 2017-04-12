@@ -1,21 +1,42 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Spinvoice.Domain.Company
 {
-    public class CompanyRepository
+    public class CompanyRepository : ICompanyRepository
     {
         private readonly ICompanyDataAccess _companyDataAccess;
+        private readonly ObservableCollection<Company> _companies;
 
         public CompanyRepository(ICompanyDataAccess companyDataAccess)
         {
             _companyDataAccess = companyDataAccess;
-            Companies = new ObservableCollection<Company>();
+            _companies = new ObservableCollection<Company>();
             foreach (var company in companyDataAccess.GetAll())
             {
-                Companies.Add(company);
+                _companies.Add(company);
             }
         }
 
-        public ObservableCollection<Company> Companies { get; private set; }
+        public Company GetByName(string name)
+        {
+            return _companies.FirstOrDefault(company => company.Name == name);
+        }
+
+        public IDisposable GetByNameForUpdateOrCreate(string name, out Company company)
+        {
+            company = GetByName(name);
+            if (company == null)
+            {
+                company = new Company
+                {
+                    Name = name
+                };
+                _companies.Add(company);
+            }
+            var localCompany = company;
+            return new RelayDisposable(() => _companyDataAccess.AddOrUpdate(localCompany));
+        }
     }
 }
