@@ -27,7 +27,7 @@ namespace Spinvoice.App.Views
 
         private static int ParseParameter(object parameter)
         {
-            return int.Parse((string)parameter);
+            return int.Parse((string)parameter, CultureInfo.InvariantCulture);
         }
     }
 }

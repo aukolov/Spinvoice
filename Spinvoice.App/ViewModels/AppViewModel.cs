@@ -168,12 +168,12 @@ namespace Spinvoice.App.ViewModels
 
         private void ChangeNetAmount()
         {
-            Invoice.NetAmount = decimal.Parse(ClipboardText);
+            Invoice.NetAmount = decimal.Parse(ClipboardText, CultureInfo.InvariantCulture);
         }
 
         private void ChangeVatAmount()
         {
-            Invoice.VatAmount = decimal.Parse(ClipboardText);
+            Invoice.VatAmount = decimal.Parse(ClipboardText, CultureInfo.InvariantCulture);
         }
 
         private DateTime ParseDate(string text)

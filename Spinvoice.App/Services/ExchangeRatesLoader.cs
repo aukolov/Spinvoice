@@ -37,7 +37,7 @@ namespace Spinvoice.App.Services
                 foreach (var currencyCube in dateCube.Elements(_ns + "Cube"))
                 {
                     var currency = currencyCube.Attribute("currency").Value;
-                    var rate = decimal.Parse(currencyCube.Attribute("rate").Value);
+                    var rate = decimal.Parse(currencyCube.Attribute("rate").Value, CultureInfo.InvariantCulture);
 
                     rates.Add(new Rate
                     {
