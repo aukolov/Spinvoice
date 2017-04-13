@@ -42,11 +42,17 @@
   <ItemGroup>
     <Compile Include="Company\Company.cs" />
     <Compile Include="Company\CompanyRepository.cs" />
+    <Compile Include="Company\IBaseDataAccess.cs" />
     <Compile Include="Company\ICompanyDataAccess.cs" />
     <Compile Include="Company\ICompanyRepository.cs" />
+    <Compile Include="Exchange\ExchangeRatesRepository.cs" />
+    <Compile Include="Exchange\IExchangeRateDataAccess.cs" />
+    <Compile Include="Exchange\IExchangeRatesRepository.cs" />
+    <Compile Include="Exchange\Rate.cs" />
     <Compile Include="Invoice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RelayDisposable.cs" />
+    <Compile Include="Utils\ActionExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

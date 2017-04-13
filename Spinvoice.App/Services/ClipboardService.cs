@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
-using Spinvoice.App.Utils;
+using Spinvoice.Domain.Utils;
 
 namespace Spinvoice.App.Services
 {

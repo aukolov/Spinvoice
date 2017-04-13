@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Spinvoice.Domain.Utils;
 
 namespace Spinvoice.Domain
 {
@@ -15,6 +16,9 @@ namespace Spinvoice.Domain
         private string _country;
         private decimal _exchangeRate;
 
+        public event Action CurrencyChanged;
+        public event Action DateChanged;
+
         public DateTime Date
         {
             get { return _date; }
@@ -22,6 +26,7 @@ namespace Spinvoice.Domain
             {
                 _date = value;
                 OnPropertyChanged();
+                DateChanged.Raise();
             }
         }
 
@@ -53,6 +58,7 @@ namespace Spinvoice.Domain
             {
                 _currency = value;
                 OnPropertyChanged();
+                CurrencyChanged.Raise();
             }
         }
 
@@ -63,6 +69,8 @@ namespace Spinvoice.Domain
             {
                 _exchangeRate = value;
                 OnPropertyChanged();
+                OnOtherPropertyChanged(nameof(NetAmountInEuro));
+                OnOtherPropertyChanged(nameof(TotalAmount));
             }
         }
 
@@ -83,8 +91,12 @@ namespace Spinvoice.Domain
             {
                 _netAmount = value;
                 OnPropertyChanged();
+                OnOtherPropertyChanged(nameof(NetAmountInEuro));
+                OnOtherPropertyChanged(nameof(TotalAmount));
             }
         }
+
+        public decimal NetAmountInEuro => _netAmount * _exchangeRate;
 
         public decimal VatAmount
         {
@@ -93,12 +105,20 @@ namespace Spinvoice.Domain
             {
                 _vatAmount = value;
                 OnPropertyChanged();
+                OnOtherPropertyChanged(nameof(TotalAmount));
             }
         }
+
+        public decimal TotalAmount => NetAmountInEuro + VatAmount;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            OnOtherPropertyChanged(propertyName);
+        }
+
+        private void OnOtherPropertyChanged(string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

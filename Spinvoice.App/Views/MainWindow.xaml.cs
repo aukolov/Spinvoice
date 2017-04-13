@@ -1,5 +1,7 @@
-﻿using Spinvoice.App.ViewModels;
+﻿using Spinvoice.App.Services;
+using Spinvoice.App.ViewModels;
 using Spinvoice.Domain.Company;
+using Spinvoice.Domain.Exchange;
 using Spinvoice.Infrastructure.DataAccess;
 
 namespace Spinvoice.App.Views
@@ -10,8 +12,14 @@ namespace Spinvoice.App.Views
         {
             InitializeComponent();
 
-            var companyRepository = new CompanyRepository(new CompanyDataAccess());
-            DataContext = new AppViewModel(companyRepository);
+            var documentStoreRepository = new DocumentStoreRepository();
+            var companyDataAccess = new CompanyDataAccess(documentStoreRepository);
+            var companyRepository = new CompanyRepository(companyDataAccess);
+            var exchangeRateDataAccess = new ExchangeRateDataAccess(documentStoreRepository);
+            var exchangeRatesLoader = new ExchangeRatesLoader(exchangeRateDataAccess);
+            var exchangeRatesRepository = new ExchangeRatesRepository(exchangeRateDataAccess);
+
+            DataContext = new AppViewModel(companyRepository, exchangeRatesRepository, exchangeRatesLoader);
         }
     }
 }

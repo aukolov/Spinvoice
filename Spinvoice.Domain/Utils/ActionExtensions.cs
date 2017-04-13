@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Spinvoice.App.Utils
+namespace Spinvoice.Domain.Utils
 {
     public static class ActionExtensions
     {

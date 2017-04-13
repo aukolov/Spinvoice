@@ -25,6 +25,7 @@
 
             <Style TargetType="{x:Type TextBlock}">
                 <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="Margin" Value="20,0,10,0" />
             </Style>
         </ResourceDictionary>
 
@@ -32,6 +33,8 @@
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -98,18 +101,13 @@
                     SelectedDate="{Binding Invoice.Date}" />
 
 
-        <RadioButton Grid.Row="4"
-                     Grid.Column="0"
-                     Content="Rate:"
-                     GroupName="Field"
-                     IsChecked="{Binding Index,
-                                         Converter={x:Static local:IndexToCheckedConverter.Instance},
-                                         ConverterParameter=4}" />
+        <TextBlock Grid.Row="4"
+                   Grid.Column="0"
+                   Text="Rate:" />
         <TextBox Grid.Row="4"
                  Grid.Column="1"
                  Margin="{StaticResource GridLinesMargin}"
                  Text="{Binding Invoice.ExchangeRate}" />
-
 
         <RadioButton Grid.Row="5"
                      Grid.Column="0"
@@ -117,7 +115,7 @@
                      GroupName="Field"
                      IsChecked="{Binding Index,
                                          Converter={x:Static local:IndexToCheckedConverter.Instance},
-                                         ConverterParameter=5}" />
+                                         ConverterParameter=4}" />
         <TextBox Grid.Row="5"
                  Grid.Column="1"
                  Margin="{StaticResource GridLinesMargin}"
@@ -130,24 +128,43 @@
                      GroupName="Field"
                      IsChecked="{Binding Index,
                                          Converter={x:Static local:IndexToCheckedConverter.Instance},
-                                         ConverterParameter=6}" />
+                                         ConverterParameter=5}" />
         <TextBox Grid.Row="6"
                  Grid.Column="1"
                  Margin="{StaticResource GridLinesMargin}"
                  Text="{Binding Invoice.NetAmount}" />
 
+        <TextBlock Grid.Row="7"
+                   Grid.Column="0"
+                   Text="NET Amount (EUR):" />
+        <TextBox Grid.Row="7"
+                 Grid.Column="1"
+                 Margin="{StaticResource GridLinesMargin}"
+                 IsReadOnly="True"
+                 Text="{Binding Invoice.NetAmountInEuro,
+                                Mode=OneWay}" />
 
-        <RadioButton Grid.Row="7"
+        <RadioButton Grid.Row="8"
                      Grid.Column="0"
                      Content="VAT:"
                      GroupName="Field"
                      IsChecked="{Binding Index,
                                          Converter={x:Static local:IndexToCheckedConverter.Instance},
-                                         ConverterParameter=7}" />
-        <TextBox Grid.Row="7"
+                                         ConverterParameter=6}" />
+        <TextBox Grid.Row="8"
                  Grid.Column="1"
                  Margin="{StaticResource GridLinesMargin}"
                  Text="{Binding Invoice.VatAmount}" />
+
+        <TextBlock Grid.Row="9"
+                   Grid.Column="0"
+                   Text="Total Amount:" />
+        <TextBox Grid.Row="9"
+                 Grid.Column="1"
+                 Margin="{StaticResource GridLinesMargin}"
+                 IsReadOnly="True"
+                 Text="{Binding Invoice.TotalAmount,
+                                Mode=OneWay}" />
 
     </Grid>
 </UserControl>

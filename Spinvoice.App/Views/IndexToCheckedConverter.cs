@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 
 namespace Spinvoice.App.Views
@@ -21,7 +22,7 @@ namespace Spinvoice.App.Views
             if (value == null) return false;
             if (parameter == null) return false;
 
-            return (bool)value ? ParseParameter(parameter) : -1;
+            return (bool)value ? ParseParameter(parameter) : DependencyProperty.UnsetValue;
         }
 
         private static int ParseParameter(object parameter)

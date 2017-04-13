@@ -1,12 +1,7 @@
-﻿using System;
-
-namespace Spinvoice.Domain.Company
+﻿namespace Spinvoice.Domain.Company
 {
-    public interface ICompanyDataAccess : IDisposable
+    public interface ICompanyDataAccess : IBaseDataAccess<Company>
     {
-        Company[] GetAll();
-        Company Get(string id);
-        void AddOrUpdate(Company company);
-        void DeleteAll();
+        
     }
 }

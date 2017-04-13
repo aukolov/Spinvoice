@@ -53,7 +53,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseDataAccess.cs" />
     <Compile Include="CompanyDataAccess.cs" />
+    <Compile Include="DocumentStoreRepository.cs" />
+    <Compile Include="ExchangeRateDataAccess.cs" />
+    <Compile Include="IDocumentStoreRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

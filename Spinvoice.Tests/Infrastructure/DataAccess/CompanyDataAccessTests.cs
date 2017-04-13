@@ -12,7 +12,8 @@ namespace Spinvoice.Tests.Infrastructure.DataAccess
         [SetUp]
         public void Setup()
         {
-            _companyDataAccess = new CompanyDataAccess();
+            var documentStoreRepository = new DocumentStoreRepository();
+            _companyDataAccess = new CompanyDataAccess(documentStoreRepository);
             _companyDataAccess.DeleteAll();
         }
 

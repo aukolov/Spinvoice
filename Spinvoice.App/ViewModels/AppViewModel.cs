@@ -1,39 +1,46 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Microsoft.Win32;
 using Spinvoice.App.Annotations;
 using Spinvoice.App.Services;
 using Spinvoice.Domain;
 using Spinvoice.Domain.Company;
+using Spinvoice.Domain.Exchange;
 
 namespace Spinvoice.App.ViewModels
 {
     public sealed class AppViewModel : INotifyPropertyChanged, IDisposable
     {
         private readonly ICompanyRepository _companyRepository;
+        private readonly IExchangeRatesRepository _exchangeRatesRepository;
+        private readonly ExchangeRatesLoader _exchangeRatesLoader;
         private readonly Action[] _commands;
 
         private ClipboardService _clipboardService;
         private string _clipboardText;
         private int _index;
-        private string _clipboardTextToIgnore;
         private Invoice _invoice;
 
-        public AppViewModel(ICompanyRepository companyRepository)
+        public AppViewModel(
+            ICompanyRepository companyRepository,
+            IExchangeRatesRepository exchangeRatesRepository,
+            ExchangeRatesLoader exchangeRatesLoader)
         {
             _companyRepository = companyRepository;
+            _exchangeRatesRepository = exchangeRatesRepository;
+            _exchangeRatesLoader = exchangeRatesLoader;
             Dispatcher.CurrentDispatcher.InvokeAsync(() =>
             {
                 _clipboardService = new ClipboardService();
                 _clipboardService.ClipboardChanged += OnClipboardChanged;
             }, DispatcherPriority.Loaded);
 
-            _invoice = new Invoice();
+            Invoice = new Invoice();
 
             _commands = new Action[]
             {
@@ -41,14 +48,27 @@ namespace Spinvoice.App.ViewModels
                 () => ChangeCountry(),
                 () => ChangeCurrency(),
                 () => ChangeDate(),
-                () => {},
                 () => ChangeInvoiceNumber(),
                 () => ChangeNetAmount(),
                 () => ChangeVatAmount()
             };
 
             CopyCommand = new RelayCommand(CopyToClipboard);
-            ClearCommand = new RelayCommand(() => Clear());
+            ClearCommand = new RelayCommand(Clear);
+            LoadExchangeRatesCommand = new RelayCommand(LoadExchangeRates);
+        }
+
+        private void LoadExchangeRates()
+        {
+            var dialog = new OpenFileDialog
+            {
+                Multiselect = false,
+                Filter = "XML|*.xml"
+            };
+            if (dialog.ShowDialog() ?? false)
+            {
+                _exchangeRatesLoader.Load(dialog.FileName);
+            }
         }
 
         public int Index
@@ -66,7 +86,15 @@ namespace Spinvoice.App.ViewModels
             get { return _invoice; }
             set
             {
+                if (_invoice != null)
+                {
+                    _invoice.CurrencyChanged -= UpdateRate;
+                    _invoice.DateChanged -= UpdateRate;
+                }
                 _invoice = value;
+                _invoice.CurrencyChanged += UpdateRate;
+                _invoice.DateChanged += UpdateRate;
+
                 OnPropertyChanged();
             }
         }
@@ -85,6 +113,7 @@ namespace Spinvoice.App.ViewModels
         public ICommand CopyCommand { get; }
 
         public ICommand ClearCommand { get; }
+        public ICommand LoadExchangeRatesCommand { get; }
 
         public void Dispose()
         {
@@ -96,6 +125,15 @@ namespace Spinvoice.App.ViewModels
         private void ChangeDate()
         {
             Invoice.Date = ParseDate(ClipboardText);
+            UpdateRate();
+        }
+
+        private void UpdateRate()
+        {
+            if (Invoice.Date != default(DateTime) && !string.IsNullOrEmpty(Invoice.Currency))
+            {
+                Invoice.ExchangeRate = _exchangeRatesRepository.GetRate(Invoice.Currency, Invoice.Date);
+            }
         }
 
         private void ChangeCompanyName()
@@ -119,6 +157,7 @@ namespace Spinvoice.App.ViewModels
         private void ChangeCurrency()
         {
             Invoice.Currency = ClipboardText;
+            UpdateRate();
         }
 
         private void ChangeCountry()
@@ -149,14 +188,14 @@ namespace Spinvoice.App.ViewModels
 
         private void OnClipboardChanged()
         {
+            if (Application.Current.MainWindow.IsActive)
+            {
+                return;
+            }
             if (Clipboard.ContainsText())
             {
                 var text = Clipboard.GetText();
                 if (text == ClipboardText)
-                {
-                    return;
-                }
-                if (text == _clipboardTextToIgnore)
                 {
                     return;
                 }
@@ -194,7 +233,6 @@ namespace Spinvoice.App.ViewModels
                 $"{Invoice.Currency}\t" +
                 $"{Invoice.NetAmount}\t\t\t" +
                 $"{Invoice.VatAmount}";
-            _clipboardTextToIgnore = text;
 
             Company company;
             using (_companyRepository.GetByNameForUpdateOrCreate(Invoice.CompanyName, out company))
