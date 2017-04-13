@@ -145,6 +145,7 @@ namespace Spinvoice.App.ViewModels
             {
                 Invoice.Country = company.Country;
                 Invoice.Currency = company.Currency;
+                Invoice.IsEuropeanUnion = company.IsEuropeanUnion;
                 Index += 2;
             }
         }
@@ -231,14 +232,20 @@ namespace Spinvoice.App.ViewModels
                 $"{Invoice.CompanyName}\t" +
                 $"{Invoice.InvoiceNumber}\t" +
                 $"{Invoice.Currency}\t" +
-                $"{Invoice.NetAmount}\t\t\t" +
-                $"{Invoice.VatAmount}";
+                $"{Invoice.NetAmount}\t" +
+                $"{Invoice.ExchangeRate}\t" +
+                $"{Invoice.NetAmountInEuro}\t" +
+                $"{Invoice.VatAmount}\t" +
+                $"{Invoice.TotalAmount}\t" +
+                $"{Invoice.Country}\t" +
+                $"{(Invoice.IsEuropeanUnion ? "Y" : "N")}";
 
             Company company;
             using (_companyRepository.GetByNameForUpdateOrCreate(Invoice.CompanyName, out company))
             {
                 company.Country = Invoice.Country;
                 company.Currency = Invoice.Currency;
+                company.IsEuropeanUnion = Invoice.IsEuropeanUnion;
             }
 
             Clipboard.SetText(text);

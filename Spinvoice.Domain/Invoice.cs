@@ -15,6 +15,7 @@ namespace Spinvoice.Domain
         private decimal _vatAmount;
         private string _country;
         private decimal _exchangeRate;
+        private bool _isEuropeanUnion;
 
         public event Action CurrencyChanged;
         public event Action DateChanged;
@@ -110,6 +111,16 @@ namespace Spinvoice.Domain
         }
 
         public decimal TotalAmount => NetAmountInEuro + VatAmount;
+
+        public bool IsEuropeanUnion
+        {
+            get { return _isEuropeanUnion; }
+            set
+            {
+                _isEuropeanUnion = value;
+                OnPropertyChanged();
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

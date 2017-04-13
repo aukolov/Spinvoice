@@ -69,11 +69,13 @@
                      IsChecked="{Binding Index,
                                          Converter={x:Static local:IndexToCheckedConverter.Instance},
                                          ConverterParameter=1}" />
-        <TextBox Grid.Row="1"
-                 Grid.Column="1"
-                 Margin="{StaticResource GridLinesMargin}"
-                 Text="{Binding Invoice.Country}" />
 
+        <StackPanel Grid.Row="1"
+                    Grid.Column="1"
+                    Orientation="Vertical">
+            <TextBox Margin="{StaticResource GridLinesMargin}" Text="{Binding Invoice.Country}" />
+            <CheckBox Content="Is EU" IsChecked="{Binding Invoice.IsEuropeanUnion}" />
+        </StackPanel>
 
         <RadioButton Grid.Row="2"
                      Grid.Column="0"
