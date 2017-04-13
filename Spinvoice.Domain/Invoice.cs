@@ -97,7 +97,12 @@ namespace Spinvoice.Domain
             }
         }
 
-        public decimal NetAmountInEuro => _netAmount * _exchangeRate;
+        public decimal NetAmountInEuro => Round(_netAmount * _exchangeRate);
+
+        private static decimal Round(decimal value)
+        {
+            return Math.Round(value, 2, MidpointRounding.AwayFromZero);
+        }
 
         public decimal VatAmount
         {
