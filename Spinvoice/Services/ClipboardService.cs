@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Interop;
 using Spinvoice.Domain.Utils;
 
-namespace Spinvoice.App.Services
+namespace Spinvoice.Services
 {
     class ClipboardService : IDisposable
     {

@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace Spinvoice.App.Views
+namespace Spinvoice.Views
 {
     public class IndexToCheckedConverter : IValueConverter
     {

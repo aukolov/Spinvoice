@@ -2,8 +2,8 @@
 using System.IO;
 using System.Reflection;
 using NUnit.Framework;
-using Spinvoice.App.Services;
 using Spinvoice.Infrastructure.DataAccess;
+using Spinvoice.Services;
 
 namespace Spinvoice.Tests.App.Services
 {

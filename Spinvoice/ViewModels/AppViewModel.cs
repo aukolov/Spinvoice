@@ -6,13 +6,13 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Microsoft.Win32;
-using Spinvoice.App.Annotations;
-using Spinvoice.App.Services;
 using Spinvoice.Domain;
 using Spinvoice.Domain.Company;
 using Spinvoice.Domain.Exchange;
+using Spinvoice.Properties;
+using Spinvoice.Services;
 
-namespace Spinvoice.App.ViewModels
+namespace Spinvoice.ViewModels
 {
     public sealed class AppViewModel : INotifyPropertyChanged, IDisposable
     {

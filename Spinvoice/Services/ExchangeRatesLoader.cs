@@ -4,9 +4,10 @@ using System.Globalization;
 using System.IO;
 using System.Xml.Linq;
 using Spinvoice.Domain.Exchange;
+
 // ReSharper disable PossibleNullReferenceException
 
-namespace Spinvoice.App.Services
+namespace Spinvoice.Services
 {
     public class ExchangeRatesLoader
     {
@@ -29,7 +30,6 @@ namespace Spinvoice.App.Services
 
             var rates = new List<Rate>();
 
-            int i = 0;
             foreach (var dateCube in envelope.Element(_ns + "Cube").Elements(_ns + "Cube"))
             {
                 var stringDate = dateCube.Attribute("time").Value;
@@ -46,7 +46,6 @@ namespace Spinvoice.App.Services
                         Value = rate
                     });
                 }
-                i++;
             }
 
             _exchangeRateDataAccess.AddOrUpdate(rates);

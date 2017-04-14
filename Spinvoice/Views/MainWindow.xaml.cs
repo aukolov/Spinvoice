@@ -1,10 +1,10 @@
-﻿using Spinvoice.App.Services;
-using Spinvoice.App.ViewModels;
-using Spinvoice.Domain.Company;
+﻿using Spinvoice.Domain.Company;
 using Spinvoice.Domain.Exchange;
 using Spinvoice.Infrastructure.DataAccess;
+using Spinvoice.Services;
+using Spinvoice.ViewModels;
 
-namespace Spinvoice.App.Views
+namespace Spinvoice.Views
 {
     public partial class MainWindow
     {

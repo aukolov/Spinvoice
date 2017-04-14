@@ -1,7 +1,6 @@
-﻿<Application x:Class="Spinvoice.App.App"
+﻿<Application x:Class="Spinvoice.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Spinvoice.App"
              StartupUri="Views/MainWindow.xaml">
     <Application.Resources />
 </Application>
