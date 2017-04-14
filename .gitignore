@@ -34,6 +34,7 @@ ipch/
 *.vssscc
 *.bak.*
 *.bak
+publish
 
 #Tools
 _ReSharper.*

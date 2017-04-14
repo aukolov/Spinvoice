@@ -10,6 +10,7 @@
         Height="470"
         d:DataContext="{d:DesignInstance Type=viewModels:AppViewModel}"
         Topmost="True"
+        WindowState="Maximized"
         mc:Ignorable="d">
 
     <DockPanel>
@@ -20,30 +21,43 @@
         </Menu>
 
         <Grid Margin="20,10,20,20" DockPanel.Dock="Bottom">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <WebBrowser Grid.Column="0" Source="file://C:\Projects\my\sibil\08-10\1.pdf" />
+            <GridSplitter Grid.Column="1"
+                          Width="5"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Stretch"
+                          ShowsPreview="False" />
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
-            <TextBox Grid.Row="1"
-                     Grid.ColumnSpan="2"
-                     Margin="0,0,0,10"
-                     IsReadOnly="True"
-                     MaxLines="1"
-                     Text="{Binding ClipboardText}" />
+                <TextBox Grid.Row="1"
+                         Grid.ColumnSpan="2"
+                         Margin="0,0,0,10"
+                         IsReadOnly="True"
+                         MaxLines="1"
+                         Text="{Binding ClipboardText}" />
 
-            <Button Grid.Row="2"
-                    Command="{Binding ClearCommand}"
-                    Content="Clear" />
+                <Button Grid.Row="2"
+                        Command="{Binding ClearCommand}"
+                        Content="Clear" />
 
-            <views:InvoiceView Grid.Row="3" Margin="0,10,0,0" />
+                <views:InvoiceView Grid.Row="3" Margin="0,10,0,0" />
 
-            <Button Grid.Row="4"
-                    Command="{Binding CopyCommand}"
-                    Content="Copy" />
+                <Button Grid.Row="4"
+                        Command="{Binding CopyCommand}"
+                        Content="Copy" />
+            </Grid>
         </Grid>
     </DockPanel>
 </Window>
