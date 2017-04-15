@@ -34,7 +34,6 @@ ipch/
 *.vssscc
 *.bak.*
 *.bak
-publish
 
 #Tools
 _ReSharper.*
@@ -50,3 +49,4 @@ Ankh.NoLoad
 # Include DLLs if they're in the NuGet packages directory
 !/packages/*/lib/*.dll
 !/packages/*/lib/*/*.dll
+!/publish/*
