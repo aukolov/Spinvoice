@@ -42,6 +42,7 @@ namespace Spinvoice.ViewModels
                 () => ChangeCompanyName(),
                 () => ChangeCountry(),
                 () => ChangeCurrency(),
+                () => ChangeVatNumber(),
                 () => ChangeDate(),
                 () => ChangeInvoiceNumber(),
                 () => ChangeNetAmount(),
@@ -93,6 +94,7 @@ namespace Spinvoice.ViewModels
         }
 
         public ICommand CopyCommand { get; }
+
         public ICommand ClearCommand { get; }
 
         private void ChangeDate()
@@ -118,6 +120,7 @@ namespace Spinvoice.ViewModels
             {
                 Invoice.Country = company.Country;
                 Invoice.Currency = company.Currency;
+                Invoice.VatNumber = company.VatNumber;
                 Invoice.IsEuropeanUnion = company.IsEuropeanUnion;
                 Index += 2;
             }
@@ -137,6 +140,11 @@ namespace Spinvoice.ViewModels
         private void ChangeCountry()
         {
             Invoice.Country = ClipboardText;
+        }
+
+        private void ChangeVatNumber()
+        {
+            Invoice.VatNumber = ClipboardText;
         }
 
         private void ChangeNetAmount()
@@ -208,6 +216,7 @@ namespace Spinvoice.ViewModels
             var text =
                 $"{Invoice.Date:dd.MM.yyyy}\t" +
                 $"{Invoice.CompanyName}\t" +
+                $"{Invoice.VatNumber}\t" +
                 $"{Invoice.InvoiceNumber}\t" +
                 $"{Invoice.Currency}\t" +
                 $"{Invoice.NetAmount}\t" +
@@ -223,6 +232,7 @@ namespace Spinvoice.ViewModels
             {
                 company.Country = Invoice.Country;
                 company.Currency = Invoice.Currency;
+                company.VatNumber = Invoice.VatNumber;
                 company.IsEuropeanUnion = Invoice.IsEuropeanUnion;
             }
 
