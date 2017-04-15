@@ -25,11 +25,13 @@ namespace Spinvoice.ViewModels
         private string _clipboardText;
         private int _index;
         private Invoice _invoice;
+        private string _textToIgnore;
 
         public AppViewModel(
             ICompanyRepository companyRepository,
             IExchangeRatesRepository exchangeRatesRepository,
-            ExchangeRatesLoader exchangeRatesLoader)
+            ExchangeRatesLoader exchangeRatesLoader,
+            IFileService fileService)
         {
             _companyRepository = companyRepository;
             _exchangeRatesRepository = exchangeRatesRepository;
@@ -56,6 +58,8 @@ namespace Spinvoice.ViewModels
             CopyCommand = new RelayCommand(CopyToClipboard);
             ClearCommand = new RelayCommand(Clear);
             LoadExchangeRatesCommand = new RelayCommand(LoadExchangeRates);
+
+            ProjectBrowserViewModel = new ProjectBrowserViewModel(fileService);
         }
 
         private void LoadExchangeRates()
@@ -111,9 +115,9 @@ namespace Spinvoice.ViewModels
         }
 
         public ICommand CopyCommand { get; }
-
         public ICommand ClearCommand { get; }
         public ICommand LoadExchangeRatesCommand { get; }
+        public ProjectBrowserViewModel ProjectBrowserViewModel { get; }
 
         public void Dispose()
         {
@@ -189,7 +193,7 @@ namespace Spinvoice.ViewModels
 
         private void OnClipboardChanged()
         {
-            if (Application.Current.MainWindow.IsActive)
+            if (!Application.Current.MainWindow.IsActive)
             {
                 return;
             }
@@ -197,6 +201,10 @@ namespace Spinvoice.ViewModels
             {
                 var text = Clipboard.GetText();
                 if (text == ClipboardText)
+                {
+                    return;
+                }
+                if (text == _textToIgnore)
                 {
                     return;
                 }
@@ -248,6 +256,7 @@ namespace Spinvoice.ViewModels
                 company.IsEuropeanUnion = Invoice.IsEuropeanUnion;
             }
 
+            _textToIgnore = text;
             Clipboard.SetText(text);
         }
 

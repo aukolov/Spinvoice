@@ -18,8 +18,13 @@ namespace Spinvoice.Views
             var exchangeRateDataAccess = new ExchangeRateDataAccess(documentStoreRepository);
             var exchangeRatesLoader = new ExchangeRatesLoader(exchangeRateDataAccess);
             var exchangeRatesRepository = new ExchangeRatesRepository(exchangeRateDataAccess);
+            var fileService = new FileService();
 
-            DataContext = new AppViewModel(companyRepository, exchangeRatesRepository, exchangeRatesLoader);
+            DataContext = new AppViewModel(
+                companyRepository,
+                exchangeRatesRepository, 
+                exchangeRatesLoader, 
+                fileService);
         }
     }
 }
