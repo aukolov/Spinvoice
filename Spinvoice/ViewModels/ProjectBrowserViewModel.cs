@@ -13,7 +13,7 @@ namespace Spinvoice.ViewModels
 
     public sealed class ProjectBrowserViewModel : INotifyPropertyChanged, ISelectedPathListener
     {
-        private string _path;
+        private string _projectDirectoryPath;
         private DirectoryViewModel[] _directoryViewModels;
         private readonly IFileService _fileService;
         private string _pdfPath;
@@ -23,19 +23,18 @@ namespace Spinvoice.ViewModels
         {
             _fileService = fileService;
             OpenCommand = new RelayCommand(OpenDirectoryCommand);
-            Path = @"C:\Projects\my\sibil";
         }
 
-        public string Path
+        public string ProjectDirectoryPath
         {
-            get { return _path; }
+            get { return _projectDirectoryPath; }
             private set
             {
-                _path = value;
+                _projectDirectoryPath = value;
                 OnPropertyChanged();
                 DirectoryViewModels = new[]
                 {
-                    new DirectoryViewModel(_path, _fileService, this)
+                    new DirectoryViewModel(_projectDirectoryPath, _fileService, this)
                 };
             }
         }
@@ -75,7 +74,7 @@ namespace Spinvoice.ViewModels
             };
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                Path = dialog.SelectedPath;
+                ProjectDirectoryPath = dialog.SelectedPath;
             }
         }
 

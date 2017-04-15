@@ -8,6 +8,7 @@ using System.Windows.Threading;
 using Spinvoice.Domain;
 using Spinvoice.Domain.Company;
 using Spinvoice.Domain.Exchange;
+using Spinvoice.Domain.Utils;
 using Spinvoice.Services;
 
 namespace Spinvoice.ViewModels
@@ -177,7 +178,8 @@ namespace Spinvoice.ViewModels
                     return;
                 }
 
-                ClipboardText = text;
+
+                ClipboardText = TextDecoder.Decode(text);
             }
             else
             {

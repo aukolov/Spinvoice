@@ -23,7 +23,7 @@
             <TextBox Grid.Column="0"
                      Margin="0,0,10,10"
                      IsReadOnly="True"
-                     Text="{Binding Path,
+                     Text="{Binding ProjectDirectoryPath,
                                     Mode=OneWay}" />
             <Button Grid.Column="1"
                     Margin="0,0,0,10"
