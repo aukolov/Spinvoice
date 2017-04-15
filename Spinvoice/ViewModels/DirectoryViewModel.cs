@@ -7,15 +7,11 @@ namespace Spinvoice.ViewModels
 {
     public class DirectoryViewModel : IFileSystemViewModel
     {
-        private string _selectedElement;
-        private ISelectedPathListener _selectedPathListener;
-
         public DirectoryViewModel(
             string path,
             IFileService fileService,
             ISelectedPathListener selectedPathListener)
         {
-            _selectedPathListener = selectedPathListener;
             Path = path;
             Name = System.IO.Path.GetFileName(path);
 
@@ -33,14 +29,6 @@ namespace Spinvoice.ViewModels
 
         public ObservableCollection<IFileSystemViewModel> Items { get; }
 
-        public string SelectedElement
-        {
-            get { return _selectedElement; }
-            set
-            {
-                _selectedPathListener.SelectedPath = value;
-                _selectedElement = value;
-            }
-        }
+        public bool IsSelected { get; set; }
     }
 }

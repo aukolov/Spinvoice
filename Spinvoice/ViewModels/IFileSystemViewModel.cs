@@ -4,5 +4,6 @@
     {
         string Name { get; }
         string Path { get; }
+        bool IsSelected { get; set; }
     }
 }

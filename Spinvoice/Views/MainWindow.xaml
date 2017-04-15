@@ -48,32 +48,8 @@
 
             <GridSplitter Grid.Column="3" />
 
-            <Grid Grid.Column="4">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
+            <views:InvoiceView Grid.Column="4" DataContext="{Binding InvoiceViewModel}" />
 
-                <TextBox Grid.Row="1"
-                         Grid.ColumnSpan="2"
-                         Margin="0,0,0,10"
-                         IsReadOnly="True"
-                         MaxLines="1"
-                         Text="{Binding ClipboardText}" />
-
-                <Button Grid.Row="2"
-                        Command="{Binding ClearCommand}"
-                        Content="Clear" />
-
-                <views:InvoiceView Grid.Row="3" Margin="0,10,0,0" />
-
-                <Button Grid.Row="4"
-                        Command="{Binding CopyCommand}"
-                        Content="Copy" />
-            </Grid>
         </Grid>
     </DockPanel>
 </Window>
