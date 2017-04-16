@@ -6,7 +6,7 @@
 
         public string GetValue(PdfModel pdfModel)
         {
-            if (PreviousText == null)
+            if (string.IsNullOrEmpty(PreviousText))
             {
                 return null;
             }
@@ -23,9 +23,9 @@
             return null;
         }
 
-        public void Study(PdfModel pdfModel, string value)
+        public void Train(PdfModel pdfModel, string value)
         {
-            if (value == null)
+            if (string.IsNullOrEmpty(value))
             {
                 return;
             }
@@ -33,13 +33,24 @@
             {
                 for (var i = 1; i < blockModel.Sentences.Count; i++)
                 {
-                    if (blockModel.Sentences[i].Trim() == value.Trim())
+                    if (blockModel.Sentences[i].Trim() == value.Trim()
+                        && !IsNumber(blockModel.Sentences[i - 1]))
                     {
                         PreviousText = blockModel.Sentences[i - 1];
                         return;
                     }
                 }
             }
+        }
+
+        private static bool IsNumber(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                return false;
+            }
+            decimal d;
+            return decimal.TryParse(text, out d);
         }
     }
 }

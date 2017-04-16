@@ -13,5 +13,7 @@ namespace Spinvoice.Domain.Company
 
         public IPdfAnalysisStrategy CompanyInvoiceStrategy { get; set; }
         public IPdfAnalysisStrategy InvoiceNumberStrategy { get; set; }
+        public IPdfAnalysisStrategy InvoiceDateStrategy { get; set; }
+        public IPdfAnalysisStrategy InvoiceNetAmountStrategy { get; set; }
     }
 }

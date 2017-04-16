@@ -18,13 +18,14 @@ namespace Spinvoice.ViewModels
         private readonly ICompanyRepository _companyRepository;
         private readonly IExchangeRatesRepository _exchangeRatesRepository;
         private readonly ClipboardService _clipboardService;
-        private readonly AnalyzeInvoiceService _analyzeInvoiceService;
 
         private readonly Action[] _commands;
         private readonly PdfModel _pdfModel;
         private volatile string _textToIgnore;
         private int _index;
         private Invoice _invoice;
+        private string _stringDate;
+        private string _stringNetAmount;
         private string _clipboardText;
 
         public InvoiceViewModel(
@@ -38,7 +39,6 @@ namespace Spinvoice.ViewModels
             _companyRepository = companyRepository;
             _exchangeRatesRepository = exchangeRatesRepository;
             _pdfModel = pdfModel;
-            _analyzeInvoiceService = analyzeInvoiceService;
 
             _commands = new Action[]
             {
@@ -56,7 +56,7 @@ namespace Spinvoice.ViewModels
             ClearCommand = new RelayCommand(Clear);
             Invoice = new Invoice();
 
-            _analyzeInvoiceService.Analyze(pdfModel, Invoice);
+            analyzeInvoiceService.Analyze(pdfModel, Invoice);
         }
 
         public int Index
@@ -103,8 +103,13 @@ namespace Spinvoice.ViewModels
 
         private void ChangeDate()
         {
-            Invoice.Date = ParseDate(_clipboardText);
-            UpdateRate();
+            var parsedDate = DateParser.TryParseDate(_clipboardText);
+            if (parsedDate.HasValue)
+            {
+                Invoice.Date = parsedDate.Value;
+                _stringDate = _clipboardText;
+                UpdateRate();
+            }
         }
 
         private void UpdateRate()
@@ -150,23 +155,17 @@ namespace Spinvoice.ViewModels
 
         private void ChangeNetAmount()
         {
-            Invoice.NetAmount = decimal.Parse(_clipboardText, CultureInfo.InvariantCulture);
+            decimal netAmount;
+            if (decimal.TryParse(_clipboardText, NumberStyles.Any, CultureInfo.InvariantCulture, out netAmount))
+            {
+                Invoice.NetAmount = netAmount;
+                _stringNetAmount = _clipboardText;
+            }
         }
 
         private void ChangeVatAmount()
         {
-            Invoice.VatAmount = decimal.Parse(_clipboardText, CultureInfo.InvariantCulture);
-        }
-
-        private DateTime ParseDate(string text)
-        {
-            DateTime dateTime;
-            if (DateTime.TryParseExact(text, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None,
-                out dateTime))
-                return dateTime;
-            if (DateTime.TryParse(text, out dateTime))
-                return dateTime;
-            return new DateTime();
+            Invoice.VatAmount = AmountParser.Parse(_clipboardText);
         }
 
         private void OnClipboardChanged()
@@ -243,17 +242,21 @@ namespace Spinvoice.ViewModels
                 company.Currency = Invoice.Currency;
                 company.VatNumber = Invoice.VatNumber;
                 company.IsEuropeanUnion = Invoice.IsEuropeanUnion;
-                if (company.CompanyInvoiceStrategy == null)
-                {
-                    company.CompanyInvoiceStrategy = new NextTokenStrategy();
-                }
-                company.CompanyInvoiceStrategy.Study(_pdfModel, company.Name);
-                if (company.InvoiceNumberStrategy == null)
-                {
-                    company.InvoiceNumberStrategy = new NextTokenStrategy();
-                }
-                company.InvoiceNumberStrategy.Study(_pdfModel, Invoice.InvoiceNumber);
+                company.CompanyInvoiceStrategy = TrainStrategy(company.CompanyInvoiceStrategy, company.Name);
+                company.InvoiceNumberStrategy = TrainStrategy(company.InvoiceNumberStrategy, Invoice.InvoiceNumber);
+                company.InvoiceDateStrategy = TrainStrategy(company.InvoiceDateStrategy, _stringDate);
+                company.InvoiceNetAmountStrategy = TrainStrategy(company.InvoiceNetAmountStrategy, _stringNetAmount);
             }
+        }
+
+        private IPdfAnalysisStrategy TrainStrategy(IPdfAnalysisStrategy strategy, string value)
+        {
+            if (strategy == null)
+            {
+                strategy = new NextTokenStrategy();
+            }
+            strategy.Train(_pdfModel, value);
+            return strategy;
         }
 
         private void Clear()
