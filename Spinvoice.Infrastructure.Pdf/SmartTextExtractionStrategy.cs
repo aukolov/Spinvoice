@@ -24,11 +24,10 @@ namespace Spinvoice.Infrastructure.Pdf
         public void RenderText(TextRenderInfo renderInfo)
         {
             _currentBlock.Add(renderInfo);
-            var r = renderInfo.GetBaseline().GetBoundingRectange();
-            Console.WriteLine($"{renderInfo.PdfString} " +
-                              $"{r.X}x{r.Y} " +
-                              $"{r.Width}x{r.Height} " +
-                              $"{renderInfo.GetFillColor()}");
+            //var r = renderInfo.GetBaseline().GetBoundingRectange();
+            //Console.WriteLine($"{renderInfo.PdfString} " +
+            //                  $"{renderInfo.GetFont().Encoding} " +
+            //                  $"{renderInfo.GetFont().FullFontName} ");
         }
 
         public void EndTextBlock()
