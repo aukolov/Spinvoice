@@ -149,5 +149,29 @@ namespace Spinvoice.Domain
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public void ApplyCompany(Company.Company company)
+        {
+            CompanyName = company.Name;
+            Country = company.Country;
+            Currency = company.Currency;
+            VatNumber = company.VatNumber;
+            IsEuropeanUnion = company.IsEuropeanUnion;
+        }
+
+        public void Clear()
+        {
+            _companyName = null;
+            _exchangeRate = 0;
+            _country = null;
+            _date = new DateTime();
+            _currency = null;
+            _invoiceNumber = null;
+            _netAmount = 0;
+            _vatAmount = 0;
+            _vatNumber = null;
+            _isEuropeanUnion = false;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(""));
+        }
     }
 }

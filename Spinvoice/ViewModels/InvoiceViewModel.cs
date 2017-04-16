@@ -4,38 +4,41 @@ using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Threading;
 using Spinvoice.Domain;
 using Spinvoice.Domain.Company;
 using Spinvoice.Domain.Exchange;
+using Spinvoice.Domain.Pdf;
 using Spinvoice.Domain.Utils;
 using Spinvoice.Services;
 
 namespace Spinvoice.ViewModels
 {
-    public sealed class InvoiceViewModel : IDisposable, INotifyPropertyChanged
+    public sealed class InvoiceViewModel : INotifyPropertyChanged
     {
         private readonly ICompanyRepository _companyRepository;
         private readonly IExchangeRatesRepository _exchangeRatesRepository;
+        private readonly ClipboardService _clipboardService;
+        private readonly AnalyzeInvoiceService _analyzeInvoiceService;
+
         private readonly Action[] _commands;
-        private ClipboardService _clipboardService;
-        private string _textToIgnore;
+        private readonly PdfModel _pdfModel;
+        private volatile string _textToIgnore;
         private int _index;
         private Invoice _invoice;
         private string _clipboardText;
 
         public InvoiceViewModel(
             ICompanyRepository companyRepository,
-            IExchangeRatesRepository exchangeRatesRepository)
+            IExchangeRatesRepository exchangeRatesRepository,
+            ClipboardService clipboardService,
+            PdfModel pdfModel,
+            AnalyzeInvoiceService analyzeInvoiceService)
         {
+            _clipboardService = clipboardService;
             _companyRepository = companyRepository;
             _exchangeRatesRepository = exchangeRatesRepository;
-
-            Dispatcher.CurrentDispatcher.InvokeAsync(() =>
-            {
-                _clipboardService = new ClipboardService();
-                _clipboardService.ClipboardChanged += OnClipboardChanged;
-            }, DispatcherPriority.Loaded);
+            _pdfModel = pdfModel;
+            _analyzeInvoiceService = analyzeInvoiceService;
 
             _commands = new Action[]
             {
@@ -52,6 +55,8 @@ namespace Spinvoice.ViewModels
             CopyCommand = new RelayCommand(CopyToClipboard);
             ClearCommand = new RelayCommand(Clear);
             Invoice = new Invoice();
+
+            _analyzeInvoiceService.Analyze(pdfModel, Invoice);
         }
 
         public int Index
@@ -82,24 +87,23 @@ namespace Spinvoice.ViewModels
             }
         }
 
-        public string ClipboardText
-        {
-            get { return _clipboardText; }
-            set
-            {
-                if (_clipboardText == value) return;
-                _clipboardText = value;
-                OnPropertyChanged();
-            }
-        }
-
         public ICommand CopyCommand { get; }
 
         public ICommand ClearCommand { get; }
 
+        public void Subscribe()
+        {
+            _clipboardService.ClipboardChanged += OnClipboardChanged;
+        }
+
+        public void Unsubscribe()
+        {
+            _clipboardService.ClipboardChanged += OnClipboardChanged;
+        }
+
         private void ChangeDate()
         {
-            Invoice.Date = ParseDate(ClipboardText);
+            Invoice.Date = ParseDate(_clipboardText);
             UpdateRate();
         }
 
@@ -113,48 +117,45 @@ namespace Spinvoice.ViewModels
 
         private void ChangeCompanyName()
         {
-            Invoice.CompanyName = ClipboardText;
+            Invoice.CompanyName = _clipboardText;
 
             var company = _companyRepository.GetByName(Invoice.CompanyName);
             if (company != null)
             {
-                Invoice.Country = company.Country;
-                Invoice.Currency = company.Currency;
-                Invoice.VatNumber = company.VatNumber;
-                Invoice.IsEuropeanUnion = company.IsEuropeanUnion;
+                Invoice.ApplyCompany(company);
                 Index += 2;
             }
         }
 
         private void ChangeInvoiceNumber()
         {
-            Invoice.InvoiceNumber = ClipboardText;
+            Invoice.InvoiceNumber = _clipboardText;
         }
 
         private void ChangeCurrency()
         {
-            Invoice.Currency = ClipboardText;
+            Invoice.Currency = _clipboardText;
             UpdateRate();
         }
 
         private void ChangeCountry()
         {
-            Invoice.Country = ClipboardText;
+            Invoice.Country = _clipboardText;
         }
 
         private void ChangeVatNumber()
         {
-            Invoice.VatNumber = ClipboardText;
+            Invoice.VatNumber = _clipboardText;
         }
 
         private void ChangeNetAmount()
         {
-            Invoice.NetAmount = decimal.Parse(ClipboardText, CultureInfo.InvariantCulture);
+            Invoice.NetAmount = decimal.Parse(_clipboardText, CultureInfo.InvariantCulture);
         }
 
         private void ChangeVatAmount()
         {
-            Invoice.VatAmount = decimal.Parse(ClipboardText, CultureInfo.InvariantCulture);
+            Invoice.VatAmount = decimal.Parse(_clipboardText, CultureInfo.InvariantCulture);
         }
 
         private DateTime ParseDate(string text)
@@ -177,7 +178,7 @@ namespace Spinvoice.ViewModels
             if (Clipboard.ContainsText())
             {
                 var text = Clipboard.GetText();
-                if (text == ClipboardText)
+                if (text == _clipboardText)
                 {
                     return;
                 }
@@ -187,11 +188,16 @@ namespace Spinvoice.ViewModels
                 }
 
 
-                ClipboardText = TextDecoder.Decode(text);
+                string val = TextDecoder.Decode(text);
+                if (_clipboardText == val) return;
+                _clipboardText = val;
+                OnPropertyChanged();
             }
             else
             {
-                ClipboardText = null;
+                if (_clipboardText == null) return;
+                _clipboardText = null;
+                OnPropertyChanged();
                 return;
             }
 
@@ -227,6 +233,9 @@ namespace Spinvoice.ViewModels
                 $"{Invoice.Country}\t" +
                 $"{(Invoice.IsEuropeanUnion ? "Y" : "N")}s";
 
+            _textToIgnore = text;
+            Clipboard.SetText(text);
+
             Company company;
             using (_companyRepository.GetByNameForUpdateOrCreate(Invoice.CompanyName, out company))
             {
@@ -234,21 +243,23 @@ namespace Spinvoice.ViewModels
                 company.Currency = Invoice.Currency;
                 company.VatNumber = Invoice.VatNumber;
                 company.IsEuropeanUnion = Invoice.IsEuropeanUnion;
+                if (company.CompanyInvoiceStrategy == null)
+                {
+                    company.CompanyInvoiceStrategy = new NextTokenStrategy();
+                }
+                company.CompanyInvoiceStrategy.Study(_pdfModel, company.Name);
+                if (company.InvoiceNumberStrategy == null)
+                {
+                    company.InvoiceNumberStrategy = new NextTokenStrategy();
+                }
+                company.InvoiceNumberStrategy.Study(_pdfModel, Invoice.InvoiceNumber);
             }
-
-            _textToIgnore = text;
-            Clipboard.SetText(text);
         }
 
         private void Clear()
         {
-            Invoice = new Invoice();
+            Invoice.Clear();
             Index = 0;
-        }
-
-        public void Dispose()
-        {
-            _clipboardService?.Dispose();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

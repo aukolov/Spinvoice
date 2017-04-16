@@ -45,13 +45,17 @@
     <Compile Include="Company\IBaseDataAccess.cs" />
     <Compile Include="Company\ICompanyDataAccess.cs" />
     <Compile Include="Company\ICompanyRepository.cs" />
+    <Compile Include="Company\PdfInvoiceModel.cs" />
     <Compile Include="Exchange\ExchangeRatesRepository.cs" />
     <Compile Include="Exchange\IExchangeRateDataAccess.cs" />
     <Compile Include="Exchange\IExchangeRatesRepository.cs" />
     <Compile Include="Exchange\Rate.cs" />
     <Compile Include="Invoice.cs" />
     <Compile Include="Pdf\BlockModel.cs" />
+    <Compile Include="Pdf\IPdfAnalysisStrategy.cs" />
+    <Compile Include="Pdf\NextTokenStrategy.cs" />
     <Compile Include="Pdf\IPdfParser.cs" />
+    <Compile Include="Pdf\IPdfToInvoiceMapper.cs" />
     <Compile Include="Pdf\PageModel.cs" />
     <Compile Include="Pdf\PdfModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

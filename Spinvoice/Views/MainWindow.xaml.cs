@@ -1,6 +1,7 @@
 ﻿using Spinvoice.Domain.Company;
 using Spinvoice.Domain.Exchange;
 using Spinvoice.Infrastructure.DataAccess;
+using Spinvoice.Infrastructure.Pdf;
 using Spinvoice.Services;
 using Spinvoice.ViewModels;
 
@@ -19,12 +20,14 @@ namespace Spinvoice.Views
             var exchangeRatesLoader = new ExchangeRatesLoader(exchangeRateDataAccess);
             var exchangeRatesRepository = new ExchangeRatesRepository(exchangeRateDataAccess);
             var fileService = new FileService();
+            var pdfParser = new PdfParser();
 
             DataContext = new AppViewModel(
                 companyRepository,
                 exchangeRatesRepository, 
                 exchangeRatesLoader, 
-                fileService);
+                fileService,
+                pdfParser, new AnalyzeInvoiceService(companyRepository));
         }
     }
 }

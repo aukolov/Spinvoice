@@ -6,7 +6,7 @@ using Spinvoice.Domain.Utils;
 
 namespace Spinvoice.Services
 {
-    class ClipboardService : IDisposable
+    public class ClipboardService : IDisposable
     {
         const int WmDrawclipboard = 0x308;
         const int WmChangecbchain = 0x030D;

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.ObjectModel;
 
 namespace Spinvoice.Domain.Company
@@ -7,5 +8,6 @@ namespace Spinvoice.Domain.Company
     {
         Company GetByName(string name);
         IDisposable GetByNameForUpdateOrCreate(string name, out Company company);
+        Company[] GetAll();
     }
 }

@@ -1,18 +1,20 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using Spinvoice.Infrastructure.Pdf;
 
 namespace Spinvoice.Tests.Infrastructure.Pdf
 {
     [TestFixture()]
-    [Ignore("Local run only")]
+    //[Ignore("Local run only")]
     public class PdfTest
     {
         [Test]
         public void ParsePdf()
         {
-            var filePath = @"C:\Projects\my\sibil\08-10\Arrow Invoice 28524617.pdf";
+            var filePath = @"C:\Projects\my\sibil\08-10\2..pdf";
             var pdfParser = new PdfParser();
-            pdfParser.Parse(filePath);
+            var pdfModel = pdfParser.Parse(filePath);
+            Console.WriteLine(pdfModel.GetText());
         }
     }
 }

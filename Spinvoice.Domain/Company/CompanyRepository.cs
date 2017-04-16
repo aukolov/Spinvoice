@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -37,6 +38,11 @@ namespace Spinvoice.Domain.Company
             }
             var localCompany = company;
             return new RelayDisposable(() => _companyDataAccess.AddOrUpdate(localCompany));
+        }
+
+        public Company[] GetAll()
+        {
+            return _companyDataAccess.GetAll();
         }
     }
 }

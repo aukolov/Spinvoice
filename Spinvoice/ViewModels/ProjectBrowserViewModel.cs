@@ -1,16 +1,13 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using System.Windows.Input;
+using Spinvoice.Domain.Utils;
 using Spinvoice.Services;
 
 namespace Spinvoice.ViewModels
 {
-    public interface ISelectedPathListener
-    {
-        string SelectedPath { get; set; }
-    }
-
     public sealed class ProjectBrowserViewModel : INotifyPropertyChanged, ISelectedPathListener
     {
         private string _projectDirectoryPath;
@@ -19,10 +16,13 @@ namespace Spinvoice.ViewModels
         private string _pdfPath;
         private string _selectedPath;
 
+        public event Action PdfChanged;
+
         public ProjectBrowserViewModel(IFileService fileService)
         {
             _fileService = fileService;
             OpenCommand = new RelayCommand(OpenDirectoryCommand);
+            ProjectDirectoryPath = @"C:\Projects\my\sibil\08-10";
         }
 
         public string ProjectDirectoryPath
@@ -44,8 +44,10 @@ namespace Spinvoice.ViewModels
             get { return _pdfPath; }
             private set
             {
+                if (_pdfPath == value) return;
                 _pdfPath = value;
                 OnPropertyChanged();
+                PdfChanged.Raise();
             }
         }
 
