@@ -29,16 +29,22 @@
             {
                 return;
             }
+            string previousText = null;
             foreach (var blockModel in pdfModel.BlockModels)
             {
-                for (var i = 1; i < blockModel.Sentences.Count; i++)
+                for (var i = 0; i < blockModel.Sentences.Count; i++)
                 {
                     if (blockModel.Sentences[i].Trim() == value.Trim()
-                        && !IsNumber(blockModel.Sentences[i - 1]))
+                        && !IsNumber(previousText)
+                        && IsNonTrivialString(previousText))
                     {
-                        PreviousText = blockModel.Sentences[i - 1];
-                        return;
+                        PreviousText = previousText;
+                        if (i > 0)
+                        {
+                            return;
+                        }
                     }
+                    previousText = blockModel.Sentences[i];
                 }
             }
         }
@@ -51,6 +57,12 @@
             }
             decimal d;
             return decimal.TryParse(text, out d);
+        }
+
+        private static bool IsNonTrivialString(string text)
+        {
+            if (string.IsNullOrEmpty(text)) return false;
+            return text.Trim().Length > 0;
         }
     }
 }

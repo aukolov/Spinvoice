@@ -26,8 +26,8 @@ namespace Spinvoice.Infrastructure.Pdf
             _currentBlock.Add(renderInfo);
             //var r = renderInfo.GetBaseline().GetBoundingRectange();
             //Console.WriteLine($"{renderInfo.PdfString} " +
-            //                  $"{renderInfo.GetFont().Encoding} " +
-            //                  $"{renderInfo.GetFont().FullFontName} ");
+            //                  $"{r.X}-{r.Y} " +
+            //                  $"{r.Width}-{r.Height} ");
         }
 
         public void EndTextBlock()
@@ -85,7 +85,7 @@ namespace Spinvoice.Infrastructure.Pdf
 
         private static bool RoughEqual(float currentRectY, float prevRectX)
         {
-            return Math.Abs(currentRectY - prevRectX) < 0.1;
+            return Math.Abs(currentRectY - prevRectX) < 0.5;
         }
     }
 }
