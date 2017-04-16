@@ -231,7 +231,7 @@ namespace Spinvoice.ViewModels
                 $"{Invoice.VatAmount}\t" +
                 $"{Invoice.TotalAmount}\t" +
                 $"{Invoice.Country}\t" +
-                $"{(Invoice.IsEuropeanUnion ? "Y" : "N")}s";
+                $"{(Invoice.IsEuropeanUnion ? "Y" : "N")}";
 
             _textToIgnore = text;
             Clipboard.SetText(text);
