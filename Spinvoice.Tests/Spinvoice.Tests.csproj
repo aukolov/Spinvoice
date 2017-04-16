@@ -48,12 +48,17 @@
     <Compile Include="Domain\Utils\TextDecoderTests.cs" />
     <Compile Include="Infrastructure\DataAccess\CompanyDataAccessTests.cs" />
     <Compile Include="Infrastructure\DataAccess\ExchangeRateDataAccessTests.cs" />
+    <Compile Include="Infrastructure\Pdf\PdfTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Spinvoice.Infrastructure.Pdf\Spinvoice.Infrastructure.Pdf.csproj">
+      <Project>{EE6686CA-55A6-4DA8-A707-3B6C230AEC58}</Project>
+      <Name>Spinvoice.Infrastructure.Pdf</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Spinvoice\Spinvoice.csproj">
       <Project>{CB8BCAC5-E95A-4C68-95AC-081F798E91B5}</Project>
       <Name>Spinvoice</Name>

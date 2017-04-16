@@ -50,6 +50,10 @@
     <Compile Include="Exchange\IExchangeRatesRepository.cs" />
     <Compile Include="Exchange\Rate.cs" />
     <Compile Include="Invoice.cs" />
+    <Compile Include="Pdf\BlockModel.cs" />
+    <Compile Include="Pdf\IPdfParser.cs" />
+    <Compile Include="Pdf\PageModel.cs" />
+    <Compile Include="Pdf\PdfModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RelayDisposable.cs" />
     <Compile Include="Utils\ActionExtensions.cs" />
