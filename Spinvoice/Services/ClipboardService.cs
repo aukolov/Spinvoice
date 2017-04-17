@@ -14,7 +14,7 @@ namespace Spinvoice.Services
         private readonly IntPtr _currentWindowHandle;
         private IntPtr _nextClipboardViewerHandle;
 
-        public Action ClipboardChanged;
+        public event Action ClipboardChanged;
         private bool _disposed;
 
         public ClipboardService()

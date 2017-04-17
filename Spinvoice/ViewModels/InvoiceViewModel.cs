@@ -98,7 +98,7 @@ namespace Spinvoice.ViewModels
 
         public void Unsubscribe()
         {
-            _clipboardService.ClipboardChanged += OnClipboardChanged;
+            _clipboardService.ClipboardChanged -= OnClipboardChanged;
         }
 
         private void ChangeDate()
