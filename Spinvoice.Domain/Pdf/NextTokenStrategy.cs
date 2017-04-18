@@ -10,13 +10,18 @@
             {
                 return null;
             }
+            var isNext = false;
             foreach (var blockModel in pdfModel.BlockModels)
             {
-                for (var i = 0; i < blockModel.Sentences.Count - 1; i++)
+                foreach (var sentense in blockModel.Sentences)
                 {
-                    if (blockModel.Sentences[i].Trim() == PreviousText.Trim())
+                    if (isNext)
                     {
-                        return blockModel.Sentences[i + 1];
+                        return sentense.Trim();
+                    }
+                    if (sentense.Trim() == PreviousText.Trim())
+                    {
+                        isNext = true;
                     }
                 }
             }

@@ -22,6 +22,7 @@ namespace Spinvoice.ViewModels
         {
             _fileService = fileService;
             OpenCommand = new RelayCommand(OpenDirectoryCommand);
+            ProjectDirectoryPath = @"C:\Projects\my\sibil\08-10";
         }
 
         public string ProjectDirectoryPath

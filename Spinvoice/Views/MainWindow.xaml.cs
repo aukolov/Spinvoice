@@ -13,6 +13,9 @@ namespace Spinvoice.Views
         {
             InitializeComponent();
 
+            var logConfigurator = new LogConfigurator();
+            logConfigurator.Configure();
+
             var documentStoreRepository = new DocumentStoreRepository();
             var companyDataAccess = new CompanyDataAccess(documentStoreRepository);
             var companyRepository = new CompanyRepository(companyDataAccess);

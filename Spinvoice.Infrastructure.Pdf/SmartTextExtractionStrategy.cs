@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using iTextSharp.text.pdf.parser;
+using NLog;
 
 namespace Spinvoice.Infrastructure.Pdf
 {
     public class SmartTextExtractionStrategy : ITextExtractionStrategy
     {
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
+
         private List<TextRenderInfo> _currentBlock;
         private readonly List<List<TextRenderInfo>> _blocks;
 
@@ -25,9 +28,9 @@ namespace Spinvoice.Infrastructure.Pdf
         {
             _currentBlock.Add(renderInfo);
             //var r = renderInfo.GetBaseline().GetBoundingRectange();
-            //Console.WriteLine($"{renderInfo.PdfString} " +
-            //                  $"{r.X}-{r.Y} " +
-            //                  $"{r.Width}-{r.Height} ");
+            //Log($"Test: {renderInfo.PdfString} " +
+            //             $"{r.X}-{r.Y} " +
+            //             $"{r.Width}-{r.Height} ");
         }
 
         public void EndTextBlock()
@@ -49,7 +52,7 @@ namespace Spinvoice.Infrastructure.Pdf
             {
                 var sentences = new List<string>();
                 string accumulatedText = null;
-                for (int i = 0; i < block.Count; i++)
+                for (var i = 0; i < block.Count; i++)
                 {
                     var brick = block[i];
                     if (accumulatedText == null)
@@ -71,10 +74,10 @@ namespace Spinvoice.Infrastructure.Pdf
                             sentences.Add(accumulatedText);
                             accumulatedText = brick.PdfString.ToString();
                         }
-                        if (i == block.Count - 1)
-                        {
-                            sentences.Add(accumulatedText);
-                        }
+                    }
+                    if (i == block.Count - 1)
+                    {
+                        sentences.Add(accumulatedText);
                     }
                 }
                 BlockSentences.Add(sentences);
