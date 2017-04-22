@@ -15,5 +15,19 @@ namespace Spinvoice.Domain.Company
         public IPdfAnalysisStrategy InvoiceNumberStrategy { get; set; }
         public IPdfAnalysisStrategy InvoiceDateStrategy { get; set; }
         public IPdfAnalysisStrategy InvoiceNetAmountStrategy { get; set; }
+
+        public override string ToString()
+        {
+            return $@"
+Name: {Name},
+Country: {Country},
+Currency: {Currency},
+IsEuropeanUnion: {IsEuropeanUnion},
+VatNumber: {VatNumber},
+CompanyInvoiceStrategy: {CompanyInvoiceStrategy}
+InvoiceNumberStrategy: {InvoiceNumberStrategy}
+InvoiceDateStrategy: {InvoiceDateStrategy}
+InvoiceNetAmountStrategy: {InvoiceNetAmountStrategy}";
+        }
     }
 }

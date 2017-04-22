@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using iTextSharp.text.pdf.parser;
 using NLog;
 
@@ -7,10 +8,13 @@ namespace Spinvoice.Infrastructure.Pdf
 {
     public class SmartTextExtractionStrategy : ITextExtractionStrategy
     {
+        private const int SlashZeroThreshold = 100;
+
         private static Logger _logger = LogManager.GetCurrentClassLogger();
 
         private List<TextRenderInfo> _currentBlock;
         private readonly List<List<TextRenderInfo>> _blocks;
+        private int _slashZeroCount = 0;
 
         public List<List<string>> BlockSentences { get; private set; }
 
@@ -26,11 +30,21 @@ namespace Spinvoice.Infrastructure.Pdf
 
         public void RenderText(TextRenderInfo renderInfo)
         {
+            CountSlashZero(renderInfo);
             _currentBlock.Add(renderInfo);
             //var r = renderInfo.GetBaseline().GetBoundingRectange();
             //Log($"Test: {renderInfo.PdfString} " +
             //             $"{r.X}-{r.Y} " +
             //             $"{r.Width}-{r.Height} ");
+        }
+
+        private void CountSlashZero(TextRenderInfo renderInfo)
+        {
+            if (_slashZeroCount < SlashZeroThreshold)
+            {
+                var s = renderInfo.PdfString.ToString();
+                _slashZeroCount += s.Count(c => c == '\0');
+            }
         }
 
         public void EndTextBlock()
@@ -71,19 +85,25 @@ namespace Spinvoice.Infrastructure.Pdf
                         }
                         else
                         {
-                            sentences.Add(accumulatedText);
+                            sentences.Add(Decode(accumulatedText));
                             accumulatedText = brick.PdfString.ToString();
                         }
                     }
                     if (i == block.Count - 1)
                     {
-                        sentences.Add(accumulatedText);
+                        sentences.Add(Decode(accumulatedText));
                     }
                 }
                 BlockSentences.Add(sentences);
             }
 
             return "";
+        }
+
+        private string Decode(string text)
+        {
+            if (text == null) return null;
+            return _slashZeroCount < SlashZeroThreshold ? text : text.Replace("\0", "");
         }
 
         private static bool RoughEqual(float currentRectY, float prevRectX)

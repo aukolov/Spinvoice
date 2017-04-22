@@ -56,6 +56,7 @@
     <Compile Include="Exchange\Rate.cs" />
     <Compile Include="Invoice.cs" />
     <Compile Include="Pdf\BlockModel.cs" />
+    <Compile Include="Pdf\ContainsStrategy.cs" />
     <Compile Include="Pdf\IPdfAnalysisStrategy.cs" />
     <Compile Include="Pdf\NextTokenStrategy.cs" />
     <Compile Include="Pdf\IPdfParser.cs" />

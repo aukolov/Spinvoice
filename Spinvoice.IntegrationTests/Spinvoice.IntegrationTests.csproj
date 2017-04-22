@@ -44,7 +44,7 @@
   <ItemGroup>
     <Compile Include="Mocks\CompanyDataAccessMock.cs" />
     <Compile Include="ParsedInvoice.cs" />
-    <Compile Include="StrategyTests.cs" />
+    <Compile Include="AnalyzeInvoiceServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

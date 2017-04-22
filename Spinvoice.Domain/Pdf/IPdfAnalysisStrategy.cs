@@ -3,6 +3,6 @@
     public interface IPdfAnalysisStrategy
     {
         string GetValue(PdfModel pdfModel);
-        void Train(PdfModel pdfModel, string value);
+        bool Train(PdfModel pdfModel, string value);
     }
 }

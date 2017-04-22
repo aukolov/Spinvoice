@@ -2,6 +2,7 @@
 {
     public class NextTokenStrategy : IPdfAnalysisStrategy
     {
+        // ReSharper disable once MemberCanBePrivate.Global
         public string PreviousText { get; set; }
 
         public string GetValue(PdfModel pdfModel)
@@ -28,30 +29,31 @@
             return null;
         }
 
-        public void Train(PdfModel pdfModel, string value)
+        public bool Train(PdfModel pdfModel, string value)
         {
             if (string.IsNullOrEmpty(value))
             {
-                return;
+                return false;
             }
-            string previousText = null;
+            string candidate = null;
             foreach (var blockModel in pdfModel.BlockModels)
             {
                 for (var i = 0; i < blockModel.Sentences.Count; i++)
                 {
                     if (blockModel.Sentences[i].Trim() == value.Trim()
-                        && !IsNumber(previousText)
-                        && IsNonTrivialString(previousText))
+                        && !IsNumber(candidate)
+                        && IsNonTrivialString(candidate))
                     {
-                        PreviousText = previousText;
+                        PreviousText = candidate;
                         if (i > 0)
                         {
-                            return;
+                            return true;
                         }
                     }
-                    previousText = blockModel.Sentences[i];
+                    candidate = blockModel.Sentences[i];
                 }
             }
+            return PreviousText != null;
         }
 
         private static bool IsNumber(string text)
@@ -68,6 +70,11 @@
         {
             if (string.IsNullOrEmpty(text)) return false;
             return text.Trim().Length > 0;
+        }
+
+        public override string ToString()
+        {
+            return $"NextTokenStrategy: {PreviousText}";
         }
     }
 }

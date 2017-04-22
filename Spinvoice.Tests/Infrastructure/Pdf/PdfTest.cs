@@ -11,7 +11,7 @@ namespace Spinvoice.Tests.Infrastructure.Pdf
         [Test]
         public void ParsePdf()
         {
-            var filePath = @"C:\Projects\my\sibil\08-10\0294360286.pdf";
+            var filePath = @"C:\Projects\my\Spinvoice.TestResources\TE Connectivity\test001.pdf";
             var pdfParser = new PdfParser();
             var pdfModel = pdfParser.Parse(filePath);
             Console.WriteLine(pdfModel.GetText());

@@ -189,7 +189,7 @@ namespace Spinvoice.ViewModels
                 }
 
 
-                string val = TextDecoder.Decode(text);
+                var val = TextDecoder.Decode(text);
                 if (_clipboardText == val) return;
                 _clipboardText = val;
                 OnPropertyChanged();

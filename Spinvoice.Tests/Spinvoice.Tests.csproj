@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App\Services\ExchangeRatesLoaderTests.cs" />
+    <Compile Include="Domain\Utils\AmountParserTests.cs" />
     <Compile Include="Domain\Utils\TextDecoderTests.cs" />
     <Compile Include="Infrastructure\DataAccess\CompanyDataAccessTests.cs" />
     <Compile Include="Infrastructure\DataAccess\ExchangeRateDataAccessTests.cs" />
