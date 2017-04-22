@@ -32,10 +32,10 @@ namespace Spinvoice.Infrastructure.Pdf
         {
             CountSlashZero(renderInfo);
             _currentBlock.Add(renderInfo);
-            var r = renderInfo.GetBaseline().GetBoundingRectange();
-            Console.WriteLine($"Test: {renderInfo.PdfString} " +
-                         $"{r.X}-{r.Y} " +
-                         $"{r.Width}-{r.Height} ");
+            //var r = renderInfo.GetBaseline().GetBoundingRectange();
+            //Console.WriteLine($"Test: {renderInfo.PdfString} " +
+            //             $"{r.X}-{r.Y} " +
+            //             $"{r.Width}-{r.Height} ");
         }
 
         private void CountSlashZero(TextRenderInfo renderInfo)
