@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1F2ABFF6-B597-4366-A02B-000346436312}</ProjectGuid>
+    <ProjectGuid>{06C406E7-5C3D-4BC1-BAB1-12CCC61DA933}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Spinvoice.Domain</RootNamespace>
-    <AssemblyName>Spinvoice.Domain</AssemblyName>
+    <RootNamespace>Spinvoice.IntegrationTests</RootNamespace>
+    <AssemblyName>Spinvoice.IntegrationTests</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,50 +30,39 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.4.6\lib\net45\NLog.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="nunit.framework, Version=3.6.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.6.1\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Company\Company.cs" />
-    <Compile Include="Company\CompanyRepository.cs" />
-    <Compile Include="Company\IBaseDataAccess.cs" />
-    <Compile Include="Company\ICompanyDataAccess.cs" />
-    <Compile Include="Company\ICompanyRepository.cs" />
-    <Compile Include="Company\PdfInvoiceModel.cs" />
-    <Compile Include="Exchange\ExchangeRatesRepository.cs" />
-    <Compile Include="Exchange\IExchangeRateDataAccess.cs" />
-    <Compile Include="Exchange\IExchangeRatesRepository.cs" />
-    <Compile Include="Exchange\Rate.cs" />
-    <Compile Include="Invoice.cs" />
-    <Compile Include="Pdf\BlockModel.cs" />
-    <Compile Include="Pdf\IPdfAnalysisStrategy.cs" />
-    <Compile Include="Pdf\NextTokenStrategy.cs" />
-    <Compile Include="Pdf\IPdfParser.cs" />
-    <Compile Include="Pdf\IPdfToInvoiceMapper.cs" />
-    <Compile Include="Pdf\PageModel.cs" />
-    <Compile Include="Pdf\PdfModel.cs" />
+    <Compile Include="Mocks\CompanyDataAccessMock.cs" />
+    <Compile Include="ParsedInvoice.cs" />
+    <Compile Include="StrategyTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RawInvoice.cs" />
-    <Compile Include="RelayDisposable.cs" />
-    <Compile Include="Utils\ActionExtensions.cs" />
-    <Compile Include="Utils\AmountParser.cs" />
-    <Compile Include="Utils\DateParser.cs" />
-    <Compile Include="Utils\EnumerableExtensions.cs" />
-    <Compile Include="Utils\ObservableCollectionExtensions.cs" />
-    <Compile Include="Utils\TextDecoder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Spinvoice.Domain\Spinvoice.Domain.csproj">
+      <Project>{1F2ABFF6-B597-4366-A02B-000346436312}</Project>
+      <Name>Spinvoice.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Spinvoice.Infrastructure.Pdf\Spinvoice.Infrastructure.Pdf.csproj">
+      <Project>{EE6686CA-55A6-4DA8-A707-3B6C230AEC58}</Project>
+      <Name>Spinvoice.Infrastructure.Pdf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Spinvoice\Spinvoice.csproj">
+      <Project>{CB8BCAC5-E95A-4C68-95AC-081F798E91B5}</Project>
+      <Name>Spinvoice</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

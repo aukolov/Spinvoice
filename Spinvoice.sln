@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Tests", "Spinvoic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Infrastructure.Pdf", "Spinvoice.Infrastructure.Pdf\Spinvoice.Infrastructure.Pdf.csproj", "{EE6686CA-55A6-4DA8-A707-3B6C230AEC58}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.IntegrationTests", "Spinvoice.IntegrationTests\Spinvoice.IntegrationTests.csproj", "{06C406E7-5C3D-4BC1-BAB1-12CCC61DA933}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{EE6686CA-55A6-4DA8-A707-3B6C230AEC58}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE6686CA-55A6-4DA8-A707-3B6C230AEC58}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE6686CA-55A6-4DA8-A707-3B6C230AEC58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06C406E7-5C3D-4BC1-BAB1-12CCC61DA933}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06C406E7-5C3D-4BC1-BAB1-12CCC61DA933}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06C406E7-5C3D-4BC1-BAB1-12CCC61DA933}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06C406E7-5C3D-4BC1-BAB1-12CCC61DA933}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

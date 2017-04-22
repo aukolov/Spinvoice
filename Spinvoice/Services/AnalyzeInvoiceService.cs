@@ -31,13 +31,15 @@ namespace Spinvoice.Services
             var companies = _companyRepository.GetAll();
             foreach (var company in companies)
             {
-                if (company.CompanyInvoiceStrategy != null)
+                if (company.CompanyInvoiceStrategy == null)
                 {
-                    var value = company.CompanyInvoiceStrategy.GetValue(pdfModel);
-                    if (value == company.Name && value != null)
-                    {
-                        return company;
-                    }
+                    continue;
+                }
+
+                var value = company.CompanyInvoiceStrategy.GetValue(pdfModel);
+                if (value == company.Name && value != null)
+                {
+                    return company;
                 }
             }
             return null;
@@ -72,6 +74,24 @@ namespace Spinvoice.Services
             {
                 invoice.NetAmount = AmountParser.Parse(stringInvoiceNetAmount.Trim());
             }
+        }
+
+        public void Learn(Company company, RawInvoice rawInvoice, PdfModel pdfModel)
+        {
+            company.CompanyInvoiceStrategy = TrainStrategy(company.CompanyInvoiceStrategy, pdfModel, rawInvoice.CompanyName);
+            company.InvoiceNumberStrategy = TrainStrategy(company.InvoiceNumberStrategy, pdfModel, rawInvoice.InvoiceNumber);
+            company.InvoiceDateStrategy = TrainStrategy(company.InvoiceDateStrategy, pdfModel, rawInvoice.Date);
+            company.InvoiceNetAmountStrategy = TrainStrategy(company.InvoiceNetAmountStrategy, pdfModel, rawInvoice.NetAmount);
+        }
+
+        private static IPdfAnalysisStrategy TrainStrategy(IPdfAnalysisStrategy strategy, PdfModel pdfModel, string value)
+        {
+            if (strategy == null)
+            {
+                strategy = new NextTokenStrategy();
+            }
+            strategy.Train(pdfModel, value);
+            return strategy;
         }
     }
 }

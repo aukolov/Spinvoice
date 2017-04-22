@@ -21,6 +21,7 @@ namespace Spinvoice.ViewModels
 
         private readonly Action[] _commands;
         private readonly PdfModel _pdfModel;
+        private readonly AnalyzeInvoiceService _analyzeInvoiceService;
         private volatile string _textToIgnore;
         private int _index;
         private Invoice _invoice;
@@ -39,6 +40,7 @@ namespace Spinvoice.ViewModels
             _companyRepository = companyRepository;
             _exchangeRatesRepository = exchangeRatesRepository;
             _pdfModel = pdfModel;
+            _analyzeInvoiceService = analyzeInvoiceService;
 
             _commands = new Action[]
             {
@@ -242,21 +244,15 @@ namespace Spinvoice.ViewModels
                 company.Currency = Invoice.Currency;
                 company.VatNumber = Invoice.VatNumber;
                 company.IsEuropeanUnion = Invoice.IsEuropeanUnion;
-                company.CompanyInvoiceStrategy = TrainStrategy(company.CompanyInvoiceStrategy, company.Name);
-                company.InvoiceNumberStrategy = TrainStrategy(company.InvoiceNumberStrategy, Invoice.InvoiceNumber);
-                company.InvoiceDateStrategy = TrainStrategy(company.InvoiceDateStrategy, _stringDate);
-                company.InvoiceNetAmountStrategy = TrainStrategy(company.InvoiceNetAmountStrategy, _stringNetAmount);
+                var rawInvoice = new RawInvoice
+                {
+                    CompanyName = company.Name,
+                    Date = _stringDate,
+                    InvoiceNumber = Invoice.InvoiceNumber,
+                    NetAmount = _stringNetAmount
+                };
+                _analyzeInvoiceService.Learn(company, rawInvoice, _pdfModel);
             }
-        }
-
-        private IPdfAnalysisStrategy TrainStrategy(IPdfAnalysisStrategy strategy, string value)
-        {
-            if (strategy == null)
-            {
-                strategy = new NextTokenStrategy();
-            }
-            strategy.Train(_pdfModel, value);
-            return strategy;
         }
 
         private void Clear()
