@@ -17,7 +17,7 @@ namespace Spinvoice.Infrastructure.DataAccess
             using (var session = DocumentStore.OpenSession())
             {
                return session.Query<Rate>()
-                    .Customize(x => x.WaitForNonStaleResultsAsOfNow())
+                    .Customize(x => x.WaitForNonStaleResultsAsOfNow(TimeSpan.FromMinutes(2)))
                     .FirstOrDefault(r => r.Currency == currency && r.Date == date);
             }
         }
