@@ -53,8 +53,8 @@ namespace Spinvoice.ViewModels
                     return;
                 }
 
-                var projectPathParts = appMetadata.LastProjectPath.Split(Path.PathSeparator);
-                var filePathParts = appMetadata.LastFilePath.Split(Path.PathSeparator);
+                var projectPathParts = appMetadata.LastProjectPath.Split(new[] { Path.DirectorySeparatorChar }, StringSplitOptions.RemoveEmptyEntries);
+                var filePathParts = appMetadata.LastFilePath.Split(new[] { Path.DirectorySeparatorChar }, StringSplitOptions.RemoveEmptyEntries);
                 var i = 0;
                 while (i < projectPathParts.Length
                        && i < filePathParts.Length
@@ -67,12 +67,12 @@ namespace Spinvoice.ViewModels
                     return;
                 }
 
-                var directoryViewModel = DirectoryViewModels.FirstOrDefault(
-                    model => StringEquals(model.Name, filePathParts[i]));
+                var directoryViewModel = DirectoryViewModels.SingleOrDefault();
                 if (directoryViewModel == null)
                 {
                     return;
                 }
+                directoryViewModel.IsExpanded = true;
                 while (i < filePathParts.Length - 1)
                 {
                     directoryViewModel = directoryViewModel.Items.FirstOrDefault(
@@ -81,9 +81,10 @@ namespace Spinvoice.ViewModels
                     {
                         return;
                     }
+                    directoryViewModel.IsExpanded = true;
                     i++;
                 }
-                if (i != filePathParts.Length)
+                if (i != filePathParts.Length - 1)
                 {
                     return;
                 }
