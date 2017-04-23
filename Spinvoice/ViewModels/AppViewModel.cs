@@ -46,7 +46,11 @@ namespace Spinvoice.ViewModels
 
             ProjectBrowserViewModel = new ProjectBrowserViewModel(fileService, appMetadataRepository);
             ProjectBrowserViewModel.PdfChanged += OnPdfChanged;
-            Dispatcher.CurrentDispatcher.InvokeAsync(() => { _clipboardService = new ClipboardService(); },
+            Dispatcher.CurrentDispatcher.InvokeAsync(() =>
+                {
+                    _clipboardService = new ClipboardService();
+                    OnPdfChanged();
+                },
                 DispatcherPriority.Loaded);
             _analyzeInvoiceService = analyzeInvoiceService;
         }
