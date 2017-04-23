@@ -181,9 +181,9 @@ namespace Spinvoice.ViewModels
             {
                 return;
             }
-            if (Clipboard.ContainsText())
+            if (_clipboardService.CheckContainsText())
             {
-                var text = Clipboard.GetText();
+                var text = _clipboardService.GetText();
                 if (text == _clipboardText)
                 {
                     return;
@@ -240,7 +240,7 @@ namespace Spinvoice.ViewModels
                 $"{(Invoice.IsEuropeanUnion ? "Y" : "N")}";
 
             _textToIgnore = text;
-            Clipboard.SetText(text);
+            _clipboardService.TrySetText(text);
 
             Company company;
             using (_companyRepository.GetByNameForUpdateOrCreate(Invoice.CompanyName, out company))
