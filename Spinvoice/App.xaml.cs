@@ -1,21 +1,21 @@
 ﻿using System;
-using System.Reflection;
 using System.Windows;
+using NLog;
 
 namespace Spinvoice
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
+    public partial class App
     {
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
         public App()
         {
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
         }
 
-        private void OnUnhandledException(object sender, UnhandledExceptionEventArgs unhandledExceptionEventArgs)
+        private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs unhandledExceptionEventArgs)
         {
+            _logger.Error((Exception)unhandledExceptionEventArgs.ExceptionObject, "Unhandled exception.");
             MessageBox.Show(Application.Current.MainWindow,
                 $"Something went wrong...\r\n{unhandledExceptionEventArgs.ExceptionObject}");
         }

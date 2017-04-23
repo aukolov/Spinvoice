@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using NLog;
 using Raven.Abstractions.Data;
 using Raven.Client;
 using Spinvoice.Domain.Company;
@@ -9,6 +11,8 @@ namespace Spinvoice.Infrastructure.DataAccess
 {
     public abstract class BaseDataAccess<T> : IBaseDataAccess<T>
     {
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
+
         protected readonly IDocumentStore DocumentStore;
 
         protected BaseDataAccess(IDocumentStoreRepository documentStoreRepository)
@@ -18,23 +22,29 @@ namespace Spinvoice.Infrastructure.DataAccess
 
         public T[] GetAll()
         {
+            _logger.Info("Start getting all documents.");
+            T[] entities;
             using (var session = DocumentStore.OpenSession())
             {
-                var entities = session
+                entities = session
                     .Query<T>()
-                    .Customize(x => x.WaitForNonStaleResultsAsOfNow())
+                    .Customize(x => x.WaitForNonStaleResultsAsOfNow(TimeSpan.FromMinutes(2)))
                     .ToArray();
-                return entities;
             }
+            _logger.Info("Got {0} documents.", entities.Length);
+            return entities;
         }
 
         public T Get(string id)
         {
+            _logger.Info("Start getting document by id {0}.", id);
+            T entity;
             using (var session = DocumentStore.OpenSession())
             {
-                var entity = session.Load<T>(id);
-                return entity;
+                entity = session.Load<T>(id);
             }
+            _logger.Info("Document found: {0}.", id != null);
+            return entity;
         }
 
         public void AddOrUpdate(T entity)
@@ -62,13 +72,17 @@ namespace Spinvoice.Infrastructure.DataAccess
             var name = Raven.Client.Util.Inflector.Pluralize(typeof(T).Name);
             var indexName = $"Auto/{name}";
 
+            _logger.Info("Waiting for stale indexes.");
             WaitForStaleIndexes();
+            _logger.Info("Start deliting all items.");
             if (DocumentStore.DatabaseCommands.GetIndexes(0, 128).All(i => i.Name != indexName))
             {
                 return;
             }
             DocumentStore.DatabaseCommands.DeleteByIndex(indexName, new IndexQuery()).WaitForCompletion();
+            _logger.Info("Waiting for stale indexes.");
             WaitForStaleIndexes();
+            _logger.Info("All items deleted.");
         }
 
         public void Dispose()
