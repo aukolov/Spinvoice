@@ -8,6 +8,12 @@ namespace Spinvoice.Infrastructure.DataAccess
     public class DocumentStoreRepository : IDocumentStoreRepository
     {
         private EmbeddableDocumentStore _documentStore;
+        private readonly string _dataDirectory;
+
+        public DocumentStoreRepository(string dataDirectory)
+        {
+            _dataDirectory = dataDirectory;
+        }
 
         public IDocumentStore DocumentStore
         {
@@ -17,10 +23,7 @@ namespace Spinvoice.Infrastructure.DataAccess
                 {
                     _documentStore = new EmbeddableDocumentStore()
                     {
-                        DataDirectory = Path.Combine(
-                            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                            "Spinvoice",
-                            "data"),
+                        DataDirectory = _dataDirectory,
                         UseEmbeddedHttpServer = false
                     };
                     _documentStore.Initialize();

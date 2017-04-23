@@ -18,13 +18,12 @@ namespace Spinvoice.Services
         public void Analyze(PdfModel pdfModel, Invoice invoice)
         {
             var company = FindCompany(pdfModel);
-            if (company != null)
-            {
-                invoice.ApplyCompany(company);
-                TrySetInvoiceNumber(pdfModel, invoice, company.InvoiceNumberStrategy);
-                TrySetInvoiceDate(pdfModel, invoice, company.InvoiceDateStrategy);
-                TrySetInvoiceNetAmount(pdfModel, invoice, company.InvoiceNetAmountStrategy);
-            }
+            if (company == null) return;
+
+            invoice.ApplyCompany(company);
+            TrySetInvoiceNumber(pdfModel, invoice, company.InvoiceNumberStrategy);
+            TrySetInvoiceDate(pdfModel, invoice, company.InvoiceDateStrategy);
+            TrySetInvoiceNetAmount(pdfModel, invoice, company.InvoiceNetAmountStrategy);
         }
 
         private Company FindCompany(PdfModel pdfModel)
@@ -116,11 +115,13 @@ namespace Spinvoice.Services
         {
             yield return new NextTokenStrategy();
             yield return new ContainsStrategy();
+            yield return new InsideTokensStrategy();
         }
 
         private static IEnumerable<IPdfAnalysisStrategy> GetStrategies()
         {
             yield return new NextTokenStrategy();
+            yield return new InsideTokensStrategy();
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Spinvoice.Domain.Company;
+﻿using System;
+using System.IO;
+using Spinvoice.Domain.Company;
 using Spinvoice.Domain.Exchange;
 using Spinvoice.Infrastructure.DataAccess;
 using Spinvoice.Infrastructure.Pdf;
@@ -16,7 +18,11 @@ namespace Spinvoice.Views
             var logConfigurator = new LogConfigurator();
             logConfigurator.Configure();
 
-            var documentStoreRepository = new DocumentStoreRepository();
+            var dataDirectory = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                "Spinvoice",
+                "data");
+            var documentStoreRepository = new DocumentStoreRepository(dataDirectory);
             var companyDataAccess = new CompanyDataAccess(documentStoreRepository);
             var companyRepository = new CompanyRepository(companyDataAccess);
             var exchangeRateDataAccess = new ExchangeRateDataAccess(documentStoreRepository);

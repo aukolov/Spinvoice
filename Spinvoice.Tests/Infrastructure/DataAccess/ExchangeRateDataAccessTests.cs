@@ -14,7 +14,7 @@ namespace Spinvoice.Tests.Infrastructure.DataAccess
         [SetUp]
         public void Setup()
         {
-            var documentStoreRepository = new DocumentStoreRepository();
+            var documentStoreRepository = new DocumentStoreRepository("Data");
             _dataAccess = new ExchangeRateDataAccess(documentStoreRepository);
             _dataAccess.DeleteAll();
         }

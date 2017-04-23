@@ -41,8 +41,8 @@
                 for (var i = 0; i < blockModel.Sentences.Count; i++)
                 {
                     if (blockModel.Sentences[i].Trim() == value.Trim()
-                        && !IsNumber(candidate)
-                        && IsNonTrivialString(candidate))
+                        && !TextUtils.IsNumber(candidate)
+                        && TextUtils.IsNonTrivialString(candidate))
                     {
                         PreviousText = candidate;
                         if (i > 0)
@@ -54,22 +54,6 @@
                 }
             }
             return PreviousText != null;
-        }
-
-        public static bool IsNumber(string text)
-        {
-            if (string.IsNullOrEmpty(text))
-            {
-                return false;
-            }
-            decimal d;
-            return decimal.TryParse(text, out d);
-        }
-
-        public static bool IsNonTrivialString(string text)
-        {
-            if (string.IsNullOrEmpty(text)) return false;
-            return text.Trim().Length > 0;
         }
 
         public override string ToString()

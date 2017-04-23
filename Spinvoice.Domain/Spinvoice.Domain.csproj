@@ -57,12 +57,14 @@
     <Compile Include="Invoice.cs" />
     <Compile Include="Pdf\BlockModel.cs" />
     <Compile Include="Pdf\ContainsStrategy.cs" />
+    <Compile Include="Pdf\InsideTokensStrategy.cs" />
     <Compile Include="Pdf\IPdfAnalysisStrategy.cs" />
     <Compile Include="Pdf\NextTokenStrategy.cs" />
     <Compile Include="Pdf\IPdfParser.cs" />
     <Compile Include="Pdf\IPdfToInvoiceMapper.cs" />
     <Compile Include="Pdf\PageModel.cs" />
     <Compile Include="Pdf\PdfModel.cs" />
+    <Compile Include="Pdf\TextUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RawInvoice.cs" />
     <Compile Include="RelayDisposable.cs" />

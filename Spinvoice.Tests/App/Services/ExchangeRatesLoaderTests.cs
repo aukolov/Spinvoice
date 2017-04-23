@@ -18,7 +18,7 @@ namespace Spinvoice.Tests.App.Services
         public void Setup()
         {
             _tempFileName = Path.GetTempFileName();
-            var documentStoreRepository = new DocumentStoreRepository();
+            var documentStoreRepository = new DocumentStoreRepository("Data");
             _exchangeRateDataAccess = new ExchangeRateDataAccess(documentStoreRepository);
             _exchangeRatesLoader = new ExchangeRatesLoader(_exchangeRateDataAccess);
         }

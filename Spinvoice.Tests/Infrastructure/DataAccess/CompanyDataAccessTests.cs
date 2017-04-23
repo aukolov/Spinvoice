@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System;
+using System.IO;
+using NUnit.Framework;
 using Spinvoice.Domain.Company;
 using Spinvoice.Infrastructure.DataAccess;
 
@@ -12,7 +14,7 @@ namespace Spinvoice.Tests.Infrastructure.DataAccess
         [SetUp]
         public void Setup()
         {
-            var documentStoreRepository = new DocumentStoreRepository();
+            var documentStoreRepository = new DocumentStoreRepository("Data");
             _companyDataAccess = new CompanyDataAccess(documentStoreRepository);
             _companyDataAccess.DeleteAll();
         }
