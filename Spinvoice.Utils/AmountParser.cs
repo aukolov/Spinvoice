@@ -4,18 +4,28 @@ using System.Text.RegularExpressions;
 
 namespace Spinvoice.Utils
 {
-    public sealed class AmountParser
+    public static class AmountParser
     {
-        private static readonly  Regex _amountRegex = new Regex(@"^(?<integral>[ .,0-9]+)(?<delimiter>[,.])(?<decimals>\d{2})$");
+        private static readonly  Regex AmountRegex = new Regex(@"^(?<integral>[ .,0-9]+)(?<delimiter>[,.])(?<decimals>\d{2})$");
 
         public static decimal Parse(string text)
         {
+            decimal result;
+            TryParse(text, out result);
+            return result;
+        }
+
+        public static bool TryParse(string text, out decimal amount)
+        {
             if (string.IsNullOrEmpty(text))
             {
-                return 0;
+                {
+                    amount = 0;
+                    return false;
+                }
             }
 
-            var match = _amountRegex.Match(text);
+            var match = AmountRegex.Match(text);
             if (match.Success)
             {
                 var delimiter = match.Groups["delimiter"].Value.Single();
@@ -24,21 +34,18 @@ namespace Spinvoice.Utils
 
                 if (!integralPart.Contains(delimiter))
                 {
-                    var parsedIntegralPart = int.Parse(integralPart.Replace(",", "").Replace(".", "").Replace(" ", ""), CultureInfo.InvariantCulture);
+                    var parsedIntegralPart = int.Parse(integralPart.Replace(",", "").Replace(".", "").Replace(" ", ""),
+                        CultureInfo.InvariantCulture);
                     var parsedDecimalPart = int.Parse(decimalPart, CultureInfo.InvariantCulture);
 
-                    return parsedIntegralPart + parsedDecimalPart / 100.00m;
+                    {
+                        amount = parsedIntegralPart + parsedDecimalPart / 100.00m;
+                        return true;
+                    }
                 }
             }
 
-            decimal value;
-            TryParse(text, out value, CultureInfo.InvariantCulture);
-            return value;
-        }
-
-        private static bool TryParse(string text, out decimal value, CultureInfo culture)
-        {
-            return decimal.TryParse(text, NumberStyles.Any, culture, out value);
+            return decimal.TryParse(text, NumberStyles.Any, CultureInfo.InvariantCulture, out amount);
         }
     }
 }

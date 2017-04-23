@@ -1,6 +1,5 @@
 using System;
 using System.ComponentModel;
-using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
@@ -165,11 +164,10 @@ namespace Spinvoice.ViewModels
         private void ChangeNetAmount()
         {
             decimal netAmount;
-            if (decimal.TryParse(_clipboardText, NumberStyles.Any, CultureInfo.InvariantCulture, out netAmount))
-            {
-                Invoice.NetAmount = netAmount;
-                _stringNetAmount = _clipboardText;
-            }
+            if (!AmountParser.TryParse(_clipboardText, out netAmount)) return;
+
+            Invoice.NetAmount = netAmount;
+            _stringNetAmount = _clipboardText;
         }
 
         private void ChangeVatAmount()
