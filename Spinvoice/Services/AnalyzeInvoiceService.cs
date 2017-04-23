@@ -2,7 +2,7 @@
 using Spinvoice.Domain;
 using Spinvoice.Domain.Company;
 using Spinvoice.Domain.Pdf;
-using Spinvoice.Domain.Utils;
+using Spinvoice.Utils;
 
 namespace Spinvoice.Services
 {

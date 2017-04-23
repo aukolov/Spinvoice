@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
-using Spinvoice.Domain.Utils;
+using Spinvoice.Utils;
 
 namespace Spinvoice.Tests.Domain.Utils
 {

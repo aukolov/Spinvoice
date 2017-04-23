@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 
-namespace Spinvoice.Domain.Utils
+namespace Spinvoice.Utils
 {
     public sealed class DateParser
     {

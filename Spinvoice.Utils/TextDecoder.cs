@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Spinvoice.Domain.Utils
+namespace Spinvoice.Utils
 {
     public static class TextDecoder
     {

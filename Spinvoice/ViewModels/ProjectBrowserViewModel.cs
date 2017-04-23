@@ -3,8 +3,8 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using System.Windows.Input;
-using Spinvoice.Domain.Utils;
 using Spinvoice.Services;
+using Spinvoice.Utils;
 
 namespace Spinvoice.ViewModels
 {

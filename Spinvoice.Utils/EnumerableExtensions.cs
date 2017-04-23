@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Spinvoice.Domain.Utils
+namespace Spinvoice.Utils
 {
     public static class EnumerableExtensions
     {

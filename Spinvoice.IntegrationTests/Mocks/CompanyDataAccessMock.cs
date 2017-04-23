@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Spinvoice.Domain.Company;
-using Spinvoice.Domain.Utils;
+using Spinvoice.Utils;
 
 namespace Spinvoice.IntegrationTests.Mocks
 {

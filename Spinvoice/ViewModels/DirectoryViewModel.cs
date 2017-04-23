@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
-using Spinvoice.Domain.Utils;
 using Spinvoice.Services;
+using Spinvoice.Utils;
 
 namespace Spinvoice.ViewModels
 {

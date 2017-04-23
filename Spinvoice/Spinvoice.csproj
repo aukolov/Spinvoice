@@ -198,6 +198,10 @@
       <Project>{EE6686CA-55A6-4DA8-A707-3B6C230AEC58}</Project>
       <Name>Spinvoice.Infrastructure.Pdf</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Spinvoice.Utils\Spinvoice.Utils.csproj">
+      <Project>{6c5bdcda-a72f-4eba-8270-fdbd018852f1}</Project>
+      <Name>Spinvoice.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

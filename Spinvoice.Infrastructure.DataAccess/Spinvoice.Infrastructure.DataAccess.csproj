@@ -76,6 +76,10 @@
       <Project>{1F2ABFF6-B597-4366-A02B-000346436312}</Project>
       <Name>Spinvoice.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Spinvoice.Utils\Spinvoice.Utils.csproj">
+      <Project>{6c5bdcda-a72f-4eba-8270-fdbd018852f1}</Project>
+      <Name>Spinvoice.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

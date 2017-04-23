@@ -56,7 +56,7 @@
             return PreviousText != null;
         }
 
-        private static bool IsNumber(string text)
+        public static bool IsNumber(string text)
         {
             if (string.IsNullOrEmpty(text))
             {
@@ -66,7 +66,7 @@
             return decimal.TryParse(text, out d);
         }
 
-        private static bool IsNonTrivialString(string text)
+        public static bool IsNonTrivialString(string text)
         {
             if (string.IsNullOrEmpty(text)) return false;
             return text.Trim().Length > 0;

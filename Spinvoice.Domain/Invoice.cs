@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Spinvoice.Domain.Utils;
+using Spinvoice.Utils;
 
 namespace Spinvoice.Domain
 {

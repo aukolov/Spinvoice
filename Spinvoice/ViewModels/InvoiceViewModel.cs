@@ -8,8 +8,8 @@ using Spinvoice.Domain;
 using Spinvoice.Domain.Company;
 using Spinvoice.Domain.Exchange;
 using Spinvoice.Domain.Pdf;
-using Spinvoice.Domain.Utils;
 using Spinvoice.Services;
+using Spinvoice.Utils;
 
 namespace Spinvoice.ViewModels
 {

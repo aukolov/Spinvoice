@@ -2,7 +2,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Spinvoice.Domain.Utils
+namespace Spinvoice.Utils
 {
     public sealed class AmountParser
     {
