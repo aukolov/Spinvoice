@@ -92,6 +92,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Services\Bootstrapper.cs" />
     <Compile Include="Services\ExchangeRatesLoader.cs" />
     <Compile Include="Services\FileNamesComparer.cs" />
     <Compile Include="Services\FileService.cs" />

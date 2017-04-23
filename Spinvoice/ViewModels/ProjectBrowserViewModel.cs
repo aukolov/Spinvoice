@@ -1,27 +1,109 @@
 ﻿using System;
 using System.ComponentModel;
+using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using System.Windows.Input;
+using NLog;
+using Spinvoice.Domain.App;
+using Spinvoice.Infrastructure.DataAccess;
 using Spinvoice.Services;
 using Spinvoice.Utils;
 
 namespace Spinvoice.ViewModels
 {
-    public sealed class ProjectBrowserViewModel : INotifyPropertyChanged, ISelectedPathListener
+    public sealed class ProjectBrowserViewModel : INotifyPropertyChanged, ISelectedPathListener, IDisposable
     {
+        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
         private string _projectDirectoryPath;
         private DirectoryViewModel[] _directoryViewModels;
         private readonly IFileService _fileService;
+        private readonly AppMetadataRepository _appMetadataRepository;
         private string _pdfPath;
         private string _selectedPath;
 
         public event Action PdfChanged;
 
-        public ProjectBrowserViewModel(IFileService fileService)
+        public ProjectBrowserViewModel(
+            IFileService fileService,
+            AppMetadataRepository appMetadataRepository)
         {
             _fileService = fileService;
+            _appMetadataRepository = appMetadataRepository;
             OpenCommand = new RelayCommand(OpenDirectoryCommand);
+
+            RestoreState(fileService);
+        }
+
+        private void RestoreState(IFileService fileService)
+        {
+            try
+            {
+                var appMetadata = _appMetadataRepository.Get();
+
+                if (appMetadata.LastProjectPath == null || !fileService.DirectoryExists(appMetadata.LastProjectPath))
+                {
+                    return;
+                }
+                ProjectDirectoryPath = appMetadata.LastProjectPath;
+                if (appMetadata.LastFilePath == null || !fileService.FileExists(appMetadata.LastFilePath))
+                {
+                    return;
+                }
+
+                var projectPathParts = appMetadata.LastProjectPath.Split(Path.PathSeparator);
+                var filePathParts = appMetadata.LastFilePath.Split(Path.PathSeparator);
+                var i = 0;
+                while (i < projectPathParts.Length
+                       && i < filePathParts.Length
+                       && StringEquals(projectPathParts[i], filePathParts[i]))
+                {
+                    i++;
+                }
+                if (i != projectPathParts.Length)
+                {
+                    return;
+                }
+
+                var directoryViewModel = DirectoryViewModels.FirstOrDefault(
+                    model => StringEquals(model.Name, filePathParts[i]));
+                if (directoryViewModel == null)
+                {
+                    return;
+                }
+                while (i < filePathParts.Length - 1)
+                {
+                    directoryViewModel = directoryViewModel.Items.FirstOrDefault(
+                        model => StringEquals(filePathParts[i], model.Name)) as DirectoryViewModel;
+                    if (directoryViewModel == null)
+                    {
+                        return;
+                    }
+                    i++;
+                }
+                if (i != filePathParts.Length)
+                {
+                    return;
+                }
+                var fileViewModel = directoryViewModel.Items.FirstOrDefault(
+                    model => StringEquals(filePathParts[i], model.Name)) as FileViewModel;
+                if (fileViewModel == null)
+                {
+                    return;
+                }
+                fileViewModel.IsSelected = true;
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e, "Failed to restore state from app metadata.");
+            }
+        }
+
+        private static bool StringEquals(string str1, string str2)
+        {
+            return string.Compare(str1, str2, StringComparison.InvariantCultureIgnoreCase) == 0;
         }
 
         public string ProjectDirectoryPath
@@ -96,6 +178,16 @@ namespace Spinvoice.ViewModels
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public void Dispose()
+        {
+            AppMetadata appMetadata;
+            using (_appMetadataRepository.GetForUpdate(out appMetadata))
+            {
+                appMetadata.LastProjectPath = ProjectDirectoryPath;
+                appMetadata.LastFilePath = PdfPath;
+            }
         }
     }
 }

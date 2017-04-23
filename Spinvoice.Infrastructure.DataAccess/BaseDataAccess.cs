@@ -11,7 +11,7 @@ namespace Spinvoice.Infrastructure.DataAccess
 {
     public abstract class BaseDataAccess<T> : IBaseDataAccess<T>
     {
-        private static Logger _logger = LogManager.GetCurrentClassLogger();
+        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         protected readonly IDocumentStore DocumentStore;
 
@@ -69,8 +69,7 @@ namespace Spinvoice.Infrastructure.DataAccess
 
         public void DeleteAll()
         {
-            var name = Raven.Client.Util.Inflector.Pluralize(typeof(T).Name);
-            var indexName = $"Auto/{name}";
+            var indexName = $"Auto/{Raven.Client.Util.Inflector.Pluralize(typeof(T).Name)}";
 
             _logger.Info("Waiting for stale indexes.");
             WaitForStaleIndexes();

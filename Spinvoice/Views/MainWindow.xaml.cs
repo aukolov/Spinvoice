@@ -1,11 +1,6 @@
 ﻿using System;
-using System.IO;
-using Spinvoice.Domain.Company;
-using Spinvoice.Domain.Exchange;
-using Spinvoice.Infrastructure.DataAccess;
-using Spinvoice.Infrastructure.Pdf;
+using System.ComponentModel;
 using Spinvoice.Services;
-using Spinvoice.ViewModels;
 
 namespace Spinvoice.Views
 {
@@ -15,28 +10,14 @@ namespace Spinvoice.Views
         {
             InitializeComponent();
 
-            var logConfigurator = new LogConfigurator();
-            logConfigurator.Configure();
+            DataContext = Bootstrapper.Init();
+            Closing += OnClosing;
+        }
 
-            var dataDirectory = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                "Spinvoice",
-                "data");
-            var documentStoreRepository = new DocumentStoreRepository(dataDirectory);
-            var companyDataAccess = new CompanyDataAccess(documentStoreRepository);
-            var companyRepository = new CompanyRepository(companyDataAccess);
-            var exchangeRateDataAccess = new ExchangeRateDataAccess(documentStoreRepository);
-            var exchangeRatesLoader = new ExchangeRatesLoader(exchangeRateDataAccess);
-            var exchangeRatesRepository = new ExchangeRatesRepository(exchangeRateDataAccess);
-            var fileService = new FileService();
-            var pdfParser = new PdfParser();
-
-            DataContext = new AppViewModel(
-                companyRepository,
-                exchangeRatesRepository, 
-                exchangeRatesLoader, 
-                fileService,
-                pdfParser, new AnalyzeInvoiceService(companyRepository));
+        private void OnClosing(object sender, CancelEventArgs cancelEventArgs)
+        {
+            var disposable = DataContext as IDisposable;
+            disposable?.Dispose();
         }
     }
 }

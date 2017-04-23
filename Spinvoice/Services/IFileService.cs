@@ -7,5 +7,6 @@ namespace Spinvoice.Services
         IEnumerable<string> GetSubDirectories(string directoryPath);
         IEnumerable<string> GetFiles(string directoryPath);
         bool FileExists(string filePath);
+        bool DirectoryExists(string directoryPath);
     }
 }

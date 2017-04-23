@@ -44,6 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App\AppMetadata.cs" />
+    <Compile Include="App\IAppMetadataDataAccess.cs" />
+    <Compile Include="App\IAppMetadataRepository.cs" />
     <Compile Include="Company\Company.cs" />
     <Compile Include="Company\CompanyRepository.cs" />
     <Compile Include="Company\IBaseDataAccess.cs" />

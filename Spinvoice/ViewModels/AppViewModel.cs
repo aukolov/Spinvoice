@@ -8,6 +8,7 @@ using Microsoft.Win32;
 using Spinvoice.Domain.Company;
 using Spinvoice.Domain.Exchange;
 using Spinvoice.Domain.Pdf;
+using Spinvoice.Infrastructure.DataAccess;
 using Spinvoice.Properties;
 using Spinvoice.Services;
 
@@ -15,21 +16,25 @@ namespace Spinvoice.ViewModels
 {
     public sealed class AppViewModel : INotifyPropertyChanged, IDisposable
     {
-        private ClipboardService _clipboardService;
-        private readonly ExchangeRatesLoader _exchangeRatesLoader;
-        private readonly IPdfParser _pdfParser;
-        private readonly Dictionary<string, InvoiceViewModel> _invoiceViewModels = new Dictionary<string, InvoiceViewModel>();
-        private readonly ICompanyRepository _companyRepository;
-        private readonly IExchangeRatesRepository _exchangeRatesRepository;
         private readonly AnalyzeInvoiceService _analyzeInvoiceService;
+        private readonly ICompanyRepository _companyRepository;
+        private readonly ExchangeRatesLoader _exchangeRatesLoader;
+        private readonly IExchangeRatesRepository _exchangeRatesRepository;
+
+        private readonly Dictionary<string, InvoiceViewModel> _invoiceViewModels =
+            new Dictionary<string, InvoiceViewModel>();
+
+        private readonly IPdfParser _pdfParser;
+        private ClipboardService _clipboardService;
         private InvoiceViewModel _invoiceViewModel;
 
         public AppViewModel(
             ICompanyRepository companyRepository,
             IExchangeRatesRepository exchangeRatesRepository,
-            ExchangeRatesLoader exchangeRatesLoader,
-            IFileService fileService,
-            IPdfParser pdfParser, 
+            AppMetadataRepository appMetadataRepository,
+            ExchangeRatesLoader exchangeRatesLoader, 
+            IFileService fileService, 
+            IPdfParser pdfParser,
             AnalyzeInvoiceService analyzeInvoiceService)
         {
             _exchangeRatesRepository = exchangeRatesRepository;
@@ -39,53 +44,11 @@ namespace Spinvoice.ViewModels
 
             LoadExchangeRatesCommand = new RelayCommand(LoadExchangeRates);
 
-            ProjectBrowserViewModel = new ProjectBrowserViewModel(fileService);
+            ProjectBrowserViewModel = new ProjectBrowserViewModel(fileService, appMetadataRepository);
             ProjectBrowserViewModel.PdfChanged += OnPdfChanged;
-            Dispatcher.CurrentDispatcher.InvokeAsync(() =>
-            {
-                _clipboardService = new ClipboardService();
-            }, DispatcherPriority.Loaded);
+            Dispatcher.CurrentDispatcher.InvokeAsync(() => { _clipboardService = new ClipboardService(); },
+                DispatcherPriority.Loaded);
             _analyzeInvoiceService = analyzeInvoiceService;
-        }
-
-        private void OnPdfChanged()
-        {
-            if (_clipboardService == null)
-            {
-                return;
-            }
-
-            var pdfPath = ProjectBrowserViewModel.PdfPath;
-            if (string.IsNullOrEmpty(pdfPath))
-            {
-                return;
-            }
-
-            InvoiceViewModel invoiceViewModel;
-            if (!_invoiceViewModels.TryGetValue(pdfPath, out invoiceViewModel))
-            {
-                invoiceViewModel = new InvoiceViewModel(
-                    _companyRepository, 
-                    _exchangeRatesRepository, 
-                    _clipboardService, 
-                    _pdfParser.Parse(pdfPath),
-                    _analyzeInvoiceService);
-                _invoiceViewModels[pdfPath] = invoiceViewModel;
-            }
-            InvoiceViewModel = invoiceViewModel;
-        }
-
-        private void LoadExchangeRates()
-        {
-            var dialog = new OpenFileDialog
-            {
-                Multiselect = false,
-                Filter = "XML|*.xml"
-            };
-            if (dialog.ShowDialog() ?? false)
-            {
-                _exchangeRatesLoader.Load(dialog.FileName);
-            }
         }
 
         public ICommand LoadExchangeRatesCommand { get; }
@@ -108,8 +71,44 @@ namespace Spinvoice.ViewModels
         public void Dispose()
         {
             _clipboardService?.Dispose();
+            ProjectBrowserViewModel?.Dispose();
         }
+
         public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPdfChanged()
+        {
+            if (_clipboardService == null)
+                return;
+
+            var pdfPath = ProjectBrowserViewModel.PdfPath;
+            if (string.IsNullOrEmpty(pdfPath))
+                return;
+
+            InvoiceViewModel invoiceViewModel;
+            if (!_invoiceViewModels.TryGetValue(pdfPath, out invoiceViewModel))
+            {
+                invoiceViewModel = new InvoiceViewModel(
+                    _companyRepository,
+                    _exchangeRatesRepository,
+                    _clipboardService,
+                    _pdfParser.Parse(pdfPath),
+                    _analyzeInvoiceService);
+                _invoiceViewModels[pdfPath] = invoiceViewModel;
+            }
+            InvoiceViewModel = invoiceViewModel;
+        }
+
+        private void LoadExchangeRates()
+        {
+            var dialog = new OpenFileDialog
+            {
+                Multiselect = false,
+                Filter = "XML|*.xml"
+            };
+            if (dialog.ShowDialog() ?? false)
+                _exchangeRatesLoader.Load(dialog.FileName);
+        }
 
         [NotifyPropertyChangedInvocator]
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
