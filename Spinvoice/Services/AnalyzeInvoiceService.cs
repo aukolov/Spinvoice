@@ -98,7 +98,8 @@ namespace Spinvoice.Services
             {
                 foreach (var candidateStrategy in candidateStrategies)
                 {
-                    if (candidateStrategy.Train(pdfModel, value))
+                    if (candidateStrategy.Train(pdfModel, value)
+                        && candidateStrategy.GetValue(pdfModel) == value)
                     {
                         return candidateStrategy;
                     }
