@@ -11,7 +11,7 @@ namespace Spinvoice.Tests.Infrastructure.Pdf
         [Test]
         public void ParsePdf()
         {
-            var filePath = @"C:\Projects\my\sibil\08-10\1.pdf";
+            var filePath = @"C:\Projects\my\sibil\08-10\INVOICE_FC581302.pdf";
             var pdfParser = new PdfParser();
             var pdfModel = pdfParser.Parse(filePath);
             Console.WriteLine(pdfModel.GetText());
