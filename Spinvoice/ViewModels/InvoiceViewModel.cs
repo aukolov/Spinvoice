@@ -118,7 +118,14 @@ namespace Spinvoice.ViewModels
         {
             if (Invoice.Date != default(DateTime) && !string.IsNullOrEmpty(Invoice.Currency))
             {
-                Invoice.ExchangeRate = _exchangeRatesRepository.GetRate(Invoice.Currency, Invoice.Date);
+                for (var i = 0; i < 5; i++)
+                {
+                    var rate = _exchangeRatesRepository.GetRate(Invoice.Currency, Invoice.Date.AddDays(-i));
+                    if (!rate.HasValue) continue;
+
+                    Invoice.ExchangeRate = rate.Value;
+                    break;
+                }
             }
         }
 

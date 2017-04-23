@@ -11,14 +11,14 @@ namespace Spinvoice.Domain.Exchange
             _exchangeRateDataAccess = exchangeRateDataAccess;
         }
 
-        public decimal GetRate(string currency, DateTime date)
+        public decimal? GetRate(string currency, DateTime date)
         {
             if (currency == "EUR")
             {
                 return 1;
             }
             var rate = _exchangeRateDataAccess.GetRate(currency, date);
-            return rate?.Value ?? 0;
+            return rate?.Value;
         }
     }
 }
