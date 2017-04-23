@@ -1,4 +1,6 @@
-﻿using Raven.Client;
+﻿using System;
+using System.IO;
+using Raven.Client;
 using Raven.Client.Embedded;
 
 namespace Spinvoice.Infrastructure.DataAccess
@@ -15,7 +17,10 @@ namespace Spinvoice.Infrastructure.DataAccess
                 {
                     _documentStore = new EmbeddableDocumentStore()
                     {
-                        DataDirectory = "Data",
+                        DataDirectory = Path.Combine(
+                            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                            "Spinvoice",
+                            "data"),
                         UseEmbeddedHttpServer = false
                     };
                     _documentStore.Initialize();
