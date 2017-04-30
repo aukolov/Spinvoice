@@ -14,8 +14,8 @@ namespace Spinvoice.Infrastructure.Pdf
             {
                 var strategy = new SmartTextExtractionStrategy();
                 PdfTextExtractor.GetTextFromPage(reader, i, strategy);
-                var blockModels = strategy.BlockSentences.Select(blocks => new BlockModel(blocks)).ToList();
-                return new PageModel(blockModels);
+                var blockModels = strategy.BlockSentences.Select((sentences, j) => new BlockModel(j, sentences)).ToList();
+                return new PageModel(i - 1, blockModels);
             }).ToList());
 
             return pdfModel;

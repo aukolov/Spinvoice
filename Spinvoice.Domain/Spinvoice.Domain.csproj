@@ -62,6 +62,8 @@
     <Compile Include="Pdf\ContainsStrategy.cs" />
     <Compile Include="Pdf\InsideTokensStrategy.cs" />
     <Compile Include="Pdf\IPdfAnalysisStrategy.cs" />
+    <Compile Include="Pdf\Location.cs" />
+    <Compile Include="Pdf\LocationRange.cs" />
     <Compile Include="Pdf\NextTokenStrategy.cs" />
     <Compile Include="Pdf\IPdfParser.cs" />
     <Compile Include="Pdf\IPdfToInvoiceMapper.cs" />

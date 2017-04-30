@@ -12,7 +12,7 @@ namespace Spinvoice.Domain.Pdf
             Pages = pages.AsReadOnly();
         }
 
-        public ReadOnlyCollection<PageModel> Pages { get; private set; }
+        public ReadOnlyCollection<PageModel> Pages { get; }
 
         public IEnumerable<BlockModel> BlockModels
         {
@@ -43,6 +43,20 @@ namespace Spinvoice.Domain.Pdf
             }
 
             return sb.ToString();
+        }
+
+        public IEnumerable<LocationRange> Find(string textLine)
+        {
+            if (string.IsNullOrEmpty(textLine))
+            {
+                return new LocationRange[0];
+            }
+
+            for (int i = 0; i < Pages.Count; i++)
+            {
+                
+            }
+            return null;
         }
     }
 }
