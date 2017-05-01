@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
-using Spinvoice.Domain;
+using Spinvoice.Domain.Accounting;
 using Spinvoice.Domain.Company;
 using Spinvoice.Domain.Exchange;
 using Spinvoice.Domain.Pdf;
@@ -50,14 +50,43 @@ namespace Spinvoice.ViewModels
                 () => ChangeDate(),
                 () => ChangeInvoiceNumber(),
                 () => ChangeNetAmount(),
-                () => ChangeVatAmount()
+                () => ChangeVatAmount(),
+                () => ChangePositionDescription(),
+                () => ChangePositionQuantity(),
+                () => ChangePositionAmount()
             };
 
             CopyCommand = new RelayCommand(CopyToClipboard);
             ClearCommand = new RelayCommand(Clear);
             Invoice = new Invoice();
 
+            PositionListViewModel = new PositionListViewModel(Invoice.Positions);
+
             analyzeInvoiceService.Analyze(pdfModel, Invoice);
+        }
+
+        private void ChangePositionDescription()
+        {
+            if (PositionListViewModel.SelectedPosition != null)
+            {
+                PositionListViewModel.SelectedPosition.Description = "test";
+            }
+        }
+
+        private void ChangePositionQuantity()
+        {
+            if (PositionListViewModel.SelectedPosition != null)
+            {
+                PositionListViewModel.SelectedPosition.Quantity = 10;
+            }
+        }
+
+        private void ChangePositionAmount()
+        {
+            if (PositionListViewModel.SelectedPosition != null)
+            {
+                PositionListViewModel.SelectedPosition.Amount = 1.23m;
+            }
         }
 
         public int Index
@@ -91,6 +120,8 @@ namespace Spinvoice.ViewModels
         public ICommand CopyCommand { get; }
 
         public ICommand ClearCommand { get; }
+
+        public PositionListViewModel PositionListViewModel { get; }
 
         public void Subscribe()
         {

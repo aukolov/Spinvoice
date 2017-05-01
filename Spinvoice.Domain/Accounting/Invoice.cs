@@ -1,9 +1,10 @@
 using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Spinvoice.Utils;
 
-namespace Spinvoice.Domain
+namespace Spinvoice.Domain.Accounting
 {
     public class Invoice : INotifyPropertyChanged
     {
@@ -20,6 +21,11 @@ namespace Spinvoice.Domain
 
         public event Action CurrencyChanged;
         public event Action DateChanged;
+
+        public Invoice()
+        {
+            Positions = new ObservableCollection<Position>();
+        }
 
         public DateTime Date
         {
@@ -138,6 +144,8 @@ namespace Spinvoice.Domain
             }
         }
 
+        public ObservableCollection<Position> Positions { get; set; }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -171,6 +179,7 @@ namespace Spinvoice.Domain
             _vatAmount = 0;
             _vatNumber = null;
             _isEuropeanUnion = false;
+            Positions.Clear();
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(""));
         }
     }

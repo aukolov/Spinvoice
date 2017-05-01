@@ -46,6 +46,7 @@
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="ObservableCollectionExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RelayDisposable.cs" />
     <Compile Include="TextDecoder.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

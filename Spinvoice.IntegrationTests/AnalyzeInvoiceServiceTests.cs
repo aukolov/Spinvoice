@@ -1,6 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 using Spinvoice.Domain;
+using Spinvoice.Domain.Accounting;
 using Spinvoice.Domain.Company;
 using Spinvoice.Infrastructure.Pdf;
 using Spinvoice.IntegrationTests.Mocks;

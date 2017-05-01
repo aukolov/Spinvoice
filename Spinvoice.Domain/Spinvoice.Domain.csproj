@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Accounting\Position.cs" />
     <Compile Include="App\AppMetadata.cs" />
     <Compile Include="App\IAppMetadataDataAccess.cs" />
     <Compile Include="App\IAppMetadataRepository.cs" />
@@ -57,7 +58,7 @@
     <Compile Include="Exchange\IExchangeRateDataAccess.cs" />
     <Compile Include="Exchange\IExchangeRatesRepository.cs" />
     <Compile Include="Exchange\Rate.cs" />
-    <Compile Include="Invoice.cs" />
+    <Compile Include="Accounting\Invoice.cs" />
     <Compile Include="Pdf\BlockModel.cs" />
     <Compile Include="Pdf\ContainsStrategy.cs" />
     <Compile Include="Pdf\InsideTokensStrategy.cs" />
@@ -70,9 +71,9 @@
     <Compile Include="Pdf\PageModel.cs" />
     <Compile Include="Pdf\PdfModel.cs" />
     <Compile Include="Pdf\TextUtils.cs" />
+    <Compile Include="Properties\Annotations1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RawInvoice.cs" />
-    <Compile Include="RelayDisposable.cs" />
+    <Compile Include="Accounting\RawInvoice.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

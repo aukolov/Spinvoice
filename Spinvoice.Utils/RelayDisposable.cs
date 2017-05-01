@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Spinvoice.Domain
+namespace Spinvoice.Utils
 {
     public class RelayDisposable : IDisposable
     {

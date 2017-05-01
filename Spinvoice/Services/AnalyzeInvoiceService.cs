@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Spinvoice.Domain;
+using Spinvoice.Domain.Accounting;
 using Spinvoice.Domain.Company;
 using Spinvoice.Domain.Pdf;
 using Spinvoice.Utils;

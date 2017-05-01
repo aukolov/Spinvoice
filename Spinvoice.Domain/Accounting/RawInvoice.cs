@@ -1,4 +1,4 @@
-﻿namespace Spinvoice.Domain
+﻿namespace Spinvoice.Domain.Accounting
 {
     public class RawInvoice
     {
