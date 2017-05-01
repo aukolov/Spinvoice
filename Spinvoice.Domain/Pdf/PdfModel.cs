@@ -45,18 +45,20 @@ namespace Spinvoice.Domain.Pdf
             return sb.ToString();
         }
 
-        public IEnumerable<LocationRange> Find(string textLine)
+        public IEnumerable<LocationRange> Find(string text)
         {
-            if (string.IsNullOrEmpty(textLine))
+            if (string.IsNullOrEmpty(text))
             {
-                return new LocationRange[0];
+                yield break;
             }
 
-            for (int i = 0; i < Pages.Count; i++)
+            foreach (var pageModel in Pages)
             {
-                
+                foreach (var locationRange in pageModel.Find(text))
+                {
+                    yield return locationRange;
+                }
             }
-            return null;
         }
     }
 }

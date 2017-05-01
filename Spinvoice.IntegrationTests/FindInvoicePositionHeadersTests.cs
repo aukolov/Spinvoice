@@ -32,7 +32,7 @@ namespace Spinvoice.IntegrationTests
         [TestCaseSource(nameof(GetTestData))]
         public void FindsHeaderLineInPdfModel(string testName)
         {
-            foreach (var input in TestInputProvider.GetInput(testName, "learn"))
+            foreach (var input in TestInputProvider.GetInput(testName, "test"))
             {
                 var learnData = JsonUtils.Deserialize<LearnData>(input.JsonPath);
                 var pdfModel = _pdfParser.Parse(input.PdfPath);
@@ -40,7 +40,7 @@ namespace Spinvoice.IntegrationTests
 
                 for (var i = 0; i < learnData.LocationRanges.Length; i++)
                 {
-                    Assert.IsTrue(i < locationRanges.Length);
+                    Assert.IsTrue(i < locationRanges.Length, $"Match #{i} is missing.");
                     AssertLocation(learnData.LocationRanges[i].Start, locationRanges[i].Start);
                     AssertLocation(learnData.LocationRanges[i].End, locationRanges[i].End);
                 }
@@ -49,9 +49,9 @@ namespace Spinvoice.IntegrationTests
 
         private static void AssertLocation(Location location1, Location location2)
         {
-            Assert.AreEqual(location1.Page, location2.Page);
-            Assert.AreEqual(location1.Block, location2.Block);
-            Assert.AreEqual(location1.Sentence, location2.Sentence);
+            Assert.AreEqual(location1.Page, location2.Page, "Page");
+            Assert.AreEqual(location1.Block, location2.Block, "Block");
+            Assert.AreEqual(location1.Sentence, location2.Sentence, "Sentence");
         }
 
         private class LearnData

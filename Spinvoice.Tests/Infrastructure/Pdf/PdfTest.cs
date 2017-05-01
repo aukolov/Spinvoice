@@ -11,7 +11,7 @@ namespace Spinvoice.Tests.Infrastructure.Pdf
         [Test]
         public void ParsePdf()
         {
-            var filePath = @"C:\Projects\my\Spinvoice.TestResources\FindInvoicePositionHeadersTests\DigiKey\learn001.pdf";
+            var filePath = @"C:\Projects\my\Spinvoice.TestResources\FindInvoicePositionHeadersTests\Neivn\test001.pdf";
             var pdfParser = new PdfParser();
             var pdfModel = pdfParser.Parse(filePath);
             Console.WriteLine(pdfModel.GetText());

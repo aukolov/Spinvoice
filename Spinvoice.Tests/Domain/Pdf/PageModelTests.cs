@@ -130,5 +130,214 @@ namespace Spinvoice.Tests.Domain.Pdf
             AssertLocation(locationRange.Start, 0, 0, 1);
             AssertLocation(locationRange.End, 0, 0, 1);
         }
+
+        [Test]
+        public void TreatsMultipleSpacesInSearchPatternAsOne()
+        {
+            var pageModel = CreatePageModel(0, CreateBlockModel(0, "abc", "aaa", "bbb"));
+
+            var locationRanges = pageModel.Find("aaa       bbb").ToArray();
+
+            Assert.AreEqual(1, locationRanges.Length);
+            var locationRange = locationRanges[0];
+            AssertLocation(locationRange.Start, 0, 0, 1);
+            AssertLocation(locationRange.End, 0, 0, 2);
+        }
+
+
+
+        [Test]
+        public void TreatsMultipleSpacesInSentenceAsOne()
+        {
+            var pageModel = CreatePageModel(0, CreateBlockModel(0, "abc", "aaa              bbb"));
+
+            var locationRanges = pageModel.Find("aaa       bbb").ToArray();
+
+            Assert.AreEqual(1, locationRanges.Length);
+            var locationRange = locationRanges[0];
+            AssertLocation(locationRange.Start, 0, 0, 1);
+            AssertLocation(locationRange.End, 0, 0, 1);
+        }
+
+        [Test]
+        public void SkipsAllWhitespaceSentencesOnSpaceInText()
+        {
+            var pageModel = CreatePageModel(0, CreateBlockModel(0, "abc", "aaa", "   ", " ", "      ", "bbb"));
+
+            var locationRanges = pageModel.Find("aaa bbb").ToArray();
+
+            Assert.AreEqual(1, locationRanges.Length);
+            var locationRange = locationRanges[0];
+            AssertLocation(locationRange.Start, 0, 0, 1);
+            AssertLocation(locationRange.End, 0, 0, 5);
+        }
+
+        [Test]
+        public void SkipsAllEmptySentencesOnSpaceInText()
+        {
+            var pageModel = CreatePageModel(0, CreateBlockModel(0, "abc", "aaa", "", "", "", "bbb"));
+
+            var locationRanges = pageModel.Find("aaa bbb").ToArray();
+
+            Assert.AreEqual(1, locationRanges.Length);
+            var locationRange = locationRanges[0];
+            AssertLocation(locationRange.Start, 0, 0, 1);
+            AssertLocation(locationRange.End, 0, 0, 5);
+        }
+
+        [Test]
+        public void SkipsAllEmptyAndWhitespaceBlocksOnSpaceInText()
+        {
+            var pageModel = CreatePageModel(0,
+                CreateBlockModel(0, "abc", "aaa"),
+                CreateBlockModel(1, "    ", "", " "),
+                CreateBlockModel(2, "", "", ""),
+                CreateBlockModel(3, "", "", "   "),
+                CreateBlockModel(4, "bbb", "ccc"));
+
+            var locationRanges = pageModel.Find("aaa bbb").ToArray();
+
+            Assert.AreEqual(1, locationRanges.Length);
+            var locationRange = locationRanges[0];
+            AssertLocation(locationRange.Start, 0, 0, 1);
+            AssertLocation(locationRange.End, 0, 4, 0);
+        }
+
+        [Test]
+        public void DoesNotJumpToNewSentenceIfSearchPatternEndsWithSpaced()
+        {
+            var pageModel = CreatePageModel(0, CreateBlockModel(0, "aaa        ", "bbb"));
+
+            var locationRanges = pageModel.Find("aaa   ").ToArray();
+
+            Assert.AreEqual(1, locationRanges.Length);
+            var locationRange = locationRanges[0];
+            AssertLocation(locationRange.Start, 0, 0, 0);
+            AssertLocation(locationRange.End, 0, 0, 0);
+        }
+
+        [Test]
+        public void DoesNotMatchIfTextEndsBeforePattern()
+        {
+            var pageModel = CreatePageModel(0, CreateBlockModel(0, "aa"));
+
+            var locationRanges = pageModel.Find("aaa").ToArray();
+
+            Assert.AreEqual(0, locationRanges.Length);
+        }
+
+        [Test]
+        public void ProcessesCorrectlyManySpacesInPattern()
+        {
+            var pageModel = CreatePageModel(0, CreateBlockModel(0, "aaa", "bbb"));
+
+            var locationRanges = pageModel.Find(" aaa  bbb   ").ToArray();
+
+            Assert.AreEqual(1, locationRanges.Length);
+            var locationRange = locationRanges[0];
+            AssertLocation(locationRange.Start, 0, 0, 0);
+            AssertLocation(locationRange.End, 0, 0, 1);
+        }
+
+        [Test]
+        public void TreatsTabsInPatternLikeSpace()
+        {
+            var pageModel = CreatePageModel(0, CreateBlockModel(0, "aaa", "bbb"));
+
+            var locationRanges = pageModel.Find("\taaa\t\tbbb\t\t\t").ToArray();
+
+            Assert.AreEqual(1, locationRanges.Length);
+            var locationRange = locationRanges[0];
+            AssertLocation(locationRange.Start, 0, 0, 0);
+            AssertLocation(locationRange.End, 0, 0, 1);
+        }
+
+        [Test]
+        public void TreatsNewLinesInPatternLikeSpace()
+        {
+            var pageModel = CreatePageModel(0, CreateBlockModel(0, "aaa", "bbb"));
+
+            var locationRanges = pageModel.Find("\naaa\n\nbbb\n\n\n").ToArray();
+
+            Assert.AreEqual(1, locationRanges.Length);
+            var locationRange = locationRanges[0];
+            AssertLocation(locationRange.Start, 0, 0, 0);
+            AssertLocation(locationRange.End, 0, 0, 1);
+        }
+
+        [Test]
+        public void TreatsCarriageReturnsInPatternLikeSpace()
+        {
+            var pageModel = CreatePageModel(0, CreateBlockModel(0, "aaa", "bbb"));
+
+            var locationRanges = pageModel.Find("\raaa\r\rbbb\r\r\r").ToArray();
+
+            Assert.AreEqual(1, locationRanges.Length);
+            var locationRange = locationRanges[0];
+            AssertLocation(locationRange.Start, 0, 0, 0);
+            AssertLocation(locationRange.End, 0, 0, 1);
+        }
+
+        [Test]
+        public void TreatsTabsInTextLikeSpace()
+        {
+            var pageModel = CreatePageModel(0, CreateBlockModel(0, "\t\taaa\t\t", "\t\t\t", "\t\tbbb\t"));
+
+            var locationRanges = pageModel.Find("aaa bbb").ToArray();
+
+            Assert.AreEqual(1, locationRanges.Length);
+            var locationRange = locationRanges[0];
+            AssertLocation(locationRange.Start, 0, 0, 0);
+            AssertLocation(locationRange.End, 0, 0, 2);
+        }
+
+        [Test]
+        public void TreatsNewLinesInTextLikeSpace()
+        {
+            var pageModel = CreatePageModel(0, CreateBlockModel(0, "\n\naaa\n\n", "\n\n\n", "\n\nbbb\n"));
+
+            var locationRanges = pageModel.Find("aaa bbb").ToArray();
+
+            Assert.AreEqual(1, locationRanges.Length);
+            var locationRange = locationRanges[0];
+            AssertLocation(locationRange.Start, 0, 0, 0);
+            AssertLocation(locationRange.End, 0, 0, 2);
+        }
+
+        [Test]
+        public void TreatsCarriageReturnsInTextLikeSpace()
+        {
+            var pageModel = CreatePageModel(0, CreateBlockModel(0, "\r\raaa\r\r", "\r\r\r", "\r\rbbb\r"));
+
+            var locationRanges = pageModel.Find("aaa bbb").ToArray();
+
+            Assert.AreEqual(1, locationRanges.Length);
+            var locationRange = locationRanges[0];
+            AssertLocation(locationRange.Start, 0, 0, 0);
+            AssertLocation(locationRange.End, 0, 0, 2);
+        }
+
+        [Test]
+        public void ProcessesCorrectlyMultipleSpacesInText()
+        {
+            var pageModel = CreatePageModel(0, CreateBlockModel(0, "  aaa  ", "   ", "  bbb "));
+
+            var locationRanges = pageModel.Find("aaa bbb").ToArray();
+
+            Assert.AreEqual(1, locationRanges.Length);
+            var locationRange = locationRanges[0];
+            AssertLocation(locationRange.Start, 0, 0, 0);
+            AssertLocation(locationRange.End, 0, 0, 2);
+        }
+
+        [Test]
+        public void DoesNotMatchPatternConsistingOnlyOfWhitespaces()
+        {
+            var pageModel = CreatePageModel(0, CreateBlockModel(0, "  aaa  ", "   ", "  bbb "));
+
+            var locationRanges = pageModel.Find("       ").ToArray();
+
+            Assert.AreEqual(0, locationRanges.Length);
+        }
     }
 }

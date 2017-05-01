@@ -20,19 +20,28 @@ namespace Spinvoice.Domain.Pdf
             {
                 yield break;
             }
-            for (var startSentence = 0; startSentence < Blocks.Count; startSentence++)
+            var startBlock = 0;
+            while (startBlock < Blocks.Count)
             {
-                for (var startBlock = 0; startBlock < Blocks[startSentence].Sentences.Count; startBlock++)
+                var startSentence = 0;
+                while (startSentence < Blocks[startBlock].Sentences.Count)
                 {
                     int endBlock;
                     int endSentence;
-                    if (IsMatch(startSentence, startBlock, text, out endBlock, out endSentence))
+                    if (IsMatch(startBlock, startSentence, text, out endBlock, out endSentence))
                     {
                         yield return new LocationRange(
-                            new Location(PageNumber, startSentence, startBlock),
+                            new Location(PageNumber, startBlock, startSentence),
                             new Location(PageNumber, endBlock, endSentence));
+                        startBlock = endBlock;
+                        startSentence = endSentence + 1;
+                    }
+                    else
+                    {
+                        startSentence++;
                     }
                 }
+                startBlock++;
             }
         }
 
@@ -45,19 +54,25 @@ namespace Spinvoice.Domain.Pdf
             var currentBlock = startBlock;
             var currentSentence = startSentence;
             var j = 0;
-            j = SkipSpaces(Blocks[currentBlock].Sentences[currentSentence], j);
+
+            SkipSpaces(ref currentBlock, ref currentSentence, ref j);
             while (i < text.Length)
             {
                 var ch = text[i];
-                if (ch == ' ')
+                if (IsWhiteSpace(ch))
                 {
-                    //if (j == Blocks[currentBlock].Sentences[currentSentence].Length)
-                    currentSentence++;
-                    j = 0;
-                    i++;
+                    i = SkipSpaces(text, i);
+                    if (i < text.Length)
+                    {
+                        SkipSpaces(ref currentBlock, ref currentSentence, ref j);
+                    }
                 }
                 else
                 {
+                    if (j >= Blocks[currentBlock].Sentences[currentSentence].Length)
+                    {
+                        return false;
+                    }
                     if (ch != Blocks[currentBlock].Sentences[currentSentence][j])
                     {
                         return false;
@@ -76,14 +91,44 @@ namespace Spinvoice.Domain.Pdf
             return true;
         }
 
+        private static bool IsWhiteSpace(char c)
+        {
+            return c == ' ' || c == '\t' || c == '\n' || c == '\r';
+        }
+
         private static int SkipSpaces(string text, int startIndex)
         {
             var i = startIndex;
-            while (i < text.Length && text[i] == ' ')
+            while (i < text.Length && IsWhiteSpace(text[i]))
             {
                 i++;
             }
             return i;
+        }
+
+        private void SkipSpaces(ref int currentBlock, ref int currentSentence, ref int index)
+        {
+            while (currentBlock < Blocks.Count)
+            {
+                while (currentSentence < Blocks[currentBlock].Sentences.Count)
+                {
+                    var text = Blocks[currentBlock].Sentences[currentSentence];
+
+                    while (index < text.Length)
+                    {
+                        if (!IsWhiteSpace(text[index]))
+                        {
+                            return;
+                        }
+                        index++;
+                    }
+                    index = 0;
+                    currentSentence++;
+                }
+                currentBlock++;
+                currentSentence = 0;
+                index = 0;
+            }
         }
     }
 }
