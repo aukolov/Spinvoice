@@ -19,7 +19,7 @@
                   SelectedItem="{Binding SelectedPositionViewModel}"
                   SelectionMode="Single">
             <DataGrid.Columns>
-                <DataGridTextColumn Width="*"
+                <DataGridTextColumn Width="2*"
                                     Binding="{Binding Position.Description}"
                                     Header="Description" />
                 <DataGridTextColumn Width="*"

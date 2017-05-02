@@ -78,24 +78,6 @@ namespace Spinvoice.ViewModels
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void ChangePositionDescription()
-        {
-            if (PositionListViewModel.SelectedPositionViewModel != null)
-                PositionListViewModel.SelectedPositionViewModel.Position.Description = "test";
-        }
-
-        private void ChangePositionQuantity()
-        {
-            if (PositionListViewModel.SelectedPositionViewModel != null)
-                PositionListViewModel.SelectedPositionViewModel.Position.Quantity = 10;
-        }
-
-        private void ChangePositionAmount()
-        {
-            if (PositionListViewModel.SelectedPositionViewModel != null)
-                PositionListViewModel.SelectedPositionViewModel.Position.Amount = 1.23m;
-        }
-
         public void Subscribe()
         {
             _clipboardService.ClipboardChanged += OnClipboardChanged;
@@ -178,6 +160,29 @@ namespace Spinvoice.ViewModels
             Invoice.VatAmount = AmountParser.Parse(_clipboardText);
         }
 
+        private void ChangePositionDescription()
+        {
+            if (PositionListViewModel.SelectedPositionViewModel != null)
+                PositionListViewModel.SelectedPositionViewModel.Position.Description = _clipboardText;
+        }
+
+        private void ChangePositionQuantity()
+        {
+            if (PositionListViewModel.SelectedPositionViewModel == null) return;
+
+            int quantity;
+            if (int.TryParse(_clipboardText, out quantity))
+            {
+                PositionListViewModel.SelectedPositionViewModel.Position.Quantity = quantity;
+            }
+        }
+
+        private void ChangePositionAmount()
+        {
+            if (PositionListViewModel.SelectedPositionViewModel != null)
+                PositionListViewModel.SelectedPositionViewModel.Position.Amount = AmountParser.Parse(_clipboardText);
+        }
+
         private void OnClipboardChanged()
         {
             if (!Application.Current.MainWindow.IsActive)
@@ -207,7 +212,15 @@ namespace Spinvoice.ViewModels
             try
             {
                 ExecuteCurrentCommand();
-                ActionSelectorViewModel.MoveEditFieldToNext();
+                if (ActionSelectorViewModel.EditField == EditField.InvoiceVatAmount 
+                    && PositionListViewModel.SelectedPositionViewModel == null)
+                {
+                    ActionSelectorViewModel.EditField = EditField.InvoiceCompany;
+                }
+                else
+                {
+                    ActionSelectorViewModel.MoveEditFieldToNext();
+                }
             }
             catch (Exception ex)
             {
