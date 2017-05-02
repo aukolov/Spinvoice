@@ -1,21 +1,30 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Spinvoice.Annotations;
 using Spinvoice.Domain.Accounting;
+using Spinvoice.Utils;
 
 namespace Spinvoice.ViewModels
 {
     public class PositionListViewModel : INotifyPropertyChanged
     {
-        private Position _selectedPosition;
+        private readonly ObservableCollection<Position> _positions;
+        private PositionViewModel _selectedPositionViewModel;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public PositionListViewModel(ObservableCollection<Position> positions)
+        public PositionListViewModel(
+            ObservableCollection<Position> positions, 
+            ActionSelectorViewModel actionSelectorViewModel)
         {
-            Positions = positions;
+            _positions = positions;
+            Positions = new ListCollectionProxyView<Position, PositionViewModel, ObservableCollection<Position>>(
+                positions,
+                p => new PositionViewModel(p, actionSelectorViewModel),
+                (p, vm) => vm.Position == p);
             AddCommand = new RelayCommand(AddPosition);
             RemoveCommand = new RelayCommand(RemovePosition);
         }
@@ -23,27 +32,27 @@ namespace Spinvoice.ViewModels
         private void AddPosition()
         {
             var position = new Position();
-            Positions.Add(position);
-            SelectedPosition = position;
+            _positions.Add(position);
+            SelectedPositionViewModel = Positions.ViewModels.FirstOrDefault(vm => vm.Position == position);
         }
 
         private void RemovePosition()
         {
-            if (SelectedPosition != null)
+            if (SelectedPositionViewModel != null)
             {
-                Positions.Remove(SelectedPosition);
+                _positions.Remove(SelectedPositionViewModel.Position);
             }
         }
 
-        public ObservableCollection<Position> Positions { get; }
+        public ListCollectionProxyView<Position, PositionViewModel, ObservableCollection<Position>> Positions { get; }
 
-        public Position SelectedPosition
+        public PositionViewModel SelectedPositionViewModel
         {
-            get { return _selectedPosition; }
+            get { return _selectedPositionViewModel; }
             set
             {
-                if (_selectedPosition == value) return;
-                _selectedPosition = value;
+                if (_selectedPositionViewModel == value) return;
+                _selectedPositionViewModel = value;
                 OnPropertyChanged();
             }
         }

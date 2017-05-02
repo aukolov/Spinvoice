@@ -100,18 +100,22 @@
     <Compile Include="Services\IFileService.cs" />
     <Compile Include="Services\AnalyzeInvoiceService.cs" />
     <Compile Include="Services\LogConfigurator.cs" />
+    <Compile Include="ViewModels\ActionSelectorViewModel.cs" />
+    <Compile Include="ViewModels\EditField.cs" />
     <Compile Include="ViewModels\DirectoryViewModel.cs" />
     <Compile Include="ViewModels\FileViewModel.cs" />
     <Compile Include="ViewModels\IFileSystemViewModel.cs" />
     <Compile Include="ViewModels\PositionListViewModel.cs" />
     <Compile Include="ViewModels\InvoiceViewModel.cs" />
     <Compile Include="ViewModels\ISelectedPathListener.cs" />
+    <Compile Include="ViewModels\PositionViewModel.cs" />
     <Compile Include="ViewModels\ProjectBrowserViewModel.cs" />
     <Compile Include="ViewModels\RelayCommand.cs" />
+    <Compile Include="Views\Converters\NullToCollapsedConverter.cs" />
     <Compile Include="Views\FileSystemBrowser.xaml.cs">
       <DependentUpon>FileSystemBrowser.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\IndexToCheckedConverter.cs" />
+    <Compile Include="Views\Converters\EqualsToCheckedConverter.cs" />
     <Compile Include="Views\PositionListView.xaml.cs">
       <DependentUpon>PositionListView.xaml</DependentUpon>
     </Compile>

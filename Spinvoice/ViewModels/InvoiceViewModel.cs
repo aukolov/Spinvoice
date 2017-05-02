@@ -14,19 +14,17 @@ namespace Spinvoice.ViewModels
 {
     public sealed class InvoiceViewModel : INotifyPropertyChanged
     {
-        private readonly ICompanyRepository _companyRepository;
-        private readonly IExchangeRatesRepository _exchangeRatesRepository;
+        private readonly AnalyzeInvoiceService _analyzeInvoiceService;
         private readonly ClipboardService _clipboardService;
 
-        private readonly Action[] _commands;
+        private readonly ICompanyRepository _companyRepository;
+        private readonly IExchangeRatesRepository _exchangeRatesRepository;
         private readonly PdfModel _pdfModel;
-        private readonly AnalyzeInvoiceService _analyzeInvoiceService;
-        private volatile string _textToIgnore;
-        private int _index;
+        private string _clipboardText;
         private Invoice _invoice;
         private string _stringDate;
         private string _stringNetAmount;
-        private string _clipboardText;
+        private volatile string _textToIgnore;
 
         public InvoiceViewModel(
             ICompanyRepository companyRepository,
@@ -41,63 +39,18 @@ namespace Spinvoice.ViewModels
             _pdfModel = pdfModel;
             _analyzeInvoiceService = analyzeInvoiceService;
 
-            _commands = new Action[]
-            {
-                () => ChangeCompanyName(),
-                () => ChangeCountry(),
-                () => ChangeCurrency(),
-                () => ChangeVatNumber(),
-                () => ChangeDate(),
-                () => ChangeInvoiceNumber(),
-                () => ChangeNetAmount(),
-                () => ChangeVatAmount(),
-                () => ChangePositionDescription(),
-                () => ChangePositionQuantity(),
-                () => ChangePositionAmount()
-            };
-
             CopyCommand = new RelayCommand(CopyToClipboard);
             ClearCommand = new RelayCommand(Clear);
             Invoice = new Invoice();
+            Invoice.Positions.Add(new Position());
 
-            PositionListViewModel = new PositionListViewModel(Invoice.Positions);
+            ActionSelectorViewModel = new ActionSelectorViewModel();
+            PositionListViewModel = new PositionListViewModel(Invoice.Positions, ActionSelectorViewModel);
 
             analyzeInvoiceService.Analyze(pdfModel, Invoice);
         }
 
-        private void ChangePositionDescription()
-        {
-            if (PositionListViewModel.SelectedPosition != null)
-            {
-                PositionListViewModel.SelectedPosition.Description = "test";
-            }
-        }
-
-        private void ChangePositionQuantity()
-        {
-            if (PositionListViewModel.SelectedPosition != null)
-            {
-                PositionListViewModel.SelectedPosition.Quantity = 10;
-            }
-        }
-
-        private void ChangePositionAmount()
-        {
-            if (PositionListViewModel.SelectedPosition != null)
-            {
-                PositionListViewModel.SelectedPosition.Amount = 1.23m;
-            }
-        }
-
-        public int Index
-        {
-            get { return _index; }
-            set
-            {
-                _index = value;
-                OnPropertyChanged();
-            }
-        }
+        public ActionSelectorViewModel ActionSelectorViewModel { get; }
 
         public Invoice Invoice
         {
@@ -123,6 +76,26 @@ namespace Spinvoice.ViewModels
 
         public PositionListViewModel PositionListViewModel { get; }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void ChangePositionDescription()
+        {
+            if (PositionListViewModel.SelectedPositionViewModel != null)
+                PositionListViewModel.SelectedPositionViewModel.Position.Description = "test";
+        }
+
+        private void ChangePositionQuantity()
+        {
+            if (PositionListViewModel.SelectedPositionViewModel != null)
+                PositionListViewModel.SelectedPositionViewModel.Position.Quantity = 10;
+        }
+
+        private void ChangePositionAmount()
+        {
+            if (PositionListViewModel.SelectedPositionViewModel != null)
+                PositionListViewModel.SelectedPositionViewModel.Position.Amount = 1.23m;
+        }
+
         public void Subscribe()
         {
             _clipboardService.ClipboardChanged += OnClipboardChanged;
@@ -147,7 +120,6 @@ namespace Spinvoice.ViewModels
         private void UpdateRate()
         {
             if (Invoice.Date != default(DateTime) && !string.IsNullOrEmpty(Invoice.Currency))
-            {
                 for (var i = 0; i < 5; i++)
                 {
                     var rate = _exchangeRatesRepository.GetRate(Invoice.Currency, Invoice.Date.AddDays(-i));
@@ -156,7 +128,6 @@ namespace Spinvoice.ViewModels
                     Invoice.ExchangeRate = rate.Value;
                     break;
                 }
-            }
         }
 
         private void ChangeCompanyName()
@@ -167,7 +138,8 @@ namespace Spinvoice.ViewModels
             if (company != null)
             {
                 Invoice.ApplyCompany(company);
-                Index += 2;
+                ActionSelectorViewModel.MoveEditFieldToNext();
+                ActionSelectorViewModel.MoveEditFieldToNext();
             }
         }
 
@@ -209,20 +181,14 @@ namespace Spinvoice.ViewModels
         private void OnClipboardChanged()
         {
             if (!Application.Current.MainWindow.IsActive)
-            {
                 return;
-            }
             if (_clipboardService.CheckContainsText())
             {
                 var text = _clipboardService.GetText();
                 if (text == _clipboardText)
-                {
                     return;
-                }
                 if (text == _textToIgnore)
-                {
                     return;
-                }
 
 
                 var val = TextDecoder.Decode(text);
@@ -240,8 +206,8 @@ namespace Spinvoice.ViewModels
 
             try
             {
-                _commands[Index]();
-                Index = (Index + 1) % _commands.Length;
+                ExecuteCurrentCommand();
+                ActionSelectorViewModel.MoveEditFieldToNext();
             }
             catch (Exception ex)
             {
@@ -251,6 +217,48 @@ namespace Spinvoice.ViewModels
                     "Error",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
+            }
+        }
+
+        private void ExecuteCurrentCommand()
+        {
+            switch (ActionSelectorViewModel.EditField)
+            {
+                case EditField.InvoiceCompany:
+                    ChangeCompanyName();
+                    break;
+                case EditField.InvoiceCountry:
+                    ChangeCountry();
+                    break;
+                case EditField.InvoiceCurrency:
+                    ChangeCurrency();
+                    break;
+                case EditField.InvoiceVatNumber:
+                    ChangeVatNumber();
+                    break;
+                case EditField.InvoiceDate:
+                    ChangeDate();
+                    break;
+                case EditField.InvoiceNumber:
+                    ChangeInvoiceNumber();
+                    break;
+                case EditField.InvoiceNetAmount:
+                    ChangeNetAmount();
+                    break;
+                case EditField.InvoiceVatAmount:
+                    ChangeVatAmount();
+                    break;
+                case EditField.PositionDescription:
+                    ChangePositionDescription();
+                    break;
+                case EditField.PositionQuantity:
+                    ChangePositionQuantity();
+                    break;
+                case EditField.PositionAmount:
+                    ChangePositionAmount();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
@@ -294,10 +302,8 @@ namespace Spinvoice.ViewModels
         private void Clear()
         {
             Invoice.Clear();
-            Index = 0;
+            ActionSelectorViewModel.EditField = EditField.InvoiceCompany;
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
