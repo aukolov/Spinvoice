@@ -100,7 +100,9 @@
     <Compile Include="Services\IFileService.cs" />
     <Compile Include="Services\AnalyzeInvoiceService.cs" />
     <Compile Include="Services\LogConfigurator.cs" />
-    <Compile Include="ViewModels\Exchange\DownloadExchangeRatesViewModel.cs" />
+    <Compile Include="Services\WindowManager.cs" />
+    <Compile Include="ViewModels\Exchange\CheckExchangeRatesViewModel.cs" />
+    <Compile Include="ViewModels\Exchange\LoadExchangeRatesViewModel.cs" />
     <Compile Include="ViewModels\Invoices\ActionSelectorViewModel.cs" />
     <Compile Include="ViewModels\Invoices\EditField.cs" />
     <Compile Include="ViewModels\FileSystem\DirectoryViewModel.cs" />
@@ -113,7 +115,13 @@
     <Compile Include="ViewModels\Invoices\PositionViewModel.cs" />
     <Compile Include="ViewModels\FileSystem\ProjectBrowserViewModel.cs" />
     <Compile Include="Views\Converters\NullToCollapsedConverter.cs" />
-    <Compile Include="Views\ExchangeRatesWindow.xaml.cs">
+    <Compile Include="Views\Exchange\CheckExchangeRatesView.xaml.cs">
+      <DependentUpon>CheckExchangeRatesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Exchange\LoadExchangeRatesView.xaml.cs">
+      <DependentUpon>LoadExchangeRatesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Exchange\ExchangeRatesWindow.xaml.cs">
       <DependentUpon>ExchangeRatesWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\FileSystemBrowser.xaml.cs">
@@ -134,7 +142,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ExchangeRatesWindow.xaml">
+    <Page Include="Views\Exchange\CheckExchangeRatesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Exchange\LoadExchangeRatesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Exchange\ExchangeRatesWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

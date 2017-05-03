@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
+using System.Threading;
 using Spinvoice.Domain.Company;
 using Spinvoice.Domain.Exchange;
 using Spinvoice.Infrastructure.DataAccess;
@@ -12,6 +14,9 @@ namespace Spinvoice.Services
     {
         public static AppViewModel Init()
         {
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+
             var logConfigurator = new LogConfigurator();
             logConfigurator.Configure();
 
@@ -29,6 +34,8 @@ namespace Spinvoice.Services
             var appMetadataRepository = new AppMetadataRepository(appMetadataDataAccess);
             var fileService = new FileService();
             var pdfParser = new PdfParser();
+            var analyzeInvoiceService = new AnalyzeInvoiceService(companyRepository);
+            var windowManager = new WindowManager();
 
             return new AppViewModel(
                 companyRepository,
@@ -36,7 +43,9 @@ namespace Spinvoice.Services
                 appMetadataRepository,
                 exchangeRatesLoader,
                 fileService,
-                pdfParser, new AnalyzeInvoiceService(companyRepository));
+                pdfParser, 
+                analyzeInvoiceService,
+                windowManager);
         }
     }
 }

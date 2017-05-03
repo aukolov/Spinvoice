@@ -27,7 +27,7 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Command="{Binding LoadExchangeRatesCommand}" Header="_Load Ex Rates" />
+                <MenuItem Command="{Binding OpenExchangeRatesCommand}" Header="_Ex Rates" />
             </MenuItem>
         </Menu>
 

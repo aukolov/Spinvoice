@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using System.Windows.Threading;
-using Microsoft.Win32;
 using Spinvoice.Domain.Company;
 using Spinvoice.Domain.Exchange;
 using Spinvoice.Domain.Pdf;
@@ -12,6 +11,7 @@ using Spinvoice.Infrastructure.DataAccess;
 using Spinvoice.Properties;
 using Spinvoice.Services;
 using Spinvoice.Utils;
+using Spinvoice.ViewModels.Exchange;
 using Spinvoice.ViewModels.FileSystem;
 using Spinvoice.ViewModels.Invoices;
 
@@ -20,6 +20,7 @@ namespace Spinvoice.ViewModels
     public sealed class AppViewModel : INotifyPropertyChanged, IDisposable
     {
         private readonly AnalyzeInvoiceService _analyzeInvoiceService;
+        private readonly WindowManager _windowManager;
         private readonly ICompanyRepository _companyRepository;
         private readonly ExchangeRatesLoader _exchangeRatesLoader;
         private readonly IExchangeRatesRepository _exchangeRatesRepository;
@@ -35,17 +36,16 @@ namespace Spinvoice.ViewModels
             ICompanyRepository companyRepository,
             IExchangeRatesRepository exchangeRatesRepository,
             AppMetadataRepository appMetadataRepository,
-            ExchangeRatesLoader exchangeRatesLoader, 
-            IFileService fileService, 
+            ExchangeRatesLoader exchangeRatesLoader,
+            IFileService fileService,
             IPdfParser pdfParser,
-            AnalyzeInvoiceService analyzeInvoiceService)
+            AnalyzeInvoiceService analyzeInvoiceService,
+            WindowManager windowManager)
         {
             _exchangeRatesRepository = exchangeRatesRepository;
             _companyRepository = companyRepository;
             _exchangeRatesLoader = exchangeRatesLoader;
             _pdfParser = pdfParser;
-
-            LoadExchangeRatesCommand = new RelayCommand(LoadExchangeRates);
 
             ProjectBrowserViewModel = new ProjectBrowserViewModel(fileService, appMetadataRepository);
             ProjectBrowserViewModel.PdfChanged += OnPdfChanged;
@@ -56,9 +56,11 @@ namespace Spinvoice.ViewModels
                 },
                 DispatcherPriority.Loaded);
             _analyzeInvoiceService = analyzeInvoiceService;
+            _windowManager = windowManager;
+            OpenExchangeRatesCommand = new RelayCommand(OpenExchangeRates);
         }
 
-        public ICommand LoadExchangeRatesCommand { get; }
+        public ICommand OpenExchangeRatesCommand { get; }
         public ProjectBrowserViewModel ProjectBrowserViewModel { get; }
 
         public InvoiceViewModel InvoiceViewModel
@@ -106,15 +108,14 @@ namespace Spinvoice.ViewModels
             InvoiceViewModel = invoiceViewModel;
         }
 
-        private void LoadExchangeRates()
+        private void OpenExchangeRates()
         {
-            var dialog = new OpenFileDialog
-            {
-                Multiselect = false,
-                Filter = "XML|*.xml"
-            };
-            if (dialog.ShowDialog() ?? false)
-                _exchangeRatesLoader.Load(dialog.FileName);
+            var exchangeRatesViewModel = new ExchangeRatesViewModel(
+                _exchangeRatesLoader,
+                _windowManager,
+                _exchangeRatesRepository, 
+                _clipboardService);
+            _windowManager.ShowWindow(exchangeRatesViewModel);
         }
 
         [NotifyPropertyChangedInvocator]

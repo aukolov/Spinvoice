@@ -10,16 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Spinvoice.Views
+namespace Spinvoice.Views.Exchange
 {
     /// <summary>
-    /// Interaction logic for ExchangeRatesWindow.xaml
+    /// Interaction logic for CheckExchangeRatesView.xaml
     /// </summary>
-    public partial class ExchangeRatesWindow : Window
+    public partial class CheckExchangeRatesView : UserControl
     {
-        public ExchangeRatesWindow()
+        public CheckExchangeRatesView()
         {
             InitializeComponent();
         }
