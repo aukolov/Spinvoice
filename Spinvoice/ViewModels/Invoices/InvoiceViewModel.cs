@@ -10,7 +10,7 @@ using Spinvoice.Domain.Pdf;
 using Spinvoice.Services;
 using Spinvoice.Utils;
 
-namespace Spinvoice.ViewModels
+namespace Spinvoice.ViewModels.Invoices
 {
     public sealed class InvoiceViewModel : INotifyPropertyChanged
     {

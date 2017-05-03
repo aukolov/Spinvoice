@@ -1,4 +1,4 @@
-﻿namespace Spinvoice.ViewModels
+﻿namespace Spinvoice.ViewModels.FileSystem
 {
     public interface ISelectedPathListener
     {

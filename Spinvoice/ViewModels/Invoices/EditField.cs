@@ -1,4 +1,4 @@
-﻿namespace Spinvoice.ViewModels
+﻿namespace Spinvoice.ViewModels.Invoices
 {
     public enum EditField
     {

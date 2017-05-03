@@ -7,7 +7,7 @@ using Spinvoice.Annotations;
 using Spinvoice.Domain.Accounting;
 using Spinvoice.Utils;
 
-namespace Spinvoice.ViewModels
+namespace Spinvoice.ViewModels.Invoices
 {
     public class PositionListViewModel : INotifyPropertyChanged
     {

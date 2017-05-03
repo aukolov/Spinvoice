@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:Spinvoice.ViewModels"
-             d:DataContext="{d:DesignInstance d:Type=viewModels:PositionViewModel}"
+             xmlns:invoices="clr-namespace:Spinvoice.ViewModels.Invoices"
+             d:DataContext="{d:DesignInstance d:Type=invoices:PositionViewModel}"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">
@@ -35,7 +36,7 @@
                      GroupName="Field"
                      IsChecked="{Binding ActionSelectorViewModel.EditField,
                                          Converter={x:Static converters:EqualsToCheckedConverter.Instance},
-                                         ConverterParameter={x:Static viewModels:EditField.PositionDescription}}" />
+                                         ConverterParameter={x:Static invoices:EditField.PositionDescription}}" />
         <TextBox Grid.Row="0"
                  Grid.Column="1"
                  Margin="{StaticResource GridLinesMargin}"
@@ -47,7 +48,7 @@
                      GroupName="Field"
                      IsChecked="{Binding ActionSelectorViewModel.EditField,
                                          Converter={x:Static converters:EqualsToCheckedConverter.Instance},
-                                         ConverterParameter={x:Static viewModels:EditField.PositionQuantity}}" />
+                                         ConverterParameter={x:Static invoices:EditField.PositionQuantity}}" />
         <TextBox Grid.Row="1"
                  Grid.Column="1"
                  Margin="{StaticResource GridLinesMargin}"
@@ -59,7 +60,7 @@
                      GroupName="Field"
                      IsChecked="{Binding ActionSelectorViewModel.EditField,
                                          Converter={x:Static converters:EqualsToCheckedConverter.Instance},
-                                         ConverterParameter={x:Static viewModels:EditField.PositionAmount}}" />
+                                         ConverterParameter={x:Static invoices:EditField.PositionAmount}}" />
         <TextBox Grid.Row="2"
                  Grid.Column="1"
                  Margin="{StaticResource GridLinesMargin}"

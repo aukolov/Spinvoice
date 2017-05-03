@@ -4,17 +4,18 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:model="clr-namespace:Spinvoice.ViewModels"
-             d:DataContext="{d:DesignInstance Type=model:ProjectBrowserViewModel}"
+             xmlns:fileSystem="clr-namespace:Spinvoice.ViewModels.FileSystem"
+             d:DataContext="{d:DesignInstance Type=fileSystem:ProjectBrowserViewModel}"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
-            <HierarchicalDataTemplate DataType="{x:Type model:DirectoryViewModel}" ItemsSource="{Binding Items}">
+            <HierarchicalDataTemplate DataType="{x:Type fileSystem:DirectoryViewModel}" ItemsSource="{Binding Items}">
                 <TextBlock Text="{Binding Path=Name}" ToolTip="{Binding Path=Path}" />
             </HierarchicalDataTemplate>
 
-            <DataTemplate DataType="{x:Type model:FileViewModel}">
+            <DataTemplate DataType="{x:Type fileSystem:FileViewModel}">
                 <TextBlock Text="{Binding Path=Name}" ToolTip="{Binding Path=Path}" />
             </DataTemplate>
         </ResourceDictionary>

@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using Spinvoice.Annotations;
 using Spinvoice.Domain.Accounting;
 
-namespace Spinvoice.ViewModels
+namespace Spinvoice.ViewModels.Invoices
 {
     public class PositionViewModel : INotifyPropertyChanged
     {

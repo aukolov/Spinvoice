@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using Spinvoice.Annotations;
 
-namespace Spinvoice.ViewModels
+namespace Spinvoice.ViewModels.FileSystem
 {
     public class FileViewModel : IFileSystemViewModel
     {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Spinvoice.ViewModels
+namespace Spinvoice.ViewModels.FileSystem
 {
     public interface IFileSystemViewModel : INotifyPropertyChanged
     {

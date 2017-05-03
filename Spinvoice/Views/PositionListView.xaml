@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:Spinvoice.Views"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:Spinvoice.ViewModels"
-             d:DataContext="{d:DesignInstance d:Type=viewModels:PositionListViewModel}"
+             xmlns:invoices="clr-namespace:Spinvoice.ViewModels.Invoices"
+             d:DataContext="{d:DesignInstance d:Type=invoices:PositionListViewModel}"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">

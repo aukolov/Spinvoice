@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Spinvoice.Annotations;
 
-namespace Spinvoice.ViewModels
+namespace Spinvoice.ViewModels.Invoices
 {
     public class ActionSelectorViewModel : INotifyPropertyChanged
     {

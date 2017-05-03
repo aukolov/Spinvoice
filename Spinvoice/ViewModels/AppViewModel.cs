@@ -11,6 +11,9 @@ using Spinvoice.Domain.Pdf;
 using Spinvoice.Infrastructure.DataAccess;
 using Spinvoice.Properties;
 using Spinvoice.Services;
+using Spinvoice.Utils;
+using Spinvoice.ViewModels.FileSystem;
+using Spinvoice.ViewModels.Invoices;
 
 namespace Spinvoice.ViewModels
 {

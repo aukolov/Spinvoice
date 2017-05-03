@@ -11,7 +11,7 @@ using Spinvoice.Infrastructure.DataAccess;
 using Spinvoice.Services;
 using Spinvoice.Utils;
 
-namespace Spinvoice.ViewModels
+namespace Spinvoice.ViewModels.FileSystem
 {
     public sealed class ProjectBrowserViewModel : INotifyPropertyChanged, ISelectedPathListener, IDisposable
     {

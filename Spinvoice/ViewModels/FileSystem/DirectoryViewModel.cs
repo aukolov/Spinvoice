@@ -6,7 +6,7 @@ using Spinvoice.Annotations;
 using Spinvoice.Services;
 using Spinvoice.Utils;
 
-namespace Spinvoice.ViewModels
+namespace Spinvoice.ViewModels.FileSystem
 {
     public class DirectoryViewModel : IFileSystemViewModel
     {

@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:Spinvoice.Views"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:Spinvoice.ViewModels"
-             d:DataContext="{d:DesignInstance Type=viewModels:InvoiceViewModel}"
+             xmlns:invoices="clr-namespace:Spinvoice.ViewModels.Invoices"
+             d:DataContext="{d:DesignInstance Type=invoices:InvoiceViewModel}"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">
@@ -56,7 +57,7 @@
                          GroupName="Field"
                          IsChecked="{Binding ActionSelectorViewModel.EditField,
                                              Converter={x:Static converters:EqualsToCheckedConverter.Instance},
-                                             ConverterParameter={x:Static viewModels:EditField.InvoiceCompany}}" />
+                                             ConverterParameter={x:Static invoices:EditField.InvoiceCompany}}" />
             <TextBox Grid.Row="0"
                      Grid.Column="1"
                      Margin="{StaticResource GridLinesMargin}"
@@ -69,7 +70,7 @@
                          GroupName="Field"
                          IsChecked="{Binding ActionSelectorViewModel.EditField,
                                              Converter={x:Static converters:EqualsToCheckedConverter.Instance},
-                                             ConverterParameter={x:Static viewModels:EditField.InvoiceCountry}}" />
+                                             ConverterParameter={x:Static invoices:EditField.InvoiceCountry}}" />
 
             <StackPanel Grid.Row="1"
                         Grid.Column="1"
@@ -84,7 +85,7 @@
                          GroupName="Field"
                          IsChecked="{Binding ActionSelectorViewModel.EditField,
                                              Converter={x:Static converters:EqualsToCheckedConverter.Instance},
-                                             ConverterParameter={x:Static viewModels:EditField.InvoiceCurrency}}" />
+                                             ConverterParameter={x:Static invoices:EditField.InvoiceCurrency}}" />
             <TextBox Grid.Row="2"
                      Grid.Column="1"
                      Margin="{StaticResource GridLinesMargin}"
@@ -96,7 +97,7 @@
                          GroupName="Field"
                          IsChecked="{Binding ActionSelectorViewModel.EditField,
                                              Converter={x:Static converters:EqualsToCheckedConverter.Instance},
-                                             ConverterParameter={x:Static viewModels:EditField.InvoiceVatNumber}}" />
+                                             ConverterParameter={x:Static invoices:EditField.InvoiceVatNumber}}" />
             <TextBox Grid.Row="3"
                      Grid.Column="1"
                      Margin="{StaticResource GridLinesMargin}"
@@ -109,7 +110,7 @@
                          GroupName="Field"
                          IsChecked="{Binding ActionSelectorViewModel.EditField,
                                              Converter={x:Static converters:EqualsToCheckedConverter.Instance},
-                                             ConverterParameter={x:Static viewModels:EditField.InvoiceDate}}" />
+                                             ConverterParameter={x:Static invoices:EditField.InvoiceDate}}" />
             <DatePicker Grid.Row="4"
                         Grid.Column="1"
                         Margin="{StaticResource GridLinesMargin}"
@@ -130,7 +131,7 @@
                          GroupName="Field"
                          IsChecked="{Binding ActionSelectorViewModel.EditField,
                                              Converter={x:Static converters:EqualsToCheckedConverter.Instance},
-                                             ConverterParameter={x:Static viewModels:EditField.InvoiceNumber}}" />
+                                             ConverterParameter={x:Static invoices:EditField.InvoiceNumber}}" />
             <TextBox Grid.Row="6"
                      Grid.Column="1"
                      Margin="{StaticResource GridLinesMargin}"
@@ -143,7 +144,7 @@
                          GroupName="Field"
                          IsChecked="{Binding ActionSelectorViewModel.EditField,
                                              Converter={x:Static converters:EqualsToCheckedConverter.Instance},
-                                             ConverterParameter={x:Static viewModels:EditField.InvoiceNetAmount}}" />
+                                             ConverterParameter={x:Static invoices:EditField.InvoiceNetAmount}}" />
             <TextBox Grid.Row="7"
                      Grid.Column="1"
                      Margin="{StaticResource GridLinesMargin}"
@@ -165,7 +166,7 @@
                          GroupName="Field"
                          IsChecked="{Binding ActionSelectorViewModel.EditField,
                                              Converter={x:Static converters:EqualsToCheckedConverter.Instance},
-                                             ConverterParameter={x:Static viewModels:EditField.InvoiceVatAmount}}" />
+                                             ConverterParameter={x:Static invoices:EditField.InvoiceVatAmount}}" />
             <TextBox Grid.Row="9"
                      Grid.Column="1"
                      Margin="{StaticResource GridLinesMargin}"

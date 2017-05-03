@@ -5,7 +5,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:Spinvoice.ViewModels"
              xmlns:views="clr-namespace:Spinvoice.Views"
-             d:DataContext="{d:DesignInstance Type=viewModels:ProjectBrowserViewModel}"
+             xmlns:fileSystem="clr-namespace:Spinvoice.ViewModels.FileSystem"
+             d:DataContext="{d:DesignInstance Type=fileSystem:ProjectBrowserViewModel}"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">
