@@ -9,4 +9,5 @@ $publish = "Spinvoice\publish\"
 If (Test-Path $publish) { Remove-Item $publish -Force -Recurse }
 & $msbuild Spinvoice.sln /t:publish /p:Configuration=Release /p:PublishDir=publish\
 
-#& $git checkout dev
+& $git add .
+& $git commit -m "New release"
