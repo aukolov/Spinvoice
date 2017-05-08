@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -10,6 +11,8 @@ namespace Spinvoice.ViewModels.FileSystem
 {
     public class DirectoryViewModel : IFileSystemViewModel
     {
+        private static readonly HashSet<string> _supportedExtensions = new HashSet<string> { ".pdf", ".jpg", ".jpeg" };
+
         private bool _isExpanded;
         private bool _isSelected;
 
@@ -25,7 +28,11 @@ namespace Spinvoice.ViewModels.FileSystem
             Items.AddRange(fileService.GetSubDirectories(path)
                 .Select(s => new DirectoryViewModel(s, fileService, selectedPathListener)));
             Items.AddRange(fileService.GetFiles(path)
-                .Where(s => System.IO.Path.GetExtension(s) == ".pdf")
+                .Where(s =>
+                {
+                    var extension = System.IO.Path.GetExtension(s);
+                    return extension != null && _supportedExtensions.Contains(extension.ToLower());
+                })
                 .Select(s => new FileViewModel(s, selectedPathListener)));
         }
 

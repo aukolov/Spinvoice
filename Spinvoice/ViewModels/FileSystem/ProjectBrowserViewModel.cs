@@ -21,10 +21,10 @@ namespace Spinvoice.ViewModels.FileSystem
         private DirectoryViewModel[] _directoryViewModels;
         private readonly IFileService _fileService;
         private readonly AppMetadataRepository _appMetadataRepository;
-        private string _pdfPath;
+        private string _selectedFilePath;
         private string _selectedPath;
 
-        public event Action PdfChanged;
+        public event Action SelectedFileChanged;
 
         public ProjectBrowserViewModel(
             IFileService fileService,
@@ -121,15 +121,15 @@ namespace Spinvoice.ViewModels.FileSystem
             }
         }
 
-        public string PdfPath
+        public string SelectedFilePath
         {
-            get { return _pdfPath; }
+            get { return _selectedFilePath; }
             private set
             {
-                if (_pdfPath == value) return;
-                _pdfPath = value;
+                if (_selectedFilePath == value) return;
+                _selectedFilePath = value;
                 OnPropertyChanged();
-                PdfChanged.Raise();
+                SelectedFileChanged.Raise();
             }
         }
 
@@ -143,7 +143,7 @@ namespace Spinvoice.ViewModels.FileSystem
 
                 if (_fileService.FileExists(_selectedPath))
                 {
-                    PdfPath = _selectedPath;
+                    SelectedFilePath = _selectedPath;
                 }
                 OnPropertyChanged();
             }
@@ -187,7 +187,7 @@ namespace Spinvoice.ViewModels.FileSystem
             using (_appMetadataRepository.GetForUpdate(out appMetadata))
             {
                 appMetadata.LastProjectPath = ProjectDirectoryPath;
-                appMetadata.LastFilePath = PdfPath;
+                appMetadata.LastFilePath = SelectedFilePath;
             }
         }
     }

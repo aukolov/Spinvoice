@@ -20,5 +20,10 @@ namespace Spinvoice.Infrastructure.Pdf
 
             return pdfModel;
         }
+
+        public bool IsPdf(string filePath)
+        {
+            return filePath != null && System.IO.Path.GetExtension(filePath).ToLower() == ".pdf";
+        }
     }
 }

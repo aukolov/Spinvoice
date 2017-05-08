@@ -48,11 +48,11 @@ namespace Spinvoice.ViewModels
             _pdfParser = pdfParser;
 
             ProjectBrowserViewModel = new ProjectBrowserViewModel(fileService, appMetadataRepository);
-            ProjectBrowserViewModel.PdfChanged += OnPdfChanged;
+            ProjectBrowserViewModel.SelectedFileChanged += OnCurrentFileChanged;
             Dispatcher.CurrentDispatcher.InvokeAsync(() =>
                 {
                     _clipboardService = new ClipboardService();
-                    OnPdfChanged();
+                    OnCurrentFileChanged();
                 },
                 DispatcherPriority.Loaded);
             _analyzeInvoiceService = analyzeInvoiceService;
@@ -85,25 +85,28 @@ namespace Spinvoice.ViewModels
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void OnPdfChanged()
+        private void OnCurrentFileChanged()
         {
             if (_clipboardService == null)
                 return;
 
-            var pdfPath = ProjectBrowserViewModel.PdfPath;
-            if (string.IsNullOrEmpty(pdfPath))
+            var filePath = ProjectBrowserViewModel.SelectedFilePath;
+            if (string.IsNullOrEmpty(filePath))
                 return;
 
             InvoiceViewModel invoiceViewModel;
-            if (!_invoiceViewModels.TryGetValue(pdfPath, out invoiceViewModel))
+            if (!_invoiceViewModels.TryGetValue(filePath, out invoiceViewModel))
             {
+                var pdfModel = _pdfParser.IsPdf(filePath)
+                    ? _pdfParser.Parse(filePath)
+                    : null;
                 invoiceViewModel = new InvoiceViewModel(
                     _companyRepository,
                     _exchangeRatesRepository,
                     _clipboardService,
-                    _pdfParser.Parse(pdfPath),
+                    pdfModel,
                     _analyzeInvoiceService);
-                _invoiceViewModels[pdfPath] = invoiceViewModel;
+                _invoiceViewModels[filePath] = invoiceViewModel;
             }
             InvoiceViewModel = invoiceViewModel;
         }
@@ -113,7 +116,7 @@ namespace Spinvoice.ViewModels
             var exchangeRatesViewModel = new ExchangeRatesViewModel(
                 _exchangeRatesLoader,
                 _windowManager,
-                _exchangeRatesRepository, 
+                _exchangeRatesRepository,
                 _clipboardService);
             _windowManager.ShowWindow(exchangeRatesViewModel);
         }

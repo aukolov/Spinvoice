@@ -49,7 +49,10 @@ namespace Spinvoice.ViewModels.Invoices
             ActionSelectorViewModel = new ActionSelectorViewModel();
             PositionListViewModel = new PositionListViewModel(Invoice.Positions, ActionSelectorViewModel);
 
-            analyzeInvoiceService.Analyze(pdfModel, Invoice);
+            if (_pdfModel != null)
+            {
+                analyzeInvoiceService.Analyze(_pdfModel, Invoice);
+            }
         }
 
         public ActionSelectorViewModel ActionSelectorViewModel { get; }
@@ -306,14 +309,18 @@ namespace Spinvoice.ViewModels.Invoices
                 company.Currency = Invoice.Currency;
                 company.VatNumber = Invoice.VatNumber;
                 company.IsEuropeanUnion = Invoice.IsEuropeanUnion;
-                var rawInvoice = new RawInvoice
+
+                if (_pdfModel != null)
                 {
-                    CompanyName = company.Name,
-                    Date = _stringDate,
-                    InvoiceNumber = Invoice.InvoiceNumber,
-                    NetAmount = _stringNetAmount
-                };
-                _analyzeInvoiceService.Learn(company, rawInvoice, _pdfModel);
+                    var rawInvoice = new RawInvoice
+                    {
+                        CompanyName = company.Name,
+                        Date = _stringDate,
+                        InvoiceNumber = Invoice.InvoiceNumber,
+                        NetAmount = _stringNetAmount
+                    };
+                    _analyzeInvoiceService.Learn(company, rawInvoice, _pdfModel);
+                }
             }
         }
 

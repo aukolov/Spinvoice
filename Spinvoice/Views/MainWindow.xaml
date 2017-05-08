@@ -46,7 +46,7 @@
 
             <GridSplitter Grid.Column="1" />
 
-            <WebBrowser Grid.Column="2" views:WebBrowserUtility.BindableSource="{Binding ProjectBrowserViewModel.PdfPath}" />
+            <WebBrowser Grid.Column="2" views:WebBrowserUtility.BindableSource="{Binding ProjectBrowserViewModel.SelectedFilePath}" />
 
             <GridSplitter Grid.Column="3" />
 
