@@ -39,10 +39,12 @@ namespace Spinvoice.ViewModels.Invoices
             _pdfModel = pdfModel;
             _analyzeInvoiceService = analyzeInvoiceService;
 
-            CopyCommand = new RelayCommand(CopyToClipboard);
-            ClearCommand = new RelayCommand(Clear);
             Invoice = new Invoice();
             Invoice.Positions.Add(new Position());
+
+            CopyInvoiceCommand = new RelayCommand(CopyInvoice);
+            CopyPositionsCommand = new RelayCommand(CopyPositions);
+            ClearCommand = new RelayCommand(Reset);
 
             ActionSelectorViewModel = new ActionSelectorViewModel();
             PositionListViewModel = new PositionListViewModel(Invoice.Positions, ActionSelectorViewModel);
@@ -70,8 +72,8 @@ namespace Spinvoice.ViewModels.Invoices
             }
         }
 
-        public ICommand CopyCommand { get; }
-
+        public ICommand CopyInvoiceCommand { get; }
+        public RelayCommand CopyPositionsCommand { get; }
         public ICommand ClearCommand { get; }
 
         public PositionListViewModel PositionListViewModel { get; }
@@ -212,7 +214,7 @@ namespace Spinvoice.ViewModels.Invoices
             try
             {
                 ExecuteCurrentCommand();
-                if (ActionSelectorViewModel.EditField == EditField.InvoiceVatAmount 
+                if (ActionSelectorViewModel.EditField == EditField.InvoiceVatAmount
                     && PositionListViewModel.SelectedPositionViewModel == null)
                 {
                     ActionSelectorViewModel.EditField = EditField.InvoiceCompany;
@@ -275,25 +277,28 @@ namespace Spinvoice.ViewModels.Invoices
             }
         }
 
-        private void CopyToClipboard()
+        private void CopyInvoice()
         {
-            var text =
-                $"{Invoice.Date:dd.MM.yyyy}\t" +
-                $"{Invoice.CompanyName}\t" +
-                $"{Invoice.VatNumber}\t" +
-                $"{Invoice.InvoiceNumber}\t" +
-                $"{Invoice.Currency}\t" +
-                $"{Invoice.NetAmount}\t" +
-                $"{Invoice.ExchangeRate}\t" +
-                $"{Invoice.NetAmountInEuro}\t" +
-                $"{Invoice.VatAmount}\t" +
-                $"{Invoice.TotalAmount}\t" +
-                $"{Invoice.Country}\t" +
-                $"{(Invoice.IsEuropeanUnion ? "Y" : "N")}";
+            var text = InvoiceFormatter.GetInvoiceText(Invoice);
+            CopyToClipboard(text);
+            TrainAboutCompany();
+        }
 
+        private void CopyPositions()
+        {
+            var text = InvoiceFormatter.GetPositionsText(Invoice);
+            CopyToClipboard(text);
+            TrainAboutCompany();
+        }
+
+        private void CopyToClipboard(string text)
+        {
             _textToIgnore = text;
             _clipboardService.TrySetText(text);
+        }
 
+        private void TrainAboutCompany()
+        {
             Company company;
             using (_companyRepository.GetByNameForUpdateOrCreate(Invoice.CompanyName, out company))
             {
@@ -312,9 +317,10 @@ namespace Spinvoice.ViewModels.Invoices
             }
         }
 
-        private void Clear()
+        private void Reset()
         {
             Invoice.Clear();
+            Invoice.Positions.Add(new Position());
             ActionSelectorViewModel.EditField = EditField.InvoiceCompany;
         }
 

@@ -29,7 +29,7 @@
     <InstallUrl>https://raw.githubusercontent.com/aukolov/Spinvoice/master/Spinvoice/publish/</InstallUrl>
     <UpdateUrl>https://raw.githubusercontent.com/aukolov/Spinvoice/master/Spinvoice/publish/</UpdateUrl>
     <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>22</ApplicationRevision>
+    <ApplicationRevision>23</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -99,6 +99,7 @@
     <Compile Include="Services\FileService.cs" />
     <Compile Include="Services\IFileService.cs" />
     <Compile Include="Services\AnalyzeInvoiceService.cs" />
+    <Compile Include="Services\InvoiceFormatter.cs" />
     <Compile Include="Services\LogConfigurator.cs" />
     <Compile Include="Services\WindowManager.cs" />
     <Compile Include="ViewModels\Exchange\CheckExchangeRatesViewModel.cs" />

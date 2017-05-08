@@ -3,10 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:converters="clr-namespace:Spinvoice.Views.Converters"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:invoices="clr-namespace:Spinvoice.ViewModels.Invoices"
              xmlns:local="clr-namespace:Spinvoice.Views"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:viewModels="clr-namespace:Spinvoice.ViewModels"
-             xmlns:invoices="clr-namespace:Spinvoice.ViewModels.Invoices"
              d:DataContext="{d:DesignInstance Type=invoices:InvoiceViewModel}"
              d:DesignHeight="300"
              d:DesignWidth="300"
@@ -22,6 +21,7 @@
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -185,11 +185,17 @@
         </Grid>
 
         <Button Grid.Row="2"
-                Command="{Binding CopyCommand}"
-                Content="Copy" />
+                Command="{Binding CopyInvoiceCommand}"
+                Content="Copy Invoice" />
 
         <local:PositionListView Grid.Row="3"
                                 Margin="0,10,0,0"
                                 DataContext="{Binding PositionListViewModel}" />
+
+        <Button Grid.Row="4"
+                Margin="0,10,0,0"
+                Command="{Binding CopyPositionsCommand}"
+                Content="Copy Positions" />
+
     </Grid>
 </UserControl>

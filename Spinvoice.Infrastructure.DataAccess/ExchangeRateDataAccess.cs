@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Raven.Client.Linq;
 using Spinvoice.Domain.Exchange;
 
 namespace Spinvoice.Infrastructure.DataAccess

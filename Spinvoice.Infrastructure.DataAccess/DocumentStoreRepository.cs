@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using Raven.Client;
+﻿using Raven.Client;
 using Raven.Client.Embedded;
 
 namespace Spinvoice.Infrastructure.DataAccess
@@ -21,7 +19,7 @@ namespace Spinvoice.Infrastructure.DataAccess
             {
                 if (_documentStore == null)
                 {
-                    _documentStore = new EmbeddableDocumentStore()
+                    _documentStore = new EmbeddableDocumentStore
                     {
                         DataDirectory = _dataDirectory,
                         UseEmbeddedHttpServer = false
