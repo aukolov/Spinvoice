@@ -11,3 +11,7 @@ If (Test-Path $publish) { Remove-Item $publish -Force -Recurse }
 
 & $git add .
 & $git commit -m "New release"
+& $git push
+& $git checkout dev
+& $git merge master
+& $git push
