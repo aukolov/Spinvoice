@@ -8,6 +8,8 @@
         Title="Spinvoice"
         Width="525"
         Height="470"
+        MinWidth="650"
+        MinHeight="300"
         d:DataContext="{d:DesignInstance Type=viewModels:AppViewModel}"
         WindowState="Maximized"
         mc:Ignorable="d">
@@ -33,11 +35,11 @@
 
         <Grid Margin="20,10,20,20" DockPanel.Dock="Bottom">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" MinWidth="100" />
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="4*" />
+                <ColumnDefinition Width="4*" MinWidth="400" />
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="1.5*" />
+                <ColumnDefinition Width="1.5*" MinWidth="150" />
             </Grid.ColumnDefinitions>
 
             <views:ProjectBrowserView Grid.Column="0" DataContext="{Binding ProjectBrowserViewModel}" />
