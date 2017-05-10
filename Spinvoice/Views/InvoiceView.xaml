@@ -6,6 +6,7 @@
              xmlns:invoices="clr-namespace:Spinvoice.ViewModels.Invoices"
              xmlns:local="clr-namespace:Spinvoice.Views"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:services="clr-namespace:Spinvoice.Services"
              d:DataContext="{d:DesignInstance Type=invoices:InvoiceViewModel}"
              d:DesignHeight="300"
              d:DesignWidth="300"
@@ -115,7 +116,8 @@
                 <DatePicker Grid.Row="4"
                             Grid.Column="1"
                             Margin="{StaticResource GridLinesMargin}"
-                            SelectedDate="{Binding Invoice.Date}" />
+                            SelectedDate="{Binding Invoice.Date}"
+                            Text="{Binding Invoice.Date}" />
 
 
                 <TextBlock Grid.Row="5"

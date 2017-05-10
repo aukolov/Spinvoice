@@ -29,7 +29,7 @@
     <InstallUrl>https://raw.githubusercontent.com/aukolov/Spinvoice/master/Spinvoice/publish/</InstallUrl>
     <UpdateUrl>https://raw.githubusercontent.com/aukolov/Spinvoice/master/Spinvoice/publish/</UpdateUrl>
     <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>24</ApplicationRevision>
+    <ApplicationRevision>25</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -115,6 +115,7 @@
     <Compile Include="ViewModels\FileSystem\ISelectedPathListener.cs" />
     <Compile Include="ViewModels\Invoices\PositionViewModel.cs" />
     <Compile Include="ViewModels\FileSystem\ProjectBrowserViewModel.cs" />
+    <Compile Include="Views\Converters\DateToStringConverter.cs" />
     <Compile Include="Views\Converters\NullToCollapsedConverter.cs" />
     <Compile Include="Views\Exchange\CheckExchangeRatesView.xaml.cs">
       <DependentUpon>CheckExchangeRatesView.xaml</DependentUpon>
@@ -129,6 +130,7 @@
       <DependentUpon>FileSystemBrowser.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Converters\EqualsToCheckedConverter.cs" />
+    <Compile Include="Services\Format.cs" />
     <Compile Include="Views\PositionListView.xaml.cs">
       <DependentUpon>PositionListView.xaml</DependentUpon>
     </Compile>

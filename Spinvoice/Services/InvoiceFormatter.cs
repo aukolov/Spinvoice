@@ -7,8 +7,9 @@ namespace Spinvoice.Services
     {
         public static string GetInvoiceText(Invoice invoice)
         {
+            var stringDate = invoice.Date.ToString(Format.Date);
             var text =
-                $"{invoice.Date:dd.MM.yyyy}\t" +
+                stringDate + "\t" +
                 $"{invoice.CompanyName}\t" +
                 $"{invoice.VatNumber}\t" +
                 $"{invoice.InvoiceNumber}\t" +
@@ -25,16 +26,18 @@ namespace Spinvoice.Services
 
         public static string GetPositionsText(Invoice invoice)
         {
+            var stringDate = invoice.Date.ToString(Format.Date);
+
             var text = string.Join("\r\n",
                 invoice
                     .Positions
                     .Where(position => !string.IsNullOrEmpty(position.Description)
-                        || position.Quantity != 0
-                        || position.Amount != 0)
+                                       || position.Quantity != 0
+                                       || position.Amount != 0)
                     .Select(position =>
                     {
                         var line =
-                            $"{invoice.Date:dd.MM.yyyy}\t" +
+                            stringDate + "\t" +
                             $"{invoice.CompanyName}\t" +
                             $"{invoice.InvoiceNumber}\t" +
                             $"{invoice.Currency}\t" +

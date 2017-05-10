@@ -50,6 +50,7 @@ namespace Spinvoice.ViewModels.Exchange
             get { return _date; }
             set
             {
+                if (_date == value) return;
                 _date = value;
                 OnPropertyChanged(nameof(ToCurrencyRate));
                 OnPropertyChanged(nameof(ToEuroRate));

@@ -7,7 +7,8 @@ namespace Spinvoice.Views.Converters
 {
     public class NullToCollapsedConverter : IValueConverter
     {
-        public static NullToCollapsedConverter Instance = new NullToCollapsedConverter();
+        public static readonly NullToCollapsedConverter Instance = new NullToCollapsedConverter();
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return value == null ? Visibility.Collapsed : Visibility.Visible;
