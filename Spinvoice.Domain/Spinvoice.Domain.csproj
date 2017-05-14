@@ -74,6 +74,8 @@
     <Compile Include="Properties\Annotations1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Accounting\RawInvoice.cs" />
+    <Compile Include="QuickBooks\IOAuthParams.cs" />
+    <Compile Include="QuickBooks\OAuthProfile.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
