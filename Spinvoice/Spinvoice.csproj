@@ -67,6 +67,7 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.4.6\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
@@ -74,6 +75,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -140,6 +142,9 @@
     <Compile Include="Views\ProjectBrowserView.xaml.cs">
       <DependentUpon>ProjectBrowserView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\QuickBooks\QuickBooksConnectWindow.xaml.cs">
+      <DependentUpon>QuickBooksConnectWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\WebBrowserUtility.cs" />
     <Page Include="Views\CommonResources.xaml">
       <SubType>Designer</SubType>
@@ -194,6 +199,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\QuickBooks\QuickBooksConnectWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\Annotations.cs" />
@@ -220,6 +229,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Resources\BrowserVersion.reg" />
     <None Include="Spinvoice.App_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
@@ -249,6 +259,10 @@
     <ProjectReference Include="..\Spinvoice.Infrastructure.Pdf\Spinvoice.Infrastructure.Pdf.csproj">
       <Project>{EE6686CA-55A6-4DA8-A707-3B6C230AEC58}</Project>
       <Name>Spinvoice.Infrastructure.Pdf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Spinvoice.QuickBooks\Spinvoice.QuickBooks.csproj">
+      <Project>{0699B9A4-ABA3-4DA8-A2D1-A74EF840A2D7}</Project>
+      <Name>Spinvoice.QuickBooks</Name>
     </ProjectReference>
     <ProjectReference Include="..\Spinvoice.Utils\Spinvoice.Utils.csproj">
       <Project>{6c5bdcda-a72f-4eba-8270-fdbd018852f1}</Project>

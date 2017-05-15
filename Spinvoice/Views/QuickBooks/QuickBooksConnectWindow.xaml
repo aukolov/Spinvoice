@@ -1,0 +1,15 @@
+﻿<Window x:Class="Spinvoice.Views.QuickBooks.QuickBooksConnectWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:quickBooks="clr-namespace:Spinvoice.QuickBooks;assembly=Spinvoice.QuickBooks"
+        xmlns:views="clr-namespace:Spinvoice.Views"
+        Title="Connect to QuickBooks"
+        d:DataContext="{d:DesignInstance quickBooks:QuickBooksConnectViewModel}"
+        mc:Ignorable="d">
+    <Grid Margin="10">
+        <WebBrowser views:WebBrowserUtility.BindableSource="{Binding Url, Mode=TwoWay}" Navigated="WebBrowser_OnNavigated" />
+    </Grid>
+</Window>

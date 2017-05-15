@@ -1,22 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
+using Spinvoice.Domain.UI;
+using Spinvoice.QuickBooks;
 using Spinvoice.ViewModels.Exchange;
 using Spinvoice.Views.Exchange;
+using Spinvoice.Views.QuickBooks;
 
 namespace Spinvoice.Services
 {
-    public class WindowManager
+    public class WindowManager : IWindowManager
     {
         private readonly Dictionary<Type, Func<Window>> _windowFactories = new Dictionary<Type, Func<Window>>
             {
-                {typeof(ExchangeRatesViewModel),() => new ExchangeRatesWindow()}
+                {typeof(ExchangeRatesViewModel),() => new ExchangeRatesWindow()},
+                {typeof(QuickBooksConnectViewModel),() => new QuickBooksConnectWindow()}
             };
         private readonly Dictionary<object, Window> _viewModelWindows = new Dictionary<object, Window>();
-
-        public WindowManager()
-        {
-        }
 
         public void ShowWindow<T>(T viewModel)
         {

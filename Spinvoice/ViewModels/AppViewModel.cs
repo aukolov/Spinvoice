@@ -7,8 +7,10 @@ using System.Windows.Threading;
 using Spinvoice.Domain.Company;
 using Spinvoice.Domain.Exchange;
 using Spinvoice.Domain.Pdf;
+using Spinvoice.Domain.QuickBooks;
 using Spinvoice.Infrastructure.DataAccess;
 using Spinvoice.Properties;
+using Spinvoice.QuickBooks;
 using Spinvoice.Services;
 using Spinvoice.Utils;
 using Spinvoice.ViewModels.Exchange;
@@ -58,9 +60,11 @@ namespace Spinvoice.ViewModels
             _analyzeInvoiceService = analyzeInvoiceService;
             _windowManager = windowManager;
             OpenExchangeRatesCommand = new RelayCommand(OpenExchangeRates);
+            OpenQuickBooksCommand = new RelayCommand(OpenQuickBooks);
         }
 
         public ICommand OpenExchangeRatesCommand { get; }
+        public ICommand OpenQuickBooksCommand { get; }
         public ProjectBrowserViewModel ProjectBrowserViewModel { get; }
 
         public InvoiceViewModel InvoiceViewModel
@@ -119,6 +123,12 @@ namespace Spinvoice.ViewModels
                 _exchangeRatesRepository,
                 _clipboardService);
             _windowManager.ShowWindow(exchangeRatesViewModel);
+        }
+
+        private void OpenQuickBooks()
+        {
+            var quickBooksConnectViewModel = new QuickBooksConnectViewModel(new OAuthProfile(), new OAuthParams(), _windowManager);
+            _windowManager.ShowWindow(quickBooksConnectViewModel);
         }
 
         [NotifyPropertyChangedInvocator]

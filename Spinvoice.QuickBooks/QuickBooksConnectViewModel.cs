@@ -1,31 +1,54 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Web;
+using System.Windows.Input;
 using DevDefined.OAuth.Consumer;
 using DevDefined.OAuth.Framework;
+using Spinvoice.Domain.Annotations;
 using Spinvoice.Domain.QuickBooks;
+using Spinvoice.Domain.UI;
+using Spinvoice.Utils;
 
 namespace Spinvoice.QuickBooks
 {
-    public class AuthenticationViewModel : INotifyPropertyChanged
+    public class QuickBooksConnectViewModel : INotifyPropertyChanged
     {
         private const string DummyProtocol = "https://";
         private const string DummyHost = "www.spinvoice-dummy-host.com";
+        private readonly IOAuthParams _oauthParams;
+        private readonly IWindowManager _windowManager;
 
         private readonly OAuthProfile _oauthProfile;
-        private readonly IOAuthParams _oauthParams;
+        private bool _caughtCallback;
+        private string _oauthVerifier = "";
 
         private IToken _requestToken;
-        private string _oauthVerifier = "";
-        private bool _caughtCallback;
+        private string _url;
 
-        public AuthenticationViewModel(
+        public QuickBooksConnectViewModel(
             OAuthProfile oauthProfile,
-            IOAuthParams oauthParams)
+            IOAuthParams oauthParams,
+            IWindowManager windowManager)
         {
             _oauthProfile = oauthProfile;
             _oauthParams = oauthParams;
+            _windowManager = windowManager;
+
             StartOAuthHandshake();
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public string Url
+        {
+            get { return _url; }
+            set
+            {
+                if (_url == value) return;
+                _url = value;
+                OnPropertyChanged();
+            }
         }
 
         private void StartOAuthHandshake()
@@ -33,21 +56,21 @@ namespace Spinvoice.QuickBooks
             var oauthSession = CreateOAuthSession();
             _requestToken = oauthSession.GetRequestToken();
 
-            oauthBrowser.Navigate(_oauthParams.UserAuthUrl
-                                  + "?oauth_token=" + _requestToken.Token
-                                  + "&oauth_callback=" + UriUtility.UrlEncode(DummyProtocol + DummyHost));
+            Url = _oauthParams.UserAuthUrl
+                  + "?oauth_token=" + _requestToken.Token
+                  + "&oauth_callback=" + UriUtility.UrlEncode(DummyProtocol + DummyHost);
         }
 
-        private void oauthBrowser_Navigated(object sender, WebBrowserNavigatedEventArgs e)
+        public void OnNavigated(Uri uri)
         {
-            if (e.Url.Host == DummyHost)
+            if (uri.Host == DummyHost)
             {
-                var query = HttpUtility.ParseQueryString(e.Url.Query);
+                var query = HttpUtility.ParseQueryString(uri.Query);
                 _oauthVerifier = query["oauth_verifier"];
                 _oauthProfile.RealmId = query["realmId"];
                 _oauthProfile.DataSource = query["dataSource"];
                 _caughtCallback = true;
-                oauthBrowser.Navigate("about:blank");
+                Url = "about:blank";
             }
             else if (_caughtCallback)
             {
@@ -55,7 +78,7 @@ namespace Spinvoice.QuickBooks
                 _oauthProfile.AccessToken = accessToken.Token;
                 _oauthProfile.AccessSecret = accessToken.TokenSecret;
                 _oauthProfile.ExpirationDateTime = DateTime.Now.AddMonths(6);
-                Close();
+                _windowManager.Close(this);
             }
         }
 
@@ -77,6 +100,12 @@ namespace Spinvoice.QuickBooks
                 _oauthParams.RequestTokenUrl,
                 _oauthParams.UserAuthUrl,
                 _oauthParams.AccessTokenUrl);
+        }
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
