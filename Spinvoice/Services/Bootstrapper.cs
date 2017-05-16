@@ -4,8 +4,10 @@ using System.IO;
 using System.Threading;
 using Spinvoice.Domain.Company;
 using Spinvoice.Domain.Exchange;
+using Spinvoice.Domain.QuickBooks;
 using Spinvoice.Infrastructure.DataAccess;
 using Spinvoice.Infrastructure.Pdf;
+using Spinvoice.QuickBooks.Services;
 using Spinvoice.ViewModels;
 
 namespace Spinvoice.Services
@@ -36,6 +38,9 @@ namespace Spinvoice.Services
             var pdfParser = new PdfParser();
             var analyzeInvoiceService = new AnalyzeInvoiceService(companyRepository);
             var windowManager = new WindowManager();
+            var oauthProfile = new OAuthProfile();
+            var oauthParams = new OAuthParams();
+            var invoiceService = new InvoiceService(oauthParams, oauthProfile, new InvoiceToBillTranslator());
 
             return new AppViewModel(
                 companyRepository,
@@ -45,7 +50,9 @@ namespace Spinvoice.Services
                 fileService,
                 pdfParser, 
                 analyzeInvoiceService,
-                windowManager);
+                windowManager, 
+                oauthProfile, 
+                oauthParams, invoiceService);
         }
     }
 }

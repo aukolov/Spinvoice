@@ -7,6 +7,7 @@ using Spinvoice.Domain.Accounting;
 using Spinvoice.Domain.Company;
 using Spinvoice.Domain.Exchange;
 using Spinvoice.Domain.Pdf;
+using Spinvoice.QuickBooks.Services;
 using Spinvoice.Services;
 using Spinvoice.Utils;
 
@@ -15,6 +16,7 @@ namespace Spinvoice.ViewModels.Invoices
     public sealed class InvoiceViewModel : INotifyPropertyChanged
     {
         private readonly AnalyzeInvoiceService _analyzeInvoiceService;
+        private readonly InvoiceService _invoiceService;
         private readonly ClipboardService _clipboardService;
 
         private readonly ICompanyRepository _companyRepository;
@@ -31,13 +33,15 @@ namespace Spinvoice.ViewModels.Invoices
             IExchangeRatesRepository exchangeRatesRepository,
             ClipboardService clipboardService,
             PdfModel pdfModel,
-            AnalyzeInvoiceService analyzeInvoiceService)
+            AnalyzeInvoiceService analyzeInvoiceService,
+            InvoiceService invoiceService)
         {
             _clipboardService = clipboardService;
             _companyRepository = companyRepository;
             _exchangeRatesRepository = exchangeRatesRepository;
             _pdfModel = pdfModel;
             _analyzeInvoiceService = analyzeInvoiceService;
+            _invoiceService = invoiceService;
 
             Invoice = new Invoice();
             Invoice.Positions.Add(new Position());
@@ -45,6 +49,7 @@ namespace Spinvoice.ViewModels.Invoices
             CopyInvoiceCommand = new RelayCommand(CopyInvoice);
             CopyPositionsCommand = new RelayCommand(CopyPositions);
             ClearCommand = new RelayCommand(Reset);
+            SaveToQuickBooksCommand = new RelayCommand(SaveToQuickBooks);
 
             ActionSelectorViewModel = new ActionSelectorViewModel();
             PositionListViewModel = new PositionListViewModel(Invoice.Positions, ActionSelectorViewModel);
@@ -60,7 +65,7 @@ namespace Spinvoice.ViewModels.Invoices
         public Invoice Invoice
         {
             get { return _invoice; }
-            set
+            private set
             {
                 if (_invoice != null)
                 {
@@ -78,6 +83,7 @@ namespace Spinvoice.ViewModels.Invoices
         public ICommand CopyInvoiceCommand { get; }
         public RelayCommand CopyPositionsCommand { get; }
         public ICommand ClearCommand { get; }
+        public RelayCommand SaveToQuickBooksCommand { get; set; }
 
         public PositionListViewModel PositionListViewModel { get; }
 
@@ -329,6 +335,11 @@ namespace Spinvoice.ViewModels.Invoices
             Invoice.Clear();
             Invoice.Positions.Add(new Position());
             ActionSelectorViewModel.EditField = EditField.InvoiceCompany;
+        }
+
+        private void SaveToQuickBooks()
+        {
+            _invoiceService.Save(Invoice);
         }
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)

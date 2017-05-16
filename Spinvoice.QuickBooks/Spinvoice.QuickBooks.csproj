@@ -99,7 +99,9 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="QuickBooksConnectViewModel.cs" />
+    <Compile Include="Services\InvoiceService.cs" />
+    <Compile Include="Services\InvoiceToBillTranslator.cs" />
+    <Compile Include="ViewModels\QuickBooksConnectViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

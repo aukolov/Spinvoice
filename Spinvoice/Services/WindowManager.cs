@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using Spinvoice.Domain.UI;
-using Spinvoice.QuickBooks;
+using Spinvoice.QuickBooks.ViewModels;
 using Spinvoice.ViewModels.Exchange;
 using Spinvoice.Views.Exchange;
 using Spinvoice.Views.QuickBooks;

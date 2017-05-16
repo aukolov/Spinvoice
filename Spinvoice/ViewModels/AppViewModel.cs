@@ -10,7 +10,8 @@ using Spinvoice.Domain.Pdf;
 using Spinvoice.Domain.QuickBooks;
 using Spinvoice.Infrastructure.DataAccess;
 using Spinvoice.Properties;
-using Spinvoice.QuickBooks;
+using Spinvoice.QuickBooks.Services;
+using Spinvoice.QuickBooks.ViewModels;
 using Spinvoice.Services;
 using Spinvoice.Utils;
 using Spinvoice.ViewModels.Exchange;
@@ -33,6 +34,9 @@ namespace Spinvoice.ViewModels
         private readonly IPdfParser _pdfParser;
         private ClipboardService _clipboardService;
         private InvoiceViewModel _invoiceViewModel;
+        private readonly OAuthProfile _oauthProfile;
+        private readonly OAuthParams _oauthParams;
+        private readonly InvoiceService _invoiceService;
 
         public AppViewModel(
             ICompanyRepository companyRepository,
@@ -42,7 +46,10 @@ namespace Spinvoice.ViewModels
             IFileService fileService,
             IPdfParser pdfParser,
             AnalyzeInvoiceService analyzeInvoiceService,
-            WindowManager windowManager)
+            WindowManager windowManager, 
+            OAuthProfile oauthProfile, 
+            OAuthParams oauthParams, 
+            InvoiceService invoiceService)
         {
             _exchangeRatesRepository = exchangeRatesRepository;
             _companyRepository = companyRepository;
@@ -61,6 +68,9 @@ namespace Spinvoice.ViewModels
             _windowManager = windowManager;
             OpenExchangeRatesCommand = new RelayCommand(OpenExchangeRates);
             OpenQuickBooksCommand = new RelayCommand(OpenQuickBooks);
+            _oauthProfile = oauthProfile;
+            _oauthParams = oauthParams;
+            _invoiceService = invoiceService;
         }
 
         public ICommand OpenExchangeRatesCommand { get; }
@@ -109,7 +119,8 @@ namespace Spinvoice.ViewModels
                     _exchangeRatesRepository,
                     _clipboardService,
                     pdfModel,
-                    _analyzeInvoiceService);
+                    _analyzeInvoiceService,
+                    _invoiceService);
                 _invoiceViewModels[filePath] = invoiceViewModel;
             }
             InvoiceViewModel = invoiceViewModel;
@@ -127,7 +138,7 @@ namespace Spinvoice.ViewModels
 
         private void OpenQuickBooks()
         {
-            var quickBooksConnectViewModel = new QuickBooksConnectViewModel(new OAuthProfile(), new OAuthParams(), _windowManager);
+            var quickBooksConnectViewModel = new QuickBooksConnectViewModel(_oauthProfile, _oauthParams, _windowManager);
             _windowManager.ShowWindow(quickBooksConnectViewModel);
         }
 

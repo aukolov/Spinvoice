@@ -4,10 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:quickBooks="clr-namespace:Spinvoice.QuickBooks;assembly=Spinvoice.QuickBooks"
         xmlns:views="clr-namespace:Spinvoice.Views"
+        xmlns:viewModels="clr-namespace:Spinvoice.QuickBooks.ViewModels;assembly=Spinvoice.QuickBooks"
         Title="Connect to QuickBooks"
-        d:DataContext="{d:DesignInstance quickBooks:QuickBooksConnectViewModel}"
+        d:DataContext="{d:DesignInstance viewModels:QuickBooksConnectViewModel}"
         mc:Ignorable="d">
     <Grid Margin="10">
         <WebBrowser views:WebBrowserUtility.BindableSource="{Binding Url, Mode=TwoWay}" Navigated="WebBrowser_OnNavigated" />

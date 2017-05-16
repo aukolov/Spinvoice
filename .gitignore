@@ -46,6 +46,7 @@ Ankh.NoLoad
 #Other
 .svn
 OAuthParams.cs
+Secret.cs
 
 # Include DLLs if they're in the NuGet packages directory
 !/packages/*/lib/*.dll

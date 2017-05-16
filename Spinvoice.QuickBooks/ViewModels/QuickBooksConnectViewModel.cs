@@ -1,16 +1,14 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Web;
-using System.Windows.Input;
 using DevDefined.OAuth.Consumer;
 using DevDefined.OAuth.Framework;
 using Spinvoice.Domain.Annotations;
 using Spinvoice.Domain.QuickBooks;
 using Spinvoice.Domain.UI;
-using Spinvoice.Utils;
 
-namespace Spinvoice.QuickBooks
+namespace Spinvoice.QuickBooks.ViewModels
 {
     public class QuickBooksConnectViewModel : INotifyPropertyChanged
     {
