@@ -1,13 +1,12 @@
 ﻿using System.Linq;
 using Intuit.Ipp.Data;
 using Spinvoice.Domain.Accounting;
-using Invoice = Spinvoice.Domain.Accounting.Invoice;
 
-namespace Spinvoice.QuickBooks.Services
+namespace Spinvoice.QuickBooks.Invoice
 {
-    public class InvoiceToBillTranslator
+    public class ExternalInvoiceTranslator
     {
-        public Bill Translate(Invoice invoice)
+        public Bill Translate(Spinvoice.Domain.Accounting.Invoice invoice)
         {
             return new Bill
             {

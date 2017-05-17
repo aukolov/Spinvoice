@@ -4,10 +4,11 @@ using System.IO;
 using System.Threading;
 using Spinvoice.Domain.Company;
 using Spinvoice.Domain.Exchange;
-using Spinvoice.Domain.QuickBooks;
 using Spinvoice.Infrastructure.DataAccess;
 using Spinvoice.Infrastructure.Pdf;
-using Spinvoice.QuickBooks.Services;
+using Spinvoice.QuickBooks.Company;
+using Spinvoice.QuickBooks.Connection;
+using Spinvoice.QuickBooks.Invoice;
 using Spinvoice.ViewModels;
 
 namespace Spinvoice.Services
@@ -40,7 +41,13 @@ namespace Spinvoice.Services
             var windowManager = new WindowManager();
             var oauthProfile = new OAuthProfile();
             var oauthParams = new OAuthParams();
-            var invoiceService = new InvoiceService(oauthParams, oauthProfile, new InvoiceToBillTranslator());
+            var externalConnection = new ExternalConnection(oauthProfile, oauthParams);
+            var externalInvoiceService = new ExternalInvoiceService(
+                new ExternalInvoiceTranslator(), 
+                externalConnection);
+            var externalCompanyService = new ExternalCompanyService(
+                new ExternalCompanyTranslator(), 
+                externalConnection);
 
             return new AppViewModel(
                 companyRepository,
@@ -52,7 +59,8 @@ namespace Spinvoice.Services
                 analyzeInvoiceService,
                 windowManager, 
                 oauthProfile, 
-                oauthParams, invoiceService);
+                oauthParams, 
+                externalInvoiceService, externalCompanyService);
         }
     }
 }

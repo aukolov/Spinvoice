@@ -1,12 +1,12 @@
 ﻿<UserControl x:Class="Spinvoice.Views.InvoiceView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:company="clr-namespace:Spinvoice.QuickBooks.Company;assembly=Spinvoice.QuickBooks"
              xmlns:converters="clr-namespace:Spinvoice.Views.Converters"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:invoices="clr-namespace:Spinvoice.ViewModels.Invoices"
              xmlns:local="clr-namespace:Spinvoice.Views"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:services="clr-namespace:Spinvoice.Services"
              d:DataContext="{d:DesignInstance Type=invoices:InvoiceViewModel}"
              d:DesignHeight="300"
              d:DesignWidth="300"
@@ -48,6 +48,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -66,8 +67,20 @@
                          Margin="{StaticResource GridLinesMargin}"
                          Text="{Binding Invoice.CompanyName}" />
 
+                <TextBlock Grid.Row="1"
+                           Grid.Column="0"
+                           Text="QB Vendor:" />
+                <ComboBox Grid.Row="1"
+                          Grid.Column="1"
+                          ItemsSource="{Binding ExternalCompanies}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type company:ExternalCompany}">
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
 
-                <RadioButton Grid.Row="1"
+                <RadioButton Grid.Row="2"
                              Grid.Column="0"
                              Content="Country"
                              GroupName="Field"
@@ -75,111 +88,111 @@
                                                  Converter={x:Static converters:EqualsToCheckedConverter.Instance},
                                                  ConverterParameter={x:Static invoices:EditField.InvoiceCountry}}" />
 
-                <StackPanel Grid.Row="1"
+                <StackPanel Grid.Row="2"
                             Grid.Column="1"
                             Orientation="Vertical">
                     <TextBox Margin="{StaticResource GridLinesMargin}" Text="{Binding Invoice.Country}" />
                     <CheckBox Content="Is EU" IsChecked="{Binding Invoice.IsEuropeanUnion}" />
                 </StackPanel>
 
-                <RadioButton Grid.Row="2"
+                <RadioButton Grid.Row="3"
                              Grid.Column="0"
                              Content="Currency:"
                              GroupName="Field"
                              IsChecked="{Binding ActionSelectorViewModel.EditField,
                                                  Converter={x:Static converters:EqualsToCheckedConverter.Instance},
                                                  ConverterParameter={x:Static invoices:EditField.InvoiceCurrency}}" />
-                <TextBox Grid.Row="2"
+                <TextBox Grid.Row="3"
                          Grid.Column="1"
                          Margin="{StaticResource GridLinesMargin}"
                          Text="{Binding Invoice.Currency}" />
 
-                <RadioButton Grid.Row="3"
+                <RadioButton Grid.Row="4"
                              Grid.Column="0"
                              Content="VAT Number:"
                              GroupName="Field"
                              IsChecked="{Binding ActionSelectorViewModel.EditField,
                                                  Converter={x:Static converters:EqualsToCheckedConverter.Instance},
                                                  ConverterParameter={x:Static invoices:EditField.InvoiceVatNumber}}" />
-                <TextBox Grid.Row="3"
+                <TextBox Grid.Row="4"
                          Grid.Column="1"
                          Margin="{StaticResource GridLinesMargin}"
                          Text="{Binding Invoice.VatNumber}" />
 
 
-                <RadioButton Grid.Row="4"
+                <RadioButton Grid.Row="5"
                              Grid.Column="0"
                              Content="Date:"
                              GroupName="Field"
                              IsChecked="{Binding ActionSelectorViewModel.EditField,
                                                  Converter={x:Static converters:EqualsToCheckedConverter.Instance},
                                                  ConverterParameter={x:Static invoices:EditField.InvoiceDate}}" />
-                <DatePicker Grid.Row="4"
+                <DatePicker Grid.Row="5"
                             Grid.Column="1"
                             Margin="{StaticResource GridLinesMargin}"
                             SelectedDate="{Binding Invoice.Date}"
                             Text="{Binding Invoice.Date}" />
 
 
-                <TextBlock Grid.Row="5"
+                <TextBlock Grid.Row="6"
                            Grid.Column="0"
                            Text="Rate:" />
-                <TextBox Grid.Row="5"
+                <TextBox Grid.Row="6"
                          Grid.Column="1"
                          Margin="{StaticResource GridLinesMargin}"
                          Text="{Binding Invoice.ExchangeRate}" />
 
-                <RadioButton Grid.Row="6"
+                <RadioButton Grid.Row="7"
                              Grid.Column="0"
                              Content="Invoice:"
                              GroupName="Field"
                              IsChecked="{Binding ActionSelectorViewModel.EditField,
                                                  Converter={x:Static converters:EqualsToCheckedConverter.Instance},
                                                  ConverterParameter={x:Static invoices:EditField.InvoiceNumber}}" />
-                <TextBox Grid.Row="6"
+                <TextBox Grid.Row="7"
                          Grid.Column="1"
                          Margin="{StaticResource GridLinesMargin}"
                          Text="{Binding Invoice.InvoiceNumber}" />
 
 
-                <RadioButton Grid.Row="7"
+                <RadioButton Grid.Row="8"
                              Grid.Column="0"
                              Content="NET Amount:"
                              GroupName="Field"
                              IsChecked="{Binding ActionSelectorViewModel.EditField,
                                                  Converter={x:Static converters:EqualsToCheckedConverter.Instance},
                                                  ConverterParameter={x:Static invoices:EditField.InvoiceNetAmount}}" />
-                <TextBox Grid.Row="7"
+                <TextBox Grid.Row="8"
                          Grid.Column="1"
                          Margin="{StaticResource GridLinesMargin}"
                          Text="{Binding Invoice.NetAmount}" />
 
-                <TextBlock Grid.Row="8"
+                <TextBlock Grid.Row="9"
                            Grid.Column="0"
                            Text="NET Amount (EUR):" />
-                <TextBox Grid.Row="8"
+                <TextBox Grid.Row="9"
                          Grid.Column="1"
                          Margin="{StaticResource GridLinesMargin}"
                          IsReadOnly="True"
                          Text="{Binding Invoice.NetAmountInEuro,
                                         Mode=OneWay}" />
 
-                <RadioButton Grid.Row="9"
+                <RadioButton Grid.Row="10"
                              Grid.Column="0"
                              Content="VAT:"
                              GroupName="Field"
                              IsChecked="{Binding ActionSelectorViewModel.EditField,
                                                  Converter={x:Static converters:EqualsToCheckedConverter.Instance},
                                                  ConverterParameter={x:Static invoices:EditField.InvoiceVatAmount}}" />
-                <TextBox Grid.Row="9"
+                <TextBox Grid.Row="10"
                          Grid.Column="1"
                          Margin="{StaticResource GridLinesMargin}"
                          Text="{Binding Invoice.VatAmount}" />
 
-                <TextBlock Grid.Row="10"
+                <TextBlock Grid.Row="11"
                            Grid.Column="0"
                            Text="Total Amount:" />
-                <TextBox Grid.Row="10"
+                <TextBox Grid.Row="11"
                          Grid.Column="1"
                          Margin="{StaticResource GridLinesMargin}"
                          IsReadOnly="True"
@@ -204,7 +217,7 @@
             <Button Grid.Row="5"
                     Margin="0,10,0,0"
                     Command="{Binding SaveToQuickBooksCommand}"
-                    Content="Copy Positions" />
+                    Content="Save to QB" />
 
         </Grid>
     </ScrollViewer>

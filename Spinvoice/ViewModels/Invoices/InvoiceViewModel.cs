@@ -1,4 +1,5 @@
 using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -6,8 +7,9 @@ using System.Windows.Input;
 using Spinvoice.Domain.Accounting;
 using Spinvoice.Domain.Company;
 using Spinvoice.Domain.Exchange;
+using Spinvoice.Domain.ExternalBook;
 using Spinvoice.Domain.Pdf;
-using Spinvoice.QuickBooks.Services;
+using Spinvoice.QuickBooks.Invoice;
 using Spinvoice.Services;
 using Spinvoice.Utils;
 
@@ -16,7 +18,7 @@ namespace Spinvoice.ViewModels.Invoices
     public sealed class InvoiceViewModel : INotifyPropertyChanged
     {
         private readonly AnalyzeInvoiceService _analyzeInvoiceService;
-        private readonly InvoiceService _invoiceService;
+        private readonly ExternalInvoiceService _externalInvoiceService;
         private readonly ClipboardService _clipboardService;
 
         private readonly ICompanyRepository _companyRepository;
@@ -34,14 +36,15 @@ namespace Spinvoice.ViewModels.Invoices
             ClipboardService clipboardService,
             PdfModel pdfModel,
             AnalyzeInvoiceService analyzeInvoiceService,
-            InvoiceService invoiceService)
+            ExternalInvoiceService externalInvoiceService,
+            IExternalCompanyService externalCompanyService)
         {
             _clipboardService = clipboardService;
             _companyRepository = companyRepository;
             _exchangeRatesRepository = exchangeRatesRepository;
             _pdfModel = pdfModel;
             _analyzeInvoiceService = analyzeInvoiceService;
-            _invoiceService = invoiceService;
+            _externalInvoiceService = externalInvoiceService;
 
             Invoice = new Invoice();
             Invoice.Positions.Add(new Position());
@@ -53,6 +56,8 @@ namespace Spinvoice.ViewModels.Invoices
 
             ActionSelectorViewModel = new ActionSelectorViewModel();
             PositionListViewModel = new PositionListViewModel(Invoice.Positions, ActionSelectorViewModel);
+
+            ExternalCompanies = externalCompanyService.GetAll();
 
             if (_pdfModel != null)
             {
@@ -86,6 +91,8 @@ namespace Spinvoice.ViewModels.Invoices
         public RelayCommand SaveToQuickBooksCommand { get; set; }
 
         public PositionListViewModel PositionListViewModel { get; }
+
+        public ObservableCollection<IExternalCompany> ExternalCompanies { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -339,7 +346,7 @@ namespace Spinvoice.ViewModels.Invoices
 
         private void SaveToQuickBooks()
         {
-            _invoiceService.Save(Invoice);
+            _externalInvoiceService.Save(Invoice);
         }
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)

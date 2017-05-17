@@ -7,10 +7,11 @@ using System.Windows.Threading;
 using Spinvoice.Domain.Company;
 using Spinvoice.Domain.Exchange;
 using Spinvoice.Domain.Pdf;
-using Spinvoice.Domain.QuickBooks;
 using Spinvoice.Infrastructure.DataAccess;
 using Spinvoice.Properties;
-using Spinvoice.QuickBooks.Services;
+using Spinvoice.QuickBooks.Company;
+using Spinvoice.QuickBooks.Connection;
+using Spinvoice.QuickBooks.Invoice;
 using Spinvoice.QuickBooks.ViewModels;
 using Spinvoice.Services;
 using Spinvoice.Utils;
@@ -36,7 +37,8 @@ namespace Spinvoice.ViewModels
         private InvoiceViewModel _invoiceViewModel;
         private readonly OAuthProfile _oauthProfile;
         private readonly OAuthParams _oauthParams;
-        private readonly InvoiceService _invoiceService;
+        private readonly ExternalInvoiceService _externalInvoiceService;
+        private readonly ExternalCompanyService _externalCompanyService;
 
         public AppViewModel(
             ICompanyRepository companyRepository,
@@ -49,7 +51,8 @@ namespace Spinvoice.ViewModels
             WindowManager windowManager, 
             OAuthProfile oauthProfile, 
             OAuthParams oauthParams, 
-            InvoiceService invoiceService)
+            ExternalInvoiceService externalInvoiceService, 
+            ExternalCompanyService externalCompanyService)
         {
             _exchangeRatesRepository = exchangeRatesRepository;
             _companyRepository = companyRepository;
@@ -70,7 +73,8 @@ namespace Spinvoice.ViewModels
             OpenQuickBooksCommand = new RelayCommand(OpenQuickBooks);
             _oauthProfile = oauthProfile;
             _oauthParams = oauthParams;
-            _invoiceService = invoiceService;
+            _externalInvoiceService = externalInvoiceService;
+            _externalCompanyService = externalCompanyService;
         }
 
         public ICommand OpenExchangeRatesCommand { get; }
@@ -120,7 +124,8 @@ namespace Spinvoice.ViewModels
                     _clipboardService,
                     pdfModel,
                     _analyzeInvoiceService,
-                    _invoiceService);
+                    _externalInvoiceService,
+                    _externalCompanyService);
                 _invoiceViewModels[filePath] = invoiceViewModel;
             }
             InvoiceViewModel = invoiceViewModel;

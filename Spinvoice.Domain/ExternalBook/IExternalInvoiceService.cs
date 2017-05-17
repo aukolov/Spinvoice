@@ -1,8 +1,8 @@
 ﻿using Spinvoice.Domain.Accounting;
 
-namespace Spinvoice.Domain.QuickBooks
+namespace Spinvoice.Domain.ExternalBook
 {
-    public interface IInvoiceService
+    public interface IExternalInvoiceService
     {
         void Save(Invoice invoice);
     }

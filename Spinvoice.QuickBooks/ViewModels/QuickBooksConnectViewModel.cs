@@ -5,8 +5,8 @@ using System.Web;
 using DevDefined.OAuth.Consumer;
 using DevDefined.OAuth.Framework;
 using Spinvoice.Domain.Annotations;
-using Spinvoice.Domain.QuickBooks;
 using Spinvoice.Domain.UI;
+using Spinvoice.QuickBooks.Connection;
 
 namespace Spinvoice.QuickBooks.ViewModels
 {
@@ -65,17 +65,19 @@ namespace Spinvoice.QuickBooks.ViewModels
             {
                 var query = HttpUtility.ParseQueryString(uri.Query);
                 _oauthVerifier = query["oauth_verifier"];
-                _oauthProfile.RealmId = query["realmId"];
-                _oauthProfile.DataSource = query["dataSource"];
+                _oauthProfile.UpdateRealm(
+                    query["realmId"],
+                    query["dataSource"]);
                 _caughtCallback = true;
                 Url = "about:blank";
             }
             else if (_caughtCallback)
             {
                 var accessToken = ExchangeRequestTokenForAccessToken(_requestToken);
-                _oauthProfile.AccessToken = accessToken.Token;
-                _oauthProfile.AccessSecret = accessToken.TokenSecret;
-                _oauthProfile.ExpirationDateTime = DateTime.Now.AddMonths(6);
+                _oauthProfile.UpdateAccess(
+                    accessToken.Token,
+                    accessToken.TokenSecret,
+                    DateTime.Now.AddMonths(6));
                 _windowManager.Close(this);
             }
         }

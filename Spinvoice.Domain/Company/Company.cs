@@ -15,6 +15,7 @@ namespace Spinvoice.Domain.Company
         public IPdfAnalysisStrategy InvoiceNumberStrategy { get; set; }
         public IPdfAnalysisStrategy InvoiceDateStrategy { get; set; }
         public IPdfAnalysisStrategy InvoiceNetAmountStrategy { get; set; }
+        public string ExternalId { get; set; }
 
         public override string ToString()
         {
