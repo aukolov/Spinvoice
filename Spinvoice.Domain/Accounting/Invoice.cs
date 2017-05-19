@@ -18,6 +18,7 @@ namespace Spinvoice.Domain.Accounting
         private decimal _exchangeRate;
         private bool _isEuropeanUnion;
         private string _vatNumber;
+        private string _externalCompanyId;
 
         public event Action CurrencyChanged;
         public event Action DateChanged;
@@ -147,6 +148,16 @@ namespace Spinvoice.Domain.Accounting
 
         public ObservableCollection<Position> Positions { get; set; }
 
+        public string ExternalCompanyId
+        {
+            get { return _externalCompanyId; }
+            set
+            {
+                _externalCompanyId = value;
+                OnPropertyChanged();
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -180,6 +191,7 @@ namespace Spinvoice.Domain.Accounting
             _vatAmount = 0;
             _vatNumber = null;
             _isEuropeanUnion = false;
+            _externalCompanyId = null;
             Positions.Clear();
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(""));
         }

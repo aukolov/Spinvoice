@@ -6,7 +6,7 @@
         xmlns:viewModels="clr-namespace:Spinvoice.QuickBooks.ViewModels;assembly=Spinvoice.QuickBooks"
         xmlns:views="clr-namespace:Spinvoice.Views"
         Title="Connect to QuickBooks"
-        Width="300"
+        Width="450"
         d:DataContext="{d:DesignInstance viewModels:QuickBooksConnectViewModel}"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen" ShowInTaskbar="False" WindowStyle="ToolWindow">
     <WebBrowser views:WebBrowserUtility.BindableSource="{Binding Url, Mode=TwoWay}" Navigated="WebBrowser_OnNavigated" />

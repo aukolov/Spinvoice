@@ -72,7 +72,9 @@
                            Text="QB Vendor:" />
                 <ComboBox Grid.Row="1"
                           Grid.Column="1"
-                          ItemsSource="{Binding ExternalCompanies}">
+                          ItemsSource="{Binding ExternalCompanies}"
+                          SelectedValue="{Binding Invoice.ExternalCompanyId}"
+                          SelectedValuePath="Id">
                     <ComboBox.ItemTemplate>
                         <DataTemplate DataType="{x:Type company:ExternalCompany}">
                             <TextBlock Text="{Binding Name}" />

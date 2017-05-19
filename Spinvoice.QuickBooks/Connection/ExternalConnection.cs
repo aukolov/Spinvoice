@@ -4,6 +4,7 @@ using Intuit.Ipp.Core;
 using Intuit.Ipp.Data;
 using Intuit.Ipp.DataService;
 using Intuit.Ipp.Security;
+using Spinvoice.Utils;
 
 namespace Spinvoice.QuickBooks.Connection
 {
@@ -23,6 +24,8 @@ namespace Spinvoice.QuickBooks.Connection
             _oauthProfile.Updated += TryConnect;
             TryConnect();
         }
+
+        public event Action Connected;
 
         public bool IsReady => _dataService != null;
 
@@ -51,6 +54,7 @@ namespace Spinvoice.QuickBooks.Connection
                 _oauthParams.ConsumerSecret);
             var serviceContext = new ServiceContext(_oauthProfile.RealmId, IntuitServicesType.QBO, oauthRequestValidator);
             _dataService = new DataService(serviceContext);
+            Connected.Raise();
         }
     }
 }
