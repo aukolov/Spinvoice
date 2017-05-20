@@ -177,6 +177,7 @@ namespace Spinvoice.Domain.Accounting
             Currency = company.Currency;
             VatNumber = company.VatNumber;
             IsEuropeanUnion = company.IsEuropeanUnion;
+            ExternalCompanyId = company.ExternalId;
         }
 
         public void Clear()

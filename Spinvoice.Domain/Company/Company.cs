@@ -25,6 +25,7 @@ Country: {Country},
 Currency: {Currency},
 IsEuropeanUnion: {IsEuropeanUnion},
 VatNumber: {VatNumber},
+ExternalId: {ExternalId},
 CompanyInvoiceStrategy: {CompanyInvoiceStrategy}
 InvoiceNumberStrategy: {InvoiceNumberStrategy}
 InvoiceDateStrategy: {InvoiceDateStrategy}

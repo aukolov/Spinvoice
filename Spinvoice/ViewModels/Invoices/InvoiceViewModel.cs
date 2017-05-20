@@ -349,6 +349,7 @@ namespace Spinvoice.ViewModels.Invoices
                 company.Currency = Invoice.Currency;
                 company.VatNumber = Invoice.VatNumber;
                 company.IsEuropeanUnion = Invoice.IsEuropeanUnion;
+                company.ExternalId = Invoice.ExternalCompanyId;
 
                 if (_pdfModel != null)
                 {
