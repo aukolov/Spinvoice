@@ -70,17 +70,23 @@
                 <TextBlock Grid.Row="1"
                            Grid.Column="0"
                            Text="QB Vendor:" />
-                <ComboBox Grid.Row="1"
-                          Grid.Column="1"
-                          ItemsSource="{Binding ExternalCompanies}"
-                          SelectedValue="{Binding Invoice.ExternalCompanyId}"
-                          SelectedValuePath="Id">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate DataType="{x:Type company:ExternalCompany}">
-                            <TextBlock Text="{Binding Name}" />
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
+                <Grid Grid.Row="1" Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <ComboBox Grid.Column="0"
+                              DisplayMemberPath="Name"
+                              ItemsSource="{Binding ExternalCompanies}"
+                              SelectedValue="{Binding Invoice.ExternalCompanyId}"
+                              SelectedValuePath="Id" />
+                    <Button Grid.Column="1"
+                            Width="19"
+                            Height="19"
+                            Margin="5,0,0,0"
+                            Command="{Binding CreateExternalCompanyCommand}"
+                            Content="+" />
+                </Grid>
 
                 <RadioButton Grid.Row="2"
                              Grid.Column="0"

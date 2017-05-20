@@ -1,6 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
@@ -9,6 +10,7 @@ using Spinvoice.Domain.Company;
 using Spinvoice.Domain.Exchange;
 using Spinvoice.Domain.ExternalBook;
 using Spinvoice.Domain.Pdf;
+using Spinvoice.QuickBooks.Company;
 using Spinvoice.QuickBooks.Invoice;
 using Spinvoice.Services;
 using Spinvoice.Utils;
@@ -19,6 +21,7 @@ namespace Spinvoice.ViewModels.Invoices
     {
         private readonly AnalyzeInvoiceService _analyzeInvoiceService;
         private readonly ExternalInvoiceService _externalInvoiceService;
+        private readonly IExternalCompanyService _externalCompanyService;
         private readonly ClipboardService _clipboardService;
 
         private readonly ICompanyRepository _companyRepository;
@@ -45,6 +48,7 @@ namespace Spinvoice.ViewModels.Invoices
             _pdfModel = pdfModel;
             _analyzeInvoiceService = analyzeInvoiceService;
             _externalInvoiceService = externalInvoiceService;
+            _externalCompanyService = externalCompanyService;
 
             Invoice = new Invoice();
             Invoice.Positions.Add(new Position());
@@ -63,6 +67,27 @@ namespace Spinvoice.ViewModels.Invoices
             {
                 analyzeInvoiceService.Analyze(_pdfModel, Invoice);
             }
+
+            CreateExternalCompanyCommand = new RelayCommand(CreateExternalCompany);
+        }
+
+        private void CreateExternalCompany()
+        {
+            if (string.IsNullOrEmpty(Invoice.CompanyName))
+            {
+                return;
+            }
+            if (ExternalCompanies.Any(company => company.Name == Invoice.CompanyName))
+            {
+                return;
+            }
+
+            var externalCompany = new ExternalCompany
+            {
+                Name = Invoice.CompanyName
+            };
+            _externalCompanyService.Save(externalCompany);
+            Invoice.ExternalCompanyId = externalCompany.Id;
         }
 
         public ActionSelectorViewModel ActionSelectorViewModel { get; }
@@ -93,6 +118,8 @@ namespace Spinvoice.ViewModels.Invoices
         public PositionListViewModel PositionListViewModel { get; }
 
         public ObservableCollection<IExternalCompany> ExternalCompanies { get; }
+
+        public ICommand CreateExternalCompanyCommand { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
