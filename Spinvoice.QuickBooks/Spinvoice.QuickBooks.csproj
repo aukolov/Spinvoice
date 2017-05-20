@@ -100,12 +100,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Connection\ExternalConnection.cs" />
-    <Compile Include="Connection\IOAuthParams.cs" />
     <Compile Include="Connection\OAuthParams.cs" />
-    <Compile Include="Connection\OAuthProfile.cs" />
     <Compile Include="Company\ExternalCompany.cs" />
     <Compile Include="Company\ExternalCompanyService.cs" />
     <Compile Include="Company\ExternalCompanyTranslator.cs" />
+    <Compile Include="Connection\OAuthRepository.cs" />
     <Compile Include="Invoice\ExternalInvoiceService.cs" />
     <Compile Include="Invoice\ExternalInvoiceTranslator.cs" />
     <Compile Include="ViewModels\QuickBooksConnectViewModel.cs" />

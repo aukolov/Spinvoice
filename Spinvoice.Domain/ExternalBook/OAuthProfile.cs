@@ -1,15 +1,15 @@
 ﻿using System;
 using Spinvoice.Utils;
 
-namespace Spinvoice.QuickBooks.Connection
+namespace Spinvoice.Domain.ExternalBook
 {
-    public class OAuthProfile
+    public class OAuthProfile : IOAuthProfile
     {
-        public string AccessToken { get; private set; }
-        public string AccessSecret { get; private set; }
-        public string RealmId { get; private set; }
-        public string DataSource { get; private set; }
-        public DateTime ExpirationDateTime { get; private set; }
+        public string AccessToken { get; set; }
+        public string AccessSecret { get; set; }
+        public string RealmId { get; set; }
+        public string DataSource { get; set; }
+        public DateTime ExpirationDateTime { get; set; }
 
         public event Action Updated;
 

@@ -4,24 +4,22 @@ using Intuit.Ipp.Core;
 using Intuit.Ipp.Data;
 using Intuit.Ipp.DataService;
 using Intuit.Ipp.Security;
+using Spinvoice.Domain.ExternalBook;
 using Spinvoice.Utils;
 
 namespace Spinvoice.QuickBooks.Connection
 {
     public class ExternalConnection
     {
-        private readonly OAuthProfile _oauthProfile;
-        private readonly OAuthParams _oauthParams;
+        private readonly IOAuthRepository _oauthRepository;
         private DataService _dataService;
 
         public ExternalConnection(
-            OAuthProfile oauthProfile, 
-            OAuthParams oauthParams)
+            IOAuthRepository oauthRepository)
         {
-            _oauthProfile = oauthProfile;
-            _oauthParams = oauthParams;
+            _oauthRepository = oauthRepository;
 
-            _oauthProfile.Updated += TryConnect;
+            _oauthRepository.Profile.Updated += TryConnect;
             TryConnect();
         }
 
@@ -43,16 +41,19 @@ namespace Spinvoice.QuickBooks.Connection
 
         private void TryConnect()
         {
-            if (!_oauthProfile.IsReady)
+            if (!_oauthRepository.Profile.IsReady)
             {
                 return;
             }
             var oauthRequestValidator = new OAuthRequestValidator(
-                _oauthProfile.AccessToken,
-                _oauthProfile.AccessSecret,
-                _oauthParams.ConsumerKey,
-                _oauthParams.ConsumerSecret);
-            var serviceContext = new ServiceContext(_oauthProfile.RealmId, IntuitServicesType.QBO, oauthRequestValidator);
+                _oauthRepository.Profile.AccessToken,
+                _oauthRepository.Profile.AccessSecret,
+                _oauthRepository.Params.ConsumerKey,
+                _oauthRepository.Params.ConsumerSecret);
+            var serviceContext = new ServiceContext(
+                _oauthRepository.Profile.RealmId, 
+                IntuitServicesType.QBO, 
+                oauthRequestValidator);
             _dataService = new DataService(serviceContext);
             Connected.Raise();
         }

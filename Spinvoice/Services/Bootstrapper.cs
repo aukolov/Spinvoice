@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading;
 using Spinvoice.Domain.Company;
 using Spinvoice.Domain.Exchange;
+using Spinvoice.Domain.ExternalBook;
 using Spinvoice.Infrastructure.DataAccess;
 using Spinvoice.Infrastructure.Pdf;
 using Spinvoice.QuickBooks.Company;
@@ -28,20 +29,22 @@ namespace Spinvoice.Services
                 "Spinvoice",
                 "data");
             var documentStoreRepository = new DocumentStoreRepository(dataDirectory);
+
             var companyDataAccess = new CompanyDataAccess(documentStoreRepository);
-            var companyRepository = new CompanyRepository(companyDataAccess);
             var exchangeRateDataAccess = new ExchangeRateDataAccess(documentStoreRepository);
+            var appMetadataDataAccess = new AppMetadataDataAccess(documentStoreRepository);
+            var oAuthProfileDataAccess = new OAuthProfileDataAccess(documentStoreRepository);
+
+            var companyRepository = new CompanyRepository(companyDataAccess);
             var exchangeRatesLoader = new ExchangeRatesLoader(exchangeRateDataAccess);
             var exchangeRatesRepository = new ExchangeRatesRepository(exchangeRateDataAccess);
-            var appMetadataDataAccess = new AppMetadataDataAccess(documentStoreRepository);
             var appMetadataRepository = new AppMetadataRepository(appMetadataDataAccess);
             var fileService = new FileService();
             var pdfParser = new PdfParser();
             var analyzeInvoiceService = new AnalyzeInvoiceService(companyRepository);
             var windowManager = new WindowManager();
-            var oauthProfile = new OAuthProfile();
-            var oauthParams = new OAuthParams();
-            var externalConnection = new ExternalConnection(oauthProfile, oauthParams);
+            var oauthRepository = new OAuthRepository(oAuthProfileDataAccess);
+            var externalConnection = new ExternalConnection(oauthRepository);
             var externalInvoiceService = new ExternalInvoiceService(
                 new ExternalInvoiceTranslator(), 
                 externalConnection);
@@ -57,9 +60,8 @@ namespace Spinvoice.Services
                 fileService,
                 pdfParser, 
                 analyzeInvoiceService,
-                windowManager, 
-                oauthProfile, 
-                oauthParams, 
+                windowManager,
+                oauthRepository, 
                 externalInvoiceService, externalCompanyService);
         }
     }

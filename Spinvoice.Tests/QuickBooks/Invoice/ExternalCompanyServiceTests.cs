@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
+using Spinvoice.Domain.ExternalBook;
 using Spinvoice.QuickBooks.Company;
 using Spinvoice.QuickBooks.Connection;
 
@@ -14,11 +16,13 @@ namespace Spinvoice.Tests.QuickBooks.Invoice
         [SetUp]
         public void Setup()
         {
-            var oauthParams = new OAuthParams();
-            var oauthProfile = Secret.GetOAuthProfile();
+            var oathRepositoryMock = new Mock<IOAuthRepository>();
+            oathRepositoryMock.Setup(repository => repository.Profile).Returns(Secret.GetOAuthProfile());
+            oathRepositoryMock.Setup(repository => repository.Params).Returns(new OAuthParams());
+
             _externalCompanyService = new ExternalCompanyService(
                 new ExternalCompanyTranslator(),
-                new ExternalConnection(oauthProfile, oauthParams));
+                new ExternalConnection(oathRepositoryMock.Object));
         }
 
         [Test]

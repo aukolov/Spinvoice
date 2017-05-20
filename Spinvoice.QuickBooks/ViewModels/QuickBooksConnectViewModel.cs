@@ -5,8 +5,8 @@ using System.Web;
 using DevDefined.OAuth.Consumer;
 using DevDefined.OAuth.Framework;
 using Spinvoice.Domain.Annotations;
+using Spinvoice.Domain.ExternalBook;
 using Spinvoice.Domain.UI;
-using Spinvoice.QuickBooks.Connection;
 
 namespace Spinvoice.QuickBooks.ViewModels
 {
@@ -14,10 +14,8 @@ namespace Spinvoice.QuickBooks.ViewModels
     {
         private const string DummyProtocol = "https://";
         private const string DummyHost = "www.spinvoice-dummy-host.com";
-        private readonly IOAuthParams _oauthParams;
+        private readonly IOAuthRepository _oauthRepository;
         private readonly IWindowManager _windowManager;
-
-        private readonly OAuthProfile _oauthProfile;
         private bool _caughtCallback;
         private string _oauthVerifier = "";
 
@@ -25,12 +23,10 @@ namespace Spinvoice.QuickBooks.ViewModels
         private string _url;
 
         public QuickBooksConnectViewModel(
-            OAuthProfile oauthProfile,
-            IOAuthParams oauthParams,
+            IOAuthRepository oauthRepository,
             IWindowManager windowManager)
         {
-            _oauthProfile = oauthProfile;
-            _oauthParams = oauthParams;
+            _oauthRepository = oauthRepository;
             _windowManager = windowManager;
 
             StartOAuthHandshake();
@@ -54,7 +50,7 @@ namespace Spinvoice.QuickBooks.ViewModels
             var oauthSession = CreateOAuthSession();
             _requestToken = oauthSession.GetRequestToken();
 
-            Url = _oauthParams.UserAuthUrl
+            Url = _oauthRepository.Params.UserAuthUrl
                   + "?oauth_token=" + _requestToken.Token
                   + "&oauth_callback=" + UriUtility.UrlEncode(DummyProtocol + DummyHost);
         }
@@ -65,7 +61,7 @@ namespace Spinvoice.QuickBooks.ViewModels
             {
                 var query = HttpUtility.ParseQueryString(uri.Query);
                 _oauthVerifier = query["oauth_verifier"];
-                _oauthProfile.UpdateRealm(
+                _oauthRepository.Profile.UpdateRealm(
                     query["realmId"],
                     query["dataSource"]);
                 _caughtCallback = true;
@@ -74,10 +70,14 @@ namespace Spinvoice.QuickBooks.ViewModels
             else if (_caughtCallback)
             {
                 var accessToken = ExchangeRequestTokenForAccessToken(_requestToken);
-                _oauthProfile.UpdateAccess(
-                    accessToken.Token,
-                    accessToken.TokenSecret,
-                    DateTime.Now.AddMonths(6));
+                IOAuthProfile profile;
+                using (_oauthRepository.GetProfileForUpdate(out profile))
+                {
+                    profile.UpdateAccess(
+                        accessToken.Token,
+                        accessToken.TokenSecret,
+                        DateTime.Now.AddMonths(6));
+                }
                 _windowManager.Close(this);
             }
         }
@@ -93,13 +93,13 @@ namespace Spinvoice.QuickBooks.ViewModels
             return new OAuthSession(
                 new OAuthConsumerContext
                 {
-                    ConsumerKey = _oauthParams.ConsumerKey,
-                    ConsumerSecret = _oauthParams.ConsumerSecret,
+                    ConsumerKey = _oauthRepository.Params.ConsumerKey,
+                    ConsumerSecret = _oauthRepository.Params.ConsumerSecret,
                     SignatureMethod = SignatureMethod.HmacSha1
                 },
-                _oauthParams.RequestTokenUrl,
-                _oauthParams.UserAuthUrl,
-                _oauthParams.AccessTokenUrl);
+                _oauthRepository.Params.RequestTokenUrl,
+                _oauthRepository.Params.UserAuthUrl,
+                _oauthRepository.Params.AccessTokenUrl);
         }
 
         [NotifyPropertyChangedInvocator]

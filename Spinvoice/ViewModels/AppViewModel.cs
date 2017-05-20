@@ -6,6 +6,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using Spinvoice.Domain.Company;
 using Spinvoice.Domain.Exchange;
+using Spinvoice.Domain.ExternalBook;
 using Spinvoice.Domain.Pdf;
 using Spinvoice.Infrastructure.DataAccess;
 using Spinvoice.Properties;
@@ -25,6 +26,7 @@ namespace Spinvoice.ViewModels
     {
         private readonly AnalyzeInvoiceService _analyzeInvoiceService;
         private readonly WindowManager _windowManager;
+        private readonly IOAuthRepository _oauthRepository;
         private readonly ICompanyRepository _companyRepository;
         private readonly ExchangeRatesLoader _exchangeRatesLoader;
         private readonly IExchangeRatesRepository _exchangeRatesRepository;
@@ -35,8 +37,6 @@ namespace Spinvoice.ViewModels
         private readonly IPdfParser _pdfParser;
         private ClipboardService _clipboardService;
         private InvoiceViewModel _invoiceViewModel;
-        private readonly OAuthProfile _oauthProfile;
-        private readonly OAuthParams _oauthParams;
         private readonly ExternalInvoiceService _externalInvoiceService;
         private readonly ExternalCompanyService _externalCompanyService;
 
@@ -49,8 +49,7 @@ namespace Spinvoice.ViewModels
             IPdfParser pdfParser,
             AnalyzeInvoiceService analyzeInvoiceService,
             WindowManager windowManager, 
-            OAuthProfile oauthProfile, 
-            OAuthParams oauthParams, 
+            IOAuthRepository oauthRepository,
             ExternalInvoiceService externalInvoiceService, 
             ExternalCompanyService externalCompanyService)
         {
@@ -69,10 +68,9 @@ namespace Spinvoice.ViewModels
                 DispatcherPriority.Loaded);
             _analyzeInvoiceService = analyzeInvoiceService;
             _windowManager = windowManager;
+            _oauthRepository = oauthRepository;
             OpenExchangeRatesCommand = new RelayCommand(OpenExchangeRates);
             OpenQuickBooksCommand = new RelayCommand(OpenQuickBooks);
-            _oauthProfile = oauthProfile;
-            _oauthParams = oauthParams;
             _externalInvoiceService = externalInvoiceService;
             _externalCompanyService = externalCompanyService;
         }
@@ -143,7 +141,9 @@ namespace Spinvoice.ViewModels
 
         private void OpenQuickBooks()
         {
-            var quickBooksConnectViewModel = new QuickBooksConnectViewModel(_oauthProfile, _oauthParams, _windowManager);
+            var quickBooksConnectViewModel = new QuickBooksConnectViewModel(
+                _oauthRepository, 
+                _windowManager);
             _windowManager.ShowWindow(quickBooksConnectViewModel);
         }
 

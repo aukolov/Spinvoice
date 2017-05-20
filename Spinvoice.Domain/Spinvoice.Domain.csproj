@@ -61,6 +61,11 @@
     <Compile Include="Accounting\Invoice.cs" />
     <Compile Include="ExternalBook\IExternalCompanyService.cs" />
     <Compile Include="ExternalBook\IExternalCompany.cs" />
+    <Compile Include="ExternalBook\IOAuthParams.cs" />
+    <Compile Include="ExternalBook\IOAuthProfile.cs" />
+    <Compile Include="ExternalBook\IOAuthProfileDataAccess.cs" />
+    <Compile Include="ExternalBook\IOAuthRepository.cs" />
+    <Compile Include="ExternalBook\OAuthProfile.cs" />
     <Compile Include="Pdf\BlockModel.cs" />
     <Compile Include="Pdf\ContainsStrategy.cs" />
     <Compile Include="Pdf\InsideTokensStrategy.cs" />

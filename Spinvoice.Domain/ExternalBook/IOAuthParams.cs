@@ -1,4 +1,4 @@
-﻿namespace Spinvoice.QuickBooks.Connection
+﻿namespace Spinvoice.Domain.ExternalBook
 {
     public interface IOAuthParams
     {

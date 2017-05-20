@@ -64,6 +64,7 @@
     <Compile Include="DocumentStoreRepository.cs" />
     <Compile Include="ExchangeRateDataAccess.cs" />
     <Compile Include="IDocumentStoreRepository.cs" />
+    <Compile Include="OAuthProfileDataAccess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
