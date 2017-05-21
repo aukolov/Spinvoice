@@ -65,10 +65,13 @@ namespace Spinvoice.Services
 
         public void Close(object viewModel)
         {
-            Close(viewModel, null);
+            Window window;
+            if (!_viewModelWindows.TryGetValue(viewModel, out window)) return;
+
+            window.Close();
         }
 
-        public void Close(object viewModel, bool? dialogResult)
+        public void CloseDialog(object viewModel, bool? dialogResult)
         {
             Window window;
             if (!_viewModelWindows.TryGetValue(viewModel, out window)) return;

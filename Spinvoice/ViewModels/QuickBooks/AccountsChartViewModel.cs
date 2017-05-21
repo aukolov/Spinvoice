@@ -27,7 +27,7 @@ namespace Spinvoice.ViewModels.QuickBooks
             IncomeExternalAccountId = accountsChart.IncomeExternalAccountId;
 
             SaveCommand = new RelayCommand(Save);
-            CloseCommand = new RelayCommand(() => windowManager.Close(this, false));
+            CloseCommand = new RelayCommand(() => windowManager.CloseDialog(this, false));
         }
 
         public ObservableCollection<IExternalAccount> ExternalAccounts { get; }
@@ -48,7 +48,7 @@ namespace Spinvoice.ViewModels.QuickBooks
                 accountsChart.ExpenseExternalAccountId = ExpenseExternalAccountId;
                 accountsChart.IncomeExternalAccountId = IncomeExternalAccountId;
             }
-            _windowManager.Close(this, true);
+            _windowManager.CloseDialog(this, true);
         }
 
     }
