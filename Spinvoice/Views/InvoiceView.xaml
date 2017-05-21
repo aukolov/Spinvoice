@@ -1,7 +1,6 @@
 ﻿<UserControl x:Class="Spinvoice.Views.InvoiceView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:company="clr-namespace:Spinvoice.QuickBooks.Company;assembly=Spinvoice.QuickBooks"
              xmlns:converters="clr-namespace:Spinvoice.Views.Converters"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:invoices="clr-namespace:Spinvoice.ViewModels.Invoices"
@@ -225,7 +224,16 @@
             <Button Grid.Row="5"
                     Margin="0,10,0,0"
                     Command="{Binding SaveToQuickBooksCommand}"
-                    Content="Save to QB" />
+                    Content="Save to QB"
+                    Visibility="{Binding Invoice.ExternalId,
+                                         Converter={x:Static converters:NonEmptyStringToCollapsedConverter.Instance}}" />
+
+            <Button Grid.Row="5"
+                    Margin="0,10,0,0"
+                    Command="{Binding OpenInQuickBooksCommand}"
+                    Content="Open in QB"
+                    Visibility="{Binding Invoice.ExternalId,
+                                         Converter={x:Static converters:NullOrEmptyStringToCollapsedConverter.Instance}}" />
 
         </Grid>
     </ScrollViewer>

@@ -6,7 +6,6 @@ using NUnit.Framework;
 using Spinvoice.Domain.ExternalBook;
 using Spinvoice.QuickBooks.Account;
 using Spinvoice.QuickBooks.Connection;
-using Spinvoice.QuickBooks.Invoice;
 using Spinvoice.QuickBooks.Item;
 
 namespace Spinvoice.IntegrationTests.QuickBooks.Invoice

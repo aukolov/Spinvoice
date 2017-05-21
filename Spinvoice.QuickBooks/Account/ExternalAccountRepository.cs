@@ -16,6 +16,11 @@ namespace Spinvoice.QuickBooks.Account
 
         private void TryLoadData()
         {
+            if (!_externalConnection.IsConnected)
+            {
+                return;
+            }
+
             var accounts = _externalConnection
                 .GetAll<Intuit.Ipp.Data.Account>()
                 .ToArray();

@@ -94,6 +94,10 @@
       <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.9.1\lib\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.4.6\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
@@ -114,6 +118,7 @@
     <Compile Include="Item\IExternalItemRepository.cs" />
     <Compile Include="ViewModels\QuickBooksConnectViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Web\QuickBooksUrlService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -128,9 +133,7 @@
       <Name>Spinvoice.Utils</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -6,9 +6,11 @@ using Spinvoice.Domain.Company;
 using Spinvoice.Domain.Exchange;
 using Spinvoice.Infrastructure.DataAccess;
 using Spinvoice.Infrastructure.Pdf;
+using Spinvoice.QuickBooks.Account;
 using Spinvoice.QuickBooks.Company;
 using Spinvoice.QuickBooks.Connection;
 using Spinvoice.QuickBooks.Invoice;
+using Spinvoice.QuickBooks.Item;
 using Spinvoice.ViewModels;
 
 namespace Spinvoice.Services
@@ -47,8 +49,11 @@ namespace Spinvoice.Services
             var externalInvoiceService = new ExternalInvoiceService(
                 new ExternalInvoiceTranslator(), 
                 externalConnection);
-            var externalCompanyService = new ExternalCompanyRepository(
+            var externalCompanyRepository = new ExternalCompanyRepository(
                 externalConnection);
+            var externalAccountRepository = new ExternalAccountRepository(externalConnection);
+            var externalItemRepository = new ExternalItemRepository(
+                externalAccountRepository, externalConnection);
 
             return new AppViewModel(
                 companyRepository,
@@ -60,7 +65,10 @@ namespace Spinvoice.Services
                 analyzeInvoiceService,
                 windowManager,
                 oauthRepository, 
-                externalInvoiceService, externalCompanyService);
+                externalInvoiceService, 
+                externalCompanyRepository,
+                externalItemRepository,
+                externalConnection);
         }
     }
 }

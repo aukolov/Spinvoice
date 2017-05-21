@@ -4,6 +4,6 @@ namespace Spinvoice.Domain.ExternalBook
 {
     public interface IExternalInvoiceService
     {
-        void Save(Invoice invoice);
+        string Save(Invoice invoice);
     }
 }

@@ -31,7 +31,7 @@ namespace Spinvoice.QuickBooks.Item
 
         private void TryLoad()
         {
-            if (!_externalConnection.IsReady
+            if (!_externalConnection.IsConnected
                 || _externalItems.Any())
             {
                 return;

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -10,7 +11,8 @@ using Spinvoice.Domain.Company;
 using Spinvoice.Domain.Exchange;
 using Spinvoice.Domain.ExternalBook;
 using Spinvoice.Domain.Pdf;
-using Spinvoice.QuickBooks.Invoice;
+using Spinvoice.QuickBooks.Item;
+using Spinvoice.QuickBooks.Web;
 using Spinvoice.Services;
 using Spinvoice.Utils;
 
@@ -19,12 +21,13 @@ namespace Spinvoice.ViewModels.Invoices
     public sealed class InvoiceViewModel : INotifyPropertyChanged
     {
         private readonly AnalyzeInvoiceService _analyzeInvoiceService;
-        private readonly ExternalInvoiceService _externalInvoiceService;
+        private readonly IExternalInvoiceService _externalInvoiceService;
         private readonly IExternalCompanyRepository _externalCompanyRepository;
         private readonly ClipboardService _clipboardService;
 
         private readonly ICompanyRepository _companyRepository;
         private readonly IExchangeRatesRepository _exchangeRatesRepository;
+        private readonly IExternalItemRepository _externalItemRepository;
         private readonly PdfModel _pdfModel;
         private string _clipboardText;
         private Invoice _invoice;
@@ -35,15 +38,18 @@ namespace Spinvoice.ViewModels.Invoices
         public InvoiceViewModel(
             ICompanyRepository companyRepository,
             IExchangeRatesRepository exchangeRatesRepository,
+            IExternalItemRepository externalItemRepository,
             ClipboardService clipboardService,
             PdfModel pdfModel,
             AnalyzeInvoiceService analyzeInvoiceService,
-            ExternalInvoiceService externalInvoiceService,
-            IExternalCompanyRepository externalCompanyRepository)
+            IExternalInvoiceService externalInvoiceService,
+            IExternalCompanyRepository externalCompanyRepository,
+            IExternalConnectionWatcher externalConnectionWatcher)
         {
             _clipboardService = clipboardService;
             _companyRepository = companyRepository;
             _exchangeRatesRepository = exchangeRatesRepository;
+            _externalItemRepository = externalItemRepository;
             _pdfModel = pdfModel;
             _analyzeInvoiceService = analyzeInvoiceService;
             _externalInvoiceService = externalInvoiceService;
@@ -55,8 +61,7 @@ namespace Spinvoice.ViewModels.Invoices
             CopyInvoiceCommand = new RelayCommand(CopyInvoice);
             CopyPositionsCommand = new RelayCommand(CopyPositions);
             ClearCommand = new RelayCommand(Reset);
-            SaveToQuickBooksCommand = new RelayCommand(SaveToQuickBooks);
-
+            
             ActionSelectorViewModel = new ActionSelectorViewModel();
             PositionListViewModel = new PositionListViewModel(Invoice.Positions, ActionSelectorViewModel);
 
@@ -67,7 +72,18 @@ namespace Spinvoice.ViewModels.Invoices
                 analyzeInvoiceService.Analyze(_pdfModel, Invoice);
             }
 
-            CreateExternalCompanyCommand = new RelayCommand(CreateExternalCompany);
+            SaveToQuickBooksCommand = new RelayCommand(SaveToQuickBooks,
+                () => externalConnectionWatcher.IsConnected);
+            OpenInQuickBooksCommand = new RelayCommand(OpenInQuickBooks);
+            CreateExternalCompanyCommand = new RelayCommand(
+                CreateExternalCompany, 
+                () => externalConnectionWatcher.IsConnected);
+
+            externalConnectionWatcher.Connected += () =>
+            {
+                CreateExternalCompanyCommand.RaiseCanExecuteChanged();
+                SaveToQuickBooksCommand.RaiseCanExecuteChanged();
+            };
         }
 
         private void CreateExternalCompany()
@@ -109,12 +125,10 @@ namespace Spinvoice.ViewModels.Invoices
         public RelayCommand CopyPositionsCommand { get; }
         public ICommand ClearCommand { get; }
         public RelayCommand SaveToQuickBooksCommand { get; set; }
-
+        public RelayCommand OpenInQuickBooksCommand { get; }
         public PositionListViewModel PositionListViewModel { get; }
-
         public ObservableCollection<IExternalCompany> ExternalCompanies { get; }
-
-        public ICommand CreateExternalCompanyCommand { get; }
+        public RelayCommand CreateExternalCompanyCommand { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -369,7 +383,25 @@ namespace Spinvoice.ViewModels.Invoices
 
         private void SaveToQuickBooks()
         {
-            _externalInvoiceService.Save(Invoice);
+            foreach (var invoicePosition in Invoice.Positions
+                .Where(position => !string.IsNullOrEmpty(position.Name)))
+            {
+                var externalItem = _externalItemRepository.Get(invoicePosition.Name)
+                    ?? _externalItemRepository.Add(invoicePosition.Name);
+                invoicePosition.ExternalId = externalItem.Id;
+            }
+            var externalInvoiceId = _externalInvoiceService.Save(Invoice);
+            Invoice.ExternalId = externalInvoiceId;
+        }
+
+        private void OpenInQuickBooks()
+        {
+            if (string.IsNullOrEmpty(Invoice.ExternalId))
+            {
+                return;
+            }
+
+            Process.Start(QuickBooksUrlService.GetExternalInviceUrl(Invoice.ExternalId));
         }
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)

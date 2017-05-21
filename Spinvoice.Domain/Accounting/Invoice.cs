@@ -19,6 +19,7 @@ namespace Spinvoice.Domain.Accounting
         private bool _isEuropeanUnion;
         private string _vatNumber;
         private string _externalCompanyId;
+        private string _externalId;
 
         public event Action CurrencyChanged;
         public event Action DateChanged;
@@ -53,7 +54,6 @@ namespace Spinvoice.Domain.Accounting
         public string InvoiceNumber
         {
             get { return _invoiceNumber; }
-
             set
             {
                 _invoiceNumber = value;
@@ -154,6 +154,17 @@ namespace Spinvoice.Domain.Accounting
             set
             {
                 _externalCompanyId = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string ExternalId
+        {
+            get { return _externalId; }
+            set
+            {
+                if (_externalId == value) return;
+                _externalId = value;
                 OnPropertyChanged();
             }
         }

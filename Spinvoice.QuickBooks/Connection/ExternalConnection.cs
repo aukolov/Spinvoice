@@ -1,16 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Intuit.Ipp.Core;
 using Intuit.Ipp.Data;
 using Intuit.Ipp.DataService;
 using Intuit.Ipp.Security;
+using NLog;
 using Spinvoice.Domain.ExternalBook;
 using Spinvoice.Utils;
 
 namespace Spinvoice.QuickBooks.Connection
 {
-    public class ExternalConnection
+    public class ExternalConnection : IExternalConnectionWatcher
     {
+        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
         private readonly IOAuthRepository _oauthRepository;
         private DataService _dataService;
 
@@ -25,18 +29,34 @@ namespace Spinvoice.QuickBooks.Connection
 
         public event Action Connected;
 
-        public bool IsReady => _dataService != null;
+        public bool IsConnected => _dataService != null;
 
         public T Add<T>(T entity) where T : IEntity
         {
-            if (!IsReady) throw new InvalidOperationException();
+            if (!IsConnected) throw new InvalidOperationException();
             return _dataService.Add(entity);
         }
 
         public T[] GetAll<T>() where T : IEntity, new()
         {
-            if (!IsReady) throw new InvalidOperationException();
-            return _dataService.FindAll(new T()).ToArray();
+            if (!IsConnected) throw new InvalidOperationException();
+            var allItems = new List<T>();
+            var i = 1;
+            var maxResults = 1000;
+            while (true)
+            {
+                var loadedItems = _dataService.FindAll(
+                    new T(), 
+                    startPosition: i, 
+                    maxResults: maxResults).ToArray();
+                allItems.AddRange(loadedItems);
+                if (loadedItems.Length < maxResults)
+                {
+                    break;
+                }
+                i += maxResults;
+            }
+            return allItems.ToArray();
         }
 
         private void TryConnect()
@@ -54,7 +74,19 @@ namespace Spinvoice.QuickBooks.Connection
                 _oauthRepository.Profile.RealmId, 
                 IntuitServicesType.QBO, 
                 oauthRequestValidator);
-            _dataService = new DataService(serviceContext);
+            var dataService = new DataService(serviceContext);
+
+            try
+            {
+                dataService.FindAll(new Intuit.Ipp.Data.Account());
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e, "Error when testing connection with QuickBooks.");
+                return;
+            }
+
+            _dataService = dataService;
             Connected.Raise();
         }
     }

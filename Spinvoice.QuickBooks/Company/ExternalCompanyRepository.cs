@@ -22,7 +22,7 @@ namespace Spinvoice.QuickBooks.Company
 
         public ObservableCollection<IExternalCompany> GetAll()
         {
-            if (!_externalConnection.IsReady
+            if (!_externalConnection.IsConnected
                 || _externalCompanies.Any())
             {
                 return _externalCompanies;

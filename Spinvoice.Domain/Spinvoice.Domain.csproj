@@ -62,6 +62,7 @@
     <Compile Include="ExternalBook\IExternalAccount.cs" />
     <Compile Include="ExternalBook\IExternalCompanyRepository.cs" />
     <Compile Include="ExternalBook\IExternalCompany.cs" />
+    <Compile Include="ExternalBook\IExternalConnectionWatcher.cs" />
     <Compile Include="ExternalBook\IExternalItem.cs" />
     <Compile Include="ExternalBook\IOAuthParams.cs" />
     <Compile Include="ExternalBook\IOAuthProfile.cs" />

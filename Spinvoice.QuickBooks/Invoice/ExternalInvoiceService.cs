@@ -16,10 +16,11 @@ namespace Spinvoice.QuickBooks.Invoice
             _externalConnection = externalConnection;
         }
 
-        public void Save(Domain.Accounting.Invoice invoice)
+        public string Save(Domain.Accounting.Invoice invoice)
         {
             var bill = _externalInvoiceTranslator.Translate(invoice);
-            _externalConnection.Add(bill);
+            var savedBill = _externalConnection.Add(bill);
+            return savedBill.Id;
         }
     }
 }

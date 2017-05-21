@@ -10,9 +10,7 @@ using Spinvoice.Domain.ExternalBook;
 using Spinvoice.Domain.Pdf;
 using Spinvoice.Infrastructure.DataAccess;
 using Spinvoice.Properties;
-using Spinvoice.QuickBooks.Company;
-using Spinvoice.QuickBooks.Connection;
-using Spinvoice.QuickBooks.Invoice;
+using Spinvoice.QuickBooks.Item;
 using Spinvoice.QuickBooks.ViewModels;
 using Spinvoice.Services;
 using Spinvoice.Utils;
@@ -37,8 +35,10 @@ namespace Spinvoice.ViewModels
         private readonly IPdfParser _pdfParser;
         private ClipboardService _clipboardService;
         private InvoiceViewModel _invoiceViewModel;
-        private readonly ExternalInvoiceService _externalInvoiceService;
-        private readonly ExternalCompanyRepository _externalCompanyRepository;
+        private readonly IExternalInvoiceService _externalInvoiceService;
+        private readonly IExternalCompanyRepository _externalCompanyRepository;
+        private readonly IExternalItemRepository _externalItemRepository;
+        private readonly IExternalConnectionWatcher _externalConnectionWatcher;
 
         public AppViewModel(
             ICompanyRepository companyRepository,
@@ -50,8 +50,10 @@ namespace Spinvoice.ViewModels
             AnalyzeInvoiceService analyzeInvoiceService,
             WindowManager windowManager, 
             IOAuthRepository oauthRepository,
-            ExternalInvoiceService externalInvoiceService, 
-            ExternalCompanyRepository externalCompanyRepository)
+            IExternalInvoiceService externalInvoiceService, 
+            IExternalCompanyRepository externalCompanyRepository,
+            IExternalItemRepository externalItemRepository,
+            IExternalConnectionWatcher externalConnectionWatcher)
         {
             _exchangeRatesRepository = exchangeRatesRepository;
             _companyRepository = companyRepository;
@@ -73,6 +75,8 @@ namespace Spinvoice.ViewModels
             OpenQuickBooksCommand = new RelayCommand(OpenQuickBooks);
             _externalInvoiceService = externalInvoiceService;
             _externalCompanyRepository = externalCompanyRepository;
+            _externalItemRepository = externalItemRepository;
+            _externalConnectionWatcher = externalConnectionWatcher;
         }
 
         public ICommand OpenExchangeRatesCommand { get; }
@@ -119,11 +123,13 @@ namespace Spinvoice.ViewModels
                 invoiceViewModel = new InvoiceViewModel(
                     _companyRepository,
                     _exchangeRatesRepository,
+                    _externalItemRepository,
                     _clipboardService,
                     pdfModel,
                     _analyzeInvoiceService,
                     _externalInvoiceService,
-                    _externalCompanyRepository);
+                    _externalCompanyRepository,
+                    _externalConnectionWatcher);
                 _invoiceViewModels[filePath] = invoiceViewModel;
             }
             InvoiceViewModel = invoiceViewModel;

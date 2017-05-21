@@ -13,7 +13,13 @@ namespace Spinvoice.QuickBooks.Connection
         public OAuthRepository(IOAuthProfileDataAccess oauthProfileDataAccess)
         {
             _oauthProfileDataAccess = oauthProfileDataAccess;
-            _profile = _oauthProfileDataAccess.GetAll().SingleOrDefault() ?? new OAuthProfile();
+            var profiles = _oauthProfileDataAccess.GetAll();
+            if (profiles.Length > 1)
+            {
+                _oauthProfileDataAccess.DeleteAll();
+                profiles = _oauthProfileDataAccess.GetAll();
+            }
+            _profile = profiles.SingleOrDefault() ?? new OAuthProfile();
             Params = new OAuthParams();
         }
 

@@ -6,11 +6,6 @@ namespace Spinvoice.QuickBooks.Invoice
 {
     public class ExternalInvoiceTranslator
     {
-        public ExternalInvoiceTranslator()
-        {
-            
-        }
-
         public Bill Translate(Domain.Accounting.Invoice invoice)
         {
             return new Bill
@@ -19,14 +14,15 @@ namespace Spinvoice.QuickBooks.Invoice
                 Line = invoice.Positions.Select(Translate).ToArray(),
                 CurrencyRef = new ReferenceType
                 {
-                    Value = invoice.Currency,
+                    Value = invoice.Currency
                 },
                 VendorRef = new ReferenceType
                 {
                     Value = invoice.ExternalCompanyId
                 },
                 ExchangeRate = invoice.ExchangeRate,
-                ExchangeRateSpecified = invoice.ExchangeRate != 0
+                ExchangeRateSpecified = invoice.ExchangeRate != 0,
+                DocNumber = invoice.InvoiceNumber
             };
         }
 
@@ -36,15 +32,16 @@ namespace Spinvoice.QuickBooks.Invoice
             {
                 Amount = position.Amount,
                 AmountSpecified = true,
-                Description = position.Name,
-                DetailType = LineDetailTypeEnum.AccountBasedExpenseLineDetail,
+                DetailType = LineDetailTypeEnum.ItemBasedExpenseLineDetail,
                 DetailTypeSpecified = true,
-                AnyIntuitObject = new AccountBasedExpenseLineDetail
+                AnyIntuitObject = new ItemBasedExpenseLineDetail
                 {
-                    AccountRef = new ReferenceType
+                    ItemRef = new ReferenceType
                     {
-                        Value = "1"
-                    }
+                        Value = position.ExternalId
+                    },
+                    Qty = position.Quantity,
+                    QtySpecified = true
                 }
             };
             return line;
