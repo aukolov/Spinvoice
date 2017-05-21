@@ -4,7 +4,6 @@ using System.IO;
 using System.Threading;
 using Spinvoice.Domain.Company;
 using Spinvoice.Domain.Exchange;
-using Spinvoice.Domain.ExternalBook;
 using Spinvoice.Infrastructure.DataAccess;
 using Spinvoice.Infrastructure.Pdf;
 using Spinvoice.QuickBooks.Company;
@@ -48,8 +47,7 @@ namespace Spinvoice.Services
             var externalInvoiceService = new ExternalInvoiceService(
                 new ExternalInvoiceTranslator(), 
                 externalConnection);
-            var externalCompanyService = new ExternalCompanyService(
-                new ExternalCompanyTranslator(), 
+            var externalCompanyService = new ExternalCompanyRepository(
                 externalConnection);
 
             return new AppViewModel(

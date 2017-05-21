@@ -2,9 +2,9 @@
 
 namespace Spinvoice.Domain.ExternalBook
 {
-    public interface IExternalCompanyService
+    public interface IExternalCompanyRepository
     {
         ObservableCollection<IExternalCompany> GetAll();
-        void Save(IExternalCompany externalCompany);
+        IExternalCompany Create(string externalCompanyName);
     }
 }

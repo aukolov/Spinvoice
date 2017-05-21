@@ -31,7 +31,7 @@ namespace Spinvoice.Services
             var text = string.Join("\r\n",
                 invoice
                     .Positions
-                    .Where(position => !string.IsNullOrEmpty(position.Description)
+                    .Where(position => !string.IsNullOrEmpty(position.Name)
                                        || position.Quantity != 0
                                        || position.Amount != 0)
                     .Select(position =>
@@ -41,7 +41,7 @@ namespace Spinvoice.Services
                             $"{invoice.CompanyName}\t" +
                             $"{invoice.InvoiceNumber}\t" +
                             $"{invoice.Currency}\t" +
-                            $"{position.Description}\t" +
+                            $"{position.Name}\t" +
                             $"{position.Quantity}\t" +
                             $"{position.Amount}";
                         return line;

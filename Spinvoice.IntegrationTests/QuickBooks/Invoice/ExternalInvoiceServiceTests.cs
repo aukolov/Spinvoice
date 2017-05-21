@@ -7,7 +7,7 @@ using Spinvoice.Domain.ExternalBook;
 using Spinvoice.QuickBooks.Connection;
 using Spinvoice.QuickBooks.Invoice;
 
-namespace Spinvoice.Tests.QuickBooks.Invoice
+namespace Spinvoice.IntegrationTests.QuickBooks.Invoice
 {
     [TestFixture]
     public class ExternalInvoiceServiceTests
@@ -29,7 +29,7 @@ namespace Spinvoice.Tests.QuickBooks.Invoice
         [Test]
         public void CreatesBill()
         {
-            var invoice = new Spinvoice.Domain.Accounting.Invoice
+            var invoice = new Domain.Accounting.Invoice
             {
                 CompanyName = "Test Co",
                 Currency = "USD",
@@ -41,12 +41,12 @@ namespace Spinvoice.Tests.QuickBooks.Invoice
                 {
                     new Position
                     {
-                        Description = "Apples",
+                        Name = "Apples",
                         Amount = 700
                     },
                     new Position
                     {
-                        Description = "Oranges",
+                        Name = "Oranges",
                         Amount = 300
                     }
                 }

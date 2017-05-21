@@ -16,7 +16,7 @@ namespace Spinvoice.QuickBooks.Invoice
             _externalConnection = externalConnection;
         }
 
-        public void Save(Spinvoice.Domain.Accounting.Invoice invoice)
+        public void Save(Domain.Accounting.Invoice invoice)
         {
             var bill = _externalInvoiceTranslator.Translate(invoice);
             _externalConnection.Add(bill);

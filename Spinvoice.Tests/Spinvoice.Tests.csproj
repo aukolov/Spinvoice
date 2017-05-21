@@ -64,9 +64,6 @@
     <Compile Include="Infrastructure\DataAccess\ExchangeRateDataAccessTests.cs" />
     <Compile Include="Infrastructure\Pdf\PdfTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QuickBooks\Invoice\ExternalCompanyServiceTests.cs" />
-    <Compile Include="QuickBooks\Secret.cs" />
-    <Compile Include="QuickBooks\Invoice\ExternalInvoiceServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

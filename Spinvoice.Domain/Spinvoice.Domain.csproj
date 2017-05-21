@@ -59,8 +59,10 @@
     <Compile Include="Exchange\IExchangeRatesRepository.cs" />
     <Compile Include="Exchange\Rate.cs" />
     <Compile Include="Accounting\Invoice.cs" />
-    <Compile Include="ExternalBook\IExternalCompanyService.cs" />
+    <Compile Include="ExternalBook\IExternalAccount.cs" />
+    <Compile Include="ExternalBook\IExternalCompanyRepository.cs" />
     <Compile Include="ExternalBook\IExternalCompany.cs" />
+    <Compile Include="ExternalBook\IExternalItem.cs" />
     <Compile Include="ExternalBook\IOAuthParams.cs" />
     <Compile Include="ExternalBook\IOAuthProfile.cs" />
     <Compile Include="ExternalBook\IOAuthProfileDataAccess.cs" />

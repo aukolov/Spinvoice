@@ -6,17 +6,18 @@ namespace Spinvoice.Domain.Accounting
 {
     public class Position : INotifyPropertyChanged
     {
-        private string _description;
-        private int _quantity;
         private decimal _amount;
+        private string _name;
+        private int _quantity;
+        private string _externalId;
 
-        public string Description
+        public string Name
         {
-            get { return _description; }
+            get { return _name; }
             set
             {
-                if (_description == value) return;
-                _description = value;
+                if (_name == value) return;
+                _name = value;
                 OnPropertyChanged();
             }
         }
@@ -39,6 +40,17 @@ namespace Spinvoice.Domain.Accounting
             {
                 if (_amount == value) return;
                 _amount = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string ExternalId
+        {
+            get { return _externalId; }
+            set
+            {
+                if (_externalId == value) return;
+                _externalId = value;
                 OnPropertyChanged();
             }
         }

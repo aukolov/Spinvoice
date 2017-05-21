@@ -31,15 +31,15 @@
 
         <RadioButton Grid.Row="0"
                      Grid.Column="0"
-                     Content="Description"
+                     Content="Name"
                      GroupName="Field"
                      IsChecked="{Binding ActionSelectorViewModel.EditField,
                                          Converter={x:Static converters:EqualsToCheckedConverter.Instance},
-                                         ConverterParameter={x:Static invoices:EditField.PositionDescription}}" />
+                                         ConverterParameter={x:Static invoices:EditField.PositionName}}" />
         <TextBox Grid.Row="0"
                  Grid.Column="1"
                  Margin="{StaticResource GridLinesMargin}"
-                 Text="{Binding Position.Description}" />
+                 Text="{Binding Position.Name}" />
 
         <RadioButton Grid.Row="1"
                      Grid.Column="0"

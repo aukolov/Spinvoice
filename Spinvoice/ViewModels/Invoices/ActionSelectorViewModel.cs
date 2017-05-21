@@ -32,7 +32,7 @@ namespace Spinvoice.ViewModels.Invoices
         {
             var newField = ((int)EditField + 1);
             EditField = newField >= _commandsCount
-                ? EditField.PositionDescription
+                ? EditField.PositionName
                 : (EditField)newField;
         }
 

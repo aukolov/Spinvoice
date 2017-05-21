@@ -38,7 +38,7 @@ namespace Spinvoice.ViewModels
         private ClipboardService _clipboardService;
         private InvoiceViewModel _invoiceViewModel;
         private readonly ExternalInvoiceService _externalInvoiceService;
-        private readonly ExternalCompanyService _externalCompanyService;
+        private readonly ExternalCompanyRepository _externalCompanyRepository;
 
         public AppViewModel(
             ICompanyRepository companyRepository,
@@ -51,7 +51,7 @@ namespace Spinvoice.ViewModels
             WindowManager windowManager, 
             IOAuthRepository oauthRepository,
             ExternalInvoiceService externalInvoiceService, 
-            ExternalCompanyService externalCompanyService)
+            ExternalCompanyRepository externalCompanyRepository)
         {
             _exchangeRatesRepository = exchangeRatesRepository;
             _companyRepository = companyRepository;
@@ -72,7 +72,7 @@ namespace Spinvoice.ViewModels
             OpenExchangeRatesCommand = new RelayCommand(OpenExchangeRates);
             OpenQuickBooksCommand = new RelayCommand(OpenQuickBooks);
             _externalInvoiceService = externalInvoiceService;
-            _externalCompanyService = externalCompanyService;
+            _externalCompanyRepository = externalCompanyRepository;
         }
 
         public ICommand OpenExchangeRatesCommand { get; }
@@ -123,7 +123,7 @@ namespace Spinvoice.ViewModels
                     pdfModel,
                     _analyzeInvoiceService,
                     _externalInvoiceService,
-                    _externalCompanyService);
+                    _externalCompanyRepository);
                 _invoiceViewModels[filePath] = invoiceViewModel;
             }
             InvoiceViewModel = invoiceViewModel;

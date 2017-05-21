@@ -10,7 +10,6 @@ using Spinvoice.Domain.Company;
 using Spinvoice.Domain.Exchange;
 using Spinvoice.Domain.ExternalBook;
 using Spinvoice.Domain.Pdf;
-using Spinvoice.QuickBooks.Company;
 using Spinvoice.QuickBooks.Invoice;
 using Spinvoice.Services;
 using Spinvoice.Utils;
@@ -21,7 +20,7 @@ namespace Spinvoice.ViewModels.Invoices
     {
         private readonly AnalyzeInvoiceService _analyzeInvoiceService;
         private readonly ExternalInvoiceService _externalInvoiceService;
-        private readonly IExternalCompanyService _externalCompanyService;
+        private readonly IExternalCompanyRepository _externalCompanyRepository;
         private readonly ClipboardService _clipboardService;
 
         private readonly ICompanyRepository _companyRepository;
@@ -40,7 +39,7 @@ namespace Spinvoice.ViewModels.Invoices
             PdfModel pdfModel,
             AnalyzeInvoiceService analyzeInvoiceService,
             ExternalInvoiceService externalInvoiceService,
-            IExternalCompanyService externalCompanyService)
+            IExternalCompanyRepository externalCompanyRepository)
         {
             _clipboardService = clipboardService;
             _companyRepository = companyRepository;
@@ -48,7 +47,7 @@ namespace Spinvoice.ViewModels.Invoices
             _pdfModel = pdfModel;
             _analyzeInvoiceService = analyzeInvoiceService;
             _externalInvoiceService = externalInvoiceService;
-            _externalCompanyService = externalCompanyService;
+            _externalCompanyRepository = externalCompanyRepository;
 
             Invoice = new Invoice();
             Invoice.Positions.Add(new Position());
@@ -61,7 +60,7 @@ namespace Spinvoice.ViewModels.Invoices
             ActionSelectorViewModel = new ActionSelectorViewModel();
             PositionListViewModel = new PositionListViewModel(Invoice.Positions, ActionSelectorViewModel);
 
-            ExternalCompanies = externalCompanyService.GetAll();
+            ExternalCompanies = externalCompanyRepository.GetAll();
 
             if (_pdfModel != null)
             {
@@ -82,11 +81,7 @@ namespace Spinvoice.ViewModels.Invoices
                 return;
             }
 
-            var externalCompany = new ExternalCompany
-            {
-                Name = Invoice.CompanyName
-            };
-            _externalCompanyService.Save(externalCompany);
+            var externalCompany = _externalCompanyRepository.Create(Invoice.CompanyName);
             Invoice.ExternalCompanyId = externalCompany.Id;
         }
 
@@ -208,7 +203,7 @@ namespace Spinvoice.ViewModels.Invoices
         private void ChangePositionDescription()
         {
             if (PositionListViewModel.SelectedPositionViewModel != null)
-                PositionListViewModel.SelectedPositionViewModel.Position.Description = _clipboardText;
+                PositionListViewModel.SelectedPositionViewModel.Position.Name = _clipboardText;
         }
 
         private void ChangePositionQuantity()
@@ -306,7 +301,7 @@ namespace Spinvoice.ViewModels.Invoices
                 case EditField.InvoiceVatAmount:
                     ChangeVatAmount();
                     break;
-                case EditField.PositionDescription:
+                case EditField.PositionName:
                     ChangePositionDescription();
                     break;
                 case EditField.PositionQuantity:

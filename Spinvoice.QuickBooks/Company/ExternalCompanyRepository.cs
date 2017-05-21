@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using Intuit.Ipp.Data;
 using Spinvoice.Domain.ExternalBook;
@@ -8,25 +7,17 @@ using Spinvoice.Utils;
 
 namespace Spinvoice.QuickBooks.Company
 {
-    public class ExternalCompanyService : IExternalCompanyService
+    public class ExternalCompanyRepository : IExternalCompanyRepository
     {
         private readonly ExternalConnection _externalConnection;
-        private readonly ExternalCompanyTranslator _externalCompanyTranslator;
         private readonly ObservableCollection<IExternalCompany> _externalCompanies;
 
-        public ExternalCompanyService(
-            ExternalCompanyTranslator externalCompanyTranslator,
+        public ExternalCompanyRepository(
             ExternalConnection externalConnection)
         {
             _externalConnection = externalConnection;
-            _externalCompanyTranslator = externalCompanyTranslator;
             _externalCompanies = new ObservableCollection<IExternalCompany>();
-            _externalConnection.Connected += OnConnected;
-        }
-
-        private void OnConnected()
-        {
-            GetAll();
+            _externalConnection.Connected += () => GetAll();
         }
 
         public ObservableCollection<IExternalCompany> GetAll()
@@ -36,24 +27,28 @@ namespace Spinvoice.QuickBooks.Company
             {
                 return _externalCompanies;
             }
+
             var externalCompanies = _externalConnection
                 .GetAll<Vendor>()
-                .Select(vendor => _externalCompanyTranslator.Translate(vendor));
+                .Select(vendor => new ExternalCompany(vendor));
             _externalCompanies.Clear();
             _externalCompanies.AddRange(externalCompanies);
             return _externalCompanies;
         }
 
-        public void Save(IExternalCompany externalCompany)
+        public IExternalCompany Create(string externalCompanyName)
         {
-            if (externalCompany.Id != null)
+            var vendor = new Vendor
             {
-                throw new ArgumentException("External company already exists.", nameof(externalCompany));
-            }
-            var vendor = _externalCompanyTranslator.Translate(externalCompany);
+                DisplayName = externalCompanyName
+            };
             var addedVendor = _externalConnection.Add(vendor);
-            externalCompany.Id = addedVendor.Id;
+            var externalCompany = new ExternalCompany
+            {
+                Id = addedVendor.Id
+            };
             _externalCompanies.Add(externalCompany);
+            return externalCompany;
         }
     }
 }

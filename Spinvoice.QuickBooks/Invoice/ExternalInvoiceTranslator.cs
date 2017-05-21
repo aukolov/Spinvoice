@@ -6,7 +6,12 @@ namespace Spinvoice.QuickBooks.Invoice
 {
     public class ExternalInvoiceTranslator
     {
-        public Bill Translate(Spinvoice.Domain.Accounting.Invoice invoice)
+        public ExternalInvoiceTranslator()
+        {
+            
+        }
+
+        public Bill Translate(Domain.Accounting.Invoice invoice)
         {
             return new Bill
             {
@@ -15,12 +20,10 @@ namespace Spinvoice.QuickBooks.Invoice
                 CurrencyRef = new ReferenceType
                 {
                     Value = invoice.Currency,
-                    name = "United States Dollar"
                 },
                 VendorRef = new ReferenceType
                 {
-                    Value = "56",
-                    name = "Bob's Burger Joint"
+                    Value = invoice.ExternalCompanyId
                 },
                 ExchangeRate = invoice.ExchangeRate,
                 ExchangeRateSpecified = invoice.ExchangeRate != 0
@@ -33,7 +36,7 @@ namespace Spinvoice.QuickBooks.Invoice
             {
                 Amount = position.Amount,
                 AmountSpecified = true,
-                Description = position.Description,
+                Description = position.Name,
                 DetailType = LineDetailTypeEnum.AccountBasedExpenseLineDetail,
                 DetailTypeSpecified = true,
                 AnyIntuitObject = new AccountBasedExpenseLineDetail

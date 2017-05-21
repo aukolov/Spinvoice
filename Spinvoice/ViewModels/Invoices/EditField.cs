@@ -10,7 +10,7 @@
         InvoiceNumber,
         InvoiceNetAmount,
         InvoiceVatAmount,
-        PositionDescription,
+        PositionName,
         PositionQuantity,
         PositionAmount
     }

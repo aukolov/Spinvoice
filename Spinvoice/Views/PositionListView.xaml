@@ -22,7 +22,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Width="2*"
                                     Binding="{Binding Position.Description}"
-                                    Header="Description" />
+                                    Header="Name" />
                 <DataGridTextColumn Width="*"
                                     Binding="{Binding Position.Quantity}"
                                     Header="Quantity" />
