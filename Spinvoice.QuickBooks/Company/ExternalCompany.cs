@@ -12,11 +12,6 @@ namespace Spinvoice.QuickBooks.Company
             _vendor = vendor;
         }
 
-        public ExternalCompany()
-        {
-            _vendor = new Vendor();
-        }
-
         public string Id
         {
             get { return _vendor.Id; }

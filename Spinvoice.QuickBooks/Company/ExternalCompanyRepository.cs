@@ -43,10 +43,7 @@ namespace Spinvoice.QuickBooks.Company
                 DisplayName = externalCompanyName
             };
             var addedVendor = _externalConnection.Add(vendor);
-            var externalCompany = new ExternalCompany
-            {
-                Id = addedVendor.Id
-            };
+            var externalCompany = new ExternalCompany(addedVendor);
             _externalCompanies.Add(externalCompany);
             return externalCompany;
         }
