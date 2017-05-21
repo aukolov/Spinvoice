@@ -11,10 +11,13 @@ using Spinvoice.Domain.Company;
 using Spinvoice.Domain.Exchange;
 using Spinvoice.Domain.ExternalBook;
 using Spinvoice.Domain.Pdf;
+using Spinvoice.Domain.UI;
+using Spinvoice.QuickBooks.Account;
 using Spinvoice.QuickBooks.Item;
 using Spinvoice.QuickBooks.Web;
 using Spinvoice.Services;
 using Spinvoice.Utils;
+using Spinvoice.ViewModels.QuickBooks;
 
 namespace Spinvoice.ViewModels.Invoices
 {
@@ -23,11 +26,14 @@ namespace Spinvoice.ViewModels.Invoices
         private readonly AnalyzeInvoiceService _analyzeInvoiceService;
         private readonly IExternalInvoiceService _externalInvoiceService;
         private readonly IExternalCompanyRepository _externalCompanyRepository;
+        private readonly IExternalAccountRepository _externalAccountRepository;
+        private readonly IWindowManager _windowManager;
         private readonly ClipboardService _clipboardService;
 
         private readonly ICompanyRepository _companyRepository;
         private readonly IExchangeRatesRepository _exchangeRatesRepository;
         private readonly IExternalItemRepository _externalItemRepository;
+        private readonly IAccountsChartRepository _accountsChartRepository;
         private readonly PdfModel _pdfModel;
         private string _clipboardText;
         private Invoice _invoice;
@@ -39,21 +45,27 @@ namespace Spinvoice.ViewModels.Invoices
             ICompanyRepository companyRepository,
             IExchangeRatesRepository exchangeRatesRepository,
             IExternalItemRepository externalItemRepository,
+            IAccountsChartRepository accountsChartRepository,
             ClipboardService clipboardService,
             PdfModel pdfModel,
             AnalyzeInvoiceService analyzeInvoiceService,
             IExternalInvoiceService externalInvoiceService,
             IExternalCompanyRepository externalCompanyRepository,
-            IExternalConnectionWatcher externalConnectionWatcher)
+            IExternalAccountRepository externalAccountRepository,
+            IExternalConnectionWatcher externalConnectionWatcher,
+            IWindowManager windowManager)
         {
             _clipboardService = clipboardService;
             _companyRepository = companyRepository;
             _exchangeRatesRepository = exchangeRatesRepository;
             _externalItemRepository = externalItemRepository;
+            _accountsChartRepository = accountsChartRepository;
             _pdfModel = pdfModel;
             _analyzeInvoiceService = analyzeInvoiceService;
             _externalInvoiceService = externalInvoiceService;
             _externalCompanyRepository = externalCompanyRepository;
+            _externalAccountRepository = externalAccountRepository;
+            _windowManager = windowManager;
 
             Invoice = new Invoice();
             Invoice.Positions.Add(new Position());
@@ -383,8 +395,25 @@ namespace Spinvoice.ViewModels.Invoices
 
         private void SaveToQuickBooks()
         {
-            foreach (var invoicePosition in Invoice.Positions
-                .Where(position => !string.IsNullOrEmpty(position.Name)))
+            var invoicePositions = Invoice.Positions
+                .Where(position => !string.IsNullOrEmpty(position.Name))
+                .ToArray();
+            if (invoicePositions.Any())
+            {
+                while (!_accountsChartRepository.AccountsChart.IsComplete )
+                {
+                    var dialogResult = _windowManager.ShowDialog(
+                                           new AccountsChartViewModel(
+                                               _externalAccountRepository,
+                                               _accountsChartRepository,
+                                               _windowManager)) ?? false;
+                    if (!dialogResult)
+                    {
+                        return;
+                    }
+                }
+            }
+            foreach (var invoicePosition in invoicePositions)
             {
                 var externalItem = _externalItemRepository.Get(invoicePosition.Name)
                     ?? _externalItemRepository.Add(invoicePosition.Name);

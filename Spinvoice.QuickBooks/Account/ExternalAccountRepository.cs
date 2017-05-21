@@ -1,11 +1,16 @@
-﻿using System.Linq;
+﻿using System.Collections.ObjectModel;
+using System.Linq;
+using Spinvoice.Domain.ExternalBook;
 using Spinvoice.QuickBooks.Connection;
+using Spinvoice.Utils;
 
 namespace Spinvoice.QuickBooks.Account
 {
     public class ExternalAccountRepository : IExternalAccountRepository
     {
         private readonly ExternalConnection _externalConnection;
+        private readonly ObservableCollection<IExternalAccount> _externalAccounts =
+            new ObservableCollection<IExternalAccount>();
 
         public ExternalAccountRepository(ExternalConnection externalConnection)
         {
@@ -25,16 +30,13 @@ namespace Spinvoice.QuickBooks.Account
                 .GetAll<Intuit.Ipp.Data.Account>()
                 .ToArray();
 
-            InventoryAsset = new ExternalAccount(
-                accounts.Single(a => a.Name == "Inventory Asset"));
-            CostOfGoodsSold = new ExternalAccount(
-                accounts.Single(a => a.Name == "Cost of Goods Sold"));
-            SalesOfProductIncome = new ExternalAccount(
-                accounts.Single(a => a.Name == "Sales of Product Income"));
+            _externalAccounts.Clear();
+            _externalAccounts.AddRange(accounts.Select(account => new ExternalAccount(account)));
         }
 
-        public ExternalAccount SalesOfProductIncome { get; private set; }
-        public ExternalAccount CostOfGoodsSold { get; private set; }
-        public ExternalAccount InventoryAsset { get; private set; }
+        public ObservableCollection<IExternalAccount> GetAll()
+        {
+            return _externalAccounts;
+        }
     }
 }

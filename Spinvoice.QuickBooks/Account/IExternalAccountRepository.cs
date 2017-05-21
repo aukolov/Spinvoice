@@ -1,10 +1,11 @@
 ﻿
+using System.Collections.ObjectModel;
+using Spinvoice.Domain.ExternalBook;
+
 namespace Spinvoice.QuickBooks.Account
 {
     public interface IExternalAccountRepository
     {
-        ExternalAccount SalesOfProductIncome { get; }
-        ExternalAccount CostOfGoodsSold { get; }
-        ExternalAccount InventoryAsset { get; }
+        ObservableCollection<IExternalAccount> GetAll();
     }
 }

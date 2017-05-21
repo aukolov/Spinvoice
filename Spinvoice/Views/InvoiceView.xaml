@@ -89,7 +89,7 @@
 
                 <RadioButton Grid.Row="2"
                              Grid.Column="0"
-                             Content="Country"
+                             Content="Country:"
                              GroupName="Field"
                              IsChecked="{Binding ActionSelectorViewModel.EditField,
                                                  Converter={x:Static converters:EqualsToCheckedConverter.Instance},

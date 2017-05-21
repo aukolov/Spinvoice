@@ -44,6 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Accounting\AccountsChart.cs" />
+    <Compile Include="Accounting\IAccountsChartDataAccess.cs" />
+    <Compile Include="Accounting\IAccountsChartRepository.cs" />
     <Compile Include="Accounting\Position.cs" />
     <Compile Include="App\AppMetadata.cs" />
     <Compile Include="App\IAppMetadataDataAccess.cs" />

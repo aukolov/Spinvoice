@@ -8,6 +8,9 @@
         Title="Connect to QuickBooks"
         Width="450"
         d:DataContext="{d:DesignInstance viewModels:QuickBooksConnectViewModel}"
-        mc:Ignorable="d" WindowStartupLocation="CenterScreen" ShowInTaskbar="False" WindowStyle="ToolWindow">
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="ToolWindow"
+        mc:Ignorable="d">
     <WebBrowser views:WebBrowserUtility.BindableSource="{Binding Url, Mode=TwoWay}" Navigated="WebBrowser_OnNavigated" />
 </Window>

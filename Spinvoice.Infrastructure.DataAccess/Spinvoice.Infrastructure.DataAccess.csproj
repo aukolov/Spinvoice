@@ -57,6 +57,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountsChartDataAccess.cs" />
+    <Compile Include="AccountsChartRepository.cs" />
     <Compile Include="AppMetadataDataAccess.cs" />
     <Compile Include="AppMetadataRepository.cs" />
     <Compile Include="BaseDataAccess.cs" />

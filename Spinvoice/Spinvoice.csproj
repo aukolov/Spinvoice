@@ -117,6 +117,7 @@
     <Compile Include="ViewModels\FileSystem\ISelectedPathListener.cs" />
     <Compile Include="ViewModels\Invoices\PositionViewModel.cs" />
     <Compile Include="ViewModels\FileSystem\ProjectBrowserViewModel.cs" />
+    <Compile Include="ViewModels\QuickBooks\AccountsChartViewModel.cs" />
     <Compile Include="Views\Converters\DateToStringConverter.cs" />
     <Compile Include="Views\Converters\FalseToVisibleTrueToCollapsedConverter.cs" />
     <Compile Include="Views\Converters\NonEmptyStringToCollapsedConverter.cs" />
@@ -145,6 +146,9 @@
     </Compile>
     <Compile Include="Views\ProjectBrowserView.xaml.cs">
       <DependentUpon>ProjectBrowserView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\QuickBooks\AccountsChartWindow.xaml.cs">
+      <DependentUpon>AccountsChartWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\QuickBooks\QuickBooksConnectWindow.xaml.cs">
       <DependentUpon>QuickBooksConnectWindow.xaml</DependentUpon>
@@ -200,6 +204,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ProjectBrowserView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\QuickBooks\AccountsChartWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -31,6 +31,7 @@
             <MenuItem Header="_File">
                 <MenuItem Command="{Binding OpenExchangeRatesCommand}" Header="_Ex Rates" />
                 <MenuItem Command="{Binding OpenQuickBooksCommand}" Header="_QuickBooks" />
+                <MenuItem Command="{Binding OpenChartOfAccountsCommand}" Header="_Chart of Accounts" />
             </MenuItem>
         </Menu>
 

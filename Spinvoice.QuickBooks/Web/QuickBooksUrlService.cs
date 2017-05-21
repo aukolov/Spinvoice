@@ -7,7 +7,7 @@
             // ReSharper disable once JoinDeclarationAndInitializer
             string region;
 #if DEBUG
-            region = "sandbox";
+            region = "uk";
 #else
             region = "uk";
 #endif

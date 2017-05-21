@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Intuit.Ipp.Data;
+using Spinvoice.Domain.Accounting;
 using Spinvoice.Domain.ExternalBook;
-using Spinvoice.QuickBooks.Account;
 using Spinvoice.QuickBooks.Connection;
 using Spinvoice.Utils;
 
@@ -12,16 +12,16 @@ namespace Spinvoice.QuickBooks.Item
 {
     public class ExternalItemRepository : IExternalItemRepository
     {
-        private readonly IExternalAccountRepository _externalAccountRepository;
+        private readonly IAccountsChartRepository _accountsChartRepository;
         private readonly ExternalConnection _externalConnection;
         private readonly ObservableCollection<IExternalItem> _externalItems;
         private Dictionary<string, IExternalItem> _externalItemsByName;
 
         public ExternalItemRepository(
-            IExternalAccountRepository externalAccountRepository,
+            IAccountsChartRepository accountsChartRepository,
             ExternalConnection externalConnection)
         {
-            _externalAccountRepository = externalAccountRepository;
+            _accountsChartRepository = accountsChartRepository;
             _externalConnection = externalConnection;
             _externalItems = new ObservableCollection<IExternalItem>();
             _externalItemsByName = new Dictionary<string, IExternalItem>();
@@ -54,10 +54,6 @@ namespace Spinvoice.QuickBooks.Item
 
         public IExternalItem Add(string name)
         {
-            var assetAccount = _externalAccountRepository.InventoryAsset;
-            var costOfGoodsSold = _externalAccountRepository.CostOfGoodsSold;
-            var salesOfProductIncome = _externalAccountRepository.SalesOfProductIncome;
-
             var item = new Intuit.Ipp.Data.Item
             {
                 Name = name,
@@ -65,15 +61,15 @@ namespace Spinvoice.QuickBooks.Item
                 TypeSpecified = true,
                 AssetAccountRef = new ReferenceType
                 {
-                    Value = assetAccount.Id
+                    Value = _accountsChartRepository.AccountsChart.AssetExternalAccountId
                 },
                 ExpenseAccountRef = new ReferenceType
                 {
-                    Value = costOfGoodsSold.Id
+                    Value = _accountsChartRepository.AccountsChart.ExpenseExternalAccountId
                 },
                 IncomeAccountRef = new ReferenceType
                 {
-                    Value = salesOfProductIncome.Id
+                    Value = _accountsChartRepository.AccountsChart.IncomeExternalAccountId
                 },
                 TrackQtyOnHand = true,
                 TrackQtyOnHandSpecified = true,

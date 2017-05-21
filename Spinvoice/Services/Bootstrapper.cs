@@ -34,7 +34,8 @@ namespace Spinvoice.Services
             var companyDataAccess = new CompanyDataAccess(documentStoreRepository);
             var exchangeRateDataAccess = new ExchangeRateDataAccess(documentStoreRepository);
             var appMetadataDataAccess = new AppMetadataDataAccess(documentStoreRepository);
-            var oAuthProfileDataAccess = new OAuthProfileDataAccess(documentStoreRepository);
+            var oauthProfileDataAccess = new OAuthProfileDataAccess(documentStoreRepository);
+            var accountsChartDataAccess = new AccountsChartDataAccess(documentStoreRepository);
 
             var companyRepository = new CompanyRepository(companyDataAccess);
             var exchangeRatesLoader = new ExchangeRatesLoader(exchangeRateDataAccess);
@@ -44,7 +45,7 @@ namespace Spinvoice.Services
             var pdfParser = new PdfParser();
             var analyzeInvoiceService = new AnalyzeInvoiceService(companyRepository);
             var windowManager = new WindowManager();
-            var oauthRepository = new OAuthRepository(oAuthProfileDataAccess);
+            var oauthRepository = new OAuthRepository(oauthProfileDataAccess);
             var externalConnection = new ExternalConnection(oauthRepository);
             var externalInvoiceService = new ExternalInvoiceService(
                 new ExternalInvoiceTranslator(), 
@@ -52,12 +53,14 @@ namespace Spinvoice.Services
             var externalCompanyRepository = new ExternalCompanyRepository(
                 externalConnection);
             var externalAccountRepository = new ExternalAccountRepository(externalConnection);
+            var accountsChartRepository = new AccountsChartRepository(accountsChartDataAccess);
             var externalItemRepository = new ExternalItemRepository(
-                externalAccountRepository, externalConnection);
+                accountsChartRepository, externalConnection);
 
             return new AppViewModel(
                 companyRepository,
                 exchangeRatesRepository,
+                accountsChartRepository, 
                 appMetadataRepository,
                 exchangeRatesLoader,
                 fileService,
@@ -68,7 +71,8 @@ namespace Spinvoice.Services
                 externalInvoiceService, 
                 externalCompanyRepository,
                 externalItemRepository,
-                externalConnection);
+                externalConnection,
+                externalAccountRepository);
         }
     }
 }

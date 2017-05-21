@@ -3,8 +3,8 @@ using System.Linq;
 using Intuit.Ipp.Data;
 using Moq;
 using NUnit.Framework;
+using Spinvoice.Domain.Accounting;
 using Spinvoice.Domain.ExternalBook;
-using Spinvoice.QuickBooks.Account;
 using Spinvoice.QuickBooks.Connection;
 using Spinvoice.QuickBooks.Item;
 
@@ -24,8 +24,16 @@ namespace Spinvoice.IntegrationTests.QuickBooks.Invoice
             oathRepositoryMock.Setup(repository => repository.Params).Returns(new OAuthParams());
 
             _externalConnection = new ExternalConnection(oathRepositoryMock.Object);
+            var accountsChartRepositoryMock = new Mock<IAccountsChartRepository>();
+            accountsChartRepositoryMock.Setup(repository => repository.AccountsChart)
+                .Returns(new AccountsChart
+                {
+                    AssetExternalAccountId = "81",
+                    ExpenseExternalAccountId = "80",
+                    IncomeExternalAccountId = "79"
+                });
             _externalItemRepository = new ExternalItemRepository(
-                new ExternalAccountRepository(_externalConnection),
+                accountsChartRepositoryMock.Object, 
                 _externalConnection);
         }
 

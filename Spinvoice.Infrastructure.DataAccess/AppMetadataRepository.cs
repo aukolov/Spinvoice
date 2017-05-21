@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Spinvoice.Domain;
 using Spinvoice.Domain.App;
 using Spinvoice.Utils;
 

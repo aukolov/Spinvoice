@@ -7,7 +7,6 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using NLog;
 using Spinvoice.Domain.App;
-using Spinvoice.Infrastructure.DataAccess;
 using Spinvoice.Services;
 using Spinvoice.Utils;
 
@@ -20,7 +19,7 @@ namespace Spinvoice.ViewModels.FileSystem
         private string _projectDirectoryPath;
         private DirectoryViewModel[] _directoryViewModels;
         private readonly IFileService _fileService;
-        private readonly AppMetadataRepository _appMetadataRepository;
+        private readonly IAppMetadataRepository _appMetadataRepository;
         private string _selectedFilePath;
         private string _selectedPath;
 
@@ -28,7 +27,7 @@ namespace Spinvoice.ViewModels.FileSystem
 
         public ProjectBrowserViewModel(
             IFileService fileService,
-            AppMetadataRepository appMetadataRepository)
+            IAppMetadataRepository appMetadataRepository)
         {
             _fileService = fileService;
             _appMetadataRepository = appMetadataRepository;

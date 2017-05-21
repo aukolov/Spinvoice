@@ -4,12 +4,14 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Spinvoice.Domain.Accounting;
+using Spinvoice.Domain.App;
 using Spinvoice.Domain.Company;
 using Spinvoice.Domain.Exchange;
 using Spinvoice.Domain.ExternalBook;
 using Spinvoice.Domain.Pdf;
-using Spinvoice.Infrastructure.DataAccess;
 using Spinvoice.Properties;
+using Spinvoice.QuickBooks.Account;
 using Spinvoice.QuickBooks.Item;
 using Spinvoice.QuickBooks.ViewModels;
 using Spinvoice.Services;
@@ -17,6 +19,7 @@ using Spinvoice.Utils;
 using Spinvoice.ViewModels.Exchange;
 using Spinvoice.ViewModels.FileSystem;
 using Spinvoice.ViewModels.Invoices;
+using Spinvoice.ViewModels.QuickBooks;
 
 namespace Spinvoice.ViewModels
 {
@@ -28,6 +31,7 @@ namespace Spinvoice.ViewModels
         private readonly ICompanyRepository _companyRepository;
         private readonly ExchangeRatesLoader _exchangeRatesLoader;
         private readonly IExchangeRatesRepository _exchangeRatesRepository;
+        private readonly IAccountsChartRepository _accountsChartRepository;
 
         private readonly Dictionary<string, InvoiceViewModel> _invoiceViewModels =
             new Dictionary<string, InvoiceViewModel>();
@@ -39,11 +43,13 @@ namespace Spinvoice.ViewModels
         private readonly IExternalCompanyRepository _externalCompanyRepository;
         private readonly IExternalItemRepository _externalItemRepository;
         private readonly IExternalConnectionWatcher _externalConnectionWatcher;
+        private readonly IExternalAccountRepository _externalAccountRepository;
 
         public AppViewModel(
             ICompanyRepository companyRepository,
             IExchangeRatesRepository exchangeRatesRepository,
-            AppMetadataRepository appMetadataRepository,
+            IAccountsChartRepository accountsChartRepository,
+            IAppMetadataRepository appMetadataRepository,
             ExchangeRatesLoader exchangeRatesLoader,
             IFileService fileService,
             IPdfParser pdfParser,
@@ -53,9 +59,11 @@ namespace Spinvoice.ViewModels
             IExternalInvoiceService externalInvoiceService, 
             IExternalCompanyRepository externalCompanyRepository,
             IExternalItemRepository externalItemRepository,
-            IExternalConnectionWatcher externalConnectionWatcher)
+            IExternalConnectionWatcher externalConnectionWatcher,
+            IExternalAccountRepository externalAccountRepository)
         {
             _exchangeRatesRepository = exchangeRatesRepository;
+            _accountsChartRepository = accountsChartRepository;
             _companyRepository = companyRepository;
             _exchangeRatesLoader = exchangeRatesLoader;
             _pdfParser = pdfParser;
@@ -73,15 +81,22 @@ namespace Spinvoice.ViewModels
             _oauthRepository = oauthRepository;
             OpenExchangeRatesCommand = new RelayCommand(OpenExchangeRates);
             OpenQuickBooksCommand = new RelayCommand(OpenQuickBooks);
+            OpenChartOfAccountsCommand = new RelayCommand(OpenChartOfAccounts, 
+                () => _externalConnectionWatcher.IsConnected);
+
             _externalInvoiceService = externalInvoiceService;
             _externalCompanyRepository = externalCompanyRepository;
             _externalItemRepository = externalItemRepository;
             _externalConnectionWatcher = externalConnectionWatcher;
+            _externalAccountRepository = externalAccountRepository;
+            _externalConnectionWatcher.Connected += () => OpenChartOfAccountsCommand.RaiseCanExecuteChanged();
         }
 
         public ICommand OpenExchangeRatesCommand { get; }
         public ICommand OpenQuickBooksCommand { get; }
         public ProjectBrowserViewModel ProjectBrowserViewModel { get; }
+        public RelayCommand OpenChartOfAccountsCommand { get; }
+
 
         public InvoiceViewModel InvoiceViewModel
         {
@@ -96,7 +111,6 @@ namespace Spinvoice.ViewModels
                 OnPropertyChanged();
             }
         }
-
         public void Dispose()
         {
             _clipboardService?.Dispose();
@@ -124,12 +138,15 @@ namespace Spinvoice.ViewModels
                     _companyRepository,
                     _exchangeRatesRepository,
                     _externalItemRepository,
+                    _accountsChartRepository,
                     _clipboardService,
                     pdfModel,
                     _analyzeInvoiceService,
                     _externalInvoiceService,
                     _externalCompanyRepository,
-                    _externalConnectionWatcher);
+                    _externalAccountRepository,
+                    _externalConnectionWatcher,
+                    _windowManager);
                 _invoiceViewModels[filePath] = invoiceViewModel;
             }
             InvoiceViewModel = invoiceViewModel;
@@ -152,6 +169,16 @@ namespace Spinvoice.ViewModels
                 _windowManager);
             _windowManager.ShowWindow(quickBooksConnectViewModel);
         }
+
+        private void OpenChartOfAccounts()
+        {
+            var accountsChartViewModel = new AccountsChartViewModel(
+                _externalAccountRepository,
+                _accountsChartRepository,
+                _windowManager);
+            _windowManager.ShowDialog(accountsChartViewModel);
+        }
+
 
         [NotifyPropertyChangedInvocator]
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
