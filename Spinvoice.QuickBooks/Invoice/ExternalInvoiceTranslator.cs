@@ -11,7 +11,9 @@ namespace Spinvoice.QuickBooks.Invoice
             return new Bill
             {
                 TotalAmt = invoice.TotalAmount,
-                Line = invoice.Positions.Select(Translate).ToArray(),
+                Line = invoice.Positions
+                    .Where(position => !string.IsNullOrEmpty(position.Name))
+                    .Select(Translate).ToArray(),
                 CurrencyRef = new ReferenceType
                 {
                     Value = invoice.Currency
@@ -22,7 +24,9 @@ namespace Spinvoice.QuickBooks.Invoice
                 },
                 ExchangeRate = invoice.ExchangeRate,
                 ExchangeRateSpecified = invoice.ExchangeRate != 0,
-                DocNumber = invoice.InvoiceNumber
+                DocNumber = invoice.InvoiceNumber,
+                TxnDate = invoice.Date,
+                TxnDateSpecified = true
             };
         }
 
