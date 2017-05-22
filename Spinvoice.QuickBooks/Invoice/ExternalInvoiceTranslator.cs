@@ -45,7 +45,12 @@ namespace Spinvoice.QuickBooks.Invoice
                         Value = position.ExternalId
                     },
                     Qty = position.Quantity,
-                    QtySpecified = true
+                    QtySpecified = true,
+                    ItemElementName = ItemChoiceType.UnitPrice,
+                    AnyIntuitObject = position.Quantity == 0
+                        ? 0m
+                        : position.Amount / position.Quantity
+
                 }
             };
             return line;

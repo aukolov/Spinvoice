@@ -123,6 +123,7 @@
     <Compile Include="QuickBooks\Invoice\ExternalCompanyServiceTests.cs" />
     <Compile Include="QuickBooks\Invoice\ExternalInvoiceServiceTests.cs" />
     <Compile Include="QuickBooks\Invoice\ExternalItemServiceTests.cs" />
+    <Compile Include="QuickBooks\Invoice\SandboxAccountChartProvider.cs" />
     <Compile Include="QuickBooks\Secret.cs" />
     <Compile Include="TestInput.cs" />
     <Compile Include="TestInputProvider.cs" />

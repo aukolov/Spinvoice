@@ -4,8 +4,10 @@ using Moq;
 using NUnit.Framework;
 using Spinvoice.Domain.Accounting;
 using Spinvoice.Domain.ExternalBook;
+using Spinvoice.QuickBooks.Company;
 using Spinvoice.QuickBooks.Connection;
 using Spinvoice.QuickBooks.Invoice;
+using Spinvoice.QuickBooks.Item;
 
 namespace Spinvoice.IntegrationTests.QuickBooks.Invoice
 {
@@ -13,6 +15,8 @@ namespace Spinvoice.IntegrationTests.QuickBooks.Invoice
     public class ExternalInvoiceServiceTests
     {
         private ExternalInvoiceService _externalInvoiceService;
+        private ExternalItemRepository _externalItemRepository;
+        private ExternalCompanyRepository _externalCompanyRepository;
 
         [SetUp]
         public void Setup()
@@ -21,17 +25,34 @@ namespace Spinvoice.IntegrationTests.QuickBooks.Invoice
             oathRepositoryMock.Setup(repository => repository.Profile).Returns(Secret.GetOAuthProfile());
             oathRepositoryMock.Setup(repository => repository.Params).Returns(new OAuthParams());
 
+            var externalConnection = new ExternalConnection(oathRepositoryMock.Object);
+            var accountsChartRepositoryMock = new Mock<IAccountsChartRepository>();
+            accountsChartRepositoryMock.Setup(repository => repository.AccountsChart)
+                .Returns(SandboxAccountChartProvider.Get());
+            _externalCompanyRepository = new ExternalCompanyRepository(externalConnection);
+            _externalItemRepository = new ExternalItemRepository(
+                accountsChartRepositoryMock.Object,
+                externalConnection);
             _externalInvoiceService = new ExternalInvoiceService(
                 new ExternalInvoiceTranslator(),
-                new ExternalConnection(oathRepositoryMock.Object));
+                externalConnection);
         }
 
         [Test]
         public void CreatesBill()
         {
+            var applesName = "Apples " + Guid.NewGuid();
+            var orangesName = "Oranges " + Guid.NewGuid();
+            var externalApples = _externalItemRepository.Add(applesName);
+            var externalOranges = _externalItemRepository.Add(orangesName);
+
+            var companyName = "Test Co " + Guid.NewGuid();
+            var externalCompany = _externalCompanyRepository.Create(companyName);
+
             var invoice = new Domain.Accounting.Invoice
             {
-                CompanyName = "Test Co",
+                CompanyName = companyName,
+                ExternalCompanyId = externalCompany.Id,
                 Currency = "USD",
                 Date = new DateTime(2017, 5, 17),
                 InvoiceNumber = "INV NO 123",
@@ -41,13 +62,17 @@ namespace Spinvoice.IntegrationTests.QuickBooks.Invoice
                 {
                     new Position
                     {
-                        Name = "Apples",
-                        Amount = 700
+                        Name = applesName,
+                        Amount = 700,
+                        Quantity = 100,
+                        ExternalId = externalApples.Id
                     },
                     new Position
                     {
-                        Name = "Oranges",
-                        Amount = 300
+                        Name = orangesName,
+                        Amount = 300,
+                        Quantity = 110,
+                        ExternalId = externalOranges.Id
                     }
                 }
             };

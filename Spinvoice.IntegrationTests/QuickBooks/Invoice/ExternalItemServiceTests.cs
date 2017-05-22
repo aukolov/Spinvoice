@@ -26,12 +26,7 @@ namespace Spinvoice.IntegrationTests.QuickBooks.Invoice
             _externalConnection = new ExternalConnection(oathRepositoryMock.Object);
             var accountsChartRepositoryMock = new Mock<IAccountsChartRepository>();
             accountsChartRepositoryMock.Setup(repository => repository.AccountsChart)
-                .Returns(new AccountsChart
-                {
-                    AssetExternalAccountId = "81",
-                    ExpenseExternalAccountId = "80",
-                    IncomeExternalAccountId = "79"
-                });
+                .Returns(SandboxAccountChartProvider.Get());
             _externalItemRepository = new ExternalItemRepository(
                 accountsChartRepositoryMock.Object, 
                 _externalConnection);
