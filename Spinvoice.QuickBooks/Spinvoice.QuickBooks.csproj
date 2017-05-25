@@ -111,6 +111,7 @@
     <Compile Include="Company\ExternalCompany.cs" />
     <Compile Include="Company\ExternalCompanyRepository.cs" />
     <Compile Include="Connection\OAuthRepository.cs" />
+    <Compile Include="ExchangeRate\ExternalExchangeRatesRepository.cs" />
     <Compile Include="Invoice\ExternalInvoiceService.cs" />
     <Compile Include="Invoice\ExternalInvoiceTranslator.cs" />
     <Compile Include="Item\ExternalItem.cs" />

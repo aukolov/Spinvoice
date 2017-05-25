@@ -109,7 +109,9 @@ namespace Spinvoice.ViewModels.Invoices
                 return;
             }
 
-            var externalCompany = _externalCompanyRepository.Create(Invoice.CompanyName);
+            var externalCompany = _externalCompanyRepository.Create(
+                Invoice.CompanyName,
+                Invoice.Currency);
             Invoice.ExternalCompanyId = externalCompany.Id;
         }
 

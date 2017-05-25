@@ -1,6 +1,6 @@
 ﻿using Spinvoice.Domain.Accounting;
 
-namespace Spinvoice.IntegrationTests.QuickBooks.Invoice
+namespace Spinvoice.IntegrationTests.QuickBooks
 {
     public static class SandboxAccountChartProvider
     {

@@ -8,7 +8,7 @@ using Spinvoice.Domain.ExternalBook;
 using Spinvoice.QuickBooks.Connection;
 using Spinvoice.QuickBooks.Item;
 
-namespace Spinvoice.IntegrationTests.QuickBooks.Invoice
+namespace Spinvoice.IntegrationTests.QuickBooks
 {
     [TestFixture]
     public class ExternalItemServiceTests

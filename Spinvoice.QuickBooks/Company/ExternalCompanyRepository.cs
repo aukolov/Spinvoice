@@ -36,11 +36,17 @@ namespace Spinvoice.QuickBooks.Company
             return _externalCompanies;
         }
 
-        public IExternalCompany Create(string externalCompanyName)
+        public IExternalCompany Create(
+            string externalCompanyName,
+            string currency)
         {
             var vendor = new Vendor
             {
-                DisplayName = externalCompanyName
+                DisplayName = externalCompanyName,
+                CurrencyRef = new ReferenceType
+                {
+                    Value = currency
+                }
             };
             var addedVendor = _externalConnection.Add(vendor);
             var externalCompany = new ExternalCompany(addedVendor);

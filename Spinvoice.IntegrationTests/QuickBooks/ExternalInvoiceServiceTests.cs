@@ -9,7 +9,7 @@ using Spinvoice.QuickBooks.Connection;
 using Spinvoice.QuickBooks.Invoice;
 using Spinvoice.QuickBooks.Item;
 
-namespace Spinvoice.IntegrationTests.QuickBooks.Invoice
+namespace Spinvoice.IntegrationTests.QuickBooks
 {
     [TestFixture]
     public class ExternalInvoiceServiceTests
@@ -42,18 +42,22 @@ namespace Spinvoice.IntegrationTests.QuickBooks.Invoice
         public void CreatesBill()
         {
             var applesName = "Apples " + Guid.NewGuid();
-            var orangesName = "Oranges " + Guid.NewGuid();
             var externalApples = _externalItemRepository.Add(applesName);
+            Assert.IsNotNull(externalApples.Id);
+
+            var orangesName = "Oranges " + Guid.NewGuid();
             var externalOranges = _externalItemRepository.Add(orangesName);
+            Assert.IsNotNull(externalOranges.Id);
 
             var companyName = "Test Co " + Guid.NewGuid();
-            var externalCompany = _externalCompanyRepository.Create(companyName);
+            var externalCompany = _externalCompanyRepository.Create(companyName, "GBP");
+            Assert.IsNotNull(externalCompany.Id);
 
             var invoice = new Domain.Accounting.Invoice
             {
                 CompanyName = companyName,
                 ExternalCompanyId = externalCompany.Id,
-                Currency = "USD",
+                Currency = "GBP",
                 Date = new DateTime(2017, 5, 17),
                 InvoiceNumber = "INV NO 123",
                 ExchangeRate = 1.05123m,

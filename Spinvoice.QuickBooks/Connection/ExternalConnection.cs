@@ -4,6 +4,7 @@ using System.Linq;
 using Intuit.Ipp.Core;
 using Intuit.Ipp.Data;
 using Intuit.Ipp.DataService;
+using Intuit.Ipp.QueryFilter;
 using Intuit.Ipp.Security;
 using NLog;
 using Spinvoice.Domain.ExternalBook;
@@ -17,6 +18,7 @@ namespace Spinvoice.QuickBooks.Connection
 
         private readonly IOAuthRepository _oauthRepository;
         private DataService _dataService;
+        private QueryService<Intuit.Ipp.Data.ExchangeRate> _queryService;
 
         public ExternalConnection(
             IOAuthRepository oauthRepository)
@@ -46,8 +48,8 @@ namespace Spinvoice.QuickBooks.Connection
             while (true)
             {
                 var loadedItems = _dataService.FindAll(
-                    new T(), 
-                    startPosition: i, 
+                    new T(),
+                    startPosition: i,
                     maxResults: maxResults).ToArray();
                 allItems.AddRange(loadedItems);
                 if (loadedItems.Length < maxResults)
@@ -71,8 +73,8 @@ namespace Spinvoice.QuickBooks.Connection
                 _oauthRepository.Params.ConsumerKey,
                 _oauthRepository.Params.ConsumerSecret);
             var serviceContext = new ServiceContext(
-                _oauthRepository.Profile.RealmId, 
-                IntuitServicesType.QBO, 
+                _oauthRepository.Profile.RealmId,
+                IntuitServicesType.QBO,
                 oauthRequestValidator);
             var dataService = new DataService(serviceContext);
 
@@ -87,7 +89,17 @@ namespace Spinvoice.QuickBooks.Connection
             }
 
             _dataService = dataService;
+            _queryService = new QueryService<Intuit.Ipp.Data.ExchangeRate>(serviceContext);
             Connected.Raise();
+        }
+
+        public Intuit.Ipp.Data.ExchangeRate GetExchangeRate(DateTime date, string sourceCurrency)
+        {
+            var items = _queryService.ExecuteIdsQuery(
+                "select * from exchangerate " +
+                $"where sourcecurrencycode='{sourceCurrency}' " +
+                $"and asofdate='{date:yyyy-MM-dd}'");
+            return items.FirstOrDefault();
         }
     }
 }

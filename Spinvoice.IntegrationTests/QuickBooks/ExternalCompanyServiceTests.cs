@@ -6,7 +6,7 @@ using Spinvoice.Domain.ExternalBook;
 using Spinvoice.QuickBooks.Company;
 using Spinvoice.QuickBooks.Connection;
 
-namespace Spinvoice.IntegrationTests.QuickBooks.Invoice
+namespace Spinvoice.IntegrationTests.QuickBooks
 {
     [TestFixture]
     public class ExternalCompanyServiceTests
@@ -29,7 +29,7 @@ namespace Spinvoice.IntegrationTests.QuickBooks.Invoice
         {
             var companyName = "Test Co " + Guid.NewGuid().ToString("N");
 
-            var externalCompany = _externalCompanyRepository.Create(companyName);
+            var externalCompany = _externalCompanyRepository.Create(companyName, "USD");
 
             Assert.IsFalse(string.IsNullOrEmpty(externalCompany.Id));
             var loadedExternalCompany = _externalCompanyRepository.GetAll()

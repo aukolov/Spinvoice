@@ -9,6 +9,7 @@ using Spinvoice.Infrastructure.Pdf;
 using Spinvoice.QuickBooks.Account;
 using Spinvoice.QuickBooks.Company;
 using Spinvoice.QuickBooks.Connection;
+using Spinvoice.QuickBooks.ExchangeRate;
 using Spinvoice.QuickBooks.Invoice;
 using Spinvoice.QuickBooks.Item;
 using Spinvoice.ViewModels;
@@ -39,14 +40,17 @@ namespace Spinvoice.Services
 
             var companyRepository = new CompanyRepository(companyDataAccess);
             var exchangeRatesLoader = new ExchangeRatesLoader(exchangeRateDataAccess);
-            var exchangeRatesRepository = new ExchangeRatesRepository(exchangeRateDataAccess);
+            //var exchangeRatesRepository = new ExchangeRatesRepository(exchangeRateDataAccess);
             var appMetadataRepository = new AppMetadataRepository(appMetadataDataAccess);
             var fileService = new FileService();
             var pdfParser = new PdfParser();
             var analyzeInvoiceService = new AnalyzeInvoiceService(companyRepository);
             var windowManager = new WindowManager();
+
             var oauthRepository = new OAuthRepository(oauthProfileDataAccess);
             var externalConnection = new ExternalConnection(oauthRepository);
+
+            var exchangeRatesRepository = new ExternalExchangeRatesRepository(externalConnection);
             var externalInvoiceService = new ExternalInvoiceService(
                 new ExternalInvoiceTranslator(), 
                 externalConnection);
