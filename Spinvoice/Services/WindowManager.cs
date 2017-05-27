@@ -51,6 +51,8 @@ namespace Spinvoice.Services
             var window = viewFactory();
             window.DataContext = viewModel;
             window.Owner = Application.Current.MainWindow;
+            window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+
             _viewModelWindows.Add(viewModel, window);
             window.Closed += OnClosed;
             return window;

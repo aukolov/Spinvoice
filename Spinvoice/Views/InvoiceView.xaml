@@ -7,8 +7,6 @@
              xmlns:local="clr-namespace:Spinvoice.Views"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              d:DataContext="{d:DesignInstance Type=invoices:InvoiceViewModel}"
-             d:DesignHeight="300"
-             d:DesignWidth="300"
              mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -48,6 +46,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -66,10 +65,37 @@
                          Margin="{StaticResource GridLinesMargin}"
                          Text="{Binding Invoice.CompanyName}" />
 
-                <TextBlock Grid.Row="1"
+                <RadioButton Grid.Row="1"
+                             Grid.Column="0"
+                             Content="Country:"
+                             GroupName="Field"
+                             IsChecked="{Binding ActionSelectorViewModel.EditField,
+                                                 Converter={x:Static converters:EqualsToCheckedConverter.Instance},
+                                                 ConverterParameter={x:Static invoices:EditField.InvoiceCountry}}" />
+
+                <StackPanel Grid.Row="1"
+                            Grid.Column="1"
+                            Orientation="Vertical">
+                    <TextBox Margin="{StaticResource GridLinesMargin}" Text="{Binding Invoice.Country}" />
+                    <CheckBox Content="Is EU" IsChecked="{Binding Invoice.IsEuropeanUnion}" />
+                </StackPanel>
+
+                <RadioButton Grid.Row="2"
+                             Grid.Column="0"
+                             Content="Currency:"
+                             GroupName="Field"
+                             IsChecked="{Binding ActionSelectorViewModel.EditField,
+                                                 Converter={x:Static converters:EqualsToCheckedConverter.Instance},
+                                                 ConverterParameter={x:Static invoices:EditField.InvoiceCurrency}}" />
+                <TextBox Grid.Row="2"
+                         Grid.Column="1"
+                         Margin="{StaticResource GridLinesMargin}"
+                         Text="{Binding Invoice.Currency}" />
+
+                <TextBlock Grid.Row="3"
                            Grid.Column="0"
                            Text="QB Vendor:" />
-                <Grid Grid.Row="1" Grid.Column="1">
+                <Grid Grid.Row="3" Grid.Column="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
@@ -86,33 +112,6 @@
                             Command="{Binding CreateExternalCompanyCommand}"
                             Content="+" />
                 </Grid>
-
-                <RadioButton Grid.Row="2"
-                             Grid.Column="0"
-                             Content="Country:"
-                             GroupName="Field"
-                             IsChecked="{Binding ActionSelectorViewModel.EditField,
-                                                 Converter={x:Static converters:EqualsToCheckedConverter.Instance},
-                                                 ConverterParameter={x:Static invoices:EditField.InvoiceCountry}}" />
-
-                <StackPanel Grid.Row="2"
-                            Grid.Column="1"
-                            Orientation="Vertical">
-                    <TextBox Margin="{StaticResource GridLinesMargin}" Text="{Binding Invoice.Country}" />
-                    <CheckBox Content="Is EU" IsChecked="{Binding Invoice.IsEuropeanUnion}" />
-                </StackPanel>
-
-                <RadioButton Grid.Row="3"
-                             Grid.Column="0"
-                             Content="Currency:"
-                             GroupName="Field"
-                             IsChecked="{Binding ActionSelectorViewModel.EditField,
-                                                 Converter={x:Static converters:EqualsToCheckedConverter.Instance},
-                                                 ConverterParameter={x:Static invoices:EditField.InvoiceCurrency}}" />
-                <TextBox Grid.Row="3"
-                         Grid.Column="1"
-                         Margin="{StaticResource GridLinesMargin}"
-                         Text="{Binding Invoice.Currency}" />
 
                 <RadioButton Grid.Row="4"
                              Grid.Column="0"
@@ -196,10 +195,22 @@
                          Margin="{StaticResource GridLinesMargin}"
                          Text="{Binding Invoice.VatAmount}" />
 
-                <TextBlock Grid.Row="11"
+                <RadioButton Grid.Row="11"
+                             Grid.Column="0"
+                             Content="Transportation:"
+                             GroupName="Field"
+                             IsChecked="{Binding ActionSelectorViewModel.EditField,
+                                                 Converter={x:Static converters:EqualsToCheckedConverter.Instance},
+                                                 ConverterParameter={x:Static invoices:EditField.InvoiceTransportationCosts}}" />
+                <TextBox Grid.Row="11"
+                         Grid.Column="1"
+                         Margin="{StaticResource GridLinesMargin}"
+                         Text="{Binding Invoice.TransportationCosts}" />
+
+                <TextBlock Grid.Row="12"
                            Grid.Column="0"
                            Text="Total Amount:" />
-                <TextBox Grid.Row="11"
+                <TextBox Grid.Row="12"
                          Grid.Column="1"
                          Margin="{StaticResource GridLinesMargin}"
                          IsReadOnly="True"

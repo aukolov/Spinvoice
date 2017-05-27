@@ -73,7 +73,7 @@ namespace Spinvoice.ViewModels.Invoices
             CopyInvoiceCommand = new RelayCommand(CopyInvoice);
             CopyPositionsCommand = new RelayCommand(CopyPositions);
             ClearCommand = new RelayCommand(Reset);
-            
+
             ActionSelectorViewModel = new ActionSelectorViewModel();
             PositionListViewModel = new PositionListViewModel(Invoice.Positions, ActionSelectorViewModel);
 
@@ -88,7 +88,7 @@ namespace Spinvoice.ViewModels.Invoices
                 () => externalConnectionWatcher.IsConnected);
             OpenInQuickBooksCommand = new RelayCommand(OpenInQuickBooks);
             CreateExternalCompanyCommand = new RelayCommand(
-                CreateExternalCompany, 
+                CreateExternalCompany,
                 () => externalConnectionWatcher.IsConnected);
 
             externalConnectionWatcher.Connected += () =>
@@ -228,6 +228,11 @@ namespace Spinvoice.ViewModels.Invoices
             Invoice.VatAmount = AmountParser.Parse(_clipboardText);
         }
 
+        private void ChangeTransportationCosts()
+        {
+            Invoice.TransportationCosts = AmountParser.Parse(_clipboardText);
+        }
+
         private void ChangePositionDescription()
         {
             if (PositionListViewModel.SelectedPositionViewModel != null)
@@ -280,10 +285,20 @@ namespace Spinvoice.ViewModels.Invoices
             try
             {
                 ExecuteCurrentCommand();
-                if (ActionSelectorViewModel.EditField == EditField.InvoiceVatAmount
-                    && PositionListViewModel.SelectedPositionViewModel == null)
+                if (ActionSelectorViewModel.EditField == EditField.InvoiceTransportationCosts)
                 {
-                    ActionSelectorViewModel.EditField = EditField.InvoiceCompany;
+                    if (Invoice.Positions.Any())
+                    {
+                        if (PositionListViewModel.SelectedPositionViewModel == null)
+                        {
+                            PositionListViewModel.Positions.MoveCurrentToFirst();
+                        }
+                        ActionSelectorViewModel.MoveEditFieldToNext();
+                    }
+                    else
+                    {
+                        ActionSelectorViewModel.EditField = EditField.InvoiceCompany;
+                    }
                 }
                 else
                 {
@@ -328,6 +343,9 @@ namespace Spinvoice.ViewModels.Invoices
                     break;
                 case EditField.InvoiceVatAmount:
                     ChangeVatAmount();
+                    break;
+                case EditField.InvoiceTransportationCosts:
+                    ChangeTransportationCosts();
                     break;
                 case EditField.PositionName:
                     ChangePositionDescription();
@@ -402,7 +420,7 @@ namespace Spinvoice.ViewModels.Invoices
                 .ToArray();
             if (invoicePositions.Any())
             {
-                while (!_accountsChartRepository.AccountsChart.IsComplete )
+                while (!_accountsChartRepository.AccountsChart.IsComplete)
                 {
                     var dialogResult = _windowManager.ShowDialog(
                                            new AccountsChartViewModel(

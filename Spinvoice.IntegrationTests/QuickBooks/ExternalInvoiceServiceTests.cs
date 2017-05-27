@@ -34,7 +34,7 @@ namespace Spinvoice.IntegrationTests.QuickBooks
                 accountsChartRepositoryMock.Object,
                 externalConnection);
             _externalInvoiceService = new ExternalInvoiceService(
-                new ExternalInvoiceTranslator(),
+                new ExternalInvoiceTranslator(accountsChartRepositoryMock.Object),
                 externalConnection);
         }
 
@@ -53,7 +53,7 @@ namespace Spinvoice.IntegrationTests.QuickBooks
             var externalCompany = _externalCompanyRepository.Create(companyName, "GBP");
             Assert.IsNotNull(externalCompany.Id);
 
-            var invoice = new Domain.Accounting.Invoice
+            var invoice = new Invoice
             {
                 CompanyName = companyName,
                 ExternalCompanyId = externalCompany.Id,
@@ -83,5 +83,30 @@ namespace Spinvoice.IntegrationTests.QuickBooks
 
             _externalInvoiceService.Save(invoice);
         }
+
+        [Test]
+        public void CreatesBillWithVatAndTransportationCosts()
+        {
+            var companyName = "Test Co " + Guid.NewGuid();
+            var externalCompany = _externalCompanyRepository.Create(companyName, "GBP");
+            Assert.IsNotNull(externalCompany.Id);
+
+            var invoice = new Invoice
+            {
+                CompanyName = companyName,
+                ExternalCompanyId = externalCompany.Id,
+                Currency = "GBP",
+                Date = new DateTime(2017, 5, 17),
+                InvoiceNumber = "INV NO 123",
+                ExchangeRate = 1.05123m,
+                NetAmount = 1000,
+                Positions = new ObservableCollection<Position>(),
+                VatAmount = 15.12m,
+                TransportationCosts = 54.33m
+            };
+
+            _externalInvoiceService.Save(invoice);
+        }
+
     }
 }

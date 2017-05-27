@@ -20,6 +20,7 @@ namespace Spinvoice.Domain.Accounting
         private string _vatNumber;
         private string _externalCompanyId;
         private string _externalId;
+        private decimal _transportationCosts;
 
         public event Action CurrencyChanged;
         public event Action DateChanged;
@@ -121,6 +122,16 @@ namespace Spinvoice.Domain.Accounting
                 _vatAmount = value;
                 OnPropertyChanged();
                 OnOtherPropertyChanged(nameof(TotalAmount));
+            }
+        }
+
+        public decimal TransportationCosts
+        {
+            get { return _transportationCosts; }
+            set
+            {
+                _transportationCosts = value;
+                OnPropertyChanged();
             }
         }
 

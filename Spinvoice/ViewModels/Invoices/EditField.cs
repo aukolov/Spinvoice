@@ -10,6 +10,7 @@
         InvoiceNumber,
         InvoiceNetAmount,
         InvoiceVatAmount,
+        InvoiceTransportationCosts,
         PositionName,
         PositionQuantity,
         PositionAmount

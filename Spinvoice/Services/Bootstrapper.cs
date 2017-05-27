@@ -3,7 +3,6 @@ using System.Globalization;
 using System.IO;
 using System.Threading;
 using Spinvoice.Domain.Company;
-using Spinvoice.Domain.Exchange;
 using Spinvoice.Infrastructure.DataAccess;
 using Spinvoice.Infrastructure.Pdf;
 using Spinvoice.QuickBooks.Account;
@@ -51,13 +50,13 @@ namespace Spinvoice.Services
             var externalConnection = new ExternalConnection(oauthRepository);
 
             var exchangeRatesRepository = new ExternalExchangeRatesRepository(externalConnection);
+            var accountsChartRepository = new AccountsChartRepository(accountsChartDataAccess);
             var externalInvoiceService = new ExternalInvoiceService(
-                new ExternalInvoiceTranslator(), 
+                new ExternalInvoiceTranslator(accountsChartRepository), 
                 externalConnection);
             var externalCompanyRepository = new ExternalCompanyRepository(
                 externalConnection);
             var externalAccountRepository = new ExternalAccountRepository(externalConnection);
-            var accountsChartRepository = new AccountsChartRepository(accountsChartDataAccess);
             var externalItemRepository = new ExternalItemRepository(
                 accountsChartRepository, externalConnection);
 

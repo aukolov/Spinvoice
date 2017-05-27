@@ -10,7 +10,9 @@ namespace Spinvoice.IntegrationTests.QuickBooks
             {
                 AssetExternalAccountId = "81",
                 ExpenseExternalAccountId = "80",
-                IncomeExternalAccountId = "79"
+                IncomeExternalAccountId = "79",
+                VatAccountId = "21",
+                TransportationCostsAccountId = "13"
             };
         }
     }

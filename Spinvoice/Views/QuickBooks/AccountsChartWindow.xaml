@@ -28,6 +28,8 @@
                 <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0"
@@ -38,7 +40,7 @@
                       MinWidth="300"
                       Margin="{StaticResource GridLinesMargin}"
                       DisplayMemberPath="Name"
-                      ItemsSource="{Binding ExternalAccounts}"
+                      ItemsSource="{Binding AssetAccounts}"
                       SelectedValue="{Binding AssetExternalAccountId}"
                       SelectedValuePath="Id" />
 
@@ -50,7 +52,7 @@
                       MinWidth="300"
                       Margin="{StaticResource GridLinesMargin}"
                       DisplayMemberPath="Name"
-                      ItemsSource="{Binding ExternalAccounts}"
+                      ItemsSource="{Binding ExpenseAccounts}"
                       SelectedValue="{Binding ExpenseExternalAccountId}"
                       SelectedValuePath="Id" />
 
@@ -62,8 +64,32 @@
                       MinWidth="300"
                       Margin="{StaticResource GridLinesMargin}"
                       DisplayMemberPath="Name"
-                      ItemsSource="{Binding ExternalAccounts}"
+                      ItemsSource="{Binding IncomeAccounts}"
                       SelectedValue="{Binding IncomeExternalAccountId}"
+                      SelectedValuePath="Id" />
+
+            <TextBlock Grid.Row="3"
+                       Grid.Column="0"
+                       Text="VAT Account" />
+            <ComboBox Grid.Row="3"
+                      Grid.Column="1"
+                      MinWidth="300"
+                      Margin="{StaticResource GridLinesMargin}"
+                      DisplayMemberPath="Name"
+                      ItemsSource="{Binding VatAccounts}"
+                      SelectedValue="{Binding VatAccountId}"
+                      SelectedValuePath="Id" />
+
+            <TextBlock Grid.Row="4"
+                       Grid.Column="0"
+                       Text="Transportation Costs Account" />
+            <ComboBox Grid.Row="4"
+                      Grid.Column="1"
+                      MinWidth="300"
+                      Margin="{StaticResource GridLinesMargin}"
+                      DisplayMemberPath="Name"
+                      ItemsSource="{Binding TransportationCostsAccounts}"
+                      SelectedValue="{Binding TransportationCostsAccountId}"
                       SelectedValuePath="Id" />
         </Grid>
         <StackPanel Margin="0,10,0,0"
