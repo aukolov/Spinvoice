@@ -12,6 +12,6 @@ namespace Spinvoice.Domain.Pdf
 
         public int BlockNumber { get; }
 
-        public IReadOnlyList<string> Sentences { get; private set; }
+        public IReadOnlyList<string> Sentences { get; }
     }
 }

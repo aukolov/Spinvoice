@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using iTextSharp.text.pdf.parser;
 using NLog;
@@ -10,11 +11,9 @@ namespace Spinvoice.Infrastructure.Pdf
     {
         private const int SlashZeroThreshold = 100;
 
-        private static Logger _logger = LogManager.GetCurrentClassLogger();
-
         private List<TextRenderInfo> _currentBlock;
         private readonly List<List<TextRenderInfo>> _blocks;
-        private int _slashZeroCount = 0;
+        private int _slashZeroCount;
 
         public List<List<string>> BlockSentences { get; private set; }
 
