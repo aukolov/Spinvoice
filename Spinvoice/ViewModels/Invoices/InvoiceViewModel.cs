@@ -441,6 +441,8 @@ namespace Spinvoice.ViewModels.Invoices
             }
             var externalInvoiceId = _externalInvoiceService.Save(Invoice);
             Invoice.ExternalId = externalInvoiceId;
+
+            TrainAboutCompany();
         }
 
         private void OpenInQuickBooks()
