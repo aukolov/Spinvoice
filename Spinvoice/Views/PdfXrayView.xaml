@@ -10,7 +10,7 @@
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">
-    <ItemsControl ItemsSource="{Binding BlockModels}">
+    <ItemsControl ItemsSource="{Binding Sentences}">
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
                 <Canvas />
@@ -18,13 +18,41 @@
         </ItemsControl.ItemsPanel>
         <ItemsControl.ItemContainerStyle>
             <Style TargetType="ContentPresenter">
-                <Setter Property="Canvas.Left" Value="{Binding X}" />
-                <Setter Property="Canvas.Top" Value="{Binding Y}" />
+                <Setter Property="Canvas.Left" Value="{Binding Left}" />
+                <Setter Property="Canvas.Top" Value="{Binding Top}" />
             </Style>
         </ItemsControl.ItemContainerStyle>
         <ItemsControl.ItemTemplate>
             <DataTemplate>
-                <Rectangle />
+                <Grid>
+                    <Rectangle Width="{Binding Width}"
+                               Height="12"
+                               Stroke="LightGray">
+                        <Rectangle.Style>
+                            <Style>
+                                <Style.Triggers>
+                                    <Trigger Property="Rectangle.IsMouseOver" Value="True">
+                                        <Setter Property="Rectangle.Fill" Value="Aqua" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Rectangle.Style>
+                    </Rectangle>
+                    <TextBlock FontSize="8"
+                               MouseDown="UIElement_OnMouseDown"
+                               Text="{Binding Text}">
+                        <TextBlock.Style>
+                            <Style>
+                                <Style.Triggers>
+                                    <Trigger Property="TextBlock.IsMouseOver" Value="True">
+                                        <Setter Property="TextBlock.FontWeight" Value="Bold" />
+                                        <Setter Property="TextBlock.FontSize" Value="11" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </Grid>
             </DataTemplate>
         </ItemsControl.ItemTemplate>
     </ItemsControl>

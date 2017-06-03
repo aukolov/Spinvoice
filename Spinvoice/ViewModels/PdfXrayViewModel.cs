@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Spinvoice.Domain.Pdf;
 
 namespace Spinvoice.ViewModels
@@ -9,9 +8,9 @@ namespace Spinvoice.ViewModels
         public PdfXrayViewModel(PdfModel pdfModel)
         {
             var pageModel = pdfModel.Pages.First();
-            BlockModels = pageModel.Blocks;
+            Sentences = pageModel.Sentences.ToArray();
         }
 
-        public IReadOnlyList<BlockModel> BlockModels { get; }
+        public SentenceModel[] Sentences { get; }
     }
 }

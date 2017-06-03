@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Spinvoice.Domain.Pdf
 {
@@ -12,7 +13,12 @@ namespace Spinvoice.Domain.Pdf
 
         public int PageNumber { get; }
 
-        public IReadOnlyList<BlockModel> Blocks { get; private set; }
+        public IReadOnlyList<BlockModel> Blocks { get; }
+
+        public IEnumerable<SentenceModel> Sentences
+        {
+            get { return Blocks.SelectMany(bm => bm.Sentences); }
+        }
 
         public IEnumerable<LocationRange> Find(string text)
         {

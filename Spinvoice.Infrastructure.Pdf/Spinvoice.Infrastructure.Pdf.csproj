@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="PdfParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SentenceModelBuilder.cs" />
     <Compile Include="SmartTextExtractionStrategy.cs" />
   </ItemGroup>
   <ItemGroup>

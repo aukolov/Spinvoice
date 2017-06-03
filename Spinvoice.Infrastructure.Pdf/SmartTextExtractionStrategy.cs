@@ -13,6 +13,7 @@ namespace Spinvoice.Infrastructure.Pdf
         private List<TextRenderInfo> _currentBlock;
         private readonly List<List<TextRenderInfo>> _blocks;
         private int _slashZeroCount;
+        private double _maxY;
 
         public List<List<SentenceModel>> BlockSentences { get; private set; }
 
@@ -30,6 +31,8 @@ namespace Spinvoice.Infrastructure.Pdf
         {
             CountSlashZero(renderInfo);
             _currentBlock.Add(renderInfo);
+            var rectange = renderInfo.GetAscentLine().GetBoundingRectange();
+            _maxY = Math.Max(_maxY, rectange.Y);
             //var r = renderInfo.GetBaseline().GetBoundingRectange();
             //Console.WriteLine($"Test: {renderInfo.PdfString} " +
             //             $"{r.X}-{r.Y} " +
@@ -63,13 +66,13 @@ namespace Spinvoice.Infrastructure.Pdf
             foreach (var block in _blocks)
             {
                 var sentences = new List<SentenceModel>();
-                string accumulatedText = null;
+                var builder = new SentenceModelBuilder();
                 for (var i = 0; i < block.Count; i++)
                 {
                     var brick = block[i];
-                    if (accumulatedText == null)
+                    if (builder.IsEmpty)
                     {
-                        accumulatedText = brick.PdfString.ToString();
+                        Append(builder, brick);
                     }
                     else
                     {
@@ -79,23 +82,36 @@ namespace Spinvoice.Infrastructure.Pdf
                         if (RoughEqual(currentRect.Y, prevRect.Y)
                             && RoughEqual(prevRect.X + prevRect.Width, currentRect.X))
                         {
-                            accumulatedText += brick.PdfString.ToString();
+                            Append(builder, brick);
                         }
                         else
                         {
-                            sentences.Add(new SentenceModel(Decode(accumulatedText)));
-                            accumulatedText = brick.PdfString.ToString();
+                            sentences.Add(builder.Build());
+                            builder = new SentenceModelBuilder();
+                            Append(builder, brick);
                         }
                     }
                     if (i == block.Count - 1)
                     {
-                        sentences.Add(new SentenceModel(Decode(accumulatedText)));
+                        sentences.Add(builder.Build());
                     }
                 }
                 BlockSentences.Add(sentences);
             }
 
             return "";
+        }
+
+        private void Append(SentenceModelBuilder builder, TextRenderInfo brick)
+        {
+            var baseRectange = brick.GetBaseline().GetBoundingRectange();
+            var accentRectange = brick.GetAscentLine().GetBoundingRectange();
+            builder.Append(
+                Decode(brick.PdfString.ToString()),
+                baseRectange.X,
+                _maxY - baseRectange.Y,
+                baseRectange.Width,
+                accentRectange.Y - baseRectange.Y);
         }
 
         private string Decode(string text)

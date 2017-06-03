@@ -14,6 +14,7 @@
 
         <DataGrid AutoGenerateColumns="False"
                   CanUserResizeRows="False"
+                  CanUserSortColumns="False"
                   HorizontalScrollBarVisibility="Hidden"
                   IsReadOnly="True"
                   ItemsSource="{Binding Positions}"

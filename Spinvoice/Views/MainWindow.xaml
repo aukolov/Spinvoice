@@ -53,7 +53,7 @@
                     <WebBrowser views:WebBrowserUtility.BindableSource="{Binding ProjectBrowserViewModel.SelectedFilePath}" />
                 </TabItem>
                 <TabItem Header="X-Ray">
-                    <views:PdfXrayView />
+                    <views:PdfXrayView DataContext="{Binding InvoiceViewModel.PdfXrayViewModel}" />
                 </TabItem>
             </TabControl>
 

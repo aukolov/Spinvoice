@@ -76,6 +76,10 @@ namespace Spinvoice.ViewModels.Invoices
 
             ActionSelectorViewModel = new ActionSelectorViewModel();
             PositionListViewModel = new PositionListViewModel(Invoice.Positions, ActionSelectorViewModel);
+            if (_pdfModel != null)
+            {
+                PdfXrayViewModel = new PdfXrayViewModel(_pdfModel);
+            }
 
             ExternalCompanies = externalCompanyRepository.GetAll();
 
@@ -116,6 +120,7 @@ namespace Spinvoice.ViewModels.Invoices
         }
 
         public ActionSelectorViewModel ActionSelectorViewModel { get; }
+        public PdfXrayViewModel PdfXrayViewModel { get; }
 
         public Invoice Invoice
         {
@@ -302,6 +307,12 @@ namespace Spinvoice.ViewModels.Invoices
                 }
                 else
                 {
+                    if (ActionSelectorViewModel.EditField == EditField.PositionAmount)
+                    {
+                        var position = new Position();
+                        Invoice.Positions.Add(position);
+                        PositionListViewModel.Positions.MoveCurrentToLast();
+                    }
                     ActionSelectorViewModel.MoveEditFieldToNext();
                 }
             }
