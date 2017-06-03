@@ -24,7 +24,7 @@ namespace Spinvoice.Domain.Pdf
 
         private static bool Contains(PdfModel pdfModel, string value)
         {
-            return pdfModel.Sentences.Any(s => s == value);
+            return pdfModel.Sentences.Any(s => s.Text == value);
         }
 
         public override string ToString()

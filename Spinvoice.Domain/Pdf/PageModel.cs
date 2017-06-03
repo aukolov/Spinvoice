@@ -69,11 +69,11 @@ namespace Spinvoice.Domain.Pdf
                 }
                 else
                 {
-                    if (j >= Blocks[currentBlock].Sentences[currentSentence].Length)
+                    if (j >= Blocks[currentBlock].Sentences[currentSentence].Text.Length)
                     {
                         return false;
                     }
-                    if (ch != Blocks[currentBlock].Sentences[currentSentence][j])
+                    if (ch != Blocks[currentBlock].Sentences[currentSentence].Text[j])
                     {
                         return false;
                     }
@@ -81,8 +81,8 @@ namespace Spinvoice.Domain.Pdf
                     j++;
                 }
             }
-            j = SkipSpaces(Blocks[currentBlock].Sentences[currentSentence], j);
-            if (j < Blocks[currentBlock].Sentences[currentSentence].Length)
+            j = SkipSpaces(Blocks[currentBlock].Sentences[currentSentence].Text, j);
+            if (j < Blocks[currentBlock].Sentences[currentSentence].Text.Length)
             {
                 return false;
             }
@@ -112,11 +112,11 @@ namespace Spinvoice.Domain.Pdf
             {
                 while (currentSentence < Blocks[currentBlock].Sentences.Count)
                 {
-                    var text = Blocks[currentBlock].Sentences[currentSentence];
+                    var sentence = Blocks[currentBlock].Sentences[currentSentence];
 
-                    while (index < text.Length)
+                    while (index < sentence.Text.Length)
                     {
-                        if (!IsWhiteSpace(text[index]))
+                        if (!IsWhiteSpace(sentence.Text[index]))
                         {
                             return;
                         }

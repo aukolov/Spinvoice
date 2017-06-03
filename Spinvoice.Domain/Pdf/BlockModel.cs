@@ -4,7 +4,7 @@ namespace Spinvoice.Domain.Pdf
 {
     public class BlockModel
     {
-        public BlockModel(int blockNumber, List<string> sentences)
+        public BlockModel(int blockNumber, List<SentenceModel> sentences)
         {
             BlockNumber = blockNumber;
             Sentences = sentences.AsReadOnly();
@@ -12,6 +12,6 @@ namespace Spinvoice.Domain.Pdf
 
         public int BlockNumber { get; }
 
-        public IReadOnlyList<string> Sentences { get; }
+        public IReadOnlyList<SentenceModel> Sentences { get; }
     }
 }

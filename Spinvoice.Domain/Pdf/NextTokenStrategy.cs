@@ -18,9 +18,9 @@
                 {
                     if (isNext)
                     {
-                        return sentense.Trim();
+                        return sentense.Text.Trim();
                     }
-                    if (sentense.Trim() == PreviousText.Trim())
+                    if (sentense.Text.Trim() == PreviousText.Trim())
                     {
                         isNext = true;
                     }
@@ -40,7 +40,7 @@
             {
                 for (var i = 0; i < blockModel.Sentences.Count; i++)
                 {
-                    if (blockModel.Sentences[i].Trim() == value.Trim()
+                    if (blockModel.Sentences[i].Text.Trim() == value.Trim()
                         && !TextUtils.IsNumber(candidate)
                         && TextUtils.IsNonTrivialString(candidate))
                     {
@@ -50,7 +50,7 @@
                             return true;
                         }
                     }
-                    candidate = blockModel.Sentences[i];
+                    candidate = blockModel.Sentences[i].Text;
                 }
             }
             return PreviousText != null;

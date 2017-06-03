@@ -22,7 +22,7 @@ namespace Spinvoice.Tests.Infrastructure.DataAccess
         [TearDown]
         public void TearDown()
         {
-            _dataAccess.DeleteAll();
+            _dataAccess?.DeleteAll();
             _dataAccess?.Dispose();
         }
 

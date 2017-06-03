@@ -117,6 +117,7 @@
     <Compile Include="ViewModels\FileSystem\ISelectedPathListener.cs" />
     <Compile Include="ViewModels\Invoices\PositionViewModel.cs" />
     <Compile Include="ViewModels\FileSystem\ProjectBrowserViewModel.cs" />
+    <Compile Include="ViewModels\PdfXrayViewModel.cs" />
     <Compile Include="ViewModels\QuickBooks\AccountsChartViewModel.cs" />
     <Compile Include="Views\Converters\DateToStringConverter.cs" />
     <Compile Include="Views\Converters\FalseToVisibleTrueToCollapsedConverter.cs" />
@@ -138,6 +139,9 @@
     </Compile>
     <Compile Include="Views\Converters\EqualsToCheckedConverter.cs" />
     <Compile Include="Services\Format.cs" />
+    <Compile Include="Views\PdfXrayView.xaml.cs">
+      <DependentUpon>PdfXrayView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PositionListView.xaml.cs">
       <DependentUpon>PositionListView.xaml</DependentUpon>
     </Compile>
@@ -171,6 +175,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\FileSystemBrowser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PdfXrayView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

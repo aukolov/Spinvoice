@@ -19,9 +19,9 @@ namespace Spinvoice.Domain.Pdf
             get { return Pages.SelectMany(model => model.Blocks); }
         }
 
-        public IEnumerable<string> Sentences
+        public IEnumerable<SentenceModel> Sentences
         {
-            get { return Pages.SelectMany(model => model.Blocks).SelectMany(model => model.Sentences); }
+            get { return BlockModels.SelectMany(model => model.Sentences); }
         }
 
         public string GetText()

@@ -13,9 +13,9 @@
             var searchText = PreviousText + " ";
             foreach (var sentence in pdfModel.Sentences)
             {
-                if (sentence.StartsWith(searchText))
+                if (sentence.Text.StartsWith(searchText))
                 {
-                    return sentence.Substring(searchText.Length).Trim();
+                    return sentence.Text.Substring(searchText.Length).Trim();
                 }
             }
             return null;
@@ -26,8 +26,10 @@
             value = " " + value;
             foreach (var sentence in pdfModel.Sentences)
             {
-                if (!sentence.EndsWith(value)) continue;
-                var candidate = sentence.Substring(0, sentence.Length - value.Length).Trim();
+                if (!sentence.Text.EndsWith(value)) continue;
+                var candidate = sentence.Text
+                    .Substring(0, sentence.Text.Length - value.Length)
+                    .Trim();
 
                 if (TextUtils.IsNumber(candidate) 
                     || TextUtils.EndsWithNumber(candidate)

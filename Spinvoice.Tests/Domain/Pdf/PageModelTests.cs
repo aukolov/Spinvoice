@@ -10,8 +10,8 @@ namespace Spinvoice.Tests.Domain.Pdf
     {
         private static BlockModel CreateBlockModel(int blockNumber, params string[] sentences)
         {
-            var sentencesList = new List<string>();
-            sentencesList.AddRange(sentences);
+            var sentencesList = new List<SentenceModel>();
+            sentencesList.AddRange(sentences.Select(s => new SentenceModel(s)));
             return new BlockModel(blockNumber, sentencesList);
         }
 

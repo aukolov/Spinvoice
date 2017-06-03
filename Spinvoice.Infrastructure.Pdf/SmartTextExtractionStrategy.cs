@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using iTextSharp.text.pdf.parser;
-using NLog;
+using Spinvoice.Domain.Pdf;
 
 namespace Spinvoice.Infrastructure.Pdf
 {
@@ -15,7 +14,7 @@ namespace Spinvoice.Infrastructure.Pdf
         private readonly List<List<TextRenderInfo>> _blocks;
         private int _slashZeroCount;
 
-        public List<List<string>> BlockSentences { get; private set; }
+        public List<List<SentenceModel>> BlockSentences { get; private set; }
 
         public SmartTextExtractionStrategy()
         {
@@ -59,11 +58,11 @@ namespace Spinvoice.Infrastructure.Pdf
 
         public string GetResultantText()
         {
-            BlockSentences = new List<List<string>>();
+            BlockSentences = new List<List<SentenceModel>>();
 
             foreach (var block in _blocks)
             {
-                var sentences = new List<string>();
+                var sentences = new List<SentenceModel>();
                 string accumulatedText = null;
                 for (var i = 0; i < block.Count; i++)
                 {
@@ -84,13 +83,13 @@ namespace Spinvoice.Infrastructure.Pdf
                         }
                         else
                         {
-                            sentences.Add(Decode(accumulatedText));
+                            sentences.Add(new SentenceModel(Decode(accumulatedText)));
                             accumulatedText = brick.PdfString.ToString();
                         }
                     }
                     if (i == block.Count - 1)
                     {
-                        sentences.Add(Decode(accumulatedText));
+                        sentences.Add(new SentenceModel(Decode(accumulatedText)));
                     }
                 }
                 BlockSentences.Add(sentences);

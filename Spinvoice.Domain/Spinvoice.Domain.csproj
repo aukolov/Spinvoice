@@ -83,6 +83,7 @@
     <Compile Include="Pdf\IPdfToInvoiceMapper.cs" />
     <Compile Include="Pdf\PageModel.cs" />
     <Compile Include="Pdf\PdfModel.cs" />
+    <Compile Include="Pdf\SentenceModel.cs" />
     <Compile Include="Pdf\TextUtils.cs" />
     <Compile Include="Properties\Annotations1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
