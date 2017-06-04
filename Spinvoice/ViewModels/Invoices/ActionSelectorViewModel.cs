@@ -8,7 +8,7 @@ namespace Spinvoice.ViewModels.Invoices
     public class ActionSelectorViewModel : INotifyPropertyChanged
     {
         private EditField _editField;
-        private int _commandsCount;
+        private readonly int _commandsCount;
 
         public ActionSelectorViewModel()
         {
@@ -28,7 +28,7 @@ namespace Spinvoice.ViewModels.Invoices
             }
         }
 
-        public void MoveEditFieldToNext()
+        public void Advance()
         {
             var newField = (int)EditField + 1;
             EditField = newField >= _commandsCount

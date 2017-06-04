@@ -8,5 +8,11 @@ namespace Spinvoice.Utils
         {
             action?.Invoke();
         }
+
+
+        public static void Raise<T>(this Action<T> action, T param)
+        {
+            action?.Invoke(param);
+        }
     }
 }

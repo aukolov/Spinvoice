@@ -79,6 +79,7 @@ namespace Spinvoice.ViewModels.Invoices
             if (_pdfModel != null)
             {
                 PdfXrayViewModel = new PdfXrayViewModel(_pdfModel);
+                PdfXrayViewModel.TextClicked += OnXrayTextClicked;
             }
 
             ExternalCompanies = externalCompanyRepository.GetAll();
@@ -161,13 +162,13 @@ namespace Spinvoice.ViewModels.Invoices
             _clipboardService.ClipboardChanged -= OnClipboardChanged;
         }
 
-        private void ChangeDate()
+        private void ChangeDate(string text)
         {
-            var parsedDate = DateParser.TryParseDate(_clipboardText);
+            var parsedDate = DateParser.TryParseDate(text);
             if (parsedDate.HasValue)
             {
                 Invoice.Date = parsedDate.Value;
-                _stringDate = _clipboardText;
+                _stringDate = text;
                 UpdateRate();
             }
         }
@@ -185,80 +186,93 @@ namespace Spinvoice.ViewModels.Invoices
                 }
         }
 
-        private void ChangeCompanyName()
+        private void ChangeCompanyName(string text)
         {
-            Invoice.CompanyName = _clipboardText;
+            Invoice.CompanyName = text;
 
             var company = _companyRepository.GetByName(Invoice.CompanyName);
             if (company != null)
             {
                 Invoice.ApplyCompany(company);
-                ActionSelectorViewModel.MoveEditFieldToNext();
-                ActionSelectorViewModel.MoveEditFieldToNext();
+                ActionSelectorViewModel.Advance();
+                ActionSelectorViewModel.Advance();
             }
         }
 
-        private void ChangeInvoiceNumber()
+        private void ChangeInvoiceNumber(string text)
         {
-            Invoice.InvoiceNumber = _clipboardText;
+            Invoice.InvoiceNumber = text;
         }
 
-        private void ChangeCurrency()
+        private void ChangeCurrency(string text)
         {
-            Invoice.Currency = _clipboardText;
+            Invoice.Currency = text;
             UpdateRate();
         }
 
-        private void ChangeCountry()
+        private void ChangeCountry(string text)
         {
-            Invoice.Country = _clipboardText;
+            Invoice.Country = text;
         }
 
-        private void ChangeVatNumber()
+        private void ChangeVatNumber(string text)
         {
-            Invoice.VatNumber = _clipboardText;
+            Invoice.VatNumber = text;
         }
 
-        private void ChangeNetAmount()
+        private void ChangeNetAmount(string text)
         {
             decimal netAmount;
-            if (!AmountParser.TryParse(_clipboardText, out netAmount)) return;
+            if (!AmountParser.TryParse(text, out netAmount)) return;
 
             Invoice.NetAmount = netAmount;
-            _stringNetAmount = _clipboardText;
+            _stringNetAmount = text;
         }
 
-        private void ChangeVatAmount()
+        private void ChangeVatAmount(string text)
         {
-            Invoice.VatAmount = AmountParser.Parse(_clipboardText);
+            Invoice.VatAmount = AmountParser.Parse(text);
         }
 
-        private void ChangeTransportationCosts()
+        private void ChangeTransportationCosts(string text)
         {
-            Invoice.TransportationCosts = AmountParser.Parse(_clipboardText);
+            Invoice.TransportationCosts = AmountParser.Parse(text);
         }
 
-        private void ChangePositionDescription()
+        private void ChangePositionDescription(string text)
         {
             if (PositionListViewModel.SelectedPositionViewModel != null)
-                PositionListViewModel.SelectedPositionViewModel.Position.Name = _clipboardText;
+                PositionListViewModel.SelectedPositionViewModel.Position.Name = text;
         }
 
-        private void ChangePositionQuantity()
+        private void ChangePositionQuantity(string text)
         {
             if (PositionListViewModel.SelectedPositionViewModel == null) return;
 
             int quantity;
-            if (int.TryParse(_clipboardText, out quantity))
+            if (int.TryParse(text, out quantity))
             {
                 PositionListViewModel.SelectedPositionViewModel.Position.Quantity = quantity;
             }
         }
 
-        private void ChangePositionAmount()
+        private void ChangePositionAmount(string text)
         {
             if (PositionListViewModel.SelectedPositionViewModel != null)
-                PositionListViewModel.SelectedPositionViewModel.Position.Amount = AmountParser.Parse(_clipboardText);
+                PositionListViewModel.SelectedPositionViewModel.Position.Amount = AmountParser.Parse(text);
+        }
+
+        private void OnXrayTextClicked(string text)
+        {
+            try
+            {
+                ExecuteCurrentCommand(text);
+                AdvanceCommand();
+            }
+            catch (Exception e)
+            {
+                ShowError(e);
+            }
         }
 
         private void OnClipboardChanged()
@@ -289,83 +303,93 @@ namespace Spinvoice.ViewModels.Invoices
 
             try
             {
-                ExecuteCurrentCommand();
-                if (ActionSelectorViewModel.EditField == EditField.InvoiceTransportationCosts)
-                {
-                    if (Invoice.Positions.Any())
-                    {
-                        if (PositionListViewModel.SelectedPositionViewModel == null)
-                        {
-                            PositionListViewModel.Positions.MoveCurrentToFirst();
-                        }
-                        ActionSelectorViewModel.MoveEditFieldToNext();
-                    }
-                    else
-                    {
-                        ActionSelectorViewModel.EditField = EditField.InvoiceCompany;
-                    }
-                }
-                else
-                {
-                    if (ActionSelectorViewModel.EditField == EditField.PositionAmount)
-                    {
-                        var position = new Position();
-                        Invoice.Positions.Add(position);
-                        PositionListViewModel.Positions.MoveCurrentToLast();
-                    }
-                    ActionSelectorViewModel.MoveEditFieldToNext();
-                }
+                ExecuteCurrentCommand(_clipboardText);
+                AdvanceCommand();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    Application.Current.MainWindow,
-                    "Something went wrong... " + ex.Message,
-                    "Error",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                ShowError(ex);
             }
         }
 
-        private void ExecuteCurrentCommand()
+        private static void ShowError(Exception ex)
+        {
+            MessageBox.Show(
+                Application.Current.MainWindow,
+                "Something went wrong... " + ex.Message,
+                "Error",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
+        }
+
+        private void AdvanceCommand()
+        {
+            if (ActionSelectorViewModel.EditField == EditField.InvoiceTransportationCosts)
+            {
+                if (Invoice.Positions.Any())
+                {
+                    if (PositionListViewModel.SelectedPositionViewModel == null)
+                    {
+                        PositionListViewModel.Positions.MoveCurrentToFirst();
+                    }
+                    ActionSelectorViewModel.Advance();
+                }
+                else
+                {
+                    ActionSelectorViewModel.EditField = EditField.InvoiceCompany;
+                }
+            }
+            else
+            {
+                if (ActionSelectorViewModel.EditField == EditField.PositionAmount)
+                {
+                    var position = new Position();
+                    Invoice.Positions.Add(position);
+                    PositionListViewModel.Positions.MoveCurrentToLast();
+                }
+                ActionSelectorViewModel.Advance();
+            }
+        }
+
+        private void ExecuteCurrentCommand(string text)
         {
             switch (ActionSelectorViewModel.EditField)
             {
                 case EditField.InvoiceCompany:
-                    ChangeCompanyName();
+                    ChangeCompanyName(text);
                     break;
                 case EditField.InvoiceCountry:
-                    ChangeCountry();
+                    ChangeCountry(text);
                     break;
                 case EditField.InvoiceCurrency:
-                    ChangeCurrency();
+                    ChangeCurrency(text);
                     break;
                 case EditField.InvoiceVatNumber:
-                    ChangeVatNumber();
+                    ChangeVatNumber(text);
                     break;
                 case EditField.InvoiceDate:
-                    ChangeDate();
+                    ChangeDate(text);
                     break;
                 case EditField.InvoiceNumber:
-                    ChangeInvoiceNumber();
+                    ChangeInvoiceNumber(text);
                     break;
                 case EditField.InvoiceNetAmount:
-                    ChangeNetAmount();
+                    ChangeNetAmount(text);
                     break;
                 case EditField.InvoiceVatAmount:
-                    ChangeVatAmount();
+                    ChangeVatAmount(text);
                     break;
                 case EditField.InvoiceTransportationCosts:
-                    ChangeTransportationCosts();
+                    ChangeTransportationCosts(text);
                     break;
                 case EditField.PositionName:
-                    ChangePositionDescription();
+                    ChangePositionDescription(text);
                     break;
                 case EditField.PositionQuantity:
-                    ChangePositionQuantity();
+                    ChangePositionQuantity(text);
                     break;
                 case EditField.PositionAmount:
-                    ChangePositionAmount();
+                    ChangePositionAmount(text);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

@@ -34,7 +34,12 @@ namespace Spinvoice.Tests.Domain.Utils
             var result = AmountParser.Parse("1 123,45");
             Assert.AreEqual(1123.45m, result);
         }
-
-
+        
+        [Test]
+        public void ParsesAmountWithUsdCurrencyPrefix()
+        {
+            var result = AmountParser.Parse("USD 1000");
+            Assert.AreEqual(1000m, result);
+        }
     }
 }

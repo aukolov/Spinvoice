@@ -6,7 +6,8 @@ namespace Spinvoice.Utils
 {
     public static class AmountParser
     {
-        private static readonly  Regex AmountRegex = new Regex(@"^(?<integral>[ .,0-9]+)(?<delimiter>[,.])(?<decimals>\d{2})$");
+        private static readonly Regex AmountRegex = new Regex(@"^(?<integral>[ .,0-9]+)(?<delimiter>[,.])(?<decimals>\d{2})$");
+        private static readonly string[] Currencies = { "USD", "US$", "$", "EUR", "RUB", "RUR", "GBP", "JPY", "CHF", "CHN" };
 
         public static decimal Parse(string text)
         {
@@ -25,6 +26,11 @@ namespace Spinvoice.Utils
                 }
             }
 
+            var currency = Currencies.FirstOrDefault(text.Contains);
+            if (currency != null)
+            {
+                text = text.Replace(currency, "");
+            }
             var match = AmountRegex.Match(text);
             if (match.Success)
             {
