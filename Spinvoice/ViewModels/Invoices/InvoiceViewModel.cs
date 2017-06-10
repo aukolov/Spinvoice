@@ -62,7 +62,7 @@ namespace Spinvoice.ViewModels.Invoices
             _externalCompanyRepository = externalCompanyRepository;
             _externalAccountRepository = externalAccountRepository;
             _windowManager = windowManager;
-            
+
             Invoice = new Invoice();
             Invoice.Positions.Add(new Position());
             _rawInvoice = new RawInvoice();
@@ -73,7 +73,7 @@ namespace Spinvoice.ViewModels.Invoices
 
             ActionSelectorViewModel = new ActionSelectorViewModel();
             PositionListViewModel = new PositionListViewModel(Invoice.Positions, ActionSelectorViewModel);
-            InvoiceEditViewModel =  new InvoiceEditViewModel(
+            InvoiceEditViewModel = new InvoiceEditViewModel(
                 Invoice,
                 ActionSelectorViewModel,
                 _rawInvoice,
@@ -319,6 +319,9 @@ namespace Spinvoice.ViewModels.Invoices
 
                 if (_pdfModel != null)
                 {
+                    _rawInvoice.InvoiceNumber = _rawInvoice.InvoiceNumber ?? Invoice.InvoiceNumber;
+                    _rawInvoice.CompanyName = _rawInvoice.CompanyName ?? Invoice.CompanyName;
+
                     _analyzeInvoiceService.Learn(company, _rawInvoice, _pdfModel);
                 }
             }
