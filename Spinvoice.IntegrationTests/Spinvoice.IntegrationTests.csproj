@@ -114,11 +114,12 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnalyzeInvoicePositionsTests.cs" />
     <Compile Include="FindInvoicePositionHeadersTests.cs" />
     <Compile Include="JsonUtils.cs" />
     <Compile Include="Mocks\CompanyDataAccessMock.cs" />
     <Compile Include="ParsedInvoice.cs" />
-    <Compile Include="AnalyzeInvoiceServiceTests.cs" />
+    <Compile Include="AnalyzeInvoiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuickBooks\ExternalCompanyServiceTests.cs" />
     <Compile Include="QuickBooks\ExternalExchangeRateIntegrationTests.cs" />

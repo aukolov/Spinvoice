@@ -33,5 +33,10 @@ namespace Spinvoice.IntegrationTests
                 .ToArray();
             return data;
         }
+
+        public static string GetTestPath(string testClassName, string testName)
+        {
+            return Path.Combine(testResourcesPath, testClassName, testName);
+        }
     }
 }

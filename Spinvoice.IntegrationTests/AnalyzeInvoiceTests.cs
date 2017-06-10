@@ -10,7 +10,7 @@ using Spinvoice.Services;
 namespace Spinvoice.IntegrationTests
 {
     [TestFixture]
-    public class AnalyzeInvoiceServiceTests
+    public class AnalyzeInvoiceTests
     {
         private CompanyRepository _companyRepository;
         private AnalyzeInvoiceService _service;
@@ -26,7 +26,7 @@ namespace Spinvoice.IntegrationTests
 
         private static object[] GetTestData()
         {
-            return TestInputProvider.GetTestData(nameof(AnalyzeInvoiceServiceTests));
+            return TestInputProvider.GetTestData(nameof(AnalyzeInvoiceTests));
         }
 
         [Test]

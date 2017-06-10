@@ -11,6 +11,18 @@ namespace Spinvoice.Domain.Accounting
         private int _quantity;
         private string _externalId;
 
+        public Position()
+        {
+            
+        }
+
+        public Position(string name, int quantity, decimal amount)
+        {
+            _name = name;
+            _quantity = quantity;
+            _amount = amount;
+        }
+
         public string Name
         {
             get { return _name; }
