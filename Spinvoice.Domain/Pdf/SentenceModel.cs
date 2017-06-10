@@ -15,6 +15,9 @@
 
         public double Left { get; }
         public double Top { get; }
+        public double Right => Left + Width;
+        public double Bottom => Top + Height;
+        public double MidX => Left + Width / 2;
         public double Width { get; }
         public double Height { get; }
     }

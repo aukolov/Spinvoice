@@ -60,6 +60,29 @@ namespace Spinvoice.ViewModels.Invoices
         public ICommand AddCommand { get; }
         public ICommand RemoveCommand { get; }
 
+        public void ChangePositionDescription(string text)
+        {
+            if (SelectedPositionViewModel != null)
+                SelectedPositionViewModel.Position.Name = text;
+        }
+
+        public void ChangePositionQuantity(string text)
+        {
+            if (SelectedPositionViewModel == null) return;
+
+            int quantity;
+            if (int.TryParse(text, out quantity))
+            {
+                SelectedPositionViewModel.Position.Quantity = quantity;
+            }
+        }
+
+        public void ChangePositionAmount(string text)
+        {
+            if (SelectedPositionViewModel != null)
+                SelectedPositionViewModel.Position.Amount = AmountParser.Parse(text);
+        }
+
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

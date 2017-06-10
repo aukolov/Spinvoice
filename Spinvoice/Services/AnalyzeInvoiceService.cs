@@ -95,6 +95,10 @@ namespace Spinvoice.Services
             string value, 
             IEnumerable<IPdfAnalysisStrategy> candidateStrategies)
         {
+            if (string.IsNullOrEmpty(value))
+            {
+                return strategy;
+            }
             if (strategy == null)
             {
                 foreach (var candidateStrategy in candidateStrategies)

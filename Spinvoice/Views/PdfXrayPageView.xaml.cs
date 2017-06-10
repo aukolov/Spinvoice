@@ -1,5 +1,6 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Input;
+using Spinvoice.Domain.Pdf;
 using Spinvoice.ViewModels.Invoices;
 
 namespace Spinvoice.Views
@@ -19,8 +20,14 @@ namespace Spinvoice.Views
                 return;
             }
 
+            var sentence = textBlock.DataContext as SentenceModel;
+            if (sentence == null)
+            {
+                return;
+            }
+
             var viewModel = DataContext as PdfXrayPageViewModel;
-            viewModel?.OnTextClicked(textBlock.Text);
+            viewModel?.OnTextClicked(sentence);
         }
     }
 }

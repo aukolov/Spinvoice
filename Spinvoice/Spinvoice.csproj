@@ -112,6 +112,7 @@
     <Compile Include="ViewModels\Exchange\ExchangeRatesViewModel.cs" />
     <Compile Include="ViewModels\FileSystem\FileViewModel.cs" />
     <Compile Include="ViewModels\FileSystem\IFileSystemViewModel.cs" />
+    <Compile Include="ViewModels\Invoices\InvoiceEditViewModel.cs" />
     <Compile Include="ViewModels\Invoices\PdfXrayPageViewModel.cs" />
     <Compile Include="ViewModels\Invoices\PositionListViewModel.cs" />
     <Compile Include="ViewModels\Invoices\InvoiceViewModel.cs" />

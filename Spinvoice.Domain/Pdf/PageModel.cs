@@ -9,16 +9,18 @@ namespace Spinvoice.Domain.Pdf
         {
             PageNumber = pageNumber;
             Blocks = blocks.AsReadOnly();
+            Sentences = blocks
+                .SelectMany(bm => bm.Sentences)
+                .OrderBy(model => model.Bottom)
+                .ThenBy(model => model.Left)
+                .ToArray();
         }
 
         public int PageNumber { get; }
 
         public IReadOnlyList<BlockModel> Blocks { get; }
 
-        public IEnumerable<SentenceModel> Sentences
-        {
-            get { return Blocks.SelectMany(bm => bm.Sentences); }
-        }
+        public IReadOnlyList<SentenceModel> Sentences { get; }
 
         public IEnumerable<LocationRange> Find(string text)
         {
@@ -95,6 +97,39 @@ namespace Spinvoice.Domain.Pdf
             endBlock = currentBlock;
             endSentence = currentSentence;
             return true;
+        }
+
+        public SentenceModel Above(SentenceModel sentence)
+        {
+            var i = 0;
+            for (; i < Sentences.Count; i++)
+            {
+                if (Sentences[i] == sentence)
+                {
+                    break;
+                }
+            }
+
+            if (i > Sentences.Count)
+            {
+                return null;
+            }
+
+            i -= 1;
+            var midX = sentence.Left + sentence.Width / 2;
+            while (i >= 0)
+            {
+                var candidate = Sentences[i];
+                if (candidate.Top < sentence.Top)
+                {
+                    if (candidate.Left <= midX && midX <= candidate.Right)
+                    {
+                        return candidate;
+                    }
+                }
+                i -= 1;
+            }
+            return null;
         }
 
         private static bool IsWhiteSpace(char c)

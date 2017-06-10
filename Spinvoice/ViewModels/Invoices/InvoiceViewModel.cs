@@ -31,15 +31,12 @@ namespace Spinvoice.ViewModels.Invoices
         private readonly ClipboardService _clipboardService;
 
         private readonly ICompanyRepository _companyRepository;
-        private readonly IExchangeRatesRepository _exchangeRatesRepository;
         private readonly IExternalItemRepository _externalItemRepository;
         private readonly IAccountsChartRepository _accountsChartRepository;
         private readonly PdfModel _pdfModel;
         private string _clipboardText;
-        private Invoice _invoice;
-        private string _stringDate;
-        private string _stringNetAmount;
         private volatile string _textToIgnore;
+        private readonly RawInvoice _rawInvoice;
 
         public InvoiceViewModel(
             ICompanyRepository companyRepository,
@@ -57,7 +54,6 @@ namespace Spinvoice.ViewModels.Invoices
         {
             _clipboardService = clipboardService;
             _companyRepository = companyRepository;
-            _exchangeRatesRepository = exchangeRatesRepository;
             _externalItemRepository = externalItemRepository;
             _accountsChartRepository = accountsChartRepository;
             _pdfModel = pdfModel;
@@ -66,9 +62,10 @@ namespace Spinvoice.ViewModels.Invoices
             _externalCompanyRepository = externalCompanyRepository;
             _externalAccountRepository = externalAccountRepository;
             _windowManager = windowManager;
-
+            
             Invoice = new Invoice();
             Invoice.Positions.Add(new Position());
+            _rawInvoice = new RawInvoice();
 
             CopyInvoiceCommand = new RelayCommand(CopyInvoice);
             CopyPositionsCommand = new RelayCommand(CopyPositions);
@@ -76,6 +73,12 @@ namespace Spinvoice.ViewModels.Invoices
 
             ActionSelectorViewModel = new ActionSelectorViewModel();
             PositionListViewModel = new PositionListViewModel(Invoice.Positions, ActionSelectorViewModel);
+            InvoiceEditViewModel =  new InvoiceEditViewModel(
+                Invoice,
+                ActionSelectorViewModel,
+                _rawInvoice,
+                companyRepository,
+                exchangeRatesRepository);
             if (_pdfModel != null)
             {
                 PdfXrayViewModel = new PdfXrayViewModel(_pdfModel);
@@ -103,6 +106,23 @@ namespace Spinvoice.ViewModels.Invoices
             };
         }
 
+        public Invoice Invoice { get; }
+
+        public InvoiceEditViewModel InvoiceEditViewModel { get; }
+        public ActionSelectorViewModel ActionSelectorViewModel { get; }
+        public PdfXrayViewModel PdfXrayViewModel { get; }
+
+        public ICommand CopyInvoiceCommand { get; }
+        public RelayCommand CopyPositionsCommand { get; }
+        public ICommand ClearCommand { get; }
+        public RelayCommand SaveToQuickBooksCommand { get; set; }
+        public RelayCommand OpenInQuickBooksCommand { get; }
+        public PositionListViewModel PositionListViewModel { get; }
+        public ObservableCollection<IExternalCompany> ExternalCompanies { get; }
+        public RelayCommand CreateExternalCompanyCommand { get; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
         private void CreateExternalCompany()
         {
             if (string.IsNullOrEmpty(Invoice.CompanyName))
@@ -120,37 +140,6 @@ namespace Spinvoice.ViewModels.Invoices
             Invoice.ExternalCompanyId = externalCompany.Id;
         }
 
-        public ActionSelectorViewModel ActionSelectorViewModel { get; }
-        public PdfXrayViewModel PdfXrayViewModel { get; }
-
-        public Invoice Invoice
-        {
-            get { return _invoice; }
-            private set
-            {
-                if (_invoice != null)
-                {
-                    _invoice.CurrencyChanged -= UpdateRate;
-                    _invoice.DateChanged -= UpdateRate;
-                }
-                _invoice = value;
-                _invoice.CurrencyChanged += UpdateRate;
-                _invoice.DateChanged += UpdateRate;
-
-                OnPropertyChanged();
-            }
-        }
-
-        public ICommand CopyInvoiceCommand { get; }
-        public RelayCommand CopyPositionsCommand { get; }
-        public ICommand ClearCommand { get; }
-        public RelayCommand SaveToQuickBooksCommand { get; set; }
-        public RelayCommand OpenInQuickBooksCommand { get; }
-        public PositionListViewModel PositionListViewModel { get; }
-        public ObservableCollection<IExternalCompany> ExternalCompanies { get; }
-        public RelayCommand CreateExternalCompanyCommand { get; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public void Subscribe()
         {
@@ -162,111 +151,11 @@ namespace Spinvoice.ViewModels.Invoices
             _clipboardService.ClipboardChanged -= OnClipboardChanged;
         }
 
-        private void ChangeDate(string text)
-        {
-            var parsedDate = DateParser.TryParseDate(text);
-            if (parsedDate.HasValue)
-            {
-                Invoice.Date = parsedDate.Value;
-                _stringDate = text;
-                UpdateRate();
-            }
-        }
-
-        private void UpdateRate()
-        {
-            if (Invoice.Date != default(DateTime) && !string.IsNullOrEmpty(Invoice.Currency))
-                for (var i = 0; i < 5; i++)
-                {
-                    var rate = _exchangeRatesRepository.GetRate(Invoice.Currency, Invoice.Date.AddDays(-i));
-                    if (!rate.HasValue) continue;
-
-                    Invoice.ExchangeRate = rate.Value;
-                    break;
-                }
-        }
-
-        private void ChangeCompanyName(string text)
-        {
-            Invoice.CompanyName = text;
-
-            var company = _companyRepository.GetByName(Invoice.CompanyName);
-            if (company != null)
-            {
-                Invoice.ApplyCompany(company);
-                ActionSelectorViewModel.Advance();
-                ActionSelectorViewModel.Advance();
-            }
-        }
-
-        private void ChangeInvoiceNumber(string text)
-        {
-            Invoice.InvoiceNumber = text;
-        }
-
-        private void ChangeCurrency(string text)
-        {
-            Invoice.Currency = text;
-            UpdateRate();
-        }
-
-        private void ChangeCountry(string text)
-        {
-            Invoice.Country = text;
-        }
-
-        private void ChangeVatNumber(string text)
-        {
-            Invoice.VatNumber = text;
-        }
-
-        private void ChangeNetAmount(string text)
-        {
-            decimal netAmount;
-            if (!AmountParser.TryParse(text, out netAmount)) return;
-
-            Invoice.NetAmount = netAmount;
-            _stringNetAmount = text;
-        }
-
-        private void ChangeVatAmount(string text)
-        {
-            Invoice.VatAmount = AmountParser.Parse(text);
-        }
-
-        private void ChangeTransportationCosts(string text)
-        {
-            Invoice.TransportationCosts = AmountParser.Parse(text);
-        }
-
-        private void ChangePositionDescription(string text)
-        {
-            if (PositionListViewModel.SelectedPositionViewModel != null)
-                PositionListViewModel.SelectedPositionViewModel.Position.Name = text;
-        }
-
-        private void ChangePositionQuantity(string text)
-        {
-            if (PositionListViewModel.SelectedPositionViewModel == null) return;
-
-            int quantity;
-            if (int.TryParse(text, out quantity))
-            {
-                PositionListViewModel.SelectedPositionViewModel.Position.Quantity = quantity;
-            }
-        }
-
-        private void ChangePositionAmount(string text)
-        {
-            if (PositionListViewModel.SelectedPositionViewModel != null)
-                PositionListViewModel.SelectedPositionViewModel.Position.Amount = AmountParser.Parse(text);
-        }
-
-        private void OnXrayTextClicked(string text)
+        private void OnXrayTextClicked(SentenceModel sentence)
         {
             try
             {
-                ExecuteCurrentCommand(text);
+                ExecuteCurrentCommand(sentence.Text);
                 AdvanceCommand();
             }
             catch (Exception e)
@@ -279,6 +168,7 @@ namespace Spinvoice.ViewModels.Invoices
         {
             if (!Application.Current.MainWindow.IsActive)
                 return;
+
             if (_clipboardService.CheckContainsText())
             {
                 var text = _clipboardService.GetText();
@@ -356,40 +246,40 @@ namespace Spinvoice.ViewModels.Invoices
             switch (ActionSelectorViewModel.EditField)
             {
                 case EditField.InvoiceCompany:
-                    ChangeCompanyName(text);
+                    InvoiceEditViewModel.ChangeCompanyName(text);
                     break;
                 case EditField.InvoiceCountry:
-                    ChangeCountry(text);
+                    InvoiceEditViewModel.ChangeCountry(text);
                     break;
                 case EditField.InvoiceCurrency:
-                    ChangeCurrency(text);
+                    InvoiceEditViewModel.ChangeCurrency(text);
                     break;
                 case EditField.InvoiceVatNumber:
-                    ChangeVatNumber(text);
+                    InvoiceEditViewModel.ChangeVatNumber(text);
                     break;
                 case EditField.InvoiceDate:
-                    ChangeDate(text);
+                    InvoiceEditViewModel.ChangeDate(text);
                     break;
                 case EditField.InvoiceNumber:
-                    ChangeInvoiceNumber(text);
+                    InvoiceEditViewModel.ChangeInvoiceNumber(text);
                     break;
                 case EditField.InvoiceNetAmount:
-                    ChangeNetAmount(text);
+                    InvoiceEditViewModel.ChangeNetAmount(text);
                     break;
                 case EditField.InvoiceVatAmount:
-                    ChangeVatAmount(text);
+                    InvoiceEditViewModel.ChangeVatAmount(text);
                     break;
                 case EditField.InvoiceTransportationCosts:
-                    ChangeTransportationCosts(text);
+                    InvoiceEditViewModel.ChangeTransportationCosts(text);
                     break;
                 case EditField.PositionName:
-                    ChangePositionDescription(text);
+                    PositionListViewModel.ChangePositionDescription(text);
                     break;
                 case EditField.PositionQuantity:
-                    ChangePositionQuantity(text);
+                    PositionListViewModel.ChangePositionQuantity(text);
                     break;
                 case EditField.PositionAmount:
-                    ChangePositionAmount(text);
+                    PositionListViewModel.ChangePositionAmount(text);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -429,14 +319,7 @@ namespace Spinvoice.ViewModels.Invoices
 
                 if (_pdfModel != null)
                 {
-                    var rawInvoice = new RawInvoice
-                    {
-                        CompanyName = company.Name,
-                        Date = _stringDate,
-                        InvoiceNumber = Invoice.InvoiceNumber,
-                        NetAmount = _stringNetAmount
-                    };
-                    _analyzeInvoiceService.Learn(company, rawInvoice, _pdfModel);
+                    _analyzeInvoiceService.Learn(company, _rawInvoice, _pdfModel);
                 }
             }
         }

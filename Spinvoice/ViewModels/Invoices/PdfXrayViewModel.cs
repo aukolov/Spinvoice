@@ -16,13 +16,13 @@ namespace Spinvoice.ViewModels.Invoices
                 return viewModel;
             }).ToArray();
         }
-        public event Action<string> TextClicked;
+        public event Action<SentenceModel> TextClicked;
 
         public PdfXrayPageViewModel[] Pages { get; }
 
-        private void OnTextClicked(string text)
+        private void OnTextClicked(SentenceModel sentence)
         {
-            TextClicked.Raise(text);
+            TextClicked.Raise(sentence);
         }
     }
 }
