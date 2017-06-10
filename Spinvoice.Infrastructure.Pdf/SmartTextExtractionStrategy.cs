@@ -33,10 +33,6 @@ namespace Spinvoice.Infrastructure.Pdf
             _currentBlock.Add(renderInfo);
             var rectange = renderInfo.GetAscentLine().GetBoundingRectange();
             _maxY = Math.Max(_maxY, rectange.Y);
-            //var r = renderInfo.GetBaseline().GetBoundingRectange();
-            //Console.WriteLine($"Test: {renderInfo.PdfString} " +
-            //             $"{r.X}-{r.Y} " +
-            //             $"{r.Width}-{r.Height} ");
         }
 
         private void CountSlashZero(TextRenderInfo renderInfo)
@@ -62,11 +58,17 @@ namespace Spinvoice.Infrastructure.Pdf
         public string GetResultantText()
         {
             BlockSentences = new List<List<SentenceModel>>();
+            var counter = 0;
 
             foreach (var block in _blocks)
             {
                 var sentences = new List<SentenceModel>();
-                var builder = new SentenceModelBuilder();
+                var builder = new SentenceModelBuilder
+                {
+                    PageIndex = counter
+                };
+                counter++;
+
                 for (var i = 0; i < block.Count; i++)
                 {
                     var brick = block[i];
@@ -87,7 +89,11 @@ namespace Spinvoice.Infrastructure.Pdf
                         else
                         {
                             sentences.Add(builder.Build());
-                            builder = new SentenceModelBuilder();
+                            builder = new SentenceModelBuilder
+                            {
+                                PageIndex = counter
+                            };
+                            counter++;
                             Append(builder, brick);
                         }
                     }

@@ -1,6 +1,8 @@
-﻿namespace Spinvoice.Domain.Pdf
+﻿using Spinvoice.Domain.Pdf;
+
+namespace Spinvoice.Domain.InvoiceProcessing.Strategies
 {
-    public class NextTokenStrategy : IPdfAnalysisStrategy
+    public class NextTokenStrategy : IStringPdfAnalysisStrategy
     {
         // ReSharper disable once MemberCanBePrivate.Global
         public string PreviousText { get; set; }

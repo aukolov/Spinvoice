@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Spinvoice.Domain.Pdf
@@ -11,8 +12,8 @@ namespace Spinvoice.Domain.Pdf
             Blocks = blocks.AsReadOnly();
             Sentences = blocks
                 .SelectMany(bm => bm.Sentences)
-                .OrderBy(model => model.Bottom)
-                .ThenBy(model => model.Left)
+                //.OrderBy(model => model.Bottom)
+                //.ThenBy(model => model.Left)
                 .ToArray();
         }
 
@@ -101,16 +102,8 @@ namespace Spinvoice.Domain.Pdf
 
         public SentenceModel Above(SentenceModel sentence)
         {
-            var i = 0;
-            for (; i < Sentences.Count; i++)
-            {
-                if (Sentences[i] == sentence)
-                {
-                    break;
-                }
-            }
-
-            if (i > Sentences.Count)
+            var i = GetIndex(sentence);
+            if (i < 0)
             {
                 return null;
             }
@@ -130,6 +123,61 @@ namespace Spinvoice.Domain.Pdf
                 i -= 1;
             }
             return null;
+        }
+
+        public IEnumerable<SentenceModel> Below(SentenceModel sentence)
+        {
+            var i = GetIndex(sentence);
+            if (i < 0)
+            {
+                yield break;
+            }
+
+            i += 1;
+            var midX = sentence.Left + sentence.Width / 2;
+            while (i < Sentences.Count)
+            {
+                var candidate = Sentences[i];
+                if (candidate.Top > sentence.Top)
+                {
+                    if (candidate.Left >= midX && midX <= sentence.Right)
+                    {
+                        yield return candidate;
+                    }
+                }
+                i += 1;
+            }
+        }
+
+        public IEnumerable<SentenceModel> Left(SentenceModel sentence)
+        {
+            var i = GetIndex(sentence);
+            if (i < 0)
+            {
+                yield break;
+            }
+
+            i -= 1;
+            while (i > 0)
+            {
+                var candidate = Sentences[i];
+                if (Math.Abs(candidate.Top - sentence.Top) < 5)
+                {
+                    if (candidate.Left < sentence.Left)
+                    {
+                        yield return candidate;
+                    }
+                }
+                i -= 1;
+            }
+        }
+
+        private int GetIndex(SentenceModel sentence)
+        {
+            var index = sentence.PageIndex;
+            if (index < 0) return -1;
+            if (index > Sentences.Count) return -1;
+            return Sentences[index] == sentence ? index : -1;
         }
 
         private static bool IsWhiteSpace(char c)

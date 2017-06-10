@@ -1,5 +1,6 @@
 ﻿using Spinvoice.Domain.Accounting;
 using Spinvoice.Domain.Company;
+using Spinvoice.Domain.InvoiceProcessing.Strategies;
 using Spinvoice.Domain.Pdf;
 using Spinvoice.Utils;
 
@@ -23,6 +24,7 @@ namespace Spinvoice.Domain.InvoiceProcessing
             TrySetInvoiceNumber(pdfModel, invoice, company.InvoiceNumberStrategy);
             TrySetInvoiceDate(pdfModel, invoice, company.InvoiceDateStrategy);
             TrySetInvoiceNetAmount(pdfModel, invoice, company.InvoiceNetAmountStrategy);
+            TrySetPositions(pdfModel, invoice, company.PositionStrategy);
         }
 
         private Company.Company FindCompany(PdfModel pdfModel)
@@ -44,7 +46,7 @@ namespace Spinvoice.Domain.InvoiceProcessing
             return null;
         }
 
-        private static void TrySetInvoiceNumber(PdfModel pdfModel, Invoice invoice, IPdfAnalysisStrategy strategy)
+        private static void TrySetInvoiceNumber(PdfModel pdfModel, Invoice invoice, IStringPdfAnalysisStrategy strategy)
         {
             var invoiceNumber = strategy?.GetValue(pdfModel);
             if (invoiceNumber != null)
@@ -53,7 +55,7 @@ namespace Spinvoice.Domain.InvoiceProcessing
             }
         }
 
-        private static void TrySetInvoiceDate(PdfModel pdfModel, Invoice invoice, IPdfAnalysisStrategy strategy)
+        private static void TrySetInvoiceDate(PdfModel pdfModel, Invoice invoice, IStringPdfAnalysisStrategy strategy)
         {
             var stringInvoiceDate = strategy?.GetValue(pdfModel);
             if (stringInvoiceDate != null)
@@ -66,7 +68,7 @@ namespace Spinvoice.Domain.InvoiceProcessing
             }
         }
 
-        private static void TrySetInvoiceNetAmount(PdfModel pdfModel, Invoice invoice, IPdfAnalysisStrategy strategy)
+        private static void TrySetInvoiceNetAmount(PdfModel pdfModel, Invoice invoice, IStringPdfAnalysisStrategy strategy)
         {
             var stringInvoiceNetAmount = strategy?.GetValue(pdfModel);
             if (stringInvoiceNetAmount != null)
@@ -74,5 +76,18 @@ namespace Spinvoice.Domain.InvoiceProcessing
                 invoice.NetAmount = AmountParser.Parse(stringInvoiceNetAmount.Trim());
             }
         }
+
+        private void TrySetPositions(
+            PdfModel pdfModel,
+            Invoice invoice,
+            IPdfPositionAnalysisStrategy strategy)
+        {
+            var positions = strategy?.GetValue(pdfModel);
+            if (positions != null)
+            {
+                invoice.Positions.AddRange(positions);
+            }
+        }
+
     }
 }

@@ -60,14 +60,5 @@ namespace Spinvoice.Domain.Pdf
                 }
             }
         }
-
-        public IEnumerable<SentenceModel> FindSentence(string text)
-        {
-            foreach (var sentence in Sentences)
-            {
-                if (sentence.Text == text)
-                    yield return sentence;
-            }
-        }
     }
 }

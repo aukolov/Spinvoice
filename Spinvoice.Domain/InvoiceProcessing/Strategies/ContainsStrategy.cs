@@ -1,8 +1,9 @@
 ﻿using System.Linq;
+using Spinvoice.Domain.Pdf;
 
-namespace Spinvoice.Domain.Pdf
+namespace Spinvoice.Domain.InvoiceProcessing.Strategies
 {
-    public class ContainsStrategy : IPdfAnalysisStrategy
+    public class ContainsStrategy : IStringPdfAnalysisStrategy
     {
         // ReSharper disable once MemberCanBePrivate.Global
         public string Value { get; set; }

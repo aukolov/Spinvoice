@@ -1,6 +1,8 @@
-﻿namespace Spinvoice.Domain.Pdf
+﻿using Spinvoice.Domain.Pdf;
+
+namespace Spinvoice.Domain.InvoiceProcessing.Strategies
 {
-    public class InsideTokensStrategy : IPdfAnalysisStrategy
+    public class InsideTokensStrategy : IStringPdfAnalysisStrategy
     {
         public string PreviousText { get; set; }
 

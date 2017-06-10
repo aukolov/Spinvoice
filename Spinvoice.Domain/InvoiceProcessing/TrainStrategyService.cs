@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Spinvoice.Domain.Accounting;
+using Spinvoice.Domain.InvoiceProcessing.Strategies;
 using Spinvoice.Domain.Pdf;
 
 namespace Spinvoice.Domain.InvoiceProcessing
@@ -8,23 +9,44 @@ namespace Spinvoice.Domain.InvoiceProcessing
     {
         public void Train(Company.Company company, RawInvoice rawInvoice, PdfModel pdfModel)
         {
-            company.CompanyInvoiceStrategy = TrainStrategy(company.CompanyInvoiceStrategy,
-                pdfModel, rawInvoice.CompanyName, GetCompanyStrategies());
-            company.InvoiceNumberStrategy = TrainStrategy(company.InvoiceNumberStrategy,
-                pdfModel, rawInvoice.InvoiceNumber, GetStrategies());
-            company.InvoiceDateStrategy = TrainStrategy(company.InvoiceDateStrategy,
-                pdfModel, rawInvoice.Date, GetStrategies());
-            company.InvoiceNetAmountStrategy = TrainStrategy(company.InvoiceNetAmountStrategy,
-                pdfModel, rawInvoice.NetAmount, GetStrategies());
+            company.CompanyInvoiceStrategy = (IStringPdfAnalysisStrategy)TrainStrategy(
+                company.CompanyInvoiceStrategy,
+                pdfModel,
+                rawInvoice.CompanyName,
+                GetCompanyStrategies());
+
+            company.InvoiceNumberStrategy = (IStringPdfAnalysisStrategy)TrainStrategy(
+                company.InvoiceNumberStrategy,
+                pdfModel,
+                rawInvoice.InvoiceNumber,
+                GetStrategies());
+
+            company.InvoiceDateStrategy = (IStringPdfAnalysisStrategy)TrainStrategy(
+                company.InvoiceDateStrategy,
+                pdfModel,
+                rawInvoice.Date,
+                GetStrategies());
+
+            company.InvoiceNetAmountStrategy = (IStringPdfAnalysisStrategy)TrainStrategy(
+                company.InvoiceNetAmountStrategy,
+                pdfModel,
+                rawInvoice.NetAmount,
+                GetStrategies());
+
+            company.PositionStrategy = (IPdfPositionAnalysisStrategy)TrainStrategy(
+                company.PositionStrategy,
+                pdfModel,
+                rawInvoice.FirstPosition,
+                GetPositionStrategies());
         }
 
-        private static IPdfAnalysisStrategy TrainStrategy(
-            IPdfAnalysisStrategy strategy,
+        private static IStrategy<TRaw, TResult> TrainStrategy<TRaw, TResult>(
+            IStrategy<TRaw, TResult> strategy,
             PdfModel pdfModel,
-            string value,
-            IEnumerable<IPdfAnalysisStrategy> candidateStrategies)
+            TRaw value,
+            IEnumerable<IStrategy<TRaw, TResult>> candidateStrategies)
         {
-            if (string.IsNullOrEmpty(value))
+            if (value == null)
             {
                 return strategy;
             }
@@ -32,8 +54,7 @@ namespace Spinvoice.Domain.InvoiceProcessing
             {
                 foreach (var candidateStrategy in candidateStrategies)
                 {
-                    if (candidateStrategy.Train(pdfModel, value)
-                        && candidateStrategy.GetValue(pdfModel) == value)
+                    if (candidateStrategy.Train(pdfModel, value))
                     {
                         return candidateStrategy;
                     }
@@ -46,17 +67,22 @@ namespace Spinvoice.Domain.InvoiceProcessing
             return strategy;
         }
 
-        private static IEnumerable<IPdfAnalysisStrategy> GetCompanyStrategies()
+        private static IEnumerable<IStringPdfAnalysisStrategy> GetCompanyStrategies()
         {
             yield return new NextTokenStrategy();
             yield return new ContainsStrategy();
             yield return new InsideTokensStrategy();
         }
 
-        private static IEnumerable<IPdfAnalysisStrategy> GetStrategies()
+        private static IEnumerable<IStringPdfAnalysisStrategy> GetStrategies()
         {
             yield return new NextTokenStrategy();
             yield return new InsideTokensStrategy();
+        }
+
+        private static IEnumerable<IPdfPositionAnalysisStrategy> GetPositionStrategies()
+        {
+            yield return new UnderAmountPositionStrategy();
         }
     }
 }

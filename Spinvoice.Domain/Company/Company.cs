@@ -1,4 +1,5 @@
-﻿using Spinvoice.Domain.Pdf;
+﻿using Spinvoice.Domain.InvoiceProcessing.Strategies;
+using Spinvoice.Domain.Pdf;
 
 namespace Spinvoice.Domain.Company
 {
@@ -11,10 +12,11 @@ namespace Spinvoice.Domain.Company
         public bool IsEuropeanUnion { get; set; }
         public string VatNumber { get; set; }
 
-        public IPdfAnalysisStrategy CompanyInvoiceStrategy { get; set; }
-        public IPdfAnalysisStrategy InvoiceNumberStrategy { get; set; }
-        public IPdfAnalysisStrategy InvoiceDateStrategy { get; set; }
-        public IPdfAnalysisStrategy InvoiceNetAmountStrategy { get; set; }
+        public IStringPdfAnalysisStrategy CompanyInvoiceStrategy { get; set; }
+        public IStringPdfAnalysisStrategy InvoiceNumberStrategy { get; set; }
+        public IStringPdfAnalysisStrategy InvoiceDateStrategy { get; set; }
+        public IStringPdfAnalysisStrategy InvoiceNetAmountStrategy { get; set; }
+        public IPdfPositionAnalysisStrategy PositionStrategy { get; set; }
         public string ExternalId { get; set; }
 
         public override string ToString()

@@ -17,6 +17,7 @@ namespace Spinvoice.Infrastructure.Pdf
         public double Top { get; set; }
         public double Right { get; set; }
         public double Bottom { get; set; }
+        public int PageIndex { get; set; }
 
         public bool IsEmpty { get; private set; }
 
@@ -43,7 +44,13 @@ namespace Spinvoice.Infrastructure.Pdf
 
         public SentenceModel Build()
         {
-            return new SentenceModel(_sb.ToString(), Left, Top, Right - Left, Bottom - Top);
+            return new SentenceModel(
+                _sb.ToString(),
+                PageIndex,
+                Left,
+                Top,
+                Right - Left,
+                Bottom - Top);
         }
     }
 }

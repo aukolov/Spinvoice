@@ -2,9 +2,16 @@
 {
     public class SentenceModel
     {
-        public SentenceModel(string text, double left, double top, double width, double height)
+        public SentenceModel(
+            string text,
+            int pageIndex,
+            double left,
+            double top,
+            double width,
+            double height)
         {
             Text = text;
+            PageIndex = pageIndex;
             Left = left;
             Top = top;
             Width = width;
@@ -12,6 +19,7 @@
         }
 
         public string Text { get; }
+        public int PageIndex { get; }
 
         public double Left { get; }
         public double Top { get; }
