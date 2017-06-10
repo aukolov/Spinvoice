@@ -57,17 +57,17 @@ namespace Spinvoice.ViewModels.Exchange
             }
         }
 
-        public decimal ToCurrencyRate
+        public decimal ToEuroRate
         {
             get
             {
-                var toEuroRate = ToEuroRate;
-                if (toEuroRate == 0) return 0;
-                return Math.Round(1 / toEuroRate, 4);
+                var toCurrencyRate = ToCurrencyRate;
+                if (toCurrencyRate == 0) return 0;
+                return Math.Round(1 / toCurrencyRate, 4);
             }
         }
 
-        public decimal ToEuroRate
+        public decimal ToCurrencyRate
         {
             get
             {

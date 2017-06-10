@@ -107,7 +107,7 @@ namespace Spinvoice.Domain.Accounting
             }
         }
 
-        public decimal NetAmountInEuro => _exchangeRate != 0 ? Round(_netAmount / _exchangeRate) : 0;
+        public decimal NetAmountInEuro => Round(_netAmount * _exchangeRate);
 
         private static decimal Round(decimal value)
         {
