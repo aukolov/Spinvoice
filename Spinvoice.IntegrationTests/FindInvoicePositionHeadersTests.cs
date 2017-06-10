@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using NUnit.Framework;
 using Spinvoice.Domain.Company;
+using Spinvoice.Domain.InvoiceProcessing;
 using Spinvoice.Domain.Pdf;
 using Spinvoice.Infrastructure.Pdf;
 using Spinvoice.IntegrationTests.Mocks;

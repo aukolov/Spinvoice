@@ -100,7 +100,6 @@
     <Compile Include="Services\FileNamesComparer.cs" />
     <Compile Include="Services\FileService.cs" />
     <Compile Include="Services\IFileService.cs" />
-    <Compile Include="Services\AnalyzeInvoiceService.cs" />
     <Compile Include="Services\InvoiceFormatter.cs" />
     <Compile Include="Services\LogConfigurator.cs" />
     <Compile Include="Services\WindowManager.cs" />

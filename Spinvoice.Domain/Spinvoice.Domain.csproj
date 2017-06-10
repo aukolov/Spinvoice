@@ -72,6 +72,8 @@
     <Compile Include="ExternalBook\IOAuthProfileDataAccess.cs" />
     <Compile Include="ExternalBook\IOAuthRepository.cs" />
     <Compile Include="ExternalBook\OAuthProfile.cs" />
+    <Compile Include="InvoiceProcessing\AnalyzeInvoiceService.cs" />
+    <Compile Include="InvoiceProcessing\TrainStrategyService.cs" />
     <Compile Include="Pdf\BlockModel.cs" />
     <Compile Include="Pdf\ContainsStrategy.cs" />
     <Compile Include="Pdf\InsideTokensStrategy.cs" />

@@ -10,6 +10,7 @@ using Spinvoice.Domain.Accounting;
 using Spinvoice.Domain.Company;
 using Spinvoice.Domain.Exchange;
 using Spinvoice.Domain.ExternalBook;
+using Spinvoice.Domain.InvoiceProcessing;
 using Spinvoice.Domain.Pdf;
 using Spinvoice.Domain.UI;
 using Spinvoice.QuickBooks.Account;
@@ -24,6 +25,7 @@ namespace Spinvoice.ViewModels.Invoices
     public sealed class InvoiceViewModel : INotifyPropertyChanged
     {
         private readonly AnalyzeInvoiceService _analyzeInvoiceService;
+        private readonly TrainStrategyService _trainStrategyService;
         private readonly IExternalInvoiceService _externalInvoiceService;
         private readonly IExternalCompanyRepository _externalCompanyRepository;
         private readonly IExternalAccountRepository _externalAccountRepository;
@@ -46,6 +48,7 @@ namespace Spinvoice.ViewModels.Invoices
             ClipboardService clipboardService,
             PdfModel pdfModel,
             AnalyzeInvoiceService analyzeInvoiceService,
+            TrainStrategyService trainStrategyService,
             IExternalInvoiceService externalInvoiceService,
             IExternalCompanyRepository externalCompanyRepository,
             IExternalAccountRepository externalAccountRepository,
@@ -58,6 +61,8 @@ namespace Spinvoice.ViewModels.Invoices
             _accountsChartRepository = accountsChartRepository;
             _pdfModel = pdfModel;
             _analyzeInvoiceService = analyzeInvoiceService;
+            _trainStrategyService = trainStrategyService;
+
             _externalInvoiceService = externalInvoiceService;
             _externalCompanyRepository = externalCompanyRepository;
             _externalAccountRepository = externalAccountRepository;
@@ -322,7 +327,7 @@ namespace Spinvoice.ViewModels.Invoices
                     _rawInvoice.InvoiceNumber = _rawInvoice.InvoiceNumber ?? Invoice.InvoiceNumber;
                     _rawInvoice.CompanyName = _rawInvoice.CompanyName ?? Invoice.CompanyName;
 
-                    _analyzeInvoiceService.Learn(company, _rawInvoice, _pdfModel);
+                    _trainStrategyService.Train(company, _rawInvoice, _pdfModel);
                 }
             }
         }

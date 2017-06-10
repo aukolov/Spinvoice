@@ -3,6 +3,7 @@ using System.Globalization;
 using System.IO;
 using System.Threading;
 using Spinvoice.Domain.Company;
+using Spinvoice.Domain.InvoiceProcessing;
 using Spinvoice.Infrastructure.DataAccess;
 using Spinvoice.Infrastructure.Pdf;
 using Spinvoice.QuickBooks.Account;
@@ -44,6 +45,7 @@ namespace Spinvoice.Services
             var fileService = new FileService();
             var pdfParser = new PdfParser();
             var analyzeInvoiceService = new AnalyzeInvoiceService(companyRepository);
+            var trainStrategyService = new TrainStrategyService();
             var windowManager = new WindowManager();
 
             var oauthRepository = new OAuthRepository(oauthProfileDataAccess);
@@ -69,6 +71,7 @@ namespace Spinvoice.Services
                 fileService,
                 pdfParser, 
                 analyzeInvoiceService,
+                trainStrategyService, 
                 windowManager,
                 oauthRepository, 
                 externalInvoiceService, 

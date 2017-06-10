@@ -1,11 +1,10 @@
 ﻿using System;
 using NUnit.Framework;
-using Spinvoice.Domain;
 using Spinvoice.Domain.Accounting;
 using Spinvoice.Domain.Company;
+using Spinvoice.Domain.InvoiceProcessing;
 using Spinvoice.Infrastructure.Pdf;
 using Spinvoice.IntegrationTests.Mocks;
-using Spinvoice.Services;
 
 namespace Spinvoice.IntegrationTests
 {
@@ -13,14 +12,16 @@ namespace Spinvoice.IntegrationTests
     public class AnalyzeInvoiceTests
     {
         private CompanyRepository _companyRepository;
-        private AnalyzeInvoiceService _service;
+        private AnalyzeInvoiceService _analyzeInvoiceService;
+        private TrainStrategyService _trainStrategyService;
         private PdfParser _pdfParser;
 
         [SetUp]
         public void Setup()
         {
             _companyRepository = new CompanyRepository(new CompanyDataAccessMock());
-            _service = new AnalyzeInvoiceService(_companyRepository);
+            _analyzeInvoiceService = new AnalyzeInvoiceService(_companyRepository);
+            _trainStrategyService = new TrainStrategyService();
             _pdfParser = new PdfParser();
         }
 
@@ -39,7 +40,7 @@ namespace Spinvoice.IntegrationTests
                 var rawInvoice = JsonUtils.Deserialize<RawInvoice>(input.JsonPath);
                 using (_companyRepository.GetByNameForUpdateOrCreate(rawInvoice.CompanyName, out company))
                 {
-                    _service.Learn(company, rawInvoice, _pdfParser.Parse(input.PdfPath));
+                    _trainStrategyService.Train(company, rawInvoice, _pdfParser.Parse(input.PdfPath));
                 }
             }
 
@@ -48,7 +49,7 @@ namespace Spinvoice.IntegrationTests
             foreach (var input in TestInputProvider.GetInput(testName, "test"))
             {
                 var invoice = new Invoice();
-                _service.Analyze(_pdfParser.Parse(input.PdfPath), invoice);
+                _analyzeInvoiceService.Analyze(_pdfParser.Parse(input.PdfPath), invoice);
                 var json = JsonUtils.Deserialize<ParsedInvoice>(input.JsonPath);
                 AssertInvoice(invoice, json, input.JsonPath);
             }

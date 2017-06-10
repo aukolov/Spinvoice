@@ -4,26 +4,28 @@ using System.Linq;
 using NUnit.Framework;
 using Spinvoice.Domain.Accounting;
 using Spinvoice.Domain.Company;
+using Spinvoice.Domain.InvoiceProcessing;
 using Spinvoice.Domain.Pdf;
 using Spinvoice.Infrastructure.Pdf;
 using Spinvoice.IntegrationTests.Mocks;
-using Spinvoice.Services;
 
 namespace Spinvoice.IntegrationTests
 {
     [TestFixture]
     public class AnalyzeInvoicePositionsTests
     {
-        private static readonly PdfParser _pdfParser = new PdfParser();
+        private static readonly PdfParser PdfParser = new PdfParser();
 
         private CompanyRepository _companyRepository;
-        private AnalyzeInvoiceService _service;
+        private AnalyzeInvoiceService _analyzeInvoiceService;
+        private TrainStrategyService _trainStrategyService;
 
         [SetUp]
         public void Setup()
         {
             _companyRepository = new CompanyRepository(new CompanyDataAccessMock());
-            _service = new AnalyzeInvoiceService(_companyRepository);
+            _analyzeInvoiceService = new AnalyzeInvoiceService(_companyRepository);
+            _trainStrategyService = new TrainStrategyService();
         }
 
         private static object[] GetTestData()
@@ -34,7 +36,7 @@ namespace Spinvoice.IntegrationTests
         private static IEnumerable<TestCase> GetTestCases()
         {
             var testPath = TestInputProvider.GetTestPath(nameof(AnalyzeInvoicePositionsTests), "DigiKey");
-            var learnPdfModel = _pdfParser.Parse(Path.Combine(testPath, "learn.pdf"));
+            var learnPdfModel = PdfParser.Parse(Path.Combine(testPath, "learn.pdf"));
             var rawInvoice = new RawInvoice
             {
                 CompanyName = "DIGI-KEY",
@@ -95,12 +97,12 @@ namespace Spinvoice.IntegrationTests
             Company company;
             using (_companyRepository.GetByNameForUpdateOrCreate(testCase.RawInvoice.CompanyName, out company))
             {
-                _service.Learn(company, testCase.RawInvoice, testCase.LearnPdfModel);
+                _trainStrategyService.Train(company, testCase.RawInvoice, testCase.LearnPdfModel);
             }
 
             var testPdfPath = TestInputProvider.GetInput(testCase.Name, "test").Single().PdfPath;
             var invoice = new Invoice();
-            _service.Analyze(_pdfParser.Parse(testPdfPath), invoice);
+            _analyzeInvoiceService.Analyze(PdfParser.Parse(testPdfPath), invoice);
 
             for (var i = 0; i < testCase.ExpectedPositions.Length; i++)
             {

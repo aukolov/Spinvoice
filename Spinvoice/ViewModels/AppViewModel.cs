@@ -9,6 +9,7 @@ using Spinvoice.Domain.App;
 using Spinvoice.Domain.Company;
 using Spinvoice.Domain.Exchange;
 using Spinvoice.Domain.ExternalBook;
+using Spinvoice.Domain.InvoiceProcessing;
 using Spinvoice.Domain.Pdf;
 using Spinvoice.Properties;
 using Spinvoice.QuickBooks.Account;
@@ -26,6 +27,7 @@ namespace Spinvoice.ViewModels
     public sealed class AppViewModel : INotifyPropertyChanged, IDisposable
     {
         private readonly AnalyzeInvoiceService _analyzeInvoiceService;
+        private readonly TrainStrategyService _trainStrategyService;
         private readonly WindowManager _windowManager;
         private readonly IOAuthRepository _oauthRepository;
         private readonly ICompanyRepository _companyRepository;
@@ -54,6 +56,7 @@ namespace Spinvoice.ViewModels
             IFileService fileService,
             IPdfParser pdfParser,
             AnalyzeInvoiceService analyzeInvoiceService,
+            TrainStrategyService trainStrategyService,
             WindowManager windowManager, 
             IOAuthRepository oauthRepository,
             IExternalInvoiceService externalInvoiceService, 
@@ -77,6 +80,7 @@ namespace Spinvoice.ViewModels
                 },
                 DispatcherPriority.Loaded);
             _analyzeInvoiceService = analyzeInvoiceService;
+            _trainStrategyService = trainStrategyService;
             _windowManager = windowManager;
             _oauthRepository = oauthRepository;
             OpenExchangeRatesCommand = new RelayCommand(OpenExchangeRates);
@@ -142,6 +146,7 @@ namespace Spinvoice.ViewModels
                     _clipboardService,
                     pdfModel,
                     _analyzeInvoiceService,
+                    _trainStrategyService,
                     _externalInvoiceService,
                     _externalCompanyRepository,
                     _externalAccountRepository,
