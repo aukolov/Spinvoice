@@ -34,9 +34,9 @@ namespace Spinvoice.IntegrationTests
             return data;
         }
 
-        public static string GetTestPath(string testClassName, string testName)
+        public static string GetTestPath(string testClassName, string testName, string fileName)
         {
-            return Path.Combine(testResourcesPath, testClassName, testName);
+            return Path.Combine(testResourcesPath, testClassName, testName, fileName);
         }
     }
 }

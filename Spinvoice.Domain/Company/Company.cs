@@ -20,17 +20,7 @@ namespace Spinvoice.Domain.Company
 
         public override string ToString()
         {
-            return $@"
-Name: {Name},
-Country: {Country},
-Currency: {Currency},
-IsEuropeanUnion: {IsEuropeanUnion},
-VatNumber: {VatNumber},
-ExternalId: {ExternalId},
-CompanyInvoiceStrategy: {CompanyInvoiceStrategy}
-InvoiceNumberStrategy: {InvoiceNumberStrategy}
-InvoiceDateStrategy: {InvoiceDateStrategy}
-InvoiceNetAmountStrategy: {InvoiceNetAmountStrategy}";
+            return $@"Company {Name}";
         }
     }
 }

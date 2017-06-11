@@ -5,7 +5,6 @@ using NUnit.Framework;
 using Spinvoice.Domain.Accounting;
 using Spinvoice.Domain.Company;
 using Spinvoice.Domain.InvoiceProcessing;
-using Spinvoice.Domain.Pdf;
 using Spinvoice.Infrastructure.Pdf;
 using Spinvoice.IntegrationTests.Mocks;
 
@@ -14,8 +13,7 @@ namespace Spinvoice.IntegrationTests
     [TestFixture]
     public partial class AnalyzeInvoicePositionsTests
     {
-        private static readonly PdfParser PdfParser = new PdfParser();
-
+        private readonly PdfParser _pdfParser = new PdfParser();
         private CompanyRepository _companyRepository;
         private AnalyzeInvoiceService _analyzeInvoiceService;
         private TrainStrategyService _trainStrategyService;
@@ -43,12 +41,15 @@ namespace Spinvoice.IntegrationTests
             Company company;
             using (_companyRepository.GetByNameForUpdateOrCreate(testCase.RawInvoice.CompanyName, out company))
             {
-                _trainStrategyService.Train(company, testCase.RawInvoice, testCase.LearnPdfModel);
+                var pdfModel = _pdfParser.Parse(TestInputProvider.GetTestPath(
+                    nameof(AnalyzeInvoicePositionsTests), testCase.Name, "learn.pdf"));
+                _trainStrategyService.Train(company, testCase.RawInvoice, pdfModel);
             }
 
-            var testPdfPath = TestInputProvider.GetTestPath(testCase.Name, testCase.TestFileName);
+            var testPdfPath = TestInputProvider.GetTestPath(
+                nameof(AnalyzeInvoicePositionsTests), testCase.Name, testCase.TestFileName);
             var invoice = new Invoice();
-            _analyzeInvoiceService.Analyze(PdfParser.Parse(testPdfPath), invoice);
+            _analyzeInvoiceService.Analyze(_pdfParser.Parse(testPdfPath), invoice);
 
             for (var i = 0; i < testCase.ExpectedPositions.Length; i++)
             {
@@ -56,9 +57,9 @@ namespace Spinvoice.IntegrationTests
                 Assert.IsTrue(invoice.Positions.Count > i);
                 var actualPosition = invoice.Positions[i];
 
-                Assert.AreEqual(expectedPosition.Name, actualPosition.Name);
-                Assert.AreEqual(expectedPosition.Quantity, actualPosition.Quantity);
-                Assert.AreEqual(expectedPosition.Amount, actualPosition.Amount);
+                Assert.AreEqual(expectedPosition.Name, actualPosition.Name, $"Name mismatch. Index: {i}");
+                Assert.AreEqual(expectedPosition.Quantity, actualPosition.Quantity, $"Quantity mismatch. Index: {i}");
+                Assert.AreEqual(expectedPosition.Amount, actualPosition.Amount, $"Amount mismatch. Index: {i}");
             }
             Assert.AreEqual(testCase.ExpectedPositions.Length, invoice.Positions.Count);
         }
@@ -66,20 +67,17 @@ namespace Spinvoice.IntegrationTests
         public class TestCase
         {
             public string Name { get; }
-            public PdfModel LearnPdfModel { get; }
             public RawInvoice RawInvoice { get; }
             public string TestFileName { get; }
             public Position[] ExpectedPositions { get; }
 
             public TestCase(
                 string name,
-                PdfModel learnPdfModel,
                 RawInvoice rawInvoice,
                 string testFileName,
                 Position[] expectedPositions)
             {
                 Name = name;
-                LearnPdfModel = learnPdfModel;
                 RawInvoice = rawInvoice;
                 TestFileName = testFileName;
                 ExpectedPositions = expectedPositions;
@@ -87,7 +85,7 @@ namespace Spinvoice.IntegrationTests
 
             public override string ToString()
             {
-                return TestFileName;
+                return $"{Name} {TestFileName}";
             }
         }
 

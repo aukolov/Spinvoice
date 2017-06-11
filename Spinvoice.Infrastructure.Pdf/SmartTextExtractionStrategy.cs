@@ -58,16 +58,11 @@ namespace Spinvoice.Infrastructure.Pdf
         public string GetResultantText()
         {
             BlockSentences = new List<List<SentenceModel>>();
-            var counter = 0;
 
             foreach (var block in _blocks)
             {
                 var sentences = new List<SentenceModel>();
-                var builder = new SentenceModelBuilder
-                {
-                    PageIndex = counter
-                };
-                counter++;
+                var builder = new SentenceModelBuilder();
 
                 for (var i = 0; i < block.Count; i++)
                 {
@@ -89,11 +84,7 @@ namespace Spinvoice.Infrastructure.Pdf
                         else
                         {
                             sentences.Add(builder.Build());
-                            builder = new SentenceModelBuilder
-                            {
-                                PageIndex = counter
-                            };
-                            counter++;
+                            builder = new SentenceModelBuilder();
                             Append(builder, brick);
                         }
                     }

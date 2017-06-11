@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Spinvoice.Domain.Accounting;
-using Spinvoice.Domain.Pdf;
 
 namespace Spinvoice.IntegrationTests
 {
@@ -22,8 +20,7 @@ namespace Spinvoice.IntegrationTests
 
         private static TestCase TestCase1()
         {
-            var testPath = TestInputProvider.GetTestPath(nameof(AnalyzeInvoicePositionsTests), "DigiKey");
-            var learnPdfModel = PdfParser.Parse(Path.Combine(testPath, "learn.pdf"));
+            var testName = "DigiKey";
             var rawInvoice = new RawInvoice
             {
                 CompanyName = "DIGI-KEY",
@@ -70,8 +67,7 @@ namespace Spinvoice.IntegrationTests
                 new Position("TC427CPA-ND", 50, 55m)
             };
             return new TestCase(
-                testPath,
-                learnPdfModel,
+                testName,
                 rawInvoice,
                 "test1.pdf",
                 expectedPositions);
@@ -79,8 +75,7 @@ namespace Spinvoice.IntegrationTests
 
         private static TestCase TestCase2()
         {
-            var testPath = TestInputProvider.GetTestPath(nameof(AnalyzeInvoicePositionsTests), "DigiKey");
-            var learnPdfModel = PdfParser.Parse(Path.Combine(testPath, "learn.pdf"));
+            var testName = "DigiKey";
             var rawInvoice = new RawInvoice
             {
                 CompanyName = "DIGI-KEY",
@@ -97,8 +92,7 @@ namespace Spinvoice.IntegrationTests
                 new Position("296-40278-1-ND", 5, 90.28m)
             };
             return new TestCase(
-                testPath,
-                learnPdfModel,
+                testName,
                 rawInvoice,
                 "test2.pdf",
                 expectedPositions);
@@ -106,8 +100,7 @@ namespace Spinvoice.IntegrationTests
 
         private static TestCase TestCase3()
         {
-            var testPath = TestInputProvider.GetTestPath(nameof(AnalyzeInvoicePositionsTests), "DigiKey2");
-            var learnPdfModel = PdfParser.Parse(Path.Combine(testPath, "learn.pdf"));
+            var testName = "DigiKey2";
             var rawInvoice = new RawInvoice
             {
                 CompanyName = "DIGI-KEY",
@@ -122,12 +115,11 @@ namespace Spinvoice.IntegrationTests
             {
                 new Position("296-11382-5-ND", 450, 737.10m),
                 new Position("AD9216BCPZ-105-ND", 25, 378.64m),
-                new Position("AD9216BCPZ-105-ND", 43, 165.45m),
+                new Position("CY2304SXI-1-ND", 43, 165.45m),
                 new Position("296-1699-5-ND", 105, 26.21m),
             };
             return new TestCase(
-                testPath,
-                learnPdfModel,
+                testName,
                 rawInvoice,
                 "test.pdf",
                 expectedPositions);

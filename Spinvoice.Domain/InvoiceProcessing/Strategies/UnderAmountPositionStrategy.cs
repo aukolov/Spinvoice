@@ -4,7 +4,7 @@ using System.Linq;
 using NLog;
 using Spinvoice.Domain.Accounting;
 using Spinvoice.Utils;
-
+// ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable once CheckNamespace
 namespace Spinvoice.Domain.Pdf
 {
@@ -12,22 +12,22 @@ namespace Spinvoice.Domain.Pdf
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private string _amountHeaderText;
-        private int _leftSentencesLength;
-        private int? _nameIndex;
-        private int? _quantityIndex;
+        public string AmountHeaderText { get; private set; }
+        public int LeftSentencesLength { get; private set; }
+        public int? NameIndex { get; private set; }
+        public int? QuantityIndex { get; private set; }
 
         public Position[] GetValue(PdfModel pdfModel)
         {
             Logger.Info($"Start analyzing file {pdfModel.FileName}.");
-            Logger.Info($"Amount header text: {_amountHeaderText}, left sentences length: {_leftSentencesLength}, " +
-                        $"name index: {_nameIndex}, quantity index: {_quantityIndex}.");
+            Logger.Info($"Amount header text: {AmountHeaderText}, left sentences length: {LeftSentencesLength}, " +
+                        $"name index: {NameIndex}, quantity index: {QuantityIndex}.");
             var positions = new List<Position>();
 
             foreach (var page in pdfModel.Pages)
             {
                 Logger.Info("Checking page...");
-                var amountHeaderSentence = page.Sentences.FirstOrDefault(model => model.Text == _amountHeaderText);
+                var amountHeaderSentence = page.Sentences.FirstOrDefault(model => model.Text == AmountHeaderText);
                 if (amountHeaderSentence == null)
                 {
                     Logger.Info("Amount header not found.");
@@ -47,26 +47,26 @@ namespace Spinvoice.Domain.Pdf
                     string name = null;
                     var quantity = 0;
 
-                    if (_leftSentencesLength > 0)
+                    if (LeftSentencesLength > 0)
                     {
                         var leftSentences = page.Left(underAmountSentence).ToArray();
-                        Logger.Info($"Left sentences [{_leftSentencesLength}]: " +
+                        Logger.Info($"Left sentences [{leftSentences.Length}]: " +
                                     $"{string.Join(", ", leftSentences.Select(m => m.Text).ToArray())}.");
 
-                        if (leftSentences.Length != _leftSentencesLength)
+                        if (leftSentences.Length != LeftSentencesLength)
                         {
                             Logger.Info("Mismatch in count of left sentences.");
                             continue;
                         }
 
-                        if (_nameIndex.HasValue)
+                        if (NameIndex.HasValue)
                         {
-                            name = leftSentences[_nameIndex.Value].Text;
+                            name = leftSentences[NameIndex.Value].Text;
                             Logger.Info($"Name found: {name}.");
                         }
-                        if (_quantityIndex.HasValue)
+                        if (QuantityIndex.HasValue)
                         {
-                            var quantityText = leftSentences[_quantityIndex.Value].Text;
+                            var quantityText = leftSentences[QuantityIndex.Value].Text;
                             if (!int.TryParse(quantityText, out quantity))
                             {
                                 Logger.Info($"Could not parse quantity: {quantityText}.");
@@ -80,6 +80,7 @@ namespace Spinvoice.Domain.Pdf
                     positions.Add(new Position(name, quantity, amount));
                 }
             }
+            Logger.Info($"Positions found: {positions.Count}");
 
             return positions.ToArray();
         }
@@ -120,24 +121,24 @@ namespace Spinvoice.Domain.Pdf
                 return false;
             }
 
-            _amountHeaderText = amountHeader.Text;
-            Logger.Info($"Amount header text: {_amountHeaderText}.");
+            AmountHeaderText = amountHeader.Text;
+            Logger.Info($"Amount header text: {AmountHeaderText}.");
 
             var leftSentences = firstPage.Left(amountSentence).ToArray();
-            _leftSentencesLength = leftSentences.Length;
-            Logger.Info($"Left sentences [{_leftSentencesLength}]: " +
+            LeftSentencesLength = leftSentences.Length;
+            Logger.Info($"Left sentences [{LeftSentencesLength}]: " +
                         $"{string.Join(", ", leftSentences.Select(m => m.Text).ToArray())}.");
 
-            _nameIndex = leftSentences
+            NameIndex = leftSentences
                 .Select((m, i) => new { m, i })
                 .FirstOrDefault(x => x.m.Text == rawPosition.Name)
                 ?.i;
-            Logger.Info($"Name index: {_nameIndex}.");
-            _quantityIndex = leftSentences
+            Logger.Info($"Name index: {NameIndex}.");
+            QuantityIndex = leftSentences
                 .Select((m, i) => new { m, i })
                 .FirstOrDefault(x => x.m.Text == rawPosition.Quantity)
                 ?.i;
-            Logger.Info($"Quantity index: {_quantityIndex}.");
+            Logger.Info($"Quantity index: {QuantityIndex}.");
 
             return true;
         }

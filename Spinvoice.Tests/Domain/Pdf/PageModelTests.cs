@@ -11,7 +11,7 @@ namespace Spinvoice.Tests.Domain.Pdf
         private static BlockModel CreateBlockModel(int blockNumber, params string[] sentences)
         {
             var sentencesList = new List<SentenceModel>();
-            sentencesList.AddRange(sentences.Select(s => new SentenceModel(s, 0, 0, 0, 0, 0)));
+            sentencesList.AddRange(sentences.Select(s => new SentenceModel(s, 0, 0, 0, 0)));
             return new BlockModel(blockNumber, sentencesList);
         }
 

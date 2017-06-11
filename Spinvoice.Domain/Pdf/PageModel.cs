@@ -6,15 +6,21 @@ namespace Spinvoice.Domain.Pdf
 {
     public class PageModel
     {
+        private const int YTolerance = 1;
+
         public PageModel(int pageNumber, List<BlockModel> blocks)
         {
             PageNumber = pageNumber;
             Blocks = blocks.AsReadOnly();
             Sentences = blocks
                 .SelectMany(bm => bm.Sentences)
-                //.OrderBy(model => model.Bottom)
-                //.ThenBy(model => model.Left)
+                .OrderBy(model => model.Bottom)
+                .ThenBy(model => model.Left)
                 .ToArray();
+            for (var i = 0; i < Sentences.Count; i++)
+            {
+                Sentences[i].PageIndex = i;
+            }
         }
 
         public int PageNumber { get; }
@@ -113,9 +119,11 @@ namespace Spinvoice.Domain.Pdf
             while (i >= 0)
             {
                 var candidate = Sentences[i];
-                if (candidate.Top < sentence.Top)
+                if (candidate.Bottom < sentence.Bottom)
                 {
-                    if (candidate.Left <= midX && midX <= candidate.Right)
+                    var candidateLeft = (Left(candidate).FirstOrDefault()?.Right + candidate.Left) / 2 ?? 0;
+                    var candidateRight = (Right(candidate).FirstOrDefault()?.Left + candidate.Right) / 2 ?? int.MaxValue;
+                    if (candidateLeft <= midX && midX <= candidateRight)
                     {
                         return candidate;
                     }
@@ -138,7 +146,7 @@ namespace Spinvoice.Domain.Pdf
             while (i < Sentences.Count)
             {
                 var candidate = Sentences[i];
-                if (candidate.Top > sentence.Top)
+                if (candidate.Bottom > sentence.Bottom)
                 {
                     if (candidate.Left >= midX && midX <= sentence.Right)
                     {
@@ -161,14 +169,45 @@ namespace Spinvoice.Domain.Pdf
             while (i > 0)
             {
                 var candidate = Sentences[i];
-                if (Math.Abs(candidate.Top - sentence.Top) < 5)
+                if (Math.Abs(candidate.Bottom - sentence.Bottom) < YTolerance)
                 {
                     if (candidate.Left < sentence.Left)
                     {
                         yield return candidate;
                     }
+                    else
+                    {
+                        yield break;
+                    }
                 }
                 i -= 1;
+            }
+        }
+
+        public IEnumerable<SentenceModel> Right(SentenceModel sentence)
+        {
+            var i = GetIndex(sentence);
+            if (i < 0)
+            {
+                yield break;
+            }
+
+            i += 1;
+            while (i < Sentences.Count)
+            {
+                var candidate = Sentences[i];
+                if (Math.Abs(candidate.Bottom - sentence.Bottom) < YTolerance)
+                {
+                    if (candidate.Right > sentence.Right)
+                    {
+                        yield return candidate;
+                    }
+                    else
+                    {
+                        yield break;
+                    }
+                }
+                i += 1;
             }
         }
 
