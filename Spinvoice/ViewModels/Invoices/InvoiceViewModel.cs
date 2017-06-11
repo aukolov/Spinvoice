@@ -247,7 +247,8 @@ namespace Spinvoice.ViewModels.Invoices
                     if (Invoice.Positions.Count == 1
                         && !_positionsAnalyzed
                         && firstPositionViewModel != null
-                        && firstPositionViewModel.RawPosition.IsFullyInitialized)
+                        && firstPositionViewModel.RawPosition.IsFullyInitialized
+                        && _pdfModel != null)
                     {
                         var company = TrainAboutPositions();
                         _analyzeInvoiceService.AnalyzePositions(_pdfModel, Invoice, company);

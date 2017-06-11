@@ -121,8 +121,8 @@ namespace Spinvoice.Domain.Pdf
                 var candidate = Sentences[i];
                 if (candidate.Bottom < sentence.Bottom)
                 {
-                    var candidateLeft = (Left(candidate).FirstOrDefault()?.Right + candidate.Left) / 2 ?? 0;
-                    var candidateRight = (Right(candidate).FirstOrDefault()?.Left + candidate.Right) / 2 ?? int.MaxValue;
+                    var candidateLeft = (Left(candidate).FirstOrDefault()?.Right + candidate.Left) / 2 ?? candidate.Left - 100;
+                    var candidateRight = (Right(candidate).FirstOrDefault()?.Left + candidate.Right) / 2 ?? candidate.Right + 100;
                     if (candidateLeft <= midX && midX <= candidateRight)
                     {
                         return candidate;

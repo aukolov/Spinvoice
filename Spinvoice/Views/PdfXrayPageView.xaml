@@ -42,37 +42,6 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-
-        <ItemsControl ItemsSource="{Binding Pairs}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <Canvas Width="595" Height="842" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Line MouseDown="UIElement_OnMouseDown"
-                              Stroke="Aqua"
-                              StrokeEndLineCap="Triangle"
-                              StrokeStartLineCap="Round"
-                              StrokeThickness="2"
-                              X1="{Binding Item1.MidX}"
-                              X2="{Binding Item2.MidX}"
-                              Y1="{Binding Item1.Top}"
-                              Y2="{Binding Item2.Top}" />
-
-                        <Line MouseDown="UIElement_OnMouseDown"
-                              Stroke="Green"
-                              X1="{Binding Item2.Left}"
-                              X2="{Binding Item2.Right}"
-                              Y1="{Binding Item2.Top}"
-                              Y2="{Binding Item2.Top}" />
-                    </Grid>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-
     </Grid>
 </UserControl>
 

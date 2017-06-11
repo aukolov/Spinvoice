@@ -10,12 +10,7 @@ namespace Spinvoice.ViewModels.Invoices
         public PdfXrayPageViewModel(PageModel pageModel)
         {
             Sentences = pageModel.Sentences.ToArray();
-            Pairs = Sentences.Select(model => new Tuple<SentenceModel, SentenceModel>(model, pageModel.Above(model)))
-                .Where(tuple => tuple.Item2 != null)
-                .ToArray();
         }
-
-        public Tuple<SentenceModel, SentenceModel>[] Pairs { get; }
 
         public event Action<SentenceModel> TextClicked;
 
