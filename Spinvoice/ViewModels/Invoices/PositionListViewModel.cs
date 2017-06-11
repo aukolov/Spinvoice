@@ -17,7 +17,7 @@ namespace Spinvoice.ViewModels.Invoices
         public event PropertyChangedEventHandler PropertyChanged;
 
         public PositionListViewModel(
-            ObservableCollection<Position> positions, 
+            ObservableCollection<Position> positions,
             ActionSelectorViewModel actionSelectorViewModel)
         {
             _positions = positions;
@@ -60,27 +60,19 @@ namespace Spinvoice.ViewModels.Invoices
         public ICommand AddCommand { get; }
         public ICommand RemoveCommand { get; }
 
-        public void ChangePositionDescription(string text)
+        public void ChangePositionName(string text)
         {
-            if (SelectedPositionViewModel != null)
-                SelectedPositionViewModel.Position.Name = text;
+            SelectedPositionViewModel?.ChangePositionName(text);
         }
 
         public void ChangePositionQuantity(string text)
         {
-            if (SelectedPositionViewModel == null) return;
-
-            int quantity;
-            if (int.TryParse(text, out quantity))
-            {
-                SelectedPositionViewModel.Position.Quantity = quantity;
-            }
+            SelectedPositionViewModel?.ChangePositionQuantity(text);
         }
 
         public void ChangePositionAmount(string text)
         {
-            if (SelectedPositionViewModel != null)
-                SelectedPositionViewModel.Position.Amount = AmountParser.Parse(text);
+            SelectedPositionViewModel?.ChangePositionAmount(text);
         }
 
         [NotifyPropertyChangedInvocator]

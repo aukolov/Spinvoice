@@ -48,6 +48,7 @@
     <Compile Include="Accounting\IAccountsChartDataAccess.cs" />
     <Compile Include="Accounting\IAccountsChartRepository.cs" />
     <Compile Include="Accounting\Position.cs" />
+    <Compile Include="Accounting\RawPosition.cs" />
     <Compile Include="App\AppMetadata.cs" />
     <Compile Include="App\IAppMetadataDataAccess.cs" />
     <Compile Include="App\IAppMetadataRepository.cs" />

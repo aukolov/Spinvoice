@@ -7,10 +7,13 @@ namespace Spinvoice.Domain.Pdf
 {
     public class PdfModel
     {
-        public PdfModel(List<PageModel> pages)
+        public PdfModel(string fileName, List<PageModel> pages)
         {
+            FileName = fileName;
             Pages = pages.AsReadOnly();
         }
+
+        public string FileName { get; }
 
         public ReadOnlyCollection<PageModel> Pages { get; }
 

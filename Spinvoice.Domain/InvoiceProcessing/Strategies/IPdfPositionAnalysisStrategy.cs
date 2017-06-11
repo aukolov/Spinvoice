@@ -1,6 +1,7 @@
 ﻿using Spinvoice.Domain.Accounting;
 
-namespace Spinvoice.Domain.InvoiceProcessing.Strategies
+// ReSharper disable once CheckNamespace
+namespace Spinvoice.Domain.Pdf
 {
     public interface IPdfPositionAnalysisStrategy : IStrategy<RawPosition, Position[]>
     {

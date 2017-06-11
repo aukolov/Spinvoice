@@ -1,6 +1,5 @@
-﻿using Spinvoice.Domain.Pdf;
-
-namespace Spinvoice.Domain.InvoiceProcessing.Strategies
+﻿// ReSharper disable once CheckNamespace
+namespace Spinvoice.Domain.Pdf
 {
     public class InsideTokensStrategy : IStringPdfAnalysisStrategy
     {

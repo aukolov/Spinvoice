@@ -39,6 +39,7 @@ namespace Spinvoice.ViewModels.Invoices
         private string _clipboardText;
         private volatile string _textToIgnore;
         private readonly RawInvoice _rawInvoice;
+        private readonly bool _positionsAnalyzed;
 
         public InvoiceViewModel(
             ICompanyRepository companyRepository,
@@ -69,7 +70,6 @@ namespace Spinvoice.ViewModels.Invoices
             _windowManager = windowManager;
 
             Invoice = new Invoice();
-            Invoice.Positions.Add(new Position());
             _rawInvoice = new RawInvoice();
 
             CopyInvoiceCommand = new RelayCommand(CopyInvoice);
@@ -95,6 +95,11 @@ namespace Spinvoice.ViewModels.Invoices
             if (_pdfModel != null)
             {
                 analyzeInvoiceService.Analyze(_pdfModel, Invoice);
+            }
+            _positionsAnalyzed = Invoice.Positions.Any();
+            if (!Invoice.Positions.Any())
+            {
+                Invoice.Positions.Add(new Position());
             }
 
             SaveToQuickBooksCommand = new RelayCommand(SaveToQuickBooks,
@@ -238,9 +243,20 @@ namespace Spinvoice.ViewModels.Invoices
             {
                 if (ActionSelectorViewModel.EditField == EditField.PositionAmount)
                 {
-                    var position = new Position();
-                    Invoice.Positions.Add(position);
-                    PositionListViewModel.Positions.MoveCurrentToLast();
+                    var firstPositionViewModel = PositionListViewModel.Positions.ViewModels.FirstOrDefault();
+                    if (Invoice.Positions.Count == 1
+                        && !_positionsAnalyzed
+                        && firstPositionViewModel != null
+                        && firstPositionViewModel.RawPosition.IsFullyInitialized)
+                    {
+                        var company = TrainAboutPositions();
+                        _analyzeInvoiceService.AnalyzePositions(_pdfModel, Invoice, company);
+                    }
+                    else
+                    {
+                        Invoice.Positions.Add(new Position());
+                        PositionListViewModel.Positions.MoveCurrentToLast();
+                    }
                 }
                 ActionSelectorViewModel.Advance();
             }
@@ -278,7 +294,7 @@ namespace Spinvoice.ViewModels.Invoices
                     InvoiceEditViewModel.ChangeTransportationCosts(text);
                     break;
                 case EditField.PositionName:
-                    PositionListViewModel.ChangePositionDescription(text);
+                    PositionListViewModel.ChangePositionName(text);
                     break;
                 case EditField.PositionQuantity:
                     PositionListViewModel.ChangePositionQuantity(text);
@@ -311,6 +327,17 @@ namespace Spinvoice.ViewModels.Invoices
             _clipboardService.TrySetText(text);
         }
 
+        private RawPosition GetFirstRawPosition()
+        {
+            var firstPositionViewModel = PositionListViewModel.Positions.ViewModels.FirstOrDefault();
+            RawPosition rawPosition = null;
+            if (firstPositionViewModel != null)
+            {
+                rawPosition = firstPositionViewModel.RawPosition;
+            }
+            return rawPosition;
+        }
+
         private void TrainAboutCompany()
         {
             Company company;
@@ -326,10 +353,25 @@ namespace Spinvoice.ViewModels.Invoices
                 {
                     _rawInvoice.InvoiceNumber = _rawInvoice.InvoiceNumber ?? Invoice.InvoiceNumber;
                     _rawInvoice.CompanyName = _rawInvoice.CompanyName ?? Invoice.CompanyName;
+                    _rawInvoice.FirstPosition = GetFirstRawPosition();
 
                     _trainStrategyService.Train(company, _rawInvoice, _pdfModel);
                 }
             }
+        }
+
+        private Company TrainAboutPositions()
+        {
+            Company company;
+            using (_companyRepository.GetByNameForUpdateOrCreate(Invoice.CompanyName, out company))
+            {
+                var rawPosition = GetFirstRawPosition();
+                if (_pdfModel != null)
+                {
+                    _trainStrategyService.Train(company, rawPosition, _pdfModel);
+                }
+            }
+            return company;
         }
 
         private void Reset()

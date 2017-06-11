@@ -1,5 +1,4 @@
-﻿using Spinvoice.Domain.InvoiceProcessing.Strategies;
-using Spinvoice.Domain.Pdf;
+﻿using Spinvoice.Domain.Pdf;
 
 namespace Spinvoice.Domain.Company
 {

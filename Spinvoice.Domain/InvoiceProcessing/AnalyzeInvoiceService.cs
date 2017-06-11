@@ -1,6 +1,5 @@
 ﻿using Spinvoice.Domain.Accounting;
 using Spinvoice.Domain.Company;
-using Spinvoice.Domain.InvoiceProcessing.Strategies;
 using Spinvoice.Domain.Pdf;
 using Spinvoice.Utils;
 
@@ -24,6 +23,11 @@ namespace Spinvoice.Domain.InvoiceProcessing
             TrySetInvoiceNumber(pdfModel, invoice, company.InvoiceNumberStrategy);
             TrySetInvoiceDate(pdfModel, invoice, company.InvoiceDateStrategy);
             TrySetInvoiceNetAmount(pdfModel, invoice, company.InvoiceNetAmountStrategy);
+            AnalyzePositions(pdfModel, invoice, company);
+        }
+
+        public void AnalyzePositions(PdfModel pdfModel, Invoice invoice, Company.Company company)
+        {
             TrySetPositions(pdfModel, invoice, company.PositionStrategy);
         }
 
@@ -83,10 +87,10 @@ namespace Spinvoice.Domain.InvoiceProcessing
             IPdfPositionAnalysisStrategy strategy)
         {
             var positions = strategy?.GetValue(pdfModel);
-            if (positions != null)
-            {
-                invoice.Positions.AddRange(positions);
-            }
+            if (positions == null) return;
+
+            invoice.Positions.Clear();
+            invoice.Positions.AddRange(positions);
         }
 
     }
