@@ -1,13 +1,19 @@
-﻿// ReSharper disable once CheckNamespace
+﻿// ReSharper disable CheckNamespace
+
+using NLog;
+
 namespace Spinvoice.Domain.Pdf
 {
     public class NextTokenStrategy : IStringPdfAnalysisStrategy
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         // ReSharper disable once MemberCanBePrivate.Global
         public string PreviousText { get; set; }
 
         public string GetValue(PdfModel pdfModel)
         {
+            Logger.Info("Start getting value with previous text '{0}'.", PreviousText);
             if (string.IsNullOrEmpty(PreviousText))
             {
                 return null;
@@ -17,12 +23,15 @@ namespace Spinvoice.Domain.Pdf
             {
                 foreach (var sentense in blockModel.Sentences)
                 {
+                    var text = sentense.Text.Trim();
                     if (isNext)
                     {
-                        return sentense.Text.Trim();
+                        Logger.Info("Found next: '{0}'.", text);
+                        return text;
                     }
-                    if (sentense.Text.Trim() == PreviousText.Trim())
+                    if (text == PreviousText.Trim())
                     {
+                        Logger.Info("Found preceeding text: '{0}'.", text);
                         isNext = true;
                     }
                 }
@@ -32,8 +41,10 @@ namespace Spinvoice.Domain.Pdf
 
         public bool Train(PdfModel pdfModel, string value)
         {
+            Logger.Info("Start training with value '{0}'.", value);
             if (string.IsNullOrEmpty(value))
             {
+                Logger.Info("Value is null or empty.");
                 return false;
             }
             string candidate = null;
@@ -45,6 +56,7 @@ namespace Spinvoice.Domain.Pdf
                         && !TextUtils.IsNumber(candidate)
                         && TextUtils.IsNonTrivialString(candidate))
                     {
+                        Logger.Info("Previous text: '{0}'.", candidate);
                         PreviousText = candidate;
                         if (i > 0)
                         {

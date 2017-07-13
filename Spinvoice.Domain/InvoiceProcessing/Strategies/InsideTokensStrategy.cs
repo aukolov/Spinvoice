@@ -1,29 +1,39 @@
-﻿// ReSharper disable once CheckNamespace
+﻿using NLog;
+
+// ReSharper disable once CheckNamespace
 namespace Spinvoice.Domain.Pdf
 {
     public class InsideTokensStrategy : IStringPdfAnalysisStrategy
     {
-        public string PreviousText { get; set; }
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        public string Text { get; set; }
 
         public string GetValue(PdfModel pdfModel)
         {
-            if (string.IsNullOrEmpty(PreviousText))
+            Logger.Info("Start getting value with text '{0}'.", Text);
+            if (string.IsNullOrEmpty(Text))
             {
+                Logger.Warn("Text is null or empty.");
                 return null;
             }
-            var searchText = PreviousText + " ";
+            var searchText = Text + " ";
             foreach (var sentence in pdfModel.Sentences)
             {
                 if (sentence.Text.StartsWith(searchText))
                 {
-                    return sentence.Text.Substring(searchText.Length).Trim();
+                    var result = sentence.Text.Substring(searchText.Length).Trim();
+                    Logger.Info("Found text: '{0}'.", result);
+                    return result;
                 }
             }
+            Logger.Info("Value not found.");
             return null;
         }
 
         public bool Train(PdfModel pdfModel, string value)
         {
+            Logger.Info("Start training with text '{0}'.", value);
             value = " " + value;
             foreach (var sentence in pdfModel.Sentences)
             {
@@ -36,15 +46,18 @@ namespace Spinvoice.Domain.Pdf
                     || TextUtils.EndsWithNumber(candidate)
                     || !TextUtils.IsNonTrivialString(candidate)) continue;
 
-                PreviousText = candidate;
+                Logger.Info("Text found: '{0}'.", candidate);
+                Text = candidate;
                 return true;
             }
+
+            Logger.Info("Text not found.");
             return false;
         }
 
         public override string ToString()
         {
-            return $"InsideTokensStrategy: {PreviousText}";
+            return $"InsideTokensStrategy: {Text}";
         }
     }
 }
