@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
+using NLog;
 using Spinvoice.Domain.Accounting;
 using Spinvoice.Domain.Company;
 using Spinvoice.Domain.Exchange;
@@ -24,6 +25,8 @@ namespace Spinvoice.ViewModels.Invoices
 {
     public sealed class InvoiceViewModel : INotifyPropertyChanged
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly AnalyzeInvoiceService _analyzeInvoiceService;
         private readonly TrainStrategyService _trainStrategyService;
         private readonly IExternalInvoiceService _externalInvoiceService;
@@ -348,6 +351,7 @@ namespace Spinvoice.ViewModels.Invoices
 
         private void TrainAboutCompany()
         {
+            Logger.Info($"Start training company '{Invoice.CompanyName}'.");
             Company company;
             using (_companyRepository.GetByNameForUpdateOrCreate(Invoice.CompanyName, out company))
             {

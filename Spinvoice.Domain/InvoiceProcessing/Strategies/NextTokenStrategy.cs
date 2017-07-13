@@ -13,7 +13,7 @@ namespace Spinvoice.Domain.Pdf
 
         public string GetValue(PdfModel pdfModel)
         {
-            Logger.Info("Start getting value with previous text '{0}'.", PreviousText);
+            Logger.Info($"Start getting value with previous text '{PreviousText}'.");
             if (string.IsNullOrEmpty(PreviousText))
             {
                 return null;
@@ -26,12 +26,12 @@ namespace Spinvoice.Domain.Pdf
                     var text = sentense.Text.Trim();
                     if (isNext)
                     {
-                        Logger.Info("Found next: '{0}'.", text);
+                        Logger.Info($"Found next: '{text}'.");
                         return text;
                     }
                     if (text == PreviousText.Trim())
                     {
-                        Logger.Info("Found preceeding text: '{0}'.", text);
+                        Logger.Info($"Found preceeding text: '{text}'.");
                         isNext = true;
                     }
                 }
@@ -41,7 +41,7 @@ namespace Spinvoice.Domain.Pdf
 
         public bool Train(PdfModel pdfModel, string value)
         {
-            Logger.Info("Start training with value '{0}'.", value);
+            Logger.Info($"Start training with value '{value}'.");
             if (string.IsNullOrEmpty(value))
             {
                 Logger.Info("Value is null or empty.");
@@ -56,7 +56,7 @@ namespace Spinvoice.Domain.Pdf
                         && !TextUtils.IsNumber(candidate)
                         && TextUtils.IsNonTrivialString(candidate))
                     {
-                        Logger.Info("Previous text: '{0}'.", candidate);
+                        Logger.Info($"Previous text: '{candidate}'.");
                         PreviousText = candidate;
                         if (i > 0)
                         {

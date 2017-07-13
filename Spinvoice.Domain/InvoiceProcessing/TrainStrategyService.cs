@@ -78,6 +78,7 @@ namespace Spinvoice.Domain.InvoiceProcessing
                         Logger.Info("Training successful.");
                         return candidateStrategy;
                     }
+                    Logger.Info("Training failed.");
                 }
             }
             else

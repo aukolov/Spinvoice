@@ -11,7 +11,7 @@ namespace Spinvoice.Domain.Pdf
 
         public string GetValue(PdfModel pdfModel)
         {
-            Logger.Info("Start getting value with text '{0}'.", Text);
+            Logger.Info($"Start getting value with text '{Text}'.");
             if (string.IsNullOrEmpty(Text))
             {
                 Logger.Warn("Text is null or empty.");
@@ -23,7 +23,7 @@ namespace Spinvoice.Domain.Pdf
                 if (sentence.Text.StartsWith(searchText))
                 {
                     var result = sentence.Text.Substring(searchText.Length).Trim();
-                    Logger.Info("Found text: '{0}'.", result);
+                    Logger.Info($"Found text: '{result}'.");
                     return result;
                 }
             }
@@ -33,7 +33,7 @@ namespace Spinvoice.Domain.Pdf
 
         public bool Train(PdfModel pdfModel, string value)
         {
-            Logger.Info("Start training with text '{0}'.", value);
+            Logger.Info($"Start training with text '{value}'.");
             value = " " + value;
             foreach (var sentence in pdfModel.Sentences)
             {
@@ -46,7 +46,7 @@ namespace Spinvoice.Domain.Pdf
                     || TextUtils.EndsWithNumber(candidate)
                     || !TextUtils.IsNonTrivialString(candidate)) continue;
 
-                Logger.Info("Text found: '{0}'.", candidate);
+                Logger.Info($"Text found: '{candidate}'.");
                 Text = candidate;
                 return true;
             }
