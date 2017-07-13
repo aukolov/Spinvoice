@@ -265,6 +265,13 @@ namespace Spinvoice.ViewModels.Invoices
 
         private void ExecuteCurrentCommand(string text)
         {
+            if (text == null)
+            {
+                throw new ArgumentNullException(nameof(text));
+            }
+
+            text = text.Trim();
+
             switch (ActionSelectorViewModel.EditField)
             {
                 case EditField.InvoiceCompany:
