@@ -6,13 +6,13 @@ $publish = "Spinvoice\publish\"
 & $git pull
 & $git merge dev
 
-If (Test-Path $publish) { Remove-Item $publish -Force -Recurse }
-& $msbuild Spinvoice.sln /t:publish /p:Configuration=Release /p:PublishDir=publish\
-
 $new_csproj = Get-Content Spinvoice.csproj |
  foreach { $n = [regex]::match($_,'(?<=\<ApplicationRevision\>)(\d+)(?=\<\/ApplicationRevision\>)').groups[1].value;
  if ($n) {$_ -replace "$n", ([int32]$n+1)} else {$_}; }
 Set-Content Spinvoice.csproj $new_csproj -encoding UTF8
+
+If (Test-Path $publish) { Remove-Item $publish -Force -Recurse }
+& $msbuild Spinvoice.sln /t:publish /p:Configuration=Release /p:PublishDir=publish\
 
 & $git add .
 & $git commit -m "New release"
