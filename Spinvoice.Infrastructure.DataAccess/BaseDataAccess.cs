@@ -29,6 +29,7 @@ namespace Spinvoice.Infrastructure.DataAccess
                 entities = session
                     .Query<T>()
                     .Customize(x => x.WaitForNonStaleResultsAsOfNow(TimeSpan.FromMinutes(2)))
+                    .Take(1024)
                     .ToArray();
             }
             _logger.Info("Got {0} documents.", entities.Length);
