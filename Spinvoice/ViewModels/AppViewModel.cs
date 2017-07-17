@@ -35,12 +35,12 @@ namespace Spinvoice.ViewModels
         private readonly IExchangeRatesRepository _exchangeRatesRepository;
         private readonly IAccountsChartRepository _accountsChartRepository;
 
-        private readonly Dictionary<string, InvoiceViewModel> _invoiceViewModels =
-            new Dictionary<string, InvoiceViewModel>();
+        private readonly Dictionary<string, InvoiceListViewModel> _invoiceListViewModels =
+            new Dictionary<string, InvoiceListViewModel>();
 
         private readonly IPdfParser _pdfParser;
         private ClipboardService _clipboardService;
-        private InvoiceViewModel _invoiceViewModel;
+        private InvoiceListViewModel _invoiceListViewModel;
         private readonly IExternalInvoiceService _externalInvoiceService;
         private readonly IExternalCompanyRepository _externalCompanyRepository;
         private readonly IExternalItemRepository _externalItemRepository;
@@ -57,9 +57,9 @@ namespace Spinvoice.ViewModels
             IPdfParser pdfParser,
             AnalyzeInvoiceService analyzeInvoiceService,
             TrainStrategyService trainStrategyService,
-            WindowManager windowManager, 
+            WindowManager windowManager,
             IOAuthRepository oauthRepository,
-            IExternalInvoiceService externalInvoiceService, 
+            IExternalInvoiceService externalInvoiceService,
             IExternalCompanyRepository externalCompanyRepository,
             IExternalItemRepository externalItemRepository,
             IExternalConnectionWatcher externalConnectionWatcher,
@@ -85,7 +85,7 @@ namespace Spinvoice.ViewModels
             _oauthRepository = oauthRepository;
             OpenExchangeRatesCommand = new RelayCommand(OpenExchangeRates);
             OpenQuickBooksCommand = new RelayCommand(OpenQuickBooks);
-            OpenChartOfAccountsCommand = new RelayCommand(OpenChartOfAccounts, 
+            OpenChartOfAccountsCommand = new RelayCommand(OpenChartOfAccounts,
                 () => _externalConnectionWatcher.IsConnected);
 
             _externalInvoiceService = externalInvoiceService;
@@ -102,16 +102,16 @@ namespace Spinvoice.ViewModels
         public RelayCommand OpenChartOfAccountsCommand { get; }
 
 
-        public InvoiceViewModel InvoiceViewModel
+        public InvoiceListViewModel InvoiceListViewModel
         {
-            get { return _invoiceViewModel; }
+            get { return _invoiceListViewModel; }
             set
             {
-                if (_invoiceViewModel == value) return;
+                if (_invoiceListViewModel == value) return;
 
-                _invoiceViewModel?.Unsubscribe();
-                _invoiceViewModel = value;
-                _invoiceViewModel?.Subscribe();
+                _invoiceListViewModel?.Unsubscribe();
+                _invoiceListViewModel = value;
+                _invoiceListViewModel?.Subscribe();
                 OnPropertyChanged();
             }
         }
@@ -132,13 +132,13 @@ namespace Spinvoice.ViewModels
             if (string.IsNullOrEmpty(filePath))
                 return;
 
-            InvoiceViewModel invoiceViewModel;
-            if (!_invoiceViewModels.TryGetValue(filePath, out invoiceViewModel))
+            InvoiceListViewModel invoiceListViewModel;
+            if (!_invoiceListViewModels.TryGetValue(filePath, out invoiceListViewModel))
             {
                 var pdfModel = _pdfParser.IsPdf(filePath)
                     ? _pdfParser.Parse(filePath)
                     : null;
-                invoiceViewModel = new InvoiceViewModel(
+                invoiceListViewModel = new InvoiceListViewModel(
                     _companyRepository,
                     _exchangeRatesRepository,
                     _externalItemRepository,
@@ -152,9 +152,9 @@ namespace Spinvoice.ViewModels
                     _externalAccountRepository,
                     _externalConnectionWatcher,
                     _windowManager);
-                _invoiceViewModels[filePath] = invoiceViewModel;
+                _invoiceListViewModels[filePath] = invoiceListViewModel;
             }
-            InvoiceViewModel = invoiceViewModel;
+            InvoiceListViewModel = invoiceListViewModel;
         }
 
         private void OpenExchangeRates()
@@ -170,7 +170,7 @@ namespace Spinvoice.ViewModels
         private void OpenQuickBooks()
         {
             var quickBooksConnectViewModel = new QuickBooksConnectViewModel(
-                _oauthRepository, 
+                _oauthRepository,
                 _windowManager);
             _windowManager.ShowWindow(quickBooksConnectViewModel);
         }

@@ -17,7 +17,7 @@ namespace Spinvoice.ViewModels.Invoices
         public event PropertyChangedEventHandler PropertyChanged;
 
         public PositionListViewModel(
-            ObservableCollection<Position> positions,
+            ObservableCollection<Position> positions, 
             ActionSelectorViewModel actionSelectorViewModel)
         {
             _positions = positions;

@@ -3,9 +3,9 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive.Subjects;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Input;
 using NLog;
 using Spinvoice.Domain.Accounting;
 using Spinvoice.Domain.Company;
@@ -43,6 +43,8 @@ namespace Spinvoice.ViewModels.Invoices
         private volatile string _textToIgnore;
         private readonly RawInvoice _rawInvoice;
         private readonly bool _positionsAnalyzed;
+        private bool _isActive;
+        private readonly ISubject<InvoiceViewModel> _activated;
 
         public InvoiceViewModel(
             ICompanyRepository companyRepository,
@@ -117,6 +119,8 @@ namespace Spinvoice.ViewModels.Invoices
                 CreateExternalCompanyCommand.RaiseCanExecuteChanged();
                 SaveToQuickBooksCommand.RaiseCanExecuteChanged();
             };
+
+            _activated = new Subject<InvoiceViewModel>();
         }
 
         public Invoice Invoice { get; }
@@ -124,18 +128,20 @@ namespace Spinvoice.ViewModels.Invoices
         public InvoiceEditViewModel InvoiceEditViewModel { get; }
         public ActionSelectorViewModel ActionSelectorViewModel { get; }
         public PdfXrayViewModel PdfXrayViewModel { get; }
-
-        public ICommand CopyInvoiceCommand { get; }
-        public RelayCommand CopyPositionsCommand { get; }
-        public ICommand ClearCommand { get; }
-        public RelayCommand SaveToQuickBooksCommand { get; set; }
-        public RelayCommand OpenInQuickBooksCommand { get; }
         public PositionListViewModel PositionListViewModel { get; }
         public ObservableCollection<IExternalCompany> ExternalCompanies { get; }
+
+        public IObservable<InvoiceViewModel> Activated => _activated;
+
+        public RelayCommand CopyInvoiceCommand { get; }
+        public RelayCommand CopyPositionsCommand { get; }
+        public RelayCommand ClearCommand { get; }
+        public RelayCommand SaveToQuickBooksCommand { get; set; }
+        public RelayCommand OpenInQuickBooksCommand { get; }
         public RelayCommand CreateExternalCompanyCommand { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
+        
         private void CreateExternalCompany()
         {
             if (string.IsNullOrEmpty(Invoice.CompanyName))
@@ -153,15 +159,24 @@ namespace Spinvoice.ViewModels.Invoices
             Invoice.ExternalCompanyId = externalCompany.Id;
         }
 
-
-        public void Subscribe()
+        public bool IsActive
         {
-            _clipboardService.ClipboardChanged += OnClipboardChanged;
-        }
-
-        public void Unsubscribe()
-        {
-            _clipboardService.ClipboardChanged -= OnClipboardChanged;
+            get { return _isActive; }
+            set
+            {
+                if (_isActive == value) return;
+                _isActive = value;
+                if (_isActive)
+                {
+                    _activated.OnNext(this);
+                    _clipboardService.ClipboardChanged += OnClipboardChanged;
+                }
+                else
+                {
+                    _clipboardService.ClipboardChanged -= OnClipboardChanged;
+                }
+                OnPropertyChanged();
+            }
         }
 
         private void OnXrayTextClicked(SentenceModel sentence)

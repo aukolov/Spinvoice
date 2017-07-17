@@ -12,10 +12,13 @@ namespace Spinvoice.ViewModels.Invoices
 
         public ActionSelectorViewModel()
         {
+            GroupName = Guid.NewGuid().ToString();
             _commandsCount = Enum.GetValues(typeof(EditField)).Length;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public string GroupName { get; }
 
         public EditField EditField
         {

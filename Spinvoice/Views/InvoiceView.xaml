@@ -55,7 +55,7 @@
             <RadioButton Grid.Row="0"
                          Grid.Column="0"
                          Content="Company:"
-                         GroupName="Field"
+                         GroupName="{Binding ActionSelectorViewModel.GroupName}"
                          IsChecked="{Binding ActionSelectorViewModel.EditField,
                                              Converter={x:Static converters:EqualsToCheckedConverter.Instance},
                                              ConverterParameter={x:Static invoices:EditField.InvoiceCompany}}" />
@@ -67,7 +67,7 @@
             <RadioButton Grid.Row="1"
                          Grid.Column="0"
                          Content="Country:"
-                         GroupName="Field"
+                         GroupName="{Binding ActionSelectorViewModel.GroupName}"
                          IsChecked="{Binding ActionSelectorViewModel.EditField,
                                              Converter={x:Static converters:EqualsToCheckedConverter.Instance},
                                              ConverterParameter={x:Static invoices:EditField.InvoiceCountry}}" />
@@ -82,7 +82,7 @@
             <RadioButton Grid.Row="2"
                          Grid.Column="0"
                          Content="Currency:"
-                         GroupName="Field"
+                         GroupName="{Binding ActionSelectorViewModel.GroupName}"
                          IsChecked="{Binding ActionSelectorViewModel.EditField,
                                              Converter={x:Static converters:EqualsToCheckedConverter.Instance},
                                              ConverterParameter={x:Static invoices:EditField.InvoiceCurrency}}" />
@@ -115,7 +115,7 @@
             <RadioButton Grid.Row="4"
                          Grid.Column="0"
                          Content="VAT Number:"
-                         GroupName="Field"
+                         GroupName="{Binding ActionSelectorViewModel.GroupName}"
                          IsChecked="{Binding ActionSelectorViewModel.EditField,
                                              Converter={x:Static converters:EqualsToCheckedConverter.Instance},
                                              ConverterParameter={x:Static invoices:EditField.InvoiceVatNumber}}" />
@@ -128,7 +128,7 @@
             <RadioButton Grid.Row="5"
                          Grid.Column="0"
                          Content="Date:"
-                         GroupName="Field"
+                         GroupName="{Binding ActionSelectorViewModel.GroupName}"
                          IsChecked="{Binding ActionSelectorViewModel.EditField,
                                              Converter={x:Static converters:EqualsToCheckedConverter.Instance},
                                              ConverterParameter={x:Static invoices:EditField.InvoiceDate}}" />
@@ -150,7 +150,7 @@
             <RadioButton Grid.Row="7"
                          Grid.Column="0"
                          Content="Invoice:"
-                         GroupName="Field"
+                         GroupName="{Binding ActionSelectorViewModel.GroupName}"
                          IsChecked="{Binding ActionSelectorViewModel.EditField,
                                              Converter={x:Static converters:EqualsToCheckedConverter.Instance},
                                              ConverterParameter={x:Static invoices:EditField.InvoiceNumber}}" />
@@ -163,7 +163,7 @@
             <RadioButton Grid.Row="8"
                          Grid.Column="0"
                          Content="NET Amount:"
-                         GroupName="Field"
+                         GroupName="{Binding ActionSelectorViewModel.GroupName}"
                          IsChecked="{Binding ActionSelectorViewModel.EditField,
                                              Converter={x:Static converters:EqualsToCheckedConverter.Instance},
                                              ConverterParameter={x:Static invoices:EditField.InvoiceNetAmount}}" />
@@ -185,7 +185,7 @@
             <RadioButton Grid.Row="10"
                          Grid.Column="0"
                          Content="VAT:"
-                         GroupName="Field"
+                         GroupName="{Binding ActionSelectorViewModel.GroupName}"
                          IsChecked="{Binding ActionSelectorViewModel.EditField,
                                              Converter={x:Static converters:EqualsToCheckedConverter.Instance},
                                              ConverterParameter={x:Static invoices:EditField.InvoiceVatAmount}}" />
@@ -197,7 +197,7 @@
             <RadioButton Grid.Row="11"
                          Grid.Column="0"
                          Content="Transportation:"
-                         GroupName="Field"
+                         GroupName="{Binding ActionSelectorViewModel.GroupName}"
                          IsChecked="{Binding ActionSelectorViewModel.EditField,
                                              Converter={x:Static converters:EqualsToCheckedConverter.Instance},
                                              ConverterParameter={x:Static invoices:EditField.InvoiceTransportationCosts}}" />
