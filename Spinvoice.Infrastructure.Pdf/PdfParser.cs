@@ -30,18 +30,19 @@ namespace Spinvoice.Infrastructure.Pdf
                         .Select((sentences, j) => new BlockModel(j, sentences))
                         .ToList();
 
-                    //if (!blockModels.Any())
-                    //{
-                    //    var image = PdfImageExtractor.ExtractImagesFromPdf(reader, i);
-                    //    var engine = new TesseractEngine(@"tessdata", "eng");
-                    //    var page = engine.Process(new Bitmap(image));
-                    //    //page.
+                    if (!blockModels.Any())
+                    {
+                        //var image = PdfImageExtractor.ExtractImagesFromPdf(reader, i);
+                        //var engine = new TesseractEngine(@"c:\1\tessdata", "eng");
+                        //var page = engine.Process(new Bitmap(image));
+                        //var resultIterator = page.GetIterator();
+                        //var analyseLayout = page.AnalyseLayout();
 
-                    //    //if (images.Any())
-                    //    //{
-                    //    //    images.First().Save($@"c:\1\images{i}.bmp", ImageFormat.Bmp);
-                    //    //}
-                    //}
+                        //if (images.Any())
+                        //{
+                        //    images.First().Save($@"c:\1\images{i}.bmp", ImageFormat.Bmp);
+                        //}
+                    }
 
                     return new PageModel(i - 1, blockModels);
                 }).ToList());
