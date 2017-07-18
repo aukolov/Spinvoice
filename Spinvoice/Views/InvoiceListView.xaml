@@ -25,7 +25,7 @@
                             <Expander.Header>
                                 <TextBlock Text="{Binding Invoice.InvoiceNumber, StringFormat=Invoice {0}}" />
                             </Expander.Header>
-                            <views:InvoiceView />
+                            <views:InvoiceView Margin="0,5,0,10" />
                         </Expander>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

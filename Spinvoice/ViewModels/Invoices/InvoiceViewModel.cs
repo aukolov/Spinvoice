@@ -45,6 +45,7 @@ namespace Spinvoice.ViewModels.Invoices
         private readonly bool _positionsAnalyzed;
         private bool _isActive;
         private readonly ISubject<InvoiceViewModel> _activated;
+        private PdfXrayViewModel _pdfXrayViewModel;
 
         public InvoiceViewModel(
             ICompanyRepository companyRepository,
@@ -53,6 +54,7 @@ namespace Spinvoice.ViewModels.Invoices
             IAccountsChartRepository accountsChartRepository,
             ClipboardService clipboardService,
             PdfModel pdfModel,
+            PdfXrayViewModel pdfXrayViewModel,
             AnalyzeInvoiceService analyzeInvoiceService,
             TrainStrategyService trainStrategyService,
             IExternalInvoiceService externalInvoiceService,
@@ -89,11 +91,8 @@ namespace Spinvoice.ViewModels.Invoices
                 _rawInvoice,
                 companyRepository,
                 exchangeRatesRepository);
-            if (_pdfModel != null)
-            {
-                PdfXrayViewModel = new PdfXrayViewModel(_pdfModel);
-                PdfXrayViewModel.TextClicked += OnXrayTextClicked;
-            }
+
+            _pdfXrayViewModel = pdfXrayViewModel;
 
             ExternalCompanies = externalCompanyRepository.GetAll();
 
@@ -127,7 +126,6 @@ namespace Spinvoice.ViewModels.Invoices
 
         public InvoiceEditViewModel InvoiceEditViewModel { get; }
         public ActionSelectorViewModel ActionSelectorViewModel { get; }
-        public PdfXrayViewModel PdfXrayViewModel { get; }
         public PositionListViewModel PositionListViewModel { get; }
         public ObservableCollection<IExternalCompany> ExternalCompanies { get; }
 
@@ -141,7 +139,7 @@ namespace Spinvoice.ViewModels.Invoices
         public RelayCommand CreateExternalCompanyCommand { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        
+
         private void CreateExternalCompany()
         {
             if (string.IsNullOrEmpty(Invoice.CompanyName))
@@ -170,10 +168,18 @@ namespace Spinvoice.ViewModels.Invoices
                 {
                     _activated.OnNext(this);
                     _clipboardService.ClipboardChanged += OnClipboardChanged;
+                    if (_pdfXrayViewModel != null)
+                    {
+                        _pdfXrayViewModel.TextClicked += OnXrayTextClicked;
+                    }
                 }
                 else
                 {
                     _clipboardService.ClipboardChanged -= OnClipboardChanged;
+                    if (_pdfXrayViewModel != null)
+                    {
+                        _pdfXrayViewModel.TextClicked -= OnXrayTextClicked;
+                    }
                 }
                 OnPropertyChanged();
             }
