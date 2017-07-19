@@ -62,16 +62,18 @@ namespace Spinvoice.ViewModels.Invoices
             _externalConnectionWatcher = externalConnectionWatcher;
             _windowManager = windowManager;
             InvoiceViewModels = new ObservableCollection<InvoiceViewModel>();
-            AddInvoiceViewModel(pdfModel);
-            AddInvoiceViewModelCommand = new RelayCommand(() => AddInvoiceViewModel(null));
+            PdfXrayViewModel = pdfModel != null ? new PdfXrayViewModel(pdfModel) : null;
+            AddInvoiceViewModel(pdfModel, PdfXrayViewModel);
+            AddInvoiceViewModelCommand = new RelayCommand(() => AddInvoiceViewModel(null, PdfXrayViewModel));
         }
 
+        public PdfXrayViewModel PdfXrayViewModel { get; }
         public RelayCommand AddInvoiceViewModelCommand { get; }
         public ObservableCollection<InvoiceViewModel> InvoiceViewModels { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void AddInvoiceViewModel(PdfModel pdfModel)
+        private void AddInvoiceViewModel(PdfModel pdfModel, PdfXrayViewModel pdfXrayViewModel)
         {
             var invoiceViewModel = new InvoiceViewModel(
                 _companyRepository,
@@ -80,6 +82,7 @@ namespace Spinvoice.ViewModels.Invoices
                 _accountsChartRepository,
                 _clipboardService,
                 pdfModel,
+                pdfXrayViewModel,
                 _analyzeInvoiceService,
                 _trainStrategyService,
                 _externalInvoiceService,
