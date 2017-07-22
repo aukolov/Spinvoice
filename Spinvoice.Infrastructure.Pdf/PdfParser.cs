@@ -1,9 +1,11 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Linq;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
 using Spinvoice.Domain.Pdf;
 using Tesseract;
+using ImageFormat = System.Drawing.Imaging.ImageFormat;
 
 namespace Spinvoice.Infrastructure.Pdf
 {
@@ -30,19 +32,30 @@ namespace Spinvoice.Infrastructure.Pdf
                         .Select((sentences, j) => new BlockModel(j, sentences))
                         .ToList();
 
-                    if (!blockModels.Any())
-                    {
-                        //var image = PdfImageExtractor.ExtractImagesFromPdf(reader, i);
-                        //var engine = new TesseractEngine(@"c:\1\tessdata", "eng");
-                        //var page = engine.Process(new Bitmap(image));
-                        //var resultIterator = page.GetIterator();
-                        //var analyseLayout = page.AnalyseLayout();
+                    //if (!blockModels.Any())
+                    //{
+                    //    var image = PdfImageExtractor.ExtractImagesFromPdf(reader, i);
+                    //    var engine = new TesseractEngine(@"c:\1\tessdata", "eng");
+                    //    if (image != null)
+                    //    {
+                    //        var page = engine.Process(new Bitmap(image));
+                    //        var resultIterator = page.GetIterator();
+                    //        var pageIteratorLevel = PageIteratorLevel.Word;
+                    //        while (resultIterator.Next(pageIteratorLevel))
+                    //        {
+                    //            Rect bounds;
+                    //            var boundsText = "?";
+                    //            if (resultIterator.TryGetBoundingBox(pageIteratorLevel, out bounds))
+                    //            {
+                    //                boundsText = $"{bounds.X1} x {bounds.Y1}, {bounds.Width} x {bounds.Height}";
+                    //            }
+                    //            Console.WriteLine($"'{resultIterator.GetText(pageIteratorLevel)}' - {boundsText}");
+                    //        }
+                    //        //var analyseLayout = page.AnalyseLayout();
 
-                        //if (images.Any())
-                        //{
-                        //    images.First().Save($@"c:\1\images{i}.bmp", ImageFormat.Bmp);
-                        //}
-                    }
+                    //        image.Save($@"c:\1\images{i}.bmp", ImageFormat.Bmp);
+                    //    }
+                    //}
 
                     return new PageModel(i - 1, blockModels);
                 }).ToList());
