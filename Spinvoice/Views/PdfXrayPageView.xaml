@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:invoices="clr-namespace:Spinvoice.ViewModels.Invoices"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:pdf="clr-namespace:Spinvoice.Infrastructure.Pdf;assembly=Spinvoice.Infrastructure.Pdf"
              d:DataContext="{d:DesignInstance Type=invoices:PdfXrayPageViewModel}"
              d:DesignHeight="300"
              d:DesignWidth="300"
@@ -13,7 +14,7 @@
         <ItemsControl ItemsSource="{Binding Sentences}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <Canvas Width="595" Height="842" />
+                    <Canvas Width="{x:Static pdf:PdfPageSize.Width}" Height="{x:Static pdf:PdfPageSize.Height}" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemContainerStyle>

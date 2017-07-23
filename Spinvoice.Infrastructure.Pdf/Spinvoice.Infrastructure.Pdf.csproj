@@ -58,6 +58,7 @@
     <Compile Include="IPageParser.cs" />
     <Compile Include="PdfImageExtractor.cs" />
     <Compile Include="PdfParser.cs" />
+    <Compile Include="PdfPageSize.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BricksToSentensesTranslator.cs" />
     <Compile Include="SentenceModelBuilder.cs" />
