@@ -1,21 +1,21 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Collections.Generic;
 using System.Linq;
 using iTextSharp.text.pdf;
-using iTextSharp.text.pdf.parser;
 using Spinvoice.Domain.Pdf;
-using Tesseract;
-using ImageFormat = System.Drawing.Imaging.ImageFormat;
 
 namespace Spinvoice.Infrastructure.Pdf
 {
     public class PdfParser : IPdfParser
     {
-        private PdfImageExtractor _pdfImageExtractor;
+        private readonly IPageParser[] _parsers;
 
         public PdfParser()
         {
-            _pdfImageExtractor = new PdfImageExtractor();
+            _parsers = new IPageParser[]
+            {
+                new TextBasedPageParser(),
+                new ImageBasedPageParser()
+            };
         }
 
         public PdfModel Parse(string filePath)
@@ -26,37 +26,20 @@ namespace Spinvoice.Infrastructure.Pdf
                 fileName,
                 Enumerable.Range(1, reader.NumberOfPages).Select(i =>
                 {
-                    var strategy = new SmartTextExtractionStrategy();
-                    PdfTextExtractor.GetTextFromPage(reader, i, strategy);
-                    var blockModels = strategy.BlockSentences
+                    List<List<SentenceModel>> sentenceModels = null;
+                    foreach (var parser in _parsers)
+                    {
+                        var list = parser.Parse(reader, i);
+                        if (list.Any())
+                        {
+                            sentenceModels = list;
+                            break;
+                        }
+                    }
+                    var blockModels = (sentenceModels ?? new List<List<SentenceModel>>())
                         .Select((sentences, j) => new BlockModel(j, sentences))
                         .ToList();
-
-                    //if (!blockModels.Any())
-                    //{
-                    //    var image = PdfImageExtractor.ExtractImagesFromPdf(reader, i);
-                    //    var engine = new TesseractEngine(@"c:\1\tessdata", "eng");
-                    //    if (image != null)
-                    //    {
-                    //        var page = engine.Process(new Bitmap(image));
-                    //        var resultIterator = page.GetIterator();
-                    //        var pageIteratorLevel = PageIteratorLevel.Word;
-                    //        while (resultIterator.Next(pageIteratorLevel))
-                    //        {
-                    //            Rect bounds;
-                    //            var boundsText = "?";
-                    //            if (resultIterator.TryGetBoundingBox(pageIteratorLevel, out bounds))
-                    //            {
-                    //                boundsText = $"{bounds.X1} x {bounds.Y1}, {bounds.Width} x {bounds.Height}";
-                    //            }
-                    //            Console.WriteLine($"'{resultIterator.GetText(pageIteratorLevel)}' - {boundsText}");
-                    //        }
-                    //        //var analyseLayout = page.AnalyseLayout();
-
-                    //        image.Save($@"c:\1\images{i}.bmp", ImageFormat.Bmp);
-                    //    }
-                    //}
-
+                    
                     return new PageModel(i - 1, blockModels);
                 }).ToList());
 

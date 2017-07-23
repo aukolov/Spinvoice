@@ -8,11 +8,10 @@ namespace Spinvoice.Infrastructure.Pdf
 {
     public class PdfImageExtractor
     {
-        public static Image ExtractImagesFromPdf(PdfReader reader, int pageNumber)
+        public Image ExtractImagesFromPdf(PdfReader reader, int pageNumber)
         {
             var pg = reader.GetPageN(pageNumber);
 
-            // recursively search pages, forms and groups for images.
             var imageObject = FindImageInPdfDictionary(pg);
             if (imageObject == null)
             {
@@ -44,15 +43,14 @@ namespace Spinvoice.Infrastructure.Pdf
 
                 var type = (PdfName)PdfReader.GetPdfObject(tg.Get(PdfName.SUBTYPE));
 
-                //image at the root of the pdf
                 if (PdfName.IMAGE.Equals(type))
                 {
                     return obj;
-                }// image inside a form
+                }
                 if (PdfName.FORM.Equals(type))
                 {
                     return FindImageInPdfDictionary(tg);
-                } //image inside a group
+                }
                 if (PdfName.GROUP.Equals(type))
                 {
                     return FindImageInPdfDictionary(tg);

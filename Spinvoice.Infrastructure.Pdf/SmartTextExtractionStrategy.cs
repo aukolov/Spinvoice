@@ -10,8 +10,9 @@ namespace Spinvoice.Infrastructure.Pdf
     {
         private const int SlashZeroThreshold = 100;
 
-        private List<TextRenderInfo> _currentBlock;
+        private readonly BricksToSentensesTranslator _bricksToSentensesTranslator;
         private readonly List<List<TextRenderInfo>> _blocks;
+        private List<TextRenderInfo> _currentBlock;
         private int _slashZeroCount;
         private double _maxY;
 
@@ -20,6 +21,7 @@ namespace Spinvoice.Infrastructure.Pdf
         public SmartTextExtractionStrategy()
         {
             _blocks = new List<List<TextRenderInfo>>();
+            _bricksToSentensesTranslator = new BricksToSentensesTranslator();
         }
 
         public void BeginTextBlock()
@@ -57,15 +59,34 @@ namespace Spinvoice.Infrastructure.Pdf
         public string GetResultantText()
         {
             var brickLists = _blocks
-                .Select(b => b.Select(info => new TextRenderInfoBrick(info, ReplaceZeros, _maxY)).ToArray())
+                .Select(b => b.Select(InfoToBrick).ToArray())
                 .ToArray();
 
-            var blockSentences = SentenceBuilder.BuildSentences(brickLists);
+            var blockSentences = _bricksToSentensesTranslator.Translate(brickLists);
             BlockSentences = blockSentences;
 
             return "";
         }
 
         private bool ReplaceZeros => _slashZeroCount < SlashZeroThreshold;
+
+        private IBrick InfoToBrick(TextRenderInfo info)
+        {
+            var baseRectange = info.GetBaseline().GetBoundingRectange();
+            var accentRectange = info.GetAscentLine().GetBoundingRectange();
+
+            var text = info.PdfString.ToString();
+            if (ReplaceZeros)
+            {
+                text = text.Replace("\0", "");
+            }
+
+            var brick = new Brick(text,
+                baseRectange.X,
+                _maxY - baseRectange.Y,
+                baseRectange.Width,
+                accentRectange.Y - baseRectange.Y);
+            return brick;
+        }
     }
 }

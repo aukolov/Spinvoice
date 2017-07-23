@@ -1,6 +1,4 @@
-﻿using iTextSharp.text.pdf.parser;
-
-namespace Spinvoice.Infrastructure.Pdf
+﻿namespace Spinvoice.Infrastructure.Pdf
 {
     internal interface IBrick
     {
@@ -11,24 +9,15 @@ namespace Spinvoice.Infrastructure.Pdf
         double Height { get; }
     }
 
-    internal class TextRenderInfoBrick : IBrick
+    internal class Brick : IBrick
     {
-        public TextRenderInfoBrick(TextRenderInfo info, bool replaceZeros, double maxY)
+        public Brick(string text, double x, double y, double width, double height)
         {
-            var baseRectange = info.GetBaseline().GetBoundingRectange();
-            var accentRectange = info.GetAscentLine().GetBoundingRectange();
-
-            var text = info.PdfString.ToString();
-            if (replaceZeros)
-            {
-                text = text.Replace("\0", "");
-            }
-
             Text = text;
-            X = baseRectange.X;
-            Y = maxY - baseRectange.Y;
-            Width = baseRectange.Width;
-            Height = accentRectange.Y - baseRectange.Y;
+            X = x;
+            Y = y;
+            Width = width;
+            Height = height;
         }
 
         public string Text { get; }
