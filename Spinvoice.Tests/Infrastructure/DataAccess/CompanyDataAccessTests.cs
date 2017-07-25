@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Spinvoice.Domain.Company;
 using Spinvoice.Infrastructure.DataAccess;
 

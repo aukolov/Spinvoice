@@ -32,7 +32,7 @@ namespace Spinvoice.ViewModels.Invoices
         public void ChangePositionQuantity(string text)
         {
             int quantity;
-            if (int.TryParse(text, out quantity))
+            if (QuantityParser.TryParse(text, out quantity))
             {
                 Position.Quantity = quantity;
                 RawPosition.Quantity = text;

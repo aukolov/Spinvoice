@@ -10,8 +10,9 @@ namespace Spinvoice.Infrastructure.Pdf
     {
         private const int SlashZeroThreshold = 100;
 
-        private List<TextRenderInfo> _currentBlock;
+        private readonly BricksToSentensesTranslator _bricksToSentensesTranslator;
         private readonly List<List<TextRenderInfo>> _blocks;
+        private List<TextRenderInfo> _currentBlock;
         private int _slashZeroCount;
         private double _maxY;
 
@@ -20,6 +21,7 @@ namespace Spinvoice.Infrastructure.Pdf
         public SmartTextExtractionStrategy()
         {
             _blocks = new List<List<TextRenderInfo>>();
+            _bricksToSentensesTranslator = new BricksToSentensesTranslator(xDelta: 1, yDelta: 1, addSpaces: false);
         }
 
         public void BeginTextBlock()
@@ -37,11 +39,10 @@ namespace Spinvoice.Infrastructure.Pdf
 
         private void CountSlashZero(TextRenderInfo renderInfo)
         {
-            if (_slashZeroCount < SlashZeroThreshold)
-            {
-                var s = renderInfo.PdfString.ToString();
-                _slashZeroCount += s.Count(c => c == '\0');
-            }
+            if (_slashZeroCount >= SlashZeroThreshold) return;
+
+            var s = renderInfo.PdfString.ToString();
+            _slashZeroCount += s.Count(c => c == '\0');
         }
 
         public void EndTextBlock()
@@ -57,69 +58,35 @@ namespace Spinvoice.Infrastructure.Pdf
 
         public string GetResultantText()
         {
-            BlockSentences = new List<List<SentenceModel>>();
+            var brickLists = _blocks
+                .Select(b => b.Select(InfoToBrick).ToArray())
+                .ToArray();
 
-            foreach (var block in _blocks)
-            {
-                var sentences = new List<SentenceModel>();
-                var builder = new SentenceModelBuilder();
-
-                for (var i = 0; i < block.Count; i++)
-                {
-                    var brick = block[i];
-                    if (builder.IsEmpty)
-                    {
-                        Append(builder, brick);
-                    }
-                    else
-                    {
-                        var prevBrick = block[i - 1];
-                        var currentRect = brick.GetBaseline().GetBoundingRectange();
-                        var prevRect = prevBrick.GetBaseline().GetBoundingRectange();
-                        if (RoughEqual(currentRect.Y, prevRect.Y)
-                            && RoughEqual(prevRect.X + prevRect.Width, currentRect.X))
-                        {
-                            Append(builder, brick);
-                        }
-                        else
-                        {
-                            sentences.Add(builder.Build());
-                            builder = new SentenceModelBuilder();
-                            Append(builder, brick);
-                        }
-                    }
-                    if (i == block.Count - 1)
-                    {
-                        sentences.Add(builder.Build());
-                    }
-                }
-                BlockSentences.Add(sentences);
-            }
+            var blockSentences = _bricksToSentensesTranslator.Translate(brickLists);
+            BlockSentences = blockSentences;
 
             return "";
         }
 
-        private void Append(SentenceModelBuilder builder, TextRenderInfo brick)
+        private bool ReplaceZeros => _slashZeroCount < SlashZeroThreshold;
+
+        private IBrick InfoToBrick(TextRenderInfo info)
         {
-            var baseRectange = brick.GetBaseline().GetBoundingRectange();
-            var accentRectange = brick.GetAscentLine().GetBoundingRectange();
-            builder.Append(
-                Decode(brick.PdfString.ToString()),
+            var baseRectange = info.GetBaseline().GetBoundingRectange();
+            var accentRectange = info.GetAscentLine().GetBoundingRectange();
+
+            var text = info.PdfString.ToString();
+            if (ReplaceZeros)
+            {
+                text = text.Replace("\0", "");
+            }
+
+            var brick = new Brick(text,
                 baseRectange.X,
                 _maxY - baseRectange.Y,
                 baseRectange.Width,
                 accentRectange.Y - baseRectange.Y);
-        }
-
-        private string Decode(string text)
-        {
-            if (text == null) return null;
-            return _slashZeroCount < SlashZeroThreshold ? text : text.Replace("\0", "");
-        }
-
-        private static bool RoughEqual(float currentRectY, float prevRectX)
-        {
-            return Math.Abs(currentRectY - prevRectX) < 1;
+            return brick;
         }
     }
 }

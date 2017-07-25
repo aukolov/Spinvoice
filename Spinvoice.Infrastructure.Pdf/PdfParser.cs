@@ -1,29 +1,51 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using iTextSharp.text.pdf;
-using iTextSharp.text.pdf.parser;
 using Spinvoice.Domain.Pdf;
 
 namespace Spinvoice.Infrastructure.Pdf
 {
     public class PdfParser : IPdfParser
     {
+        private readonly IPageParser[] _parsers;
+
+        public PdfParser()
+        {
+            _parsers = new IPageParser[]
+            {
+                new TextBasedPageParser(),
+                new ImageBasedPageParser()
+            };
+        }
+
         public PdfModel Parse(string filePath)
         {
             var reader = new PdfReader(filePath);
             var fileName = System.IO.Path.GetFileName(filePath);
-            var pdfModel = new PdfModel(
-                fileName,
-                Enumerable.Range(1, reader.NumberOfPages).Select(i =>
-                {
-                    var strategy = new SmartTextExtractionStrategy();
-                    PdfTextExtractor.GetTextFromPage(reader, i, strategy);
-                    var blockModels = strategy.BlockSentences
-                        .Select((sentences, j) => new BlockModel(j, sentences))
-                        .ToList();
-                    return new PageModel(i - 1, blockModels);
-                }).ToList());
 
+            var pageModels = Enumerable.Range(1, reader.NumberOfPages).Select(i => ParsePage(reader, i)).ToList();
+
+            var pdfModel = new PdfModel(fileName, pageModels);
             return pdfModel;
+        }
+
+        private PageModel ParsePage(PdfReader reader, int i)
+        {
+            List<List<SentenceModel>> sentenceModels = null;
+            foreach (var parser in _parsers)
+            {
+                var list = parser.Parse(reader, i);
+                if (list.Any())
+                {
+                    sentenceModels = list;
+                    break;
+                }
+            }
+            var blockModels = (sentenceModels ?? new List<List<SentenceModel>>())
+                .Select((sentences, j) => new BlockModel(j, sentences))
+                .ToList();
+
+            return new PageModel(i - 1, blockModels);
         }
 
         public bool IsPdf(string filePath)
