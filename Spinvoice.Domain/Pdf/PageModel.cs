@@ -115,15 +115,12 @@ namespace Spinvoice.Domain.Pdf
             }
 
             i -= 1;
-            var midX = sentence.Left + sentence.Width / 2;
             while (i >= 0)
             {
                 var candidate = Sentences[i];
                 if (candidate.Bottom < sentence.Bottom)
                 {
-                    var candidateLeft = (Left(candidate).FirstOrDefault()?.Right + candidate.Left) / 2 ?? candidate.Left - 100;
-                    var candidateRight = (Right(candidate).FirstOrDefault()?.Left + candidate.Right) / 2 ?? candidate.Right + 100;
-                    if (candidateLeft <= midX && midX <= candidateRight)
+                    if (AreInSameColumn(sentence, candidate))
                     {
                         return candidate;
                     }
@@ -131,6 +128,33 @@ namespace Spinvoice.Domain.Pdf
                 i -= 1;
             }
             return null;
+        }
+
+        private bool AreInSameColumn(SentenceModel main, SentenceModel secondary)
+        {
+            var isMainRightMost = !Right(main).Any();
+            var isSecondaryRightMost = !Right(secondary).Any();
+
+            if (isMainRightMost && isSecondaryRightMost)
+            {
+                var leftOfMain = Left(main).FirstOrDefault();
+                var leftOfSecondary = Left(secondary).FirstOrDefault();
+
+                if (leftOfMain?.Right < main.Left
+                    && leftOfMain.Right < secondary.Left
+                    && leftOfSecondary?.Right < main.Left
+                    && leftOfSecondary.Right < secondary.Left
+                    )
+                {
+                    return true;
+                }
+            }
+
+            var midX = main.Left + main.Width / 2;
+            var secondaryLeft = (Left(secondary).FirstOrDefault()?.Right + secondary.Left) / 2 ?? secondary.Left - 100;
+            var candidateRight = (Right(secondary).FirstOrDefault()?.Left + secondary.Right) / 2 ?? secondary.Right + 100;
+            var areInSameColumn = secondaryLeft <= midX && midX <= candidateRight;
+            return areInSameColumn;
         }
 
         public IEnumerable<SentenceModel> Below(SentenceModel sentence)
@@ -142,13 +166,12 @@ namespace Spinvoice.Domain.Pdf
             }
 
             i += 1;
-            var midX = sentence.Left + sentence.Width / 2;
             while (i < Sentences.Count)
             {
                 var candidate = Sentences[i];
                 if (candidate.Bottom > sentence.Bottom)
                 {
-                    if (candidate.Left <= sentence.Right && midX <= candidate.Right)
+                    if (AreInSameColumn(sentence, candidate))
                     {
                         yield return candidate;
                     }

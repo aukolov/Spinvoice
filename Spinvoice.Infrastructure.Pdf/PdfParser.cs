@@ -22,28 +22,30 @@ namespace Spinvoice.Infrastructure.Pdf
         {
             var reader = new PdfReader(filePath);
             var fileName = System.IO.Path.GetFileName(filePath);
-            var pdfModel = new PdfModel(
-                fileName,
-                Enumerable.Range(1, reader.NumberOfPages).Select(i =>
-                {
-                    List<List<SentenceModel>> sentenceModels = null;
-                    foreach (var parser in _parsers)
-                    {
-                        var list = parser.Parse(reader, i);
-                        if (list.Any())
-                        {
-                            sentenceModels = list;
-                            break;
-                        }
-                    }
-                    var blockModels = (sentenceModels ?? new List<List<SentenceModel>>())
-                        .Select((sentences, j) => new BlockModel(j, sentences))
-                        .ToList();
-                    
-                    return new PageModel(i - 1, blockModels);
-                }).ToList());
 
+            var pageModels = Enumerable.Range(1, reader.NumberOfPages).Select(i => ParsePage(reader, i)).ToList();
+
+            var pdfModel = new PdfModel(fileName, pageModels);
             return pdfModel;
+        }
+
+        private PageModel ParsePage(PdfReader reader, int i)
+        {
+            List<List<SentenceModel>> sentenceModels = null;
+            foreach (var parser in _parsers)
+            {
+                var list = parser.Parse(reader, i);
+                if (list.Any())
+                {
+                    sentenceModels = list;
+                    break;
+                }
+            }
+            var blockModels = (sentenceModels ?? new List<List<SentenceModel>>())
+                .Select((sentences, j) => new BlockModel(j, sentences))
+                .ToList();
+
+            return new PageModel(i - 1, blockModels);
         }
 
         public bool IsPdf(string filePath)
