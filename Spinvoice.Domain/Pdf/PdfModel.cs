@@ -40,7 +40,7 @@ namespace Spinvoice.Domain.Pdf
                     sb.AppendLine($"\tBlock {j}");
                     foreach (var sentence in blocks[j].Sentences)
                     {
-                        sb.AppendLine($"\t\t{sentence}");
+                        sb.AppendLine($"\t\t{sentence.Text}");
                     }
                 }
             }

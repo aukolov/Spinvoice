@@ -148,7 +148,7 @@ namespace Spinvoice.Domain.Pdf
                 var candidate = Sentences[i];
                 if (candidate.Bottom > sentence.Bottom)
                 {
-                    if (candidate.Left >= midX && midX <= sentence.Right)
+                    if (candidate.Left <= sentence.Right && midX <= candidate.Right)
                     {
                         yield return candidate;
                     }

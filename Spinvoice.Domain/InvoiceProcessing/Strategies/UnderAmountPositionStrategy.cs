@@ -67,7 +67,7 @@ namespace Spinvoice.Domain.Pdf
                         if (QuantityIndex.HasValue)
                         {
                             var quantityText = leftSentences[QuantityIndex.Value].Text;
-                            if (!int.TryParse(quantityText, out quantity))
+                            if (!QuantityParser.TryParse(quantityText, out quantity))
                             {
                                 Logger.Info($"Could not parse quantity: {quantityText}.");
                             }
@@ -93,19 +93,30 @@ namespace Spinvoice.Domain.Pdf
                 Logger.Info("Raw position is not fully initialized.");
             }
 
-            var firstPage = pdfModel.Pages.FirstOrDefault();
-            if (firstPage == null)
+            foreach (var page in pdfModel.Pages.Take(3))
             {
-                Logger.Info("First page not found.");
+                if (Train(page, rawPosition))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool Train(PageModel page, RawPosition rawPosition)
+        {
+            if (page == null)
+            {
+                Logger.Info("Page not found.");
                 return false;
             }
-            var nameSentence = firstPage.Sentences.FirstOrDefault(m => rawPosition.Name == m.Text);
+            var nameSentence = page.Sentences.FirstOrDefault(m => rawPosition.Name == m.Text);
             if (nameSentence == null)
             {
                 Logger.Info("Name sentence not found.");
                 return false;
             }
-            var amountSentence = firstPage.Sentences.FirstOrDefault(m =>
+            var amountSentence = page.Sentences.FirstOrDefault(m =>
                 m.Text == rawPosition.Amount
                 && Math.Abs(nameSentence.Bottom - m.Bottom) < 5);
             if (amountSentence == null)
@@ -114,7 +125,7 @@ namespace Spinvoice.Domain.Pdf
                 return false;
             }
 
-            var amountHeader = firstPage.Above(amountSentence);
+            var amountHeader = page.Above(amountSentence);
             if (amountHeader == null)
             {
                 Logger.Info("Amount header not found.");
@@ -124,7 +135,7 @@ namespace Spinvoice.Domain.Pdf
             AmountHeaderText = amountHeader.Text;
             Logger.Info($"Amount header text: {AmountHeaderText}.");
 
-            var leftSentences = firstPage.Left(amountSentence).ToArray();
+            var leftSentences = page.Left(amountSentence).ToArray();
             LeftSentencesLength = leftSentences.Length;
             Logger.Info($"Left sentences [{LeftSentencesLength}]: " +
                         $"{string.Join(", ", leftSentences.Select(m => m.Text).ToArray())}.");

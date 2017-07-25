@@ -6,23 +6,24 @@ namespace Spinvoice.Infrastructure.Pdf
 {
     public class SentenceModelBuilder
     {
+        private readonly bool _addSpaces;
         private readonly StringBuilder _sb = new StringBuilder();
 
-        public SentenceModelBuilder()
+        public SentenceModelBuilder(bool addSpaces)
         {
+            _addSpaces = addSpaces;
             IsEmpty = true;
         }
 
-        public double Left { get; set; }
-        public double Top { get; set; }
-        public double Right { get; set; }
-        public double Bottom { get; set; }
+        private double Left { get; set; }
+        private double Top { get; set; }
+        private double Right { get; set; }
+        private double Bottom { get; set; }
 
         public bool IsEmpty { get; private set; }
 
         public void Append(string text, double x, double y, double width, double height)
         {
-            _sb.Append(text);
             if (IsEmpty)
             {
                 Left = x;
@@ -38,7 +39,12 @@ namespace Spinvoice.Infrastructure.Pdf
                 Top = Math.Min(Top, y - height);
                 Right = Math.Max(Right, x + width);
                 Bottom = Math.Max(Bottom, y);
+                if (_addSpaces)
+                {
+                    _sb.Append(" ");
+                }
             }
+            _sb.Append(text);
         }
 
         public SentenceModel Build()
@@ -46,7 +52,7 @@ namespace Spinvoice.Infrastructure.Pdf
             return new SentenceModel(
                 _sb.ToString(),
                 Left,
-                Top,
+                Bottom,
                 Right - Left,
                 Bottom - Top);
         }

@@ -6,13 +6,24 @@ namespace Spinvoice.Infrastructure.Pdf
 {
     internal class BricksToSentensesTranslator
     {
+        private readonly double _xDelta;
+        private readonly double _yDelta;
+        private readonly bool _addSpaces;
+
+        public BricksToSentensesTranslator(double xDelta, double yDelta, bool addSpaces)
+        {
+            _xDelta = xDelta;
+            _yDelta = yDelta;
+            _addSpaces = addSpaces;
+        }
+        
         public List<List<SentenceModel>> Translate(IEnumerable<IBrick[]> brickLists)
         {
             var blockSentences = new List<List<SentenceModel>>();
             foreach (var brickList in brickLists)
             {
                 var sentences = new List<SentenceModel>();
-                var builder = new SentenceModelBuilder();
+                var builder = new SentenceModelBuilder(_addSpaces);
 
                 for (var i = 0; i < brickList.Length; i++)
                 {
@@ -24,15 +35,15 @@ namespace Spinvoice.Infrastructure.Pdf
                     else
                     {
                         var prevBrick = brickList[i - 1];
-                        if (RoughEqual(brick.Y, prevBrick.Y)
-                            && RoughEqual(prevBrick.X + prevBrick.Width, brick.X))
+                        if (RoughEqual(brick.Y, prevBrick.Y, _yDelta)
+                            && RoughEqual(prevBrick.X + prevBrick.Width, brick.X, _xDelta))
                         {
                             Append(builder, brick);
                         }
                         else
                         {
                             sentences.Add(builder.Build());
-                            builder = new SentenceModelBuilder();
+                            builder = new SentenceModelBuilder(_addSpaces);
                             Append(builder, brick);
                         }
                     }
@@ -56,9 +67,9 @@ namespace Spinvoice.Infrastructure.Pdf
                 brick.Height);
         }
 
-        private static bool RoughEqual(double currentRectY, double prevRectX)
+        private static bool RoughEqual(double currentRectY, double prevRectX, double delta)
         {
-            return Math.Abs(currentRectY - prevRectX) < 1;
+            return Math.Abs(currentRectY - prevRectX) < delta;
         }
     }
 }

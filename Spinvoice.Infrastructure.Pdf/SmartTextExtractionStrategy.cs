@@ -21,7 +21,7 @@ namespace Spinvoice.Infrastructure.Pdf
         public SmartTextExtractionStrategy()
         {
             _blocks = new List<List<TextRenderInfo>>();
-            _bricksToSentensesTranslator = new BricksToSentensesTranslator();
+            _bricksToSentensesTranslator = new BricksToSentensesTranslator(xDelta: 1, yDelta: 1, addSpaces: false);
         }
 
         public void BeginTextBlock()
