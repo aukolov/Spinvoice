@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Spinvoice.Domain.Pdf;
 
 namespace Spinvoice.Infrastructure.Pdf
@@ -52,7 +53,10 @@ namespace Spinvoice.Infrastructure.Pdf
                         sentences.Add(builder.Build());
                     }
                 }
-                blockSentences.Add(sentences);
+                if (sentences.Any())
+                {
+                    blockSentences.Add(sentences);
+                }
             }
             return blockSentences;
         }
