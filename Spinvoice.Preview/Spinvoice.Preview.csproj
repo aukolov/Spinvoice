@@ -29,14 +29,14 @@
     <InstallUrl>https://raw.githubusercontent.com/aukolov/Spinvoice/dev/Spinvoice.Preview/publish/</InstallUrl>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>5</ApplicationRevision>
+    <ApplicationRevision>6</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -46,13 +46,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>0CD858C0CB24BC47ABEEA73786D098986FA7D253</ManifestCertificateThumbprint>
@@ -114,6 +115,33 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Content Include="..\Spinvoice.Infrastructure.Pdf\tessdata\eng.cube.bigrams">
+      <Link>tessdata\eng.cube.bigrams</Link>
+    </Content>
+    <Content Include="..\Spinvoice.Infrastructure.Pdf\tessdata\eng.cube.fold">
+      <Link>tessdata\eng.cube.fold</Link>
+    </Content>
+    <Content Include="..\Spinvoice.Infrastructure.Pdf\tessdata\eng.cube.lm">
+      <Link>tessdata\eng.cube.lm</Link>
+    </Content>
+    <Content Include="..\Spinvoice.Infrastructure.Pdf\tessdata\eng.cube.nn">
+      <Link>tessdata\eng.cube.nn</Link>
+    </Content>
+    <Content Include="..\Spinvoice.Infrastructure.Pdf\tessdata\eng.cube.params">
+      <Link>tessdata\eng.cube.params</Link>
+    </Content>
+    <Content Include="..\Spinvoice.Infrastructure.Pdf\tessdata\eng.cube.size">
+      <Link>tessdata\eng.cube.size</Link>
+    </Content>
+    <Content Include="..\Spinvoice.Infrastructure.Pdf\tessdata\eng.cube.word-freq">
+      <Link>tessdata\eng.cube.word-freq</Link>
+    </Content>
+    <Content Include="..\Spinvoice.Infrastructure.Pdf\tessdata\eng.tesseract_cube.nn">
+      <Link>tessdata\eng.tesseract_cube.nn</Link>
+    </Content>
+    <Content Include="..\Spinvoice.Infrastructure.Pdf\tessdata\eng.traineddata">
+      <Link>tessdata\eng.traineddata</Link>
+    </Content>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

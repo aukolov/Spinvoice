@@ -22,7 +22,7 @@ namespace Spinvoice.Infrastructure.Pdf
         public List<List<SentenceModel>> Parse(PdfReader pdfReader, int pageNumber)
         {
             var image = _pdfImageExtractor.ExtractImagesFromPdf(pdfReader, pageNumber);
-            var engine = new TesseractEngine(@"c:\1\tessdata", "eng");
+            var engine = new TesseractEngine(@"tessdata", "eng");
             if (image == null)
             {
                 return new List<List<SentenceModel>>();
