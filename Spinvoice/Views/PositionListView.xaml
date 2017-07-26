@@ -10,6 +10,7 @@
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">
+
     <StackPanel Orientation="Vertical">
 
         <DataGrid AutoGenerateColumns="False"
@@ -26,9 +27,12 @@
                                     Header="Name" />
                 <DataGridTextColumn Width="*"
                                     Binding="{Binding Position.Quantity}"
+                                    ElementStyle="{StaticResource CellRightAlign}"
                                     Header="Quantity" />
                 <DataGridTextColumn Width="*"
-                                    Binding="{Binding Position.Amount}"
+                                    Binding="{Binding Position.Amount,
+                                                      StringFormat=c}"
+                                    ElementStyle="{StaticResource CellRightAlign}"
                                     Header="Amount" />
             </DataGrid.Columns>
         </DataGrid>
