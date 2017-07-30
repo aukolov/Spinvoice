@@ -8,12 +8,13 @@ namespace Spinvoice.Infrastructure.Pdf
 {
     public class SmartTextExtractionStrategy : ITextExtractionStrategy
     {
-        private const int SlashZeroThreshold = 100;
+        private const double SlashZeroThreshold = 0.2;
 
         private readonly BricksToSentensesTranslator _bricksToSentensesTranslator;
         private readonly List<List<TextRenderInfo>> _blocks;
         private List<TextRenderInfo> _currentBlock;
         private int _slashZeroCount;
+        private int _charsCount;
         private double _maxY;
 
         public List<List<SentenceModel>> BlockSentences { get; private set; }
@@ -39,10 +40,9 @@ namespace Spinvoice.Infrastructure.Pdf
 
         private void CountSlashZero(TextRenderInfo renderInfo)
         {
-            if (_slashZeroCount >= SlashZeroThreshold) return;
-
             var s = renderInfo.PdfString.ToString();
             _slashZeroCount += s.Count(c => c == '\0');
+            _charsCount += s.Length;
         }
 
         public void EndTextBlock()
@@ -68,7 +68,14 @@ namespace Spinvoice.Infrastructure.Pdf
             return "";
         }
 
-        private bool ReplaceZeros => _slashZeroCount < SlashZeroThreshold;
+        private bool ReplaceZeros
+        {
+            get
+            {
+                if (_charsCount == 0) return false;
+                return _slashZeroCount / (double)_charsCount > SlashZeroThreshold;
+            }
+        }
 
         private IBrick InfoToBrick(TextRenderInfo info)
         {
