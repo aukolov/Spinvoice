@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using iTextSharp.text.pdf;
+using NLog;
 using Spinvoice.Domain.Pdf;
 using Tesseract;
 
@@ -10,6 +10,8 @@ namespace Spinvoice.Infrastructure.Pdf
 {
     internal class ImageBasedPageParser : IPageParser
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly BricksToSentensesTranslator _bricksToSentensesTranslator;
         private readonly PdfImageExtractor _pdfImageExtractor;
 
@@ -22,7 +24,6 @@ namespace Spinvoice.Infrastructure.Pdf
         public List<List<SentenceModel>> Parse(PdfReader pdfReader, int pageNumber)
         {
             var image = _pdfImageExtractor.ExtractImagesFromPdf(pdfReader, pageNumber);
-            var engine = new TesseractEngine(@"tessdata", "eng");
             if (image == null)
             {
                 return new List<List<SentenceModel>>();
@@ -37,59 +38,96 @@ namespace Spinvoice.Infrastructure.Pdf
                 scale = Math.Min(widthScale, heightScale);
             }
 
+            var engine = new TesseractEngine(@"c:\1\tessdata", "eng");
             Page page;
             try
             {
                 page = engine.Process(new Bitmap(image));
             }
-            catch (ArgumentException)
+            catch (ArgumentException ex)
             {
+                Logger.Error(ex, "Error while processing image.");
                 return new List<List<SentenceModel>>();
             }
 
-            var bricks = new List<IBrick>();
-            var wordIterator = page.GetIterator();
-            var lineIterator = page.GetIterator();
-            while (lineIterator.Next(PageIteratorLevel.TextLine))
-            {
-                var line = lineIterator.GetText(PageIteratorLevel.TextLine);
-                Rect baseLine;
-                var hasBaseLine = lineIterator.TryGetBaseline(PageIteratorLevel.TextLine, out baseLine);
-                var lineWords = line.Split(' ')
-                    .Where(s => !string.IsNullOrWhiteSpace(s)).ToArray();
-                //Console.WriteLine($"Line {lineWords.Length}: '{line}'");
-
-                for (var i = 0; i < lineWords.Length; i++)
-                {
-                    while (wordIterator.Next(PageIteratorLevel.Word) &&
-                           string.IsNullOrWhiteSpace(wordIterator.GetText(PageIteratorLevel.Word)))
-                    {
-
-                    }
-
-                    Rect rect;
-                    if (wordIterator.TryGetBoundingBox(PageIteratorLevel.Word, out rect))
-                    {
-                        var word = wordIterator.GetText(PageIteratorLevel.Word);
-                        //var rectText = $"{rect.X1} x {rect.Y1}, {rect.Width} x {rect.Height}";
-                        //Console.WriteLine($"Word #{i}: '{word}' - {rectText}");
-
-                        bricks.Add(new Brick(
-                            word,
-                            rect.X1 * scale,
-                            (hasBaseLine ? baseLine.Y2 : rect.Y2) * scale,
-                            rect.Width * scale,
-                            rect.Height * scale));
-                    }
-                }
-            }
-
+            var bricks = ExtractBricks(page, scale);
             var sentenceModels = _bricksToSentensesTranslator.Translate(
                 new List<IBrick[]>
                 {
                     bricks.ToArray()
                 });
             return sentenceModels;
+        }
+
+        private static List<IBrick> ExtractBricks(Page page, double scale)
+        {
+            var bricks = new List<IBrick>();
+            var wordIterator = page.GetIterator();
+            wordIterator.Begin();
+            var lineIterator = page.GetIterator();
+            lineIterator.Begin();
+
+            Rect? baseLine = null;
+            do
+            {
+                while (string.IsNullOrWhiteSpace(wordIterator.GetText(PageIteratorLevel.Word))
+                       && wordIterator.Next(PageIteratorLevel.Word))
+                {
+                }
+
+                if (wordIterator.IsAtBeginningOf(PageIteratorLevel.TextLine))
+                {
+                    baseLine = null;
+
+                    while (string.IsNullOrWhiteSpace(lineIterator.GetText(PageIteratorLevel.TextLine))
+                           && lineIterator.Next(PageIteratorLevel.TextLine))
+                    {
+                    }
+
+                    Rect baseLineCandidate;
+                    if (lineIterator.TryGetBaseline(PageIteratorLevel.TextLine, out baseLineCandidate))
+                    {
+                        baseLine = baseLineCandidate;
+                    }
+                    Console.WriteLine("------------------");
+                    Console.WriteLine($"Line: {lineIterator.GetText(PageIteratorLevel.TextLine)}");
+                    lineIterator.Next(PageIteratorLevel.TextLine);
+                }
+
+                var brick = TryExtractBrick(scale, wordIterator, baseLine);
+                if (brick != null)
+                {
+                    bricks.Add(brick);
+                }
+
+            } while (wordIterator.Next(PageIteratorLevel.Word));
+            return bricks;
+        }
+
+        private static Brick TryExtractBrick(double scale, ResultIterator wordIterator, Rect? baseLine)
+        {
+            var word = wordIterator.GetText(PageIteratorLevel.Word);
+            if (string.IsNullOrWhiteSpace(word))
+            {
+                return null;
+            }
+
+            Rect rect;
+            Brick brick = null;
+            if (wordIterator.TryGetBoundingBox(PageIteratorLevel.Word, out rect))
+            {
+                //var rectText = $"{rect.X1} x {rect.Y1}, {rect.Width} x {rect.Height}";
+                //Console.WriteLine($"Word #{i}: '{word}' - {rectText}");
+                Console.Write($"{word} ");
+
+                brick = new Brick(
+                    word,
+                    rect.X1 * scale,
+                    (baseLine?.Y2 ?? rect.Y2) * scale,
+                    rect.Width * scale,
+                    rect.Height * scale);
+            }
+            return brick;
         }
     }
 }
