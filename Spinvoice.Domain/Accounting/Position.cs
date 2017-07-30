@@ -1,4 +1,8 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
+using System.Linq;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Runtime.CompilerServices;
 using Spinvoice.Domain.Annotations;
 
@@ -10,18 +14,22 @@ namespace Spinvoice.Domain.Accounting
         private string _name;
         private int _quantity;
         private string _externalId;
+        private readonly Subject<Position> _amountChanged;
 
         public Position()
         {
-            
+            _amountChanged = new Subject<Position>();
+            AmountChanged = _amountChanged.AsObservable();
         }
 
-        public Position(string name, int quantity, decimal amount)
+        public Position(string name, int quantity, decimal amount) : this()
         {
             _name = name;
             _quantity = quantity;
             _amount = amount;
         }
+
+        public IObservable<Position> AmountChanged { get; }
 
         public string Name
         {
@@ -52,6 +60,7 @@ namespace Spinvoice.Domain.Accounting
             {
                 if (_amount == value) return;
                 _amount = value;
+                _amountChanged.OnNext(this);
                 OnPropertyChanged();
             }
         }

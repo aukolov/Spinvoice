@@ -1,4 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -11,22 +14,65 @@ namespace Spinvoice.ViewModels.Invoices
 {
     public class PositionListViewModel : INotifyPropertyChanged
     {
+        private readonly Dictionary<Position, IDisposable> _positionSubscriptions = new Dictionary<Position, IDisposable>();
         private readonly ObservableCollection<Position> _positions;
         private PositionViewModel _selectedPositionViewModel;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public PositionListViewModel(
-            ObservableCollection<Position> positions, 
+            ObservableCollection<Position> positions,
             ActionSelectorViewModel actionSelectorViewModel)
         {
             _positions = positions;
+            _positions.CollectionChanged += OnPositionCollectionChanged;
+            _positions.ForEach(Subscribe);
             Positions = new ListCollectionProxyView<Position, PositionViewModel, ObservableCollection<Position>>(
                 positions,
                 p => new PositionViewModel(p, actionSelectorViewModel),
                 (p, vm) => vm.Position == p);
             AddCommand = new RelayCommand(AddPosition);
             RemoveCommand = new RelayCommand(RemovePosition);
+        }
+
+        private void Subscribe(Position position)
+        {
+            var subscription = position.AmountChanged.Subscribe(OnAmountChanged);
+            _positionSubscriptions.Add(position, subscription);
+        }
+
+        public decimal TotalSum => _positions.Sum(position => position.Amount);
+
+        private void OnAmountChanged(Position position)
+        {
+            OnPropertyChanged(nameof(TotalSum));
+        }
+
+        private void OnPositionCollectionChanged(
+            object sender,
+            NotifyCollectionChangedEventArgs args)
+        {
+            switch (args.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    args.NewItems.Cast<Position>().ForEach(Subscribe);
+                    break;
+                case NotifyCollectionChangedAction.Remove:
+                    args.OldItems.Cast<Position>().ForEach(position =>
+                    {
+                        IDisposable subscription;
+                        if (_positionSubscriptions.TryGetValue(position, out subscription))
+                        {
+                            subscription.Dispose();
+                        }
+                    });
+                    break;
+                case NotifyCollectionChangedAction.Reset:
+                    _positionSubscriptions.Values.ForEach(disposable => disposable.Dispose());
+                    _positions.ForEach(Subscribe);
+                    break;
+            }
+            OnPropertyChanged(nameof(TotalSum));
         }
 
         private void AddPosition()

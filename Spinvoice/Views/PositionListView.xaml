@@ -37,6 +37,8 @@
             </DataGrid.Columns>
         </DataGrid>
 
+        <TextBlock HorizontalAlignment="Right" Text="{Binding TotalSum, StringFormat='Total: {0:c}'}" />
+
         <StackPanel Margin="0,10,0,0"
                     HorizontalAlignment="Right"
                     Orientation="Horizontal">
