@@ -38,7 +38,7 @@ namespace Spinvoice.Infrastructure.Pdf
                 scale = Math.Min(widthScale, heightScale);
             }
 
-            var engine = new TesseractEngine(@"c:\1\tessdata", "eng");
+            var engine = new TesseractEngine(@"tessdata", "eng");
             Page page;
             try
             {
