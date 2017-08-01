@@ -5,8 +5,8 @@ namespace Spinvoice.Infrastructure.DataAccess
     public class AppMetadataDataAccess : BaseDataAccess<AppMetadata>, IAppMetadataDataAccess
     {
         public AppMetadataDataAccess(
-            IDocumentStoreRepository documentStoreRepository) 
-            : base(documentStoreRepository)
+            IDocumentStoreContainer documentStoreContainer) 
+            : base(documentStoreContainer)
         {
         }
     }

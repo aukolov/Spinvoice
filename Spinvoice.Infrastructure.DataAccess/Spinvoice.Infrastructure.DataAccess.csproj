@@ -69,10 +69,12 @@
     <Compile Include="BaseDataAccess.cs" />
     <Compile Include="CompanyDataAccess.cs" />
     <Compile Include="CompanyRepository.cs" />
-    <Compile Include="DocumentStoreRepository.cs" />
+    <Compile Include="DataDirectoryProvider.cs" />
+    <Compile Include="DocumentStoreContainer.cs" />
     <Compile Include="ExchangeRateDataAccess.cs" />
     <Compile Include="ExchangeRatesRepository.cs" />
-    <Compile Include="IDocumentStoreRepository.cs" />
+    <Compile Include="IDataDirectoryProvider.cs" />
+    <Compile Include="IDocumentStoreContainer.cs" />
     <Compile Include="OAuthProfileDataAccess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

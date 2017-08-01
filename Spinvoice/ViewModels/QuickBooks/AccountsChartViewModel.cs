@@ -1,6 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows.Data;
+using Spinvoice.Annotations;
 using Spinvoice.Domain.Accounting;
 using Spinvoice.Domain.ExternalBook;
 using Spinvoice.Domain.UI;
@@ -9,7 +11,7 @@ using Spinvoice.Utils;
 
 namespace Spinvoice.ViewModels.QuickBooks
 {
-    public class AccountsChartViewModel
+    public class AccountsChartViewModel : IAccountsChartViewModel
     {
         private readonly IAccountsChartRepository _accountsChartRepository;
         private readonly IWindowManager _windowManager;
@@ -76,5 +78,12 @@ namespace Spinvoice.ViewModels.QuickBooks
             _windowManager.CloseDialog(this, true);
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

@@ -4,16 +4,10 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using System.Windows.Threading;
-using Spinvoice.Domain.Accounting;
 using Spinvoice.Domain.App;
-using Spinvoice.Domain.Company;
-using Spinvoice.Domain.Exchange;
 using Spinvoice.Domain.ExternalBook;
-using Spinvoice.Domain.InvoiceProcessing;
 using Spinvoice.Domain.Pdf;
 using Spinvoice.Properties;
-using Spinvoice.QuickBooks.Account;
-using Spinvoice.QuickBooks.Item;
 using Spinvoice.QuickBooks.ViewModels;
 using Spinvoice.Services;
 using Spinvoice.Utils;
@@ -24,51 +18,33 @@ using Spinvoice.ViewModels.QuickBooks;
 
 namespace Spinvoice.ViewModels
 {
-    public sealed class AppViewModel : INotifyPropertyChanged, IDisposable
+    public sealed class AppViewModel : IAppViewModel
     {
-        private readonly AnalyzeInvoiceService _analyzeInvoiceService;
-        private readonly TrainStrategyService _trainStrategyService;
         private readonly WindowManager _windowManager;
-        private readonly IOAuthRepository _oauthRepository;
-        private readonly ICompanyRepository _companyRepository;
-        private readonly ExchangeRatesLoader _exchangeRatesLoader;
-        private readonly IExchangeRatesRepository _exchangeRatesRepository;
-        private readonly IAccountsChartRepository _accountsChartRepository;
-
-        private readonly Dictionary<string, InvoiceListViewModel> _invoiceListViewModels =
-            new Dictionary<string, InvoiceListViewModel>();
+        private readonly Dictionary<string, IInvoiceListViewModel> _invoiceListViewModels =
+            new Dictionary<string, IInvoiceListViewModel>();
 
         private readonly IPdfParser _pdfParser;
-        private ClipboardService _clipboardService;
-        private InvoiceListViewModel _invoiceListViewModel;
-        private readonly IExternalInvoiceService _externalInvoiceService;
-        private readonly IExternalCompanyRepository _externalCompanyRepository;
-        private readonly IExternalItemRepository _externalItemRepository;
+        private IClipboardService _clipboardService;
+        private IInvoiceListViewModel _invoiceListViewModel;
         private readonly IExternalConnectionWatcher _externalConnectionWatcher;
-        private readonly IExternalAccountRepository _externalAccountRepository;
+
+        private readonly Func<PdfModel, IInvoiceListViewModel> _invoiceListViewModelFactory;
+        private readonly Func<IExchangeRatesViewModel> _exchangeRatesViewModelFactory;
+        private readonly Func<IQuickBooksConnectViewModel> _quickBooksConnectViewModelFactory;
+        private readonly Func<IAccountsChartViewModel> _accountsChartViewModelFactory;
 
         public AppViewModel(
-            ICompanyRepository companyRepository,
-            IExchangeRatesRepository exchangeRatesRepository,
-            IAccountsChartRepository accountsChartRepository,
             IAppMetadataRepository appMetadataRepository,
-            ExchangeRatesLoader exchangeRatesLoader,
             IFileService fileService,
             IPdfParser pdfParser,
-            AnalyzeInvoiceService analyzeInvoiceService,
-            TrainStrategyService trainStrategyService,
             WindowManager windowManager,
-            IOAuthRepository oauthRepository,
-            IExternalInvoiceService externalInvoiceService,
-            IExternalCompanyRepository externalCompanyRepository,
-            IExternalItemRepository externalItemRepository,
             IExternalConnectionWatcher externalConnectionWatcher,
-            IExternalAccountRepository externalAccountRepository)
+            Func<PdfModel, IInvoiceListViewModel> invoiceListViewModelFactory,
+            Func<IExchangeRatesViewModel> exchangeRatesViewModelFactory,
+            Func<IQuickBooksConnectViewModel> quickBooksConnectViewModelFactory,
+            Func<IAccountsChartViewModel> accountsChartViewModelFactory)
         {
-            _exchangeRatesRepository = exchangeRatesRepository;
-            _accountsChartRepository = accountsChartRepository;
-            _companyRepository = companyRepository;
-            _exchangeRatesLoader = exchangeRatesLoader;
             _pdfParser = pdfParser;
 
             ProjectBrowserViewModel = new ProjectBrowserViewModel(fileService, appMetadataRepository);
@@ -79,20 +55,17 @@ namespace Spinvoice.ViewModels
                     OnCurrentFileChanged();
                 },
                 DispatcherPriority.Loaded);
-            _analyzeInvoiceService = analyzeInvoiceService;
-            _trainStrategyService = trainStrategyService;
             _windowManager = windowManager;
-            _oauthRepository = oauthRepository;
             OpenExchangeRatesCommand = new RelayCommand(OpenExchangeRates);
             OpenQuickBooksCommand = new RelayCommand(OpenQuickBooks);
             OpenChartOfAccountsCommand = new RelayCommand(OpenChartOfAccounts,
                 () => _externalConnectionWatcher.IsConnected);
 
-            _externalInvoiceService = externalInvoiceService;
-            _externalCompanyRepository = externalCompanyRepository;
-            _externalItemRepository = externalItemRepository;
             _externalConnectionWatcher = externalConnectionWatcher;
-            _externalAccountRepository = externalAccountRepository;
+            _invoiceListViewModelFactory = invoiceListViewModelFactory;
+            _exchangeRatesViewModelFactory = exchangeRatesViewModelFactory;
+            _quickBooksConnectViewModelFactory = quickBooksConnectViewModelFactory;
+            _accountsChartViewModelFactory = accountsChartViewModelFactory;
             _externalConnectionWatcher.Connected += () => OpenChartOfAccountsCommand.RaiseCanExecuteChanged();
         }
 
@@ -101,8 +74,7 @@ namespace Spinvoice.ViewModels
         public ProjectBrowserViewModel ProjectBrowserViewModel { get; }
         public RelayCommand OpenChartOfAccountsCommand { get; }
 
-
-        public InvoiceListViewModel InvoiceListViewModel
+        public IInvoiceListViewModel InvoiceListViewModel
         {
             get { return _invoiceListViewModel; }
             set
@@ -132,26 +104,13 @@ namespace Spinvoice.ViewModels
             if (string.IsNullOrEmpty(filePath))
                 return;
 
-            InvoiceListViewModel invoiceListViewModel;
+            IInvoiceListViewModel invoiceListViewModel;
             if (!_invoiceListViewModels.TryGetValue(filePath, out invoiceListViewModel))
             {
                 var pdfModel = _pdfParser.IsPdf(filePath)
                     ? _pdfParser.Parse(filePath)
                     : null;
-                invoiceListViewModel = new InvoiceListViewModel(
-                    _companyRepository,
-                    _exchangeRatesRepository,
-                    _externalItemRepository,
-                    _accountsChartRepository,
-                    _clipboardService,
-                    pdfModel,
-                    _analyzeInvoiceService,
-                    _trainStrategyService,
-                    _externalInvoiceService,
-                    _externalCompanyRepository,
-                    _externalAccountRepository,
-                    _externalConnectionWatcher,
-                    _windowManager);
+                invoiceListViewModel = _invoiceListViewModelFactory(pdfModel);
                 _invoiceListViewModels[filePath] = invoiceListViewModel;
             }
             InvoiceListViewModel = invoiceListViewModel;
@@ -159,28 +118,19 @@ namespace Spinvoice.ViewModels
 
         private void OpenExchangeRates()
         {
-            var exchangeRatesViewModel = new ExchangeRatesViewModel(
-                _exchangeRatesLoader,
-                _windowManager,
-                _exchangeRatesRepository,
-                _clipboardService);
+            var exchangeRatesViewModel = _exchangeRatesViewModelFactory();
             _windowManager.ShowWindow(exchangeRatesViewModel);
         }
 
         private void OpenQuickBooks()
         {
-            var quickBooksConnectViewModel = new QuickBooksConnectViewModel(
-                _oauthRepository,
-                _windowManager);
+            var quickBooksConnectViewModel = _quickBooksConnectViewModelFactory();
             _windowManager.ShowWindow(quickBooksConnectViewModel);
         }
 
         private void OpenChartOfAccounts()
         {
-            var accountsChartViewModel = new AccountsChartViewModel(
-                _externalAccountRepository,
-                _accountsChartRepository,
-                _windowManager);
+            var accountsChartViewModel = _accountsChartViewModelFactory();
             _windowManager.ShowDialog(accountsChartViewModel);
         }
 

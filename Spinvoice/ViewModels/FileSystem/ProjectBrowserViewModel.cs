@@ -12,7 +12,7 @@ using Spinvoice.Utils;
 
 namespace Spinvoice.ViewModels.FileSystem
 {
-    public sealed class ProjectBrowserViewModel : INotifyPropertyChanged, ISelectedPathListener, IDisposable
+    public sealed class ProjectBrowserViewModel : IProjectBrowserViewModel
     {
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 

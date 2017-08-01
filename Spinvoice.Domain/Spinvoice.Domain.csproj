@@ -78,6 +78,7 @@
     <Compile Include="App\AppMetadata.cs" />
     <Compile Include="App\IAppMetadataDataAccess.cs" />
     <Compile Include="App\IAppMetadataRepository.cs" />
+    <Compile Include="AutofacModule.cs" />
     <Compile Include="Company\Company.cs" />
     <Compile Include="Company\IBaseDataAccess.cs" />
     <Compile Include="Company\ICompanyDataAccess.cs" />

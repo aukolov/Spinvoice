@@ -2,7 +2,7 @@
 
 namespace Spinvoice.Infrastructure.DataAccess
 {
-    public interface IDocumentStoreRepository
+    public interface IDocumentStoreContainer
     {
         IDocumentStore DocumentStore { get; }
     }

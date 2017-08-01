@@ -13,7 +13,6 @@ namespace Spinvoice.ViewModels.Exchange
     public class CheckExchangeRatesViewModel : INotifyPropertyChanged
     {
         private readonly IExchangeRatesRepository _exchangeRatesRepository;
-        private readonly ClipboardService _clipboardService;
 
         private string _currency;
         private DateTime _date;
@@ -21,15 +20,14 @@ namespace Spinvoice.ViewModels.Exchange
 
         public CheckExchangeRatesViewModel(
             IExchangeRatesRepository exchangeRatesRepository,
-            ClipboardService clipboardService)
+            IClipboardService clipboardService)
         {
             _currency = "USD";
             _date = new DateTime(2017, 1, 17);
             _exchangeRatesRepository = exchangeRatesRepository;
-            _clipboardService = clipboardService;
-            CopyToEuroRateCommand = new RelayCommand(() => _clipboardService.TrySetText(
+            CopyToEuroRateCommand = new RelayCommand(() => clipboardService.TrySetText(
                 ToEuroRate.ToString(CultureInfo.InvariantCulture)));
-            CopyToCurrnecyRateCommand = new RelayCommand(() => _clipboardService.TrySetText(
+            CopyToCurrnecyRateCommand = new RelayCommand(() => clipboardService.TrySetText(
                 ToCurrencyRate.ToString(CultureInfo.InvariantCulture)));
         }
 

@@ -6,8 +6,8 @@ namespace Spinvoice.Infrastructure.DataAccess
 {
     public class ExchangeRateDataAccess : BaseDataAccess<Rate>, IExchangeRateDataAccess
     {
-        public ExchangeRateDataAccess(IDocumentStoreRepository documentStoreRepository)
-            : base(documentStoreRepository)
+        public ExchangeRateDataAccess(IDocumentStoreContainer documentStoreContainer)
+            : base(documentStoreContainer)
         {
         }
 

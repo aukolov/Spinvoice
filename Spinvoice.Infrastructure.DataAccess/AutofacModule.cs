@@ -18,6 +18,8 @@ namespace Spinvoice.Infrastructure.DataAccess
                 .Where(t => t.Name.EndsWith("DataAccess"))
                 .AsImplementedInterfaces().AsSelf()
                 .SingleInstance();
+
+            builder.RegisterType<DocumentStoreContainer>().AsImplementedInterfaces().SingleInstance();
         }
     }
 }

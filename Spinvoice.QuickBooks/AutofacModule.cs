@@ -22,6 +22,7 @@ namespace Spinvoice.QuickBooks
                 .SingleInstance();
             builder.RegisterType<ExternalConnection>().AsImplementedInterfaces().AsSelf().SingleInstance();
             builder.RegisterType<ExternalInvoiceTranslator>().AsImplementedInterfaces().AsSelf().InstancePerDependency();
+            builder.RegisterType<ExternalInvoiceService>().AsImplementedInterfaces().AsSelf().InstancePerDependency();
         }
     }
 }

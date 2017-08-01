@@ -8,13 +8,13 @@ using Spinvoice.Utils;
 
 namespace Spinvoice.ViewModels.Exchange
 {
-    public class ExchangeRatesViewModel : INotifyPropertyChanged
+    public class ExchangeRatesViewModel : IExchangeRatesViewModel
     {
         public ExchangeRatesViewModel(
             ExchangeRatesLoader exchangeRatesLoader, 
             WindowManager windowManager, 
             IExchangeRatesRepository exchangeRatesRepository,
-            ClipboardService clipboardService)
+            IClipboardService clipboardService)
         {
             LoadExchangeRatesViewModel = new LoadExchangeRatesViewModel(exchangeRatesLoader);
             CheckExchangeRatesViewModel = new CheckExchangeRatesViewModel(exchangeRatesRepository, clipboardService);

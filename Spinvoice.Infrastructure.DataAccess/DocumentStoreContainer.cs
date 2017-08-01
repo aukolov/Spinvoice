@@ -3,14 +3,14 @@ using Raven.Client.Embedded;
 
 namespace Spinvoice.Infrastructure.DataAccess
 {
-    public class DocumentStoreRepository : IDocumentStoreRepository
+    public class DocumentStoreContainer : IDocumentStoreContainer
     {
         private EmbeddableDocumentStore _documentStore;
         private readonly string _dataDirectory;
 
-        public DocumentStoreRepository(string dataDirectory)
+        public DocumentStoreContainer(IDataDirectoryProvider dataDirectoryProvider)
         {
-            _dataDirectory = dataDirectory;
+            _dataDirectory = dataDirectoryProvider.Path;
         }
 
         public IDocumentStore DocumentStore

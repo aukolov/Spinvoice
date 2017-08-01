@@ -18,7 +18,7 @@ using Spinvoice.Utils;
 
 namespace Spinvoice.ViewModels.Invoices
 {
-    public class InvoiceListViewModel : INotifyPropertyChanged
+    public class InvoiceListViewModel : IInvoiceListViewModel
     {
         private readonly IAccountsChartRepository _accountsChartRepository;
         private readonly AnalyzeInvoiceService _analyzeInvoiceService;

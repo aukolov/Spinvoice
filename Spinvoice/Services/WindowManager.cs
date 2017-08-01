@@ -14,9 +14,9 @@ namespace Spinvoice.Services
     {
         private readonly Dictionary<Type, Func<Window>> _windowFactories = new Dictionary<Type, Func<Window>>
             {
-                {typeof(ExchangeRatesViewModel),() => new ExchangeRatesWindow()},
-                {typeof(QuickBooksConnectViewModel),() => new QuickBooksConnectWindow()},
-                {typeof(AccountsChartViewModel),() => new AccountsChartWindow()}
+                {typeof(IExchangeRatesViewModel),() => new ExchangeRatesWindow()},
+                {typeof(IQuickBooksConnectViewModel),() => new QuickBooksConnectWindow()},
+                {typeof(IAccountsChartViewModel),() => new AccountsChartWindow()}
             };
         private readonly Dictionary<object, Window> _viewModelWindows = new Dictionary<object, Window>();
 
