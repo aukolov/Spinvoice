@@ -148,12 +148,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AutofacModule.cs" />
     <Compile Include="Properties\Annotations3.cs" />
     <Compile Include="Services\Bootstrapper.cs" />
     <Compile Include="Services\ExchangeRatesLoader.cs" />
     <Compile Include="Services\FileNamesComparer.cs" />
     <Compile Include="Services\FileService.cs" />
+    <Compile Include="Services\IClipboardService.cs" />
+    <Compile Include="Services\IExchangeRatesLoader.cs" />
     <Compile Include="Services\IFileService.cs" />
+    <Compile Include="Services\ILogConfigurator.cs" />
     <Compile Include="Services\InvoiceFormatter.cs" />
     <Compile Include="Services\LogConfigurator.cs" />
     <Compile Include="Services\WindowManager.cs" />

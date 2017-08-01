@@ -5,7 +5,7 @@ using Spinvoice.Domain.Pdf;
 
 namespace Spinvoice.Infrastructure.Pdf
 {
-    internal class BricksToSentensesTranslator
+    internal class BricksToSentensesTranslator : IBricksToSentensesTranslator
     {
         private readonly double _xDelta;
         private readonly double _yDelta;

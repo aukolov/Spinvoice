@@ -8,7 +8,7 @@ using Spinvoice.Utils;
 
 namespace Spinvoice.Services
 {
-    public class ClipboardService : IDisposable
+    public class ClipboardService : IClipboardService
     {
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 

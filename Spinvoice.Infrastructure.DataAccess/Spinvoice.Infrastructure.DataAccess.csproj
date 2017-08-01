@@ -65,10 +65,13 @@
     <Compile Include="AccountsChartRepository.cs" />
     <Compile Include="AppMetadataDataAccess.cs" />
     <Compile Include="AppMetadataRepository.cs" />
+    <Compile Include="AutofacModule.cs" />
     <Compile Include="BaseDataAccess.cs" />
     <Compile Include="CompanyDataAccess.cs" />
+    <Compile Include="CompanyRepository.cs" />
     <Compile Include="DocumentStoreRepository.cs" />
     <Compile Include="ExchangeRateDataAccess.cs" />
+    <Compile Include="ExchangeRatesRepository.cs" />
     <Compile Include="IDocumentStoreRepository.cs" />
     <Compile Include="OAuthProfileDataAccess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

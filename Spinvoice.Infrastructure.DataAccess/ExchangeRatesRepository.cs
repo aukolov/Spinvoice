@@ -1,6 +1,7 @@
 ﻿using System;
+using Spinvoice.Domain.Exchange;
 
-namespace Spinvoice.Domain.Exchange
+namespace Spinvoice.Infrastructure.DataAccess
 {
     public class ExchangeRatesRepository : IExchangeRatesRepository
     {

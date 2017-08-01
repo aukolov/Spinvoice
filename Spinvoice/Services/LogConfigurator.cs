@@ -4,7 +4,7 @@ using NLog.Targets;
 
 namespace Spinvoice.Services
 {
-    public class LogConfigurator
+    public class LogConfigurator : ILogConfigurator
     {
         public void Configure()
         {

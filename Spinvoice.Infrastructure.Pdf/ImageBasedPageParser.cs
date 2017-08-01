@@ -8,7 +8,7 @@ using Tesseract;
 
 namespace Spinvoice.Infrastructure.Pdf
 {
-    internal class ImageBasedPageParser : IPageParser
+    internal class ImageBasedPageParser : IImageBasedPageParser
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 

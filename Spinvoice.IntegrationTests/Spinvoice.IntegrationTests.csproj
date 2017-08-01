@@ -144,6 +144,10 @@
       <Project>{1F2ABFF6-B597-4366-A02B-000346436312}</Project>
       <Name>Spinvoice.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Spinvoice.Infrastructure.DataAccess\Spinvoice.Infrastructure.DataAccess.csproj">
+      <Project>{E0C1E49D-CE0C-434C-A13E-BFB509CEC2B5}</Project>
+      <Name>Spinvoice.Infrastructure.DataAccess</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Spinvoice.Infrastructure.Pdf\Spinvoice.Infrastructure.Pdf.csproj">
       <Project>{EE6686CA-55A6-4DA8-A707-3B6C230AEC58}</Project>
       <Name>Spinvoice.Infrastructure.Pdf</Name>

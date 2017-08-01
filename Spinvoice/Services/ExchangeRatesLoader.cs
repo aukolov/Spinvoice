@@ -9,7 +9,7 @@ using Spinvoice.Domain.Exchange;
 
 namespace Spinvoice.Services
 {
-    public class ExchangeRatesLoader
+    public class ExchangeRatesLoader : IExchangeRatesLoader
     {
         private readonly IExchangeRateDataAccess _exchangeRateDataAccess;
         private readonly XNamespace _ns = "http://www.ecb.int/vocabulary/2002-08-01/eurofxref";
@@ -49,7 +49,6 @@ namespace Spinvoice.Services
             }
 
             _exchangeRateDataAccess.AddOrUpdate(rates);
-
         }
     }
 }

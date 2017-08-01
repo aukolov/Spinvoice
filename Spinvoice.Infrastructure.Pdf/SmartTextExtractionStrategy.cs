@@ -6,7 +6,7 @@ using Spinvoice.Domain.Pdf;
 
 namespace Spinvoice.Infrastructure.Pdf
 {
-    public class SmartTextExtractionStrategy : ITextExtractionStrategy
+    public class SmartTextExtractionStrategy : ISmartTextExtractionStrategy
     {
         private const double SlashZeroThreshold = 0.2;
 

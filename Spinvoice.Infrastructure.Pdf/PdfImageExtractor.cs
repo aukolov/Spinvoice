@@ -6,7 +6,7 @@ using Image = System.Drawing.Image;
 
 namespace Spinvoice.Infrastructure.Pdf
 {
-    public class PdfImageExtractor
+    public class PdfImageExtractor : IPdfImageExtractor
     {
         public Image ExtractImagesFromPdf(PdfReader reader, int pageNumber)
         {

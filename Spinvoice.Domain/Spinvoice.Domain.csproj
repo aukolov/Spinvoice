@@ -79,12 +79,10 @@
     <Compile Include="App\IAppMetadataDataAccess.cs" />
     <Compile Include="App\IAppMetadataRepository.cs" />
     <Compile Include="Company\Company.cs" />
-    <Compile Include="Company\CompanyRepository.cs" />
     <Compile Include="Company\IBaseDataAccess.cs" />
     <Compile Include="Company\ICompanyDataAccess.cs" />
     <Compile Include="Company\ICompanyRepository.cs" />
     <Compile Include="Company\PdfInvoiceModel.cs" />
-    <Compile Include="Exchange\ExchangeRatesRepository.cs" />
     <Compile Include="Exchange\IExchangeRateDataAccess.cs" />
     <Compile Include="Exchange\IExchangeRatesRepository.cs" />
     <Compile Include="Exchange\Rate.cs" />

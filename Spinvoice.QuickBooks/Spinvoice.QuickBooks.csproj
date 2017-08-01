@@ -110,7 +110,9 @@
     <Compile Include="Account\ExternalAccount.cs" />
     <Compile Include="Account\ExternalAccountRepository.cs" />
     <Compile Include="Account\IExternalAccountRepository.cs" />
+    <Compile Include="AutofacModule.cs" />
     <Compile Include="Connection\ExternalConnection.cs" />
+    <Compile Include="Connection\IExternalConnection.cs" />
     <Compile Include="Connection\OAuthParams.cs" />
     <Compile Include="Company\ExternalCompany.cs" />
     <Compile Include="Company\ExternalCompanyRepository.cs" />

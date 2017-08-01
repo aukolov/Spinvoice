@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Spinvoice.Domain.Company;
 using Spinvoice.Utils;
 
-namespace Spinvoice.Domain.Company
+namespace Spinvoice.Infrastructure.DataAccess
 {
     public class CompanyRepository : ICompanyRepository
     {

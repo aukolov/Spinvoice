@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.IO;
 using System.Threading;
-using Spinvoice.Domain.Company;
 using Spinvoice.Domain.InvoiceProcessing;
 using Spinvoice.Infrastructure.DataAccess;
 using Spinvoice.Infrastructure.Pdf;
