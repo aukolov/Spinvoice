@@ -40,6 +40,7 @@ namespace Spinvoice.ViewModels
             IPdfParser pdfParser,
             WindowManager windowManager,
             IExternalConnectionWatcher externalConnectionWatcher,
+            Func<IClipboardService> clipboardServiceFactory,
             Func<PdfModel, IInvoiceListViewModel> invoiceListViewModelFactory,
             Func<IExchangeRatesViewModel> exchangeRatesViewModelFactory,
             Func<IQuickBooksConnectViewModel> quickBooksConnectViewModelFactory,
@@ -51,7 +52,7 @@ namespace Spinvoice.ViewModels
             ProjectBrowserViewModel.SelectedFileChanged += OnCurrentFileChanged;
             Dispatcher.CurrentDispatcher.InvokeAsync(() =>
                 {
-                    _clipboardService = new ClipboardService();
+                    _clipboardService = clipboardServiceFactory();
                     OnCurrentFileChanged();
                 },
                 DispatcherPriority.Loaded);
