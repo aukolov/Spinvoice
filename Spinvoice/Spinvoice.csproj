@@ -29,8 +29,8 @@
     <InstallUrl>https://raw.githubusercontent.com/aukolov/Spinvoice/master/Spinvoice/publish/</InstallUrl>
     <UpdateUrl>https://raw.githubusercontent.com/aukolov/Spinvoice/master/Spinvoice/publish/</UpdateUrl>
     <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>43</ApplicationRevision>
-    <ApplicationVersion>1.2.0.%2a</ApplicationVersion>
+    <ApplicationRevision>45</ApplicationRevision>
+    <ApplicationVersion>1.2.1.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -314,6 +314,33 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Content Include="..\spinvoice.infrastructure.pdf\tessdata\eng.cube.bigrams">
+      <Link>tessdata\eng.cube.bigrams</Link>
+    </Content>
+    <Content Include="..\spinvoice.infrastructure.pdf\tessdata\eng.cube.fold">
+      <Link>tessdata\eng.cube.fold</Link>
+    </Content>
+    <Content Include="..\spinvoice.infrastructure.pdf\tessdata\eng.cube.lm">
+      <Link>tessdata\eng.cube.lm</Link>
+    </Content>
+    <Content Include="..\spinvoice.infrastructure.pdf\tessdata\eng.cube.nn">
+      <Link>tessdata\eng.cube.nn</Link>
+    </Content>
+    <Content Include="..\spinvoice.infrastructure.pdf\tessdata\eng.cube.params">
+      <Link>tessdata\eng.cube.params</Link>
+    </Content>
+    <Content Include="..\spinvoice.infrastructure.pdf\tessdata\eng.cube.size">
+      <Link>tessdata\eng.cube.size</Link>
+    </Content>
+    <Content Include="..\spinvoice.infrastructure.pdf\tessdata\eng.cube.word-freq">
+      <Link>tessdata\eng.cube.word-freq</Link>
+    </Content>
+    <Content Include="..\spinvoice.infrastructure.pdf\tessdata\eng.tesseract_cube.nn">
+      <Link>tessdata\eng.tesseract_cube.nn</Link>
+    </Content>
+    <Content Include="..\spinvoice.infrastructure.pdf\tessdata\eng.traineddata">
+      <Link>tessdata\eng.traineddata</Link>
+    </Content>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -362,6 +389,20 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Spinvoice.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\spinvoice.infrastructure.pdf\x64\liblept172.dll">
+      <Link>x64\liblept172.dll</Link>
+    </Content>
+    <Content Include="..\spinvoice.infrastructure.pdf\x64\libtesseract304.dll">
+      <Link>x64\libtesseract304.dll</Link>
+    </Content>
+    <Content Include="..\spinvoice.infrastructure.pdf\x86\liblept172.dll">
+      <Link>x86\liblept172.dll</Link>
+    </Content>
+    <Content Include="..\spinvoice.infrastructure.pdf\x86\libtesseract304.dll">
+      <Link>x86\libtesseract304.dll</Link>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
