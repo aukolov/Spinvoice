@@ -190,6 +190,7 @@
     <Compile Include="Views\Converters\NonEmptyStringToCollapsedConverter.cs" />
     <Compile Include="Views\Converters\NullOrEmptyStringToCollapsedConverter.cs" />
     <Compile Include="Views\Converters\NullToCollapsedConverter.cs" />
+    <Compile Include="Views\Converters\TrueToCollapsedFalseToVisibleConverter.cs" />
     <Compile Include="Views\Converters\TrueToVisibleFalseToCollapsedConverter.cs" />
     <Compile Include="Views\Exchange\CheckExchangeRatesView.xaml.cs">
       <DependentUpon>CheckExchangeRatesView.xaml</DependentUpon>

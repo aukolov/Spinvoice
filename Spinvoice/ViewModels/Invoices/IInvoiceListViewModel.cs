@@ -9,7 +9,9 @@ namespace Spinvoice.ViewModels.Invoices
         PdfXrayViewModel PdfXrayViewModel { get; }
         RelayCommand AddInvoiceViewModelCommand { get; }
         ObservableCollection<InvoiceViewModel> InvoiceViewModels { get; }
+        bool IsLoaded { get; set; }
         void Subscribe();
         void Unsubscribe();
+        void Init();
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Spinvoice.Annotations;
 using Spinvoice.Domain.Pdf;
 using Spinvoice.Utils;
@@ -13,42 +14,73 @@ namespace Spinvoice.ViewModels.Invoices
     {
         private readonly IPdfParser _pdfParser;
 
+        private readonly string _filePath;
         private readonly Func<PdfModel, PdfXrayViewModel, InvoiceViewModel> _invoiceViewModelFactory;
         private InvoiceViewModel _lastActive;
+        private PdfXrayViewModel _pdfXrayViewModel;
+        private bool _isLoaded;
 
         public InvoiceListViewModel(
             string filePath,
             IPdfParser pdfParser,
             Func<PdfModel, PdfXrayViewModel, InvoiceViewModel> invoiceViewModelFactory)
         {
+            _filePath = filePath;
             _invoiceViewModelFactory = invoiceViewModelFactory;
             _pdfParser = pdfParser;
 
             InvoiceViewModels = new ObservableCollection<InvoiceViewModel>();
-            CreatePdfModel(filePath);
             AddInvoiceViewModelCommand = new RelayCommand(
                 () => AddInvoiceViewModel(null, PdfXrayViewModel));
         }
 
-        public PdfXrayViewModel PdfXrayViewModel { get; private set; }
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public PdfXrayViewModel PdfXrayViewModel
+        {
+            get { return _pdfXrayViewModel; }
+            private set
+            {
+                if (value == _pdfXrayViewModel) return;
+                _pdfXrayViewModel = value;
+                OnPropertyChanged();
+            }
+        }
+
         public RelayCommand AddInvoiceViewModelCommand { get; }
         public ObservableCollection<InvoiceViewModel> InvoiceViewModels { get; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void CreatePdfModel(string filePath)
+        public bool IsLoaded
         {
-            var pdfModel = _pdfParser.IsPdf(filePath)
-                ? _pdfParser.Parse(filePath)
-                : null;
-            OnPdfModelCreated(pdfModel);
+            get { return _isLoaded; }
+            set
+            {
+                if (_isLoaded == value) return;
+                _isLoaded = value;
+                OnPropertyChanged();
+            }
         }
 
-        private void OnPdfModelCreated(PdfModel pdfModel)
+        public void Init()
         {
+            CreatePdfModelAsync();
+        }
+
+        private async void CreatePdfModelAsync()
+        {
+            PdfModel pdfModel;
+            if (_pdfParser.IsPdf(_filePath))
+            {
+                pdfModel = await Task.Factory.StartNew(() => _pdfParser.Parse(_filePath));
+            }
+            else
+            {
+                pdfModel = null;
+            }
+
             PdfXrayViewModel = pdfModel != null ? new PdfXrayViewModel(pdfModel) : null;
             AddInvoiceViewModel(pdfModel, PdfXrayViewModel);
-
+            IsLoaded = true;
         }
 
         private void AddInvoiceViewModel(PdfModel pdfModel, PdfXrayViewModel pdfXrayViewModel)

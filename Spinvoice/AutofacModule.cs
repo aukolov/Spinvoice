@@ -14,7 +14,8 @@ namespace Spinvoice
             builder.RegisterAssemblyTypes(assembly)
                 .Where(t => t.Name.EndsWith("ViewModel"))
                 .AsImplementedInterfaces().AsSelf()
-                .SingleInstance();
+                .InstancePerDependency()
+                .ExternallyOwned();
 
             builder.RegisterType<ClipboardService>().AsImplementedInterfaces().AsSelf().SingleInstance();
             builder.RegisterType<ExchangeRatesLoader>().AsImplementedInterfaces().AsSelf().SingleInstance();

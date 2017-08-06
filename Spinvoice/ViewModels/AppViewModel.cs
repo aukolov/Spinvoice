@@ -98,13 +98,17 @@ namespace Spinvoice.ViewModels
 
             var filePath = ProjectBrowserViewModel.SelectedFilePath;
             if (string.IsNullOrEmpty(filePath))
+            {
+                InvoiceListViewModel = null;
                 return;
+            }
 
             IInvoiceListViewModel invoiceListViewModel;
             if (!_invoiceListViewModels.TryGetValue(filePath, out invoiceListViewModel))
             {
                 invoiceListViewModel = _invoiceListViewModelFactory(filePath);
                 _invoiceListViewModels[filePath] = invoiceListViewModel;
+                invoiceListViewModel.Init();
             }
             InvoiceListViewModel = invoiceListViewModel;
         }
