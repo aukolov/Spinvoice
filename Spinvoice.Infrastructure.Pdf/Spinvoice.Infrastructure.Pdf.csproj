@@ -65,6 +65,7 @@
     <Compile Include="IPageParser.cs" />
     <Compile Include="IPdfImageExtractor.cs" />
     <Compile Include="ISmartTextExtractionStrategy.cs" />
+    <Compile Include="ITesseractDataPathProvider.cs" />
     <Compile Include="ITextBasedPageParser.cs" />
     <Compile Include="PdfImageExtractor.cs" />
     <Compile Include="PdfParser.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="BricksToSentensesTranslator.cs" />
     <Compile Include="SentenceModelBuilder.cs" />
     <Compile Include="SmartTextExtractionStrategy.cs" />
+    <Compile Include="TesseractDataPathProvider.cs" />
     <Compile Include="TextBasedPageParser.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -6,7 +6,7 @@ namespace Spinvoice.IntegrationTests
 {
     public static class TestInputProvider
     {
-        private const string testResourcesPath = @"C:\Projects\my\Spinvoice.TestResources\";
+        private const string TestResourcesPath = @"C:\Projects\my\Spinvoice.TestResources\";
 
         private static string GetPath(string testCasePath, string fileName = "")
         {
@@ -27,7 +27,7 @@ namespace Spinvoice.IntegrationTests
 
         public static object[] GetTestData(string testClassName)
         {
-            var data = Directory.GetDirectories(Path.Combine(testResourcesPath, testClassName))
+            var data = Directory.GetDirectories(Path.Combine(TestResourcesPath, testClassName))
                 .Select(s => new object[] { s })
                 .Cast<object>()
                 .ToArray();
@@ -36,7 +36,7 @@ namespace Spinvoice.IntegrationTests
 
         public static string GetTestPath(string testClassName, string testName, string fileName)
         {
-            return Path.Combine(testResourcesPath, testClassName, testName, fileName);
+            return Path.Combine(TestResourcesPath, testClassName, testName, fileName);
         }
     }
 }

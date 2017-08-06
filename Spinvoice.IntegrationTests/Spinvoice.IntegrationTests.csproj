@@ -123,8 +123,10 @@
     <Compile Include="FindInvoicePositionHeadersTests.cs" />
     <Compile Include="JsonUtils.cs" />
     <Compile Include="Mocks\CompanyDataAccessMock.cs" />
+    <Compile Include="Mocks\TesseractDataPathProvider.cs" />
     <Compile Include="ParsedInvoice.cs" />
     <Compile Include="AnalyzeInvoiceTests.cs" />
+    <Compile Include="Pdf\PdfParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuickBooks\ExternalCompanyServiceTests.cs" />
     <Compile Include="QuickBooks\ExternalExchangeRateIntegrationTests.cs" />
@@ -132,6 +134,7 @@
     <Compile Include="QuickBooks\ExternalItemServiceTests.cs" />
     <Compile Include="QuickBooks\SandboxAccountChartProvider.cs" />
     <Compile Include="QuickBooks\Secret.cs" />
+    <Compile Include="TestContainer.cs" />
     <Compile Include="TestInput.cs" />
     <Compile Include="TestInputProvider.cs" />
   </ItemGroup>

@@ -11,6 +11,7 @@ namespace Spinvoice.Infrastructure.Pdf
             builder.RegisterType<ImageBasedPageParser>().AsImplementedInterfaces().AsSelf().InstancePerDependency();
             builder.RegisterType<TextBasedPageParser>().AsImplementedInterfaces().AsSelf().InstancePerDependency();
             builder.RegisterType<PdfParser>().AsImplementedInterfaces().AsSelf().InstancePerDependency();
+            builder.RegisterType<TesseractDataPathProvider>().AsImplementedInterfaces().AsSelf().SingleInstance();
         }
     }
 }
