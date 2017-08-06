@@ -11,25 +11,45 @@ namespace Spinvoice.ViewModels.Invoices
 {
     public class InvoiceListViewModel : IInvoiceListViewModel
     {
+        private readonly IPdfParser _pdfParser;
+
         private readonly Func<PdfModel, PdfXrayViewModel, InvoiceViewModel> _invoiceViewModelFactory;
         private InvoiceViewModel _lastActive;
 
         public InvoiceListViewModel(
-            PdfModel pdfModel,
+            string filePath,
+            IPdfParser pdfParser,
             Func<PdfModel, PdfXrayViewModel, InvoiceViewModel> invoiceViewModelFactory)
         {
             _invoiceViewModelFactory = invoiceViewModelFactory;
+            _pdfParser = pdfParser;
+
             InvoiceViewModels = new ObservableCollection<InvoiceViewModel>();
-            PdfXrayViewModel = pdfModel != null ? new PdfXrayViewModel(pdfModel) : null;
-            AddInvoiceViewModel(pdfModel, PdfXrayViewModel);
-            AddInvoiceViewModelCommand = new RelayCommand(() => AddInvoiceViewModel(null, PdfXrayViewModel));
+            CreatePdfModel(filePath);
+            AddInvoiceViewModelCommand = new RelayCommand(
+                () => AddInvoiceViewModel(null, PdfXrayViewModel));
         }
 
-        public PdfXrayViewModel PdfXrayViewModel { get; }
+        public PdfXrayViewModel PdfXrayViewModel { get; private set; }
         public RelayCommand AddInvoiceViewModelCommand { get; }
         public ObservableCollection<InvoiceViewModel> InvoiceViewModels { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        private void CreatePdfModel(string filePath)
+        {
+            var pdfModel = _pdfParser.IsPdf(filePath)
+                ? _pdfParser.Parse(filePath)
+                : null;
+            OnPdfModelCreated(pdfModel);
+        }
+
+        private void OnPdfModelCreated(PdfModel pdfModel)
+        {
+            PdfXrayViewModel = pdfModel != null ? new PdfXrayViewModel(pdfModel) : null;
+            AddInvoiceViewModel(pdfModel, PdfXrayViewModel);
+
+        }
 
         private void AddInvoiceViewModel(PdfModel pdfModel, PdfXrayViewModel pdfXrayViewModel)
         {

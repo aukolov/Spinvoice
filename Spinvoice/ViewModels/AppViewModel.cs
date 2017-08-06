@@ -6,7 +6,6 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using Spinvoice.Domain.App;
 using Spinvoice.Domain.ExternalBook;
-using Spinvoice.Domain.Pdf;
 using Spinvoice.Properties;
 using Spinvoice.QuickBooks.ViewModels;
 using Spinvoice.Services;
@@ -24,12 +23,11 @@ namespace Spinvoice.ViewModels
         private readonly Dictionary<string, IInvoiceListViewModel> _invoiceListViewModels =
             new Dictionary<string, IInvoiceListViewModel>();
 
-        private readonly IPdfParser _pdfParser;
         private IClipboardService _clipboardService;
         private IInvoiceListViewModel _invoiceListViewModel;
         private readonly IExternalConnectionWatcher _externalConnectionWatcher;
 
-        private readonly Func<PdfModel, IInvoiceListViewModel> _invoiceListViewModelFactory;
+        private readonly Func<string, IInvoiceListViewModel> _invoiceListViewModelFactory;
         private readonly Func<IExchangeRatesViewModel> _exchangeRatesViewModelFactory;
         private readonly Func<IQuickBooksConnectViewModel> _quickBooksConnectViewModelFactory;
         private readonly Func<IAccountsChartViewModel> _accountsChartViewModelFactory;
@@ -37,17 +35,14 @@ namespace Spinvoice.ViewModels
         public AppViewModel(
             IAppMetadataRepository appMetadataRepository,
             IFileService fileService,
-            IPdfParser pdfParser,
             WindowManager windowManager,
             IExternalConnectionWatcher externalConnectionWatcher,
             Func<IClipboardService> clipboardServiceFactory,
-            Func<PdfModel, IInvoiceListViewModel> invoiceListViewModelFactory,
+            Func<string, IInvoiceListViewModel> invoiceListViewModelFactory,
             Func<IExchangeRatesViewModel> exchangeRatesViewModelFactory,
             Func<IQuickBooksConnectViewModel> quickBooksConnectViewModelFactory,
             Func<IAccountsChartViewModel> accountsChartViewModelFactory)
         {
-            _pdfParser = pdfParser;
-
             ProjectBrowserViewModel = new ProjectBrowserViewModel(fileService, appMetadataRepository);
             ProjectBrowserViewModel.SelectedFileChanged += OnCurrentFileChanged;
             Dispatcher.CurrentDispatcher.InvokeAsync(() =>
@@ -108,10 +103,7 @@ namespace Spinvoice.ViewModels
             IInvoiceListViewModel invoiceListViewModel;
             if (!_invoiceListViewModels.TryGetValue(filePath, out invoiceListViewModel))
             {
-                var pdfModel = _pdfParser.IsPdf(filePath)
-                    ? _pdfParser.Parse(filePath)
-                    : null;
-                invoiceListViewModel = _invoiceListViewModelFactory(pdfModel);
+                invoiceListViewModel = _invoiceListViewModelFactory(filePath);
                 _invoiceListViewModels[filePath] = invoiceListViewModel;
             }
             InvoiceListViewModel = invoiceListViewModel;
