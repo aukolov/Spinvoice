@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using System.Windows.Threading;
-using Spinvoice.Domain.App;
 using Spinvoice.Domain.ExternalBook;
 using Spinvoice.Properties;
 using Spinvoice.QuickBooks.ViewModels;
@@ -33,8 +32,7 @@ namespace Spinvoice.ViewModels
         private readonly Func<IAccountsChartViewModel> _accountsChartViewModelFactory;
 
         public AppViewModel(
-            IAppMetadataRepository appMetadataRepository,
-            IFileService fileService,
+            IProjectBrowserViewModel projectBrowserViewModel,
             WindowManager windowManager,
             IExternalConnectionWatcher externalConnectionWatcher,
             Func<IClipboardService> clipboardServiceFactory,
@@ -43,12 +41,12 @@ namespace Spinvoice.ViewModels
             Func<IQuickBooksConnectViewModel> quickBooksConnectViewModelFactory,
             Func<IAccountsChartViewModel> accountsChartViewModelFactory)
         {
-            ProjectBrowserViewModel = new ProjectBrowserViewModel(fileService, appMetadataRepository);
-            ProjectBrowserViewModel.SelectedFileChanged += OnCurrentFileChanged;
+            ProjectBrowserViewModel = projectBrowserViewModel;
             Dispatcher.CurrentDispatcher.InvokeAsync(() =>
                 {
                     _clipboardService = clipboardServiceFactory();
                     OnCurrentFileChanged();
+                    ProjectBrowserViewModel.SelectedFileChanged += OnCurrentFileChanged;
                 },
                 DispatcherPriority.Loaded);
             _windowManager = windowManager;
@@ -67,7 +65,7 @@ namespace Spinvoice.ViewModels
 
         public ICommand OpenExchangeRatesCommand { get; }
         public ICommand OpenQuickBooksCommand { get; }
-        public ProjectBrowserViewModel ProjectBrowserViewModel { get; }
+        public IProjectBrowserViewModel ProjectBrowserViewModel { get; }
         public RelayCommand OpenChartOfAccountsCommand { get; }
 
         public IInvoiceListViewModel InvoiceListViewModel

@@ -175,6 +175,7 @@
     <Compile Include="ViewModels\Invoices\IInvoiceListViewModel.cs" />
     <Compile Include="ViewModels\Invoices\InvoiceEditViewModel.cs" />
     <Compile Include="ViewModels\Invoices\InvoiceListViewModel.cs" />
+    <Compile Include="ViewModels\Invoices\InvoiceProcessStatus.cs" />
     <Compile Include="ViewModels\Invoices\PdfXrayPageViewModel.cs" />
     <Compile Include="ViewModels\Invoices\PositionListViewModel.cs" />
     <Compile Include="ViewModels\Invoices\InvoiceViewModel.cs" />

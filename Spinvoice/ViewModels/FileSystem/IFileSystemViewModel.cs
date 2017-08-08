@@ -7,6 +7,5 @@ namespace Spinvoice.ViewModels.FileSystem
         string Name { get; }
         string Path { get; }
         bool IsSelected { get; set; }
-        bool IsExpanded { get; set; }
     }
 }

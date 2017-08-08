@@ -11,7 +11,7 @@ namespace Spinvoice.ViewModels
     {
         ICommand OpenExchangeRatesCommand { get; }
         ICommand OpenQuickBooksCommand { get; }
-        ProjectBrowserViewModel ProjectBrowserViewModel { get; }
+        IProjectBrowserViewModel ProjectBrowserViewModel { get; }
         RelayCommand OpenChartOfAccountsCommand { get; }
         IInvoiceListViewModel InvoiceListViewModel { get; set; }
     }

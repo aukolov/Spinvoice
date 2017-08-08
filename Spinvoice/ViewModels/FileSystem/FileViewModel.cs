@@ -34,8 +34,6 @@ namespace Spinvoice.ViewModels.FileSystem
             }
         }
 
-        public bool IsExpanded { get; set; }
-
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

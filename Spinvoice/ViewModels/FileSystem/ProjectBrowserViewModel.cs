@@ -153,7 +153,7 @@ namespace Spinvoice.ViewModels.FileSystem
             var dialog = new FolderBrowserDialog
             {
                 ShowNewFolderButton = false,
-                Description = "Select root folder with PDF documents."
+                Description = "Select root folder with invoices."
             };
             if (dialog.ShowDialog() == DialogResult.OK)
             {
