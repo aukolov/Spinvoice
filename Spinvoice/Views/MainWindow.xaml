@@ -50,7 +50,7 @@
 
             <TabControl Grid.Column="2">
                 <TabItem Header="Document">
-                    <WebBrowser views:WebBrowserUtility.BindableSource="{Binding ProjectBrowserViewModel.SelectedFilePath}" />
+                    <WebBrowser views:WebBrowserUtility.BindableSource="{Binding ProjectBrowserViewModel.SelectedFileViewModel.Path}" />
                 </TabItem>
                 <TabItem Header="X-Ray">
                     <views:PdfXrayView DataContext="{Binding InvoiceListViewModel.PdfXrayViewModel}" />

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -9,9 +10,9 @@ using Spinvoice.Utils;
 
 namespace Spinvoice.ViewModels.FileSystem
 {
-    public class DirectoryViewModel : IFileSystemViewModel
+    public class DirectoryViewModel : IDirectoryViewModel
     {
-        private static readonly HashSet<string> _supportedExtensions = new HashSet<string> { ".pdf", ".jpg", ".jpeg" };
+        private static readonly HashSet<string> SupportedExtensions = new HashSet<string> { ".pdf", ".jpg", ".jpeg" };
 
         private bool _isExpanded;
         private bool _isSelected;
@@ -19,21 +20,23 @@ namespace Spinvoice.ViewModels.FileSystem
         public DirectoryViewModel(
             string path,
             IFileService fileService,
-            ISelectedPathListener selectedPathListener)
+            ISelectedPathListener selectedPathListener,
+            Func<string, ISelectedPathListener, IDirectoryViewModel> directoryViewModelFactory,
+            Func<string, ISelectedPathListener, IFileViewModel> fileViewModelFactory)
         {
             Path = path;
             Name = System.IO.Path.GetFileName(path);
 
             Items = new ObservableCollection<IFileSystemViewModel>();
             Items.AddRange(fileService.GetSubDirectories(path)
-                .Select(s => new DirectoryViewModel(s, fileService, selectedPathListener)));
+                .Select(s => directoryViewModelFactory(s, selectedPathListener)));
             Items.AddRange(fileService.GetFiles(path)
                 .Where(s =>
                 {
                     var extension = System.IO.Path.GetExtension(s);
-                    return extension != null && _supportedExtensions.Contains(extension.ToLower());
+                    return extension != null && SupportedExtensions.Contains(extension.ToLower());
                 })
-                .Select(s => new FileViewModel(s, selectedPathListener)));
+                .Select(s => fileViewModelFactory(s, selectedPathListener)));
         }
 
         public string Name { get; }

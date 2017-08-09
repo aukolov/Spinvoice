@@ -1,8 +1,9 @@
 ﻿namespace Spinvoice.ViewModels.Invoices
 {
-    public enum InvoiceProcessStatus
+    public enum FileProcessStatus
     {
-        Pending,
+        NotScheduled,
+        Scheduled,
         InProgress,
         Done
     }

@@ -164,6 +164,8 @@
     <Compile Include="ViewModels\Exchange\CheckExchangeRatesViewModel.cs" />
     <Compile Include="ViewModels\Exchange\IExchangeRatesViewModel.cs" />
     <Compile Include="ViewModels\Exchange\LoadExchangeRatesViewModel.cs" />
+    <Compile Include="ViewModels\FileSystem\IDirectoryViewModel.cs" />
+    <Compile Include="ViewModels\FileSystem\IFileViewModel.cs" />
     <Compile Include="ViewModels\FileSystem\IProjectBrowserViewModel.cs" />
     <Compile Include="ViewModels\IAppViewModel.cs" />
     <Compile Include="ViewModels\Invoices\ActionSelectorViewModel.cs" />
@@ -175,7 +177,7 @@
     <Compile Include="ViewModels\Invoices\IInvoiceListViewModel.cs" />
     <Compile Include="ViewModels\Invoices\InvoiceEditViewModel.cs" />
     <Compile Include="ViewModels\Invoices\InvoiceListViewModel.cs" />
-    <Compile Include="ViewModels\Invoices\InvoiceProcessStatus.cs" />
+    <Compile Include="ViewModels\Invoices\FileProcessStatus.cs" />
     <Compile Include="ViewModels\Invoices\PdfXrayPageViewModel.cs" />
     <Compile Include="ViewModels\Invoices\PositionListViewModel.cs" />
     <Compile Include="ViewModels\Invoices\InvoiceViewModel.cs" />

@@ -10,6 +10,7 @@ namespace Spinvoice.ViewModels.Invoices
         RelayCommand AddInvoiceViewModelCommand { get; }
         ObservableCollection<InvoiceViewModel> InvoiceViewModels { get; }
         bool IsLoaded { get; set; }
+        FileProcessStatus FileProcessStatus { get; set; }
         void Subscribe();
         void Unsubscribe();
         void Init();

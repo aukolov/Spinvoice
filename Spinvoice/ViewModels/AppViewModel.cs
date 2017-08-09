@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -19,14 +18,11 @@ namespace Spinvoice.ViewModels
     public sealed class AppViewModel : IAppViewModel
     {
         private readonly WindowManager _windowManager;
-        private readonly Dictionary<string, IInvoiceListViewModel> _invoiceListViewModels =
-            new Dictionary<string, IInvoiceListViewModel>();
 
         private IClipboardService _clipboardService;
         private IInvoiceListViewModel _invoiceListViewModel;
         private readonly IExternalConnectionWatcher _externalConnectionWatcher;
 
-        private readonly Func<string, IInvoiceListViewModel> _invoiceListViewModelFactory;
         private readonly Func<IExchangeRatesViewModel> _exchangeRatesViewModelFactory;
         private readonly Func<IQuickBooksConnectViewModel> _quickBooksConnectViewModelFactory;
         private readonly Func<IAccountsChartViewModel> _accountsChartViewModelFactory;
@@ -36,7 +32,6 @@ namespace Spinvoice.ViewModels
             WindowManager windowManager,
             IExternalConnectionWatcher externalConnectionWatcher,
             Func<IClipboardService> clipboardServiceFactory,
-            Func<string, IInvoiceListViewModel> invoiceListViewModelFactory,
             Func<IExchangeRatesViewModel> exchangeRatesViewModelFactory,
             Func<IQuickBooksConnectViewModel> quickBooksConnectViewModelFactory,
             Func<IAccountsChartViewModel> accountsChartViewModelFactory)
@@ -56,7 +51,6 @@ namespace Spinvoice.ViewModels
                 () => _externalConnectionWatcher.IsConnected);
 
             _externalConnectionWatcher = externalConnectionWatcher;
-            _invoiceListViewModelFactory = invoiceListViewModelFactory;
             _exchangeRatesViewModelFactory = exchangeRatesViewModelFactory;
             _quickBooksConnectViewModelFactory = quickBooksConnectViewModelFactory;
             _accountsChartViewModelFactory = accountsChartViewModelFactory;
@@ -94,21 +88,8 @@ namespace Spinvoice.ViewModels
             if (_clipboardService == null)
                 return;
 
-            var filePath = ProjectBrowserViewModel.SelectedFilePath;
-            if (string.IsNullOrEmpty(filePath))
-            {
-                InvoiceListViewModel = null;
-                return;
-            }
-
-            IInvoiceListViewModel invoiceListViewModel;
-            if (!_invoiceListViewModels.TryGetValue(filePath, out invoiceListViewModel))
-            {
-                invoiceListViewModel = _invoiceListViewModelFactory(filePath);
-                _invoiceListViewModels[filePath] = invoiceListViewModel;
-                invoiceListViewModel.Init();
-            }
-            InvoiceListViewModel = invoiceListViewModel;
+            InvoiceListViewModel = ProjectBrowserViewModel.SelectedFileViewModel?.InvoiceListViewModel;
+            InvoiceListViewModel?.Init();
         }
 
         private void OpenExchangeRates()

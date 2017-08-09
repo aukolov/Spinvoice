@@ -8,8 +8,7 @@ namespace Spinvoice.ViewModels.FileSystem
     {
         event Action SelectedFileChanged;
         string ProjectDirectoryPath { get; }
-        string SelectedFilePath { get; }
         ICommand OpenCommand { get; }
-        DirectoryViewModel[] DirectoryViewModels { get; }
+        IDirectoryViewModel[] DirectoryViewModels { get; }
     }
 }

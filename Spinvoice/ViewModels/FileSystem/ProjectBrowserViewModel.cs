@@ -17,20 +17,24 @@ namespace Spinvoice.ViewModels.FileSystem
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         private string _projectDirectoryPath;
-        private DirectoryViewModel[] _directoryViewModels;
+        private IDirectoryViewModel[] _directoryViewModels;
         private readonly IFileService _fileService;
         private readonly IAppMetadataRepository _appMetadataRepository;
+        private readonly Func<string, ISelectedPathListener, IDirectoryViewModel> _directoryViewModelFactory;
+
+        private IFileViewModel _selectedFileViewModel;
         private string _selectedFilePath;
-        private string _selectedPath;
 
         public event Action SelectedFileChanged;
 
         public ProjectBrowserViewModel(
             IFileService fileService,
-            IAppMetadataRepository appMetadataRepository)
+            IAppMetadataRepository appMetadataRepository,
+            Func<string, ISelectedPathListener, IDirectoryViewModel> directoryViewModelFactory)
         {
             _fileService = fileService;
             _appMetadataRepository = appMetadataRepository;
+            _directoryViewModelFactory = directoryViewModelFactory;
             OpenCommand = new RelayCommand(OpenDirectoryCommand);
 
             RestoreState(fileService);
@@ -115,7 +119,7 @@ namespace Spinvoice.ViewModels.FileSystem
                 OnPropertyChanged();
                 DirectoryViewModels = new[]
                 {
-                    new DirectoryViewModel(_projectDirectoryPath, _fileService, this)
+                    _directoryViewModelFactory(_projectDirectoryPath, this)
                 };
             }
         }
@@ -123,28 +127,27 @@ namespace Spinvoice.ViewModels.FileSystem
         public string SelectedFilePath
         {
             get { return _selectedFilePath; }
-            private set
+            set
             {
                 if (_selectedFilePath == value) return;
                 _selectedFilePath = value;
                 OnPropertyChanged();
-                SelectedFileChanged.Raise();
             }
         }
 
-        public string SelectedPath
+        public IFileViewModel SelectedFileViewModel
         {
-            get { return _selectedPath; }
+            get { return _selectedFileViewModel; }
             set
             {
-                if (_selectedPath == value) return;
-                _selectedPath = value;
-
-                if (_fileService.FileExists(_selectedPath))
+                if (_selectedFileViewModel == value) return;
+                _selectedFileViewModel = value;
+                if (_selectedFileViewModel != null)
                 {
-                    SelectedFilePath = _selectedPath;
+                    SelectedFilePath = _selectedFileViewModel.Path;
                 }
                 OnPropertyChanged();
+                SelectedFileChanged.Raise();
             }
         }
 
@@ -163,7 +166,7 @@ namespace Spinvoice.ViewModels.FileSystem
 
         public ICommand OpenCommand { get; }
 
-        public DirectoryViewModel[] DirectoryViewModels
+        public IDirectoryViewModel[] DirectoryViewModels
         {
             get { return _directoryViewModels; }
             private set
@@ -186,7 +189,14 @@ namespace Spinvoice.ViewModels.FileSystem
             using (_appMetadataRepository.GetForUpdate(out appMetadata))
             {
                 appMetadata.LastProjectPath = ProjectDirectoryPath;
-                appMetadata.LastFilePath = SelectedFilePath;
+                if (SelectedFileViewModel != null)
+                {
+                    appMetadata.LastFilePath = SelectedFileViewModel.Path;
+                }
+                else
+                {
+                    appMetadata.LastFilePath = null;
+                }
             }
         }
     }

@@ -1,26 +1,34 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Spinvoice.Annotations;
+using Spinvoice.ViewModels.Invoices;
 
 namespace Spinvoice.ViewModels.FileSystem
 {
-    public class FileViewModel : IFileSystemViewModel
+    public class FileViewModel : IFileViewModel
     {
         private readonly ISelectedPathListener _selectedPathListener;
         private bool _isSelected;
 
-        public FileViewModel(string path, ISelectedPathListener selectedPathListener)
+        public FileViewModel(
+            string path,
+            ISelectedPathListener selectedPathListener,
+            Func<string, IInvoiceListViewModel> invoiceListViewModelFactory)
         {
             _selectedPathListener = selectedPathListener;
             Path = path;
             Name = System.IO.Path.GetFileName(path);
+
+            InvoiceListViewModel = invoiceListViewModelFactory(path);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public string Name { get; }
         public string Path { get; }
-        
+        public IInvoiceListViewModel InvoiceListViewModel { get; }
+
         public bool IsSelected
         {
             get { return _isSelected; }
@@ -29,7 +37,7 @@ namespace Spinvoice.ViewModels.FileSystem
                 if (value == _isSelected) return;
                 _isSelected = value;
                 if (_isSelected)
-                    _selectedPathListener.SelectedPath = Path;
+                    _selectedPathListener.SelectedFileViewModel = this;
                 OnPropertyChanged();
             }
         }
