@@ -42,6 +42,8 @@
       <HintPath>..\packages\MSFT.ParallelExtensionsExtras.1.2.0\lib\ParallelExtensionsExtras.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Reactive.Core, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
@@ -65,6 +67,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Windows" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -78,6 +82,28 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Spinvoice.Domain\Spinvoice.Domain.csproj">
+      <Project>{1f2abff6-b597-4366-a02b-000346436312}</Project>
+      <Name>Spinvoice.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Spinvoice.Infrastructure.DataAccess\Spinvoice.Infrastructure.DataAccess.csproj">
+      <Project>{e0c1e49d-ce0c-434c-a13e-bfb509cec2b5}</Project>
+      <Name>Spinvoice.Infrastructure.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Spinvoice.Infrastructure.Pdf\Spinvoice.Infrastructure.Pdf.csproj">
+      <Project>{ee6686ca-55a6-4da8-a707-3b6c230aec58}</Project>
+      <Name>Spinvoice.Infrastructure.Pdf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Spinvoice.QuickBooks\Spinvoice.QuickBooks.csproj">
+      <Project>{0699b9a4-aba3-4da8-a2d1-a74ef840a2d7}</Project>
+      <Name>Spinvoice.QuickBooks</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Spinvoice.Utils\Spinvoice.Utils.csproj">
+      <Project>{6c5bdcda-a72f-4eba-8270-fdbd018852f1}</Project>
+      <Name>Spinvoice.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

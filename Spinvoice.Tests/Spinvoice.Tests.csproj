@@ -77,6 +77,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Spinvoice.App\Spinvoice.App.csproj">
+      <Project>{e2691083-9cb7-4071-984b-abc52570ae0f}</Project>
+      <Name>Spinvoice.App</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Spinvoice.Infrastructure.Pdf\Spinvoice.Infrastructure.Pdf.csproj">
       <Project>{EE6686CA-55A6-4DA8-A707-3B6C230AEC58}</Project>
       <Name>Spinvoice.Infrastructure.Pdf</Name>
