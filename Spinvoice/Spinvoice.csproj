@@ -345,7 +345,7 @@
     </None>
     <AppDesigner Include="Properties\" />
     <None Include="Resources\BrowserVersion.reg" />
-    <None Include="Spinvoice.App_TemporaryKey.pfx" />
+    <None Include="Spinvoice_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
