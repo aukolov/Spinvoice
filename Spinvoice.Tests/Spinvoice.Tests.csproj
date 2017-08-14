@@ -64,7 +64,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App\Services\ExchangeRatesLoaderTests.cs" />
+    <Compile Include="Application\Services\ExchangeRatesLoaderTests.cs" />
     <Compile Include="Domain\Pdf\PageModelTests.cs" />
     <Compile Include="Domain\Utils\AmountParserTests.cs" />
     <Compile Include="Domain\Utils\TextDecoderTests.cs" />
@@ -77,9 +77,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Spinvoice.App\Spinvoice.App.csproj">
+    <ProjectReference Include="..\Spinvoice.App\Spinvoice.Application.csproj">
       <Project>{e2691083-9cb7-4071-984b-abc52570ae0f}</Project>
-      <Name>Spinvoice.App</Name>
+      <Name>Spinvoice.Application</Name>
     </ProjectReference>
     <ProjectReference Include="..\Spinvoice.Infrastructure.Pdf\Spinvoice.Infrastructure.Pdf.csproj">
       <Project>{EE6686CA-55A6-4DA8-A707-3B6C230AEC58}</Project>
@@ -107,7 +107,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="App\Services\eurofxref-hist-90d.xml" />
+    <EmbeddedResource Include="Application\Services\eurofxref-hist-90d.xml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Infrastructure\Pdf\" />

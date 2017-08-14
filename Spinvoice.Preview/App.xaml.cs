@@ -5,10 +5,7 @@ using NLog;
 
 namespace Spinvoice.Preview
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
+    public partial class App
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -21,7 +18,7 @@ namespace Spinvoice.Preview
         {
             Logger.Error((Exception)unhandledExceptionEventArgs.ExceptionObject,
                 "Unhandled exception. {0}", unhandledExceptionEventArgs.IsTerminating ? "The application will be terminated." : "");
-            MessageBox.Show(Application.Current.MainWindow,
+            MessageBox.Show(Current.MainWindow,
                 $"Something went wrong...\r\n{unhandledExceptionEventArgs.ExceptionObject}");
         }
 

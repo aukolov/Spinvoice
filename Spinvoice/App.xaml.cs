@@ -18,7 +18,7 @@ namespace Spinvoice
         {
             _logger.Error((Exception)unhandledExceptionEventArgs.ExceptionObject,
                 "Unhandled exception. {0}", unhandledExceptionEventArgs.IsTerminating ? "The application will be terminated." : "");
-            MessageBox.Show(Application.Current.MainWindow,
+            MessageBox.Show(Current.MainWindow,
                 $"Something went wrong...\r\n{unhandledExceptionEventArgs.ExceptionObject}");
         }
 

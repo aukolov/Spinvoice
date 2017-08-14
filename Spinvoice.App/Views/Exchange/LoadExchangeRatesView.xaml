@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="Spinvoice.Application.Views.Exchange.LoadExchangeRatesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:exchange="clr-namespace:Spinvoice.Application.ViewModels.Exchange"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DataContext="{d:DesignInstance Type=exchange:LoadExchangeRatesViewModel}"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+    <GroupBox Header="Load Rates" Padding="10">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0">
+                <Run>Download exchange rates in XML format from</Run>
+                <Hyperlink NavigateUri="https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html" RequestNavigate="Hyperlink_OnRequestNavigate">European Central Bank</Hyperlink>
+                <Run>.</Run>
+            </TextBlock>
+            <Button Grid.Column="1"
+                    Width="70"
+                    Margin="5,0,0,0"
+                    Command="{Binding LoadExchangeRatesCommand}"
+                    Content="Open" />
+        </Grid>
+    </GroupBox>
+</UserControl>

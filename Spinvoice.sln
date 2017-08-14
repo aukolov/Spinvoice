@@ -23,7 +23,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Preview", "Spinvo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Server", "Spinvoice.Server\Spinvoice.Server.csproj", "{BF291FF4-1B5A-41AB-AC0D-C5889AF05983}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.App", "Spinvoice.App\Spinvoice.App.csproj", "{E2691083-9CB7-4071-984B-ABC52570AE0F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Application", "Spinvoice.App\Spinvoice.Application.csproj", "{E2691083-9CB7-4071-984B-ABC52570AE0F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
