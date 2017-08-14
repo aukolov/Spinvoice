@@ -200,7 +200,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Spinvoice.App\Spinvoice.Application.csproj">
+    <ProjectReference Include="..\Spinvoice.Application\Spinvoice.Application.csproj">
       <Project>{e2691083-9cb7-4071-984b-abc52570ae0f}</Project>
       <Name>Spinvoice.Application</Name>
     </ProjectReference>
