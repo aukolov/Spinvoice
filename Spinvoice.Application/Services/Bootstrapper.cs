@@ -31,6 +31,9 @@ namespace Spinvoice.Application.Services
             var container = containerBuilder.Build();
 
             container.Resolve<ILogConfigurator>().Configure();
+            container.Resolve<IServerApplicationService>().Start();
+
+            Server.Properties.Satellite.Include();
 
             return container.Resolve<IAppViewModel>();
         }
