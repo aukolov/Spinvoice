@@ -3,11 +3,13 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using Spinvoice.Annotations;
 using Spinvoice.Domain.Pdf;
+using Spinvoice.Services;
 using Spinvoice.Utils;
 
 namespace Spinvoice.ViewModels.Invoices
@@ -15,6 +17,7 @@ namespace Spinvoice.ViewModels.Invoices
     public class InvoiceListViewModel : IInvoiceListViewModel
     {
         private readonly IPdfParser _pdfParser;
+        private readonly ITaskSchedulerProvider _taskSchedulerProvider;
 
         private readonly string _filePath;
         private readonly Func<PdfModel, PdfXrayViewModel, InvoiceViewModel> _invoiceViewModelFactory;
@@ -26,11 +29,13 @@ namespace Spinvoice.ViewModels.Invoices
         public InvoiceListViewModel(
             string filePath,
             IPdfParser pdfParser,
+            ITaskSchedulerProvider taskSchedulerProvider,
             Func<PdfModel, PdfXrayViewModel, InvoiceViewModel> invoiceViewModelFactory)
         {
             _filePath = filePath;
             _invoiceViewModelFactory = invoiceViewModelFactory;
             _pdfParser = pdfParser;
+            _taskSchedulerProvider = taskSchedulerProvider;
 
             InvoiceViewModels = new ObservableCollection<InvoiceViewModel>();
             AddInvoiceViewModelCommand = new RelayCommand(
@@ -109,7 +114,10 @@ namespace Spinvoice.ViewModels.Invoices
                     new Action(() => FileProcessStatus = FileProcessStatus.InProgress));
                 var pdfModel = _pdfParser.Parse(_filePath);
                 return pdfModel;
-            });
+            },
+            CancellationToken.None,
+            TaskCreationOptions.LongRunning,
+            _taskSchedulerProvider.PdfParseTaskScheduler);
         }
 
         private void AddInvoiceViewModel(PdfModel pdfModel, PdfXrayViewModel pdfXrayViewModel)
