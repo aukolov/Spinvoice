@@ -29,5 +29,10 @@ namespace Spinvoice.Infrastructure.DataAccess
                 return _documentStore;
             }
         }
+
+        public void Dispose()
+        {
+            _documentStore?.Dispose();
+        }
     }
 }

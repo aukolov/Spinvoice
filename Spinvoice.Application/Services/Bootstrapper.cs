@@ -3,14 +3,13 @@ using System.Globalization;
 using System.IO;
 using System.Threading;
 using Autofac;
-using Spinvoice.Application.ViewModels;
 using Spinvoice.Infrastructure.DataAccess;
 
 namespace Spinvoice.Application.Services
 {
     public static class Bootstrapper
     {
-        public static IAppViewModel Init()
+        public static IContainer Init()
         {
             Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
@@ -35,7 +34,7 @@ namespace Spinvoice.Application.Services
 
             Server.Properties.Satellite.Include();
 
-            return container.Resolve<IAppViewModel>();
+            return container;
         }
     }
 }
