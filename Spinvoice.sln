@@ -24,6 +24,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Server", "Spinvoice.Server\Spinvoice.Server.csproj", "{BF291FF4-1B5A-41AB-AC0D-C5889AF05983}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Application", "Spinvoice.Application\Spinvoice.Application.csproj", "{E2691083-9CB7-4071-984B-ABC52570AE0F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8AB4F1C2-C8C4-493D-A5F7-F7BC4FC307EA} = {8AB4F1C2-C8C4-493D-A5F7-F7BC4FC307EA}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{B46B412F-D9C6-45AC-AED1-84BD7FE69527}"
 EndProject

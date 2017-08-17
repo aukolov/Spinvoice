@@ -23,7 +23,7 @@ namespace Spinvoice.Application
             builder.RegisterType<LogConfigurator>().AsImplementedInterfaces().AsSelf().SingleInstance();
             builder.RegisterType<WindowManager>().AsImplementedInterfaces().AsSelf().SingleInstance();
             builder.RegisterType<TaskSchedulerProvider>().AsImplementedInterfaces().SingleInstance();
-            builder.RegisterType<ServerApplicationService>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<ServerManager>().AsImplementedInterfaces().SingleInstance();
         }
     }
 }

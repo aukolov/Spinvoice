@@ -2,7 +2,7 @@
 
 namespace Spinvoice.Application.Services
 {
-    public interface IServerApplicationService : IDisposable
+    public interface IServerManager : IDisposable
     {
         void Start();
     }

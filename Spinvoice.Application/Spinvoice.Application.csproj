@@ -66,6 +66,8 @@
       <HintPath>..\packages\System.Reactive.Windows.Threading.3.1.1\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
@@ -81,6 +83,11 @@
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="AutofacModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service References\ServerReference\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Services\Bootstrapper.cs" />
     <Compile Include="Services\ClipboardService.cs" />
     <Compile Include="Services\ExchangeRatesLoader.cs" />
@@ -89,14 +96,15 @@
     <Compile Include="Services\Format.cs" />
     <Compile Include="Services\IClipboardService.cs" />
     <Compile Include="Services\IExchangeRatesLoader.cs" />
+    <Compile Include="Services\IFileParseServiceProxy.cs" />
     <Compile Include="Services\IFileService.cs" />
     <Compile Include="Services\ILogConfigurator.cs" />
     <Compile Include="Services\InvoiceFormatter.cs" />
-    <Compile Include="Services\IServerApplicationService.cs" />
+    <Compile Include="Services\IServerManager.cs" />
     <Compile Include="Services\ITaskSchedulerProvider.cs" />
     <Compile Include="Services\LogConfigurator.cs" />
-    <Compile Include="Services\PdfParseService.cs" />
-    <Compile Include="Services\ServerApplicationService.cs" />
+    <Compile Include="Services\FileParseServiceProxy.cs" />
+    <Compile Include="Services\ServerManager.cs" />
     <Compile Include="Services\TaskSchedulerProvider.cs" />
     <Compile Include="Services\WindowManager.cs" />
     <Compile Include="ViewModels\AppViewModel.cs" />
@@ -182,6 +190,13 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Service References\ServerReference\service.wsdl" />
+    <None Include="Service References\ServerReference\service.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServerReference\service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Spinvoice.Domain\Spinvoice.Domain.csproj">
@@ -277,6 +292,21 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\ServerReference\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ServerReference\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ServerReference\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ServerReference\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
