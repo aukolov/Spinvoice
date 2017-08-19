@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
-namespace Spinvoice.Domain.Pdf
+namespace Spinvoice.Common.Domain.Pdf
 {
     public class PdfModel
     {

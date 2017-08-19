@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 using Spinvoice.Application.Services;
+using Spinvoice.Common.Domain.Pdf;
 using Spinvoice.Domain.Pdf;
 using Spinvoice.Utils;
 

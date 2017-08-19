@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Spinvoice.Domain.Pdf
+namespace Spinvoice.Domain.InvoiceProcessing.Strategies
 {
     internal static class TextUtils
     {

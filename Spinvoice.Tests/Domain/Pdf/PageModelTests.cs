@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using Spinvoice.Common.Domain.Pdf;
 using Spinvoice.Domain.Pdf;
 
 namespace Spinvoice.Tests.Domain.Pdf

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using iTextSharp.text.pdf;
 using NLog;
+using Spinvoice.Common.Domain.Pdf;
 using Spinvoice.Domain.Pdf;
 using Tesseract;
 

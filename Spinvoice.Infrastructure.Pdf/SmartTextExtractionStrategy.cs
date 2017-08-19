@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using iTextSharp.text.pdf.parser;
+using Spinvoice.Common.Domain.Pdf;
 using Spinvoice.Domain.Pdf;
 
 namespace Spinvoice.Infrastructure.Pdf

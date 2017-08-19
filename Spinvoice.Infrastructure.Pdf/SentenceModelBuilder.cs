@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using Spinvoice.Common.Domain.Pdf;
 using Spinvoice.Domain.Pdf;
 
 namespace Spinvoice.Infrastructure.Pdf

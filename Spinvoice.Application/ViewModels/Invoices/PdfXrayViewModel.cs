@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Spinvoice.Common.Domain.Pdf;
 using Spinvoice.Domain.Pdf;
 using Spinvoice.Utils;
 

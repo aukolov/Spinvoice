@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Spinvoice.Domain.Pdf
+namespace Spinvoice.Common.Domain.Pdf
 {
     public class BlockModel
     {

@@ -9,6 +9,7 @@ using System.Windows;
 using NLog;
 using Spinvoice.Application.Services;
 using Spinvoice.Application.ViewModels.QuickBooks;
+using Spinvoice.Common.Domain.Pdf;
 using Spinvoice.Domain.Accounting;
 using Spinvoice.Domain.Company;
 using Spinvoice.Domain.Exchange;

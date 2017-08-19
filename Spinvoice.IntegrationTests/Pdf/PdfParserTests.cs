@@ -1,6 +1,7 @@
 ﻿using System;
 using Autofac;
 using NUnit.Framework;
+using Spinvoice.Common.Domain.Pdf;
 using Spinvoice.Domain.Pdf;
 
 namespace Spinvoice.IntegrationTests.Pdf

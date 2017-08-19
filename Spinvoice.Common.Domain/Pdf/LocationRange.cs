@@ -1,4 +1,4 @@
-﻿namespace Spinvoice.Domain.Pdf
+﻿namespace Spinvoice.Common.Domain.Pdf
 {
     public class LocationRange
     {
@@ -8,7 +8,7 @@
             End = end;
         }
 
-        public Location Start { get; private set; }
-        public Location End { get; private set; }
+        public Location Start { get; }
+        public Location End { get; }
     }
 }

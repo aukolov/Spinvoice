@@ -40,11 +40,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Pdf\BlockModel.cs" />
+    <Compile Include="Pdf\IPdfParser.cs" />
+    <Compile Include="Pdf\Location.cs" />
+    <Compile Include="Pdf\LocationRange.cs" />
+    <Compile Include="Pdf\PageModel.cs" />
+    <Compile Include="Pdf\PdfModel.cs" />
+    <Compile Include="Pdf\SentenceModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="NewFolder1\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,6 +1,7 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Input;
 using Spinvoice.Application.ViewModels.Invoices;
+using Spinvoice.Common.Domain.Pdf;
 using Spinvoice.Domain.Pdf;
 
 namespace Spinvoice.Application.Views

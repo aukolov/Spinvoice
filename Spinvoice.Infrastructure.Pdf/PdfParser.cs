@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using iTextSharp.text.pdf;
+using Spinvoice.Common.Domain.Pdf;
 using Spinvoice.Domain.Pdf;
 // ReSharper disable SuggestBaseTypeForParameter
 

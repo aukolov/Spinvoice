@@ -1,6 +1,8 @@
 ﻿// ReSharper disable CheckNamespace
 
 using NLog;
+using Spinvoice.Common.Domain.Pdf;
+using Spinvoice.Domain.InvoiceProcessing.Strategies;
 
 namespace Spinvoice.Domain.Pdf
 {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Spinvoice.Domain.Pdf
+namespace Spinvoice.Common.Domain.Pdf
 {
     public class PageModel
     {
