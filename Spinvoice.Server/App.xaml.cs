@@ -1,17 +1,39 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ServiceModel;
 using System.Windows;
+using Spinvoice.Server.Services;
 
 namespace Spinvoice.Server
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
+    public partial class App
     {
+        private readonly ServiceHost _serviceHost;
+
+        public App()
+        {
+            Exit += OnExit;
+
+
+            try
+            {
+                _serviceHost = new ServiceHost(typeof(FileParseService));
+                _serviceHost.AddServiceEndpoint(
+                    typeof(IFileParseService), 
+                    new NetNamedPipeBinding(),
+                    "net.pipe://localhost/Spinvoice.Server.Services/FileParseService");
+                _serviceHost.Open();
+            }
+            catch (Exception e)
+            {
+                _serviceHost?.Abort();
+                MessageBox.Show($"Unable to start service: {e.Message}");
+            }
+        }
+
+        private void OnExit(object sender, ExitEventArgs exitEventArgs)
+        {
+            _serviceHost?.Close();
+            ((IDisposable)_serviceHost)?.Dispose();
+        }
     }
 }
