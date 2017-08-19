@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:invoices="clr-namespace:Spinvoice.Application.ViewModels.Invoices"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:pdf="clr-namespace:Spinvoice.Infrastructure.Pdf;assembly=Spinvoice.Infrastructure.Pdf"
+             xmlns:pdf="clr-namespace:Spinvoice.Common.Domain.Pdf;assembly=Spinvoice.Common.Domain"
              d:DataContext="{d:DesignInstance Type=invoices:PdfXrayPageViewModel}"
              d:DesignHeight="300"
              d:DesignWidth="300"

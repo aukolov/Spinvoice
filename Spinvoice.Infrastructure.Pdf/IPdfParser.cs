@@ -1,4 +1,6 @@
-﻿namespace Spinvoice.Common.Domain.Pdf
+﻿using Spinvoice.Common.Domain.Pdf;
+
+namespace Spinvoice.Infrastructure.Pdf
 {
     public interface IPdfParser
     {

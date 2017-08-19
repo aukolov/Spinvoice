@@ -8,14 +8,13 @@ using System.Threading.Tasks;
 using System.Windows.Threading;
 using Spinvoice.Application.Services;
 using Spinvoice.Common.Domain.Pdf;
-using Spinvoice.Domain.Pdf;
 using Spinvoice.Utils;
 
 namespace Spinvoice.Application.ViewModels.Invoices
 {
     public class InvoiceListViewModel : IInvoiceListViewModel
     {
-        private readonly IPdfParser _pdfParser;
+        private readonly IFileParseServiceProxy _fileParseServiceProxy;
         private readonly IFileService _fileService;
         private readonly ITaskSchedulerProvider _taskSchedulerProvider;
 
@@ -28,14 +27,14 @@ namespace Spinvoice.Application.ViewModels.Invoices
 
         public InvoiceListViewModel(
             string filePath,
-            IPdfParser pdfParser,
+            IFileParseServiceProxy fileParseServiceProxy,
             IFileService fileService,
             ITaskSchedulerProvider taskSchedulerProvider,
             Func<PdfModel, PdfXrayViewModel, InvoiceViewModel> invoiceViewModelFactory)
         {
             _filePath = filePath;
             _invoiceViewModelFactory = invoiceViewModelFactory;
-            _pdfParser = pdfParser;
+            _fileParseServiceProxy = fileParseServiceProxy;
             _fileService = fileService;
             _taskSchedulerProvider = taskSchedulerProvider;
 
@@ -114,7 +113,7 @@ namespace Spinvoice.Application.ViewModels.Invoices
                 System.Windows.Application.Current.Dispatcher.BeginInvoke(
                     DispatcherPriority.Background,
                     new Action(() => FileProcessStatus = FileProcessStatus.InProgress));
-                var pdfModel = _pdfParser.Parse(_filePath);
+                var pdfModel = _fileParseServiceProxy.Parse(_filePath);
                 return pdfModel;
             },
             CancellationToken.None,

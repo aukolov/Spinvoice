@@ -22,6 +22,7 @@ namespace Spinvoice.Application
             builder.RegisterType<TaskSchedulerProvider>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<ServerManager>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<ApplicationNameProvider>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<FileParseServiceProxy>().AsImplementedInterfaces().SingleInstance();
         }
     }
 }

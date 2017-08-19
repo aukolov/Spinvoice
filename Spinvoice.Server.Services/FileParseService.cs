@@ -1,4 +1,5 @@
 ﻿using Spinvoice.Common.Domain.Pdf;
+using Spinvoice.Infrastructure.Pdf;
 
 namespace Spinvoice.Server.Services
 {

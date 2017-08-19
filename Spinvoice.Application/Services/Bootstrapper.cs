@@ -18,7 +18,6 @@ namespace Spinvoice.Application.Services
             var containerBuilder = new ContainerBuilder();
             containerBuilder.RegisterModule<Common.Infrastructure.AutofacModule>();
             containerBuilder.RegisterModule<Infrastructure.DataAccess.AutofacModule>();
-            containerBuilder.RegisterModule<Infrastructure.Pdf.AutofacModule>();
             containerBuilder.RegisterModule<QuickBooks.AutofacModule>();
             containerBuilder.RegisterModule<Domain.AutofacModule>();
             containerBuilder.RegisterModule<AutofacModule>();

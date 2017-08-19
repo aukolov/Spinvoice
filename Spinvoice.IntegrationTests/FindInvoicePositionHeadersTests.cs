@@ -5,6 +5,7 @@ using Spinvoice.Common.Domain.Pdf;
 using Spinvoice.Domain.InvoiceProcessing;
 using Spinvoice.Domain.Pdf;
 using Spinvoice.Infrastructure.DataAccess;
+using Spinvoice.Infrastructure.Pdf;
 using Spinvoice.IntegrationTests.Mocks;
 
 namespace Spinvoice.IntegrationTests

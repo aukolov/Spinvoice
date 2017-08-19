@@ -58,12 +58,12 @@
     <Compile Include="ImageBasedPageParser.cs" />
     <Compile Include="IPageParser.cs" />
     <Compile Include="IPdfImageExtractor.cs" />
+    <Compile Include="IPdfParser.cs" />
     <Compile Include="ISmartTextExtractionStrategy.cs" />
     <Compile Include="ITesseractDataPathProvider.cs" />
     <Compile Include="ITextBasedPageParser.cs" />
     <Compile Include="PdfImageExtractor.cs" />
     <Compile Include="PdfParser.cs" />
-    <Compile Include="PdfPageSize.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BricksToSentensesTranslator.cs" />
     <Compile Include="SentenceModelBuilder.cs" />

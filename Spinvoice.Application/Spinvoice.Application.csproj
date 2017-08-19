@@ -229,10 +229,6 @@
       <Project>{e0c1e49d-ce0c-434c-a13e-bfb509cec2b5}</Project>
       <Name>Spinvoice.Infrastructure.DataAccess</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Spinvoice.Infrastructure.Pdf\Spinvoice.Infrastructure.Pdf.csproj">
-      <Project>{ee6686ca-55a6-4da8-a707-3b6c230aec58}</Project>
-      <Name>Spinvoice.Infrastructure.Pdf</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Spinvoice.QuickBooks\Spinvoice.QuickBooks.csproj">
       <Project>{0699b9a4-aba3-4da8-a2d1-a74ef840a2d7}</Project>
       <Name>Spinvoice.QuickBooks</Name>

@@ -1,4 +1,4 @@
-﻿namespace Spinvoice.Infrastructure.Pdf
+﻿namespace Spinvoice.Common.Domain.Pdf
 {
     public class PdfPageSize
     {
