@@ -38,6 +38,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{1DCDC9
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Server.Services", "Spinvoice.Server.Services\Spinvoice.Server.Services.csproj", "{8AB4F1C2-C8C4-493D-A5F7-F7BC4FC307EA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Common.Domain", "Spinvoice.Common.Domain\Spinvoice.Common.Domain.csproj", "{6498B4D4-8D2A-4D47-AF0B-C8345D518531}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -92,6 +94,10 @@ Global
 		{8AB4F1C2-C8C4-493D-A5F7-F7BC4FC307EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8AB4F1C2-C8C4-493D-A5F7-F7BC4FC307EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8AB4F1C2-C8C4-493D-A5F7-F7BC4FC307EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6498B4D4-8D2A-4D47-AF0B-C8345D518531}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6498B4D4-8D2A-4D47-AF0B-C8345D518531}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6498B4D4-8D2A-4D47-AF0B-C8345D518531}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6498B4D4-8D2A-4D47-AF0B-C8345D518531}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -109,5 +115,6 @@ Global
 		{BF291FF4-1B5A-41AB-AC0D-C5889AF05983} = {664D2EF8-2D4C-4DE0-81FF-CA6503CE7C23}
 		{E2691083-9CB7-4071-984B-ABC52570AE0F} = {B46B412F-D9C6-45AC-AED1-84BD7FE69527}
 		{8AB4F1C2-C8C4-493D-A5F7-F7BC4FC307EA} = {664D2EF8-2D4C-4DE0-81FF-CA6503CE7C23}
+		{6498B4D4-8D2A-4D47-AF0B-C8345D518531} = {1DCDC972-9C1B-4140-A7F0-F7FE499F422F}
 	EndGlobalSection
 EndGlobal
