@@ -9,6 +9,20 @@ namespace Spinvoice.Server.Services
         [OperationContract]
         int Sum(int a, int b);
 
+        [OperationContract]
         PdfModel Parse(string filePath);
+    }
+
+    public class FileParseServiceMock : IFileParseService
+    {
+        public int Sum(int a, int b)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public PdfModel Parse(string filePath)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

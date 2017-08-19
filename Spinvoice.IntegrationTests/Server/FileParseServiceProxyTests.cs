@@ -1,5 +1,8 @@
-﻿using NUnit.Framework;
+﻿using System;
+using System.Linq;
+using NUnit.Framework;
 using Spinvoice.Application.Services;
+using Spinvoice.Utils;
 
 namespace Spinvoice.IntegrationTests.Server
 {
@@ -29,8 +32,12 @@ namespace Spinvoice.IntegrationTests.Server
                 var fileParseServiceProxy = new FileParseServiceProxy();
 
                 var filePath = TestInputProvider.GetTestPath(
-                    nameof(AnalyzeInvoicePositionsTests), nameof(ParsesFile), "test.pdf");
-                //fileParseServiceProxy.Parse(filePath);
+                    nameof(FileParseServiceProxyTests), nameof(ParsesFile), "test.pdf");
+                var pdfModel = fileParseServiceProxy.Parse(filePath);
+                Assert.IsNotNull(pdfModel);
+                Assert.IsTrue(pdfModel.Sentences.Any());
+                pdfModel.Sentences.ForEach(model => Console.WriteLine(model.Text));
+                Console.WriteLine(pdfModel.Sentences.Last().Text);
             }
         }
     }

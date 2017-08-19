@@ -1,21 +1,25 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace Spinvoice.Common.Domain.Pdf
 {
+    [DataContract]
     public class PdfModel
     {
         public PdfModel(string fileName, List<PageModel> pages)
         {
             FileName = fileName;
-            Pages = pages.AsReadOnly();
+            Pages = pages;
         }
 
-        public string FileName { get; }
+        [DataMember]
+        public string FileName { get; private set; }
 
-        public ReadOnlyCollection<PageModel> Pages { get; }
+        [DataMember]
+        public List<PageModel> Pages { get; private set; }
 
         public IEnumerable<BlockModel> BlockModels
         {

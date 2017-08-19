@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="dd8204bf-69ac-4b8c-b61d-3d9bc7e7b18d" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="adc947cb-7781-436a-8def-335c6af86bd7" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
@@ -22,9 +22,10 @@
     <MetadataSource Address="net.pipe://localhost/Spinvoice.Server.Services/mex" Protocol="mex" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="7d7af94f-3ce4-4718-b8c9-aa0113ad32db" SourceId="1" SourceUrl="net.pipe://localhost/Spinvoice.Server.Services/mex" />
-    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="d537255a-396d-40f7-af0f-8cec44eee0cf" SourceId="1" SourceUrl="net.pipe://localhost/Spinvoice.Server.Services/mex" />
-    <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="85eaeffa-75dd-47f5-ba35-54a983872eaa" SourceId="1" SourceUrl="net.pipe://localhost/Spinvoice.Server.Services/mex" />
+    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="6560f8fb-619e-4cd5-96f3-2b6922fea64a" SourceId="1" SourceUrl="net.pipe://localhost/Spinvoice.Server.Services/mex" />
+    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="0f27c895-04ae-4377-aa10-b10e4b859aac" SourceId="1" SourceUrl="net.pipe://localhost/Spinvoice.Server.Services/mex" />
+    <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="342e6998-2f2e-402d-8cd9-35ef4c6786b8" SourceId="1" SourceUrl="net.pipe://localhost/Spinvoice.Server.Services/mex" />
+    <MetadataFile FileName="Spinvoice.Common.Domain.Pdf.xsd" MetadataType="Schema" ID="93c45d5c-0067-4120-b58d-6eb8afc7973a" SourceId="1" SourceUrl="net.pipe://localhost/Spinvoice.Server.Services/mex" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

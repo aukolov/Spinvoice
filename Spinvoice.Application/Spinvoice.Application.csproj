@@ -70,6 +70,7 @@
       <HintPath>..\packages\System.Reactive.Windows.Threading.3.1.1\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Forms" />
@@ -191,6 +192,13 @@
       <Link>Spinvoice.Server.exe.config</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Properties\DataSources\Spinvoice.Common.Domain.Pdf.PdfModel.datasource" />
+    <None Include="Service References\ServerReference\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\ServerReference\configuration.svcinfo" />
+    <None Include="Service References\ServerReference\configuration91.svcinfo" />
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Service References\ServerReference\service.wsdl" />
@@ -198,6 +206,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\ServerReference\service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServerReference\Spinvoice.Common.Domain.Pdf.xsd">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
@@ -306,18 +317,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\ServerReference\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\ServerReference\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\ServerReference\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\ServerReference\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

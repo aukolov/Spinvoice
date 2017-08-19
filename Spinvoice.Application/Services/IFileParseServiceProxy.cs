@@ -1,7 +1,11 @@
-﻿namespace Spinvoice.Application.Services
+﻿using System;
+using Spinvoice.Common.Domain.Pdf;
+
+namespace Spinvoice.Application.Services
 {
-    public interface IFileParseServiceProxy
+    public interface IFileParseServiceProxy : IDisposable
     {
         int Sum(int a, int b);
+        PdfModel Parse(string filePath);
     }
 }

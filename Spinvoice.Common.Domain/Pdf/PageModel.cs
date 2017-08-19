@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace Spinvoice.Common.Domain.Pdf
 {
+    [DataContract]
     public class PageModel
     {
         private const int YTolerance = 1;
@@ -11,23 +13,24 @@ namespace Spinvoice.Common.Domain.Pdf
         public PageModel(int pageNumber, List<BlockModel> blocks)
         {
             PageNumber = pageNumber;
-            Blocks = blocks.AsReadOnly();
+            Blocks = blocks;
             Sentences = blocks
                 .SelectMany(bm => bm.Sentences)
                 .OrderBy(model => model.Bottom)
                 .ThenBy(model => model.Left)
-                .ToArray();
+                .ToList();
             for (var i = 0; i < Sentences.Count; i++)
             {
                 Sentences[i].PageIndex = i;
             }
         }
 
-        public int PageNumber { get; }
-
-        public IReadOnlyList<BlockModel> Blocks { get; }
-
-        public IReadOnlyList<SentenceModel> Sentences { get; }
+        [DataMember]
+        public int PageNumber { get; private set; }
+        [DataMember]
+        public List<BlockModel> Blocks { get; private set; }
+        [DataMember]
+        public List<SentenceModel> Sentences { get; private set; }
 
         public IEnumerable<LocationRange> Find(string text)
         {

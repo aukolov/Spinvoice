@@ -1,5 +1,8 @@
-﻿namespace Spinvoice.Common.Domain.Pdf
+﻿using System.Runtime.Serialization;
+
+namespace Spinvoice.Common.Domain.Pdf
 {
+    [DataContract]
     public class SentenceModel
     {
         public SentenceModel(
@@ -16,15 +19,21 @@
             Height = height;
         }
 
-        public string Text { get; }
+        [DataMember]
+        public string Text { get; private set; }
+        [DataMember]
         public int PageIndex { get; set; }
+        [DataMember]
+        public double Left { get; private set; }
+        [DataMember]
+        public double Bottom { get; private set; }
+        [DataMember]
+        public double Width { get; private set; }
+        [DataMember]
+        public double Height { get; private set; }
 
-        public double Left { get; }
-        public double Bottom { get; }
         public double Right => Left + Width;
         public double Top => Bottom - Height;
         public double MidX => Left + Width / 2;
-        public double Width { get; }
-        public double Height { get; }
     }
 }

@@ -20,6 +20,12 @@ namespace Spinvoice.Application.ServerReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFileParseService/Sum", ReplyAction="http://tempuri.org/IFileParseService/SumResponse")]
         System.Threading.Tasks.Task<int> SumAsync(int a, int b);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFileParseService/Parse", ReplyAction="http://tempuri.org/IFileParseService/ParseResponse")]
+        Spinvoice.Common.Domain.Pdf.PdfModel Parse(string filePath);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFileParseService/Parse", ReplyAction="http://tempuri.org/IFileParseService/ParseResponse")]
+        System.Threading.Tasks.Task<Spinvoice.Common.Domain.Pdf.PdfModel> ParseAsync(string filePath);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -55,6 +61,14 @@ namespace Spinvoice.Application.ServerReference {
         
         public System.Threading.Tasks.Task<int> SumAsync(int a, int b) {
             return base.Channel.SumAsync(a, b);
+        }
+        
+        public Spinvoice.Common.Domain.Pdf.PdfModel Parse(string filePath) {
+            return base.Channel.Parse(filePath);
+        }
+        
+        public System.Threading.Tasks.Task<Spinvoice.Common.Domain.Pdf.PdfModel> ParseAsync(string filePath) {
+            return base.Channel.ParseAsync(filePath);
         }
     }
 }

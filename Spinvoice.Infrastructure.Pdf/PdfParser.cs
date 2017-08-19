@@ -2,14 +2,16 @@
 using System.IO;
 using System.Linq;
 using iTextSharp.text.pdf;
+using NLog;
 using Spinvoice.Common.Domain.Pdf;
-using Spinvoice.Domain.Pdf;
 // ReSharper disable SuggestBaseTypeForParameter
 
 namespace Spinvoice.Infrastructure.Pdf
 {
     internal class PdfParser : IPdfParser
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly IPageParser[] _parsers;
 
         public PdfParser(
@@ -57,6 +59,10 @@ namespace Spinvoice.Infrastructure.Pdf
                 var blockModels = (sentenceModels ?? new List<List<SentenceModel>>())
                     .Select((sentences, j) => new BlockModel(j, sentences))
                     .ToList();
+                foreach (var sentence in blockModels.SelectMany(model => model.Sentences))
+                {
+                    Logger.Info($"---> {sentence.Text}");
+                }
 
                 return new PageModel(i - 1, blockModels);
             }

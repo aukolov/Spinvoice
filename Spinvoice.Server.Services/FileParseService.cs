@@ -6,10 +6,10 @@ namespace Spinvoice.Server.Services
     {
         private readonly IPdfParser _pdfParser;
 
-        //public FileParseService(IPdfParser pdfParser)
-        //{
-        //    _pdfParser = pdfParser;
-        //}
+        public FileParseService(IPdfParser pdfParser)
+        {
+            _pdfParser = pdfParser;
+        }
 
         public int Sum(int a, int b)
         {
@@ -18,8 +18,7 @@ namespace Spinvoice.Server.Services
 
         public PdfModel Parse(string filePath)
         {
-            return null;
-            //return _pdfParser.Parse(filePath);
+            return _pdfParser.Parse(filePath);
         }
     }
 }
