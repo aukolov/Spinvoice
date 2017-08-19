@@ -32,5 +32,11 @@ namespace Spinvoice.Application.Services
         {
             return Directory.Exists(directoryPath);
         }
+
+        public bool HasExtension(string filePath, string fileExtension)
+        {
+            return filePath != null && Path.GetExtension(filePath).ToLower() == fileExtension;
+        }
+
     }
 }

@@ -20,7 +20,8 @@ namespace Spinvoice.Server
                 _serviceHost.AddServiceEndpoint(
                     typeof(IFileParseService), 
                     new NetNamedPipeBinding(),
-                    "net.pipe://localhost/Spinvoice.Server.Services/FileParseService");
+                    "net.pipe://localhost/Spinvoice.Server.Services/FileParseService");                
+
                 _serviceHost.Open();
             }
             catch (Exception e)

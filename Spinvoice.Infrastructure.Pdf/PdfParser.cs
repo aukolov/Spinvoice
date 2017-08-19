@@ -61,10 +61,5 @@ namespace Spinvoice.Infrastructure.Pdf
                 return new PageModel(i - 1, blockModels);
             }
         }
-
-        public bool IsPdf(string filePath)
-        {
-            return filePath != null && Path.GetExtension(filePath).ToLower() == ".pdf";
-        }
     }
 }

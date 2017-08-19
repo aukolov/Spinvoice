@@ -16,6 +16,7 @@ namespace Spinvoice.Application.ViewModels.Invoices
     public class InvoiceListViewModel : IInvoiceListViewModel
     {
         private readonly IPdfParser _pdfParser;
+        private readonly IFileService _fileService;
         private readonly ITaskSchedulerProvider _taskSchedulerProvider;
 
         private readonly string _filePath;
@@ -28,12 +29,14 @@ namespace Spinvoice.Application.ViewModels.Invoices
         public InvoiceListViewModel(
             string filePath,
             IPdfParser pdfParser,
+            IFileService fileService,
             ITaskSchedulerProvider taskSchedulerProvider,
             Func<PdfModel, PdfXrayViewModel, InvoiceViewModel> invoiceViewModelFactory)
         {
             _filePath = filePath;
             _invoiceViewModelFactory = invoiceViewModelFactory;
             _pdfParser = pdfParser;
+            _fileService = fileService;
             _taskSchedulerProvider = taskSchedulerProvider;
 
             InvoiceViewModels = new ObservableCollection<InvoiceViewModel>();
@@ -89,7 +92,7 @@ namespace Spinvoice.Application.ViewModels.Invoices
             FileProcessStatus = FileProcessStatus.Scheduled;
 
             PdfModel pdfModel;
-            if (_pdfParser.IsPdf(_filePath))
+            if (_fileService.HasExtension(_filePath, ".pdf"))
             {
                 pdfModel = await ParsePdfModel();
             }

@@ -8,5 +8,6 @@ namespace Spinvoice.Application.Services
         IEnumerable<string> GetFiles(string directoryPath);
         bool FileExists(string filePath);
         bool DirectoryExists(string directoryPath);
+        bool HasExtension(string filePath, string fileExtension);
     }
 }
