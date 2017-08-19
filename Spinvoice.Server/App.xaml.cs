@@ -25,10 +25,6 @@ namespace Spinvoice.Server
                 _container = ServerBootstrapper.Init();
 
                 _serviceHost = new ServiceHost(typeof(FileParseService));
-                //_serviceHost.AddServiceEndpoint(
-                //    typeof(IFileParseService), 
-                //    new NetNamedPipeBinding(),
-                //    "net.pipe://localhost/Spinvoice.Server.Services/FileParseService");                
 
                 _serviceHost.AddDependencyInjectionBehavior<IFileParseService>(_container);
 
@@ -36,7 +32,7 @@ namespace Spinvoice.Server
             }
             catch (Exception e)
             {
-                Logger.Error(e, "Exception while starting the server.");
+                Logger.Error(e, "Exception while starting the server." + e);
                 _serviceHost?.Abort();
                 Current.Shutdown(-1);
             }

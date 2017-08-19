@@ -134,7 +134,7 @@
     <Compile Include="QuickBooks\ExternalItemServiceTests.cs" />
     <Compile Include="QuickBooks\SandboxAccountChartProvider.cs" />
     <Compile Include="QuickBooks\Secret.cs" />
-    <Compile Include="Server\FileParseServiceProxyTest.cs" />
+    <Compile Include="Server\FileParseServiceProxyTests.cs" />
     <Compile Include="TestContainer.cs" />
     <Compile Include="TestInput.cs" />
     <Compile Include="TestInputProvider.cs" />

@@ -1,4 +1,5 @@
 ﻿using System.ServiceModel;
+using Spinvoice.Common.Domain.Pdf;
 
 namespace Spinvoice.Server.Services
 {
@@ -7,5 +8,7 @@ namespace Spinvoice.Server.Services
     {
         [OperationContract]
         int Sum(int a, int b);
+
+        PdfModel Parse(string filePath);
     }
 }

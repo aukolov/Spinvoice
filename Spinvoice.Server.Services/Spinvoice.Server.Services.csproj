@@ -72,6 +72,16 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Spinvoice.Common.Domain\Spinvoice.Common.Domain.csproj">
+      <Project>{6498b4d4-8d2a-4d47-af0b-c8345d518531}</Project>
+      <Name>Spinvoice.Common.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Spinvoice.Infrastructure.Pdf\Spinvoice.Infrastructure.Pdf.csproj">
+      <Project>{ee6686ca-55a6-4da8-a707-3b6c230aec58}</Project>
+      <Name>Spinvoice.Infrastructure.Pdf</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <VSToolsPath Condition="'$(VSToolsPath)' == '' and '$(VisualStudioVersion)' != '' and '$(VisualStudioVersion)' != '11.0'">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -83,7 +93,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{3D9AD99F-2412-4246-B90B-4EAA41C64699}">
         <WcfProjectProperties>
-          <AutoStart>False</AutoStart>
+          <AutoStart>True</AutoStart>
         </WcfProjectProperties>
       </FlavorProperties>
     </VisualStudio>

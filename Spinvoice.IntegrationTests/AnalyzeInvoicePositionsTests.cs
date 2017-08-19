@@ -7,7 +7,6 @@ using Spinvoice.Common.Domain.Pdf;
 using Spinvoice.Domain.Accounting;
 using Spinvoice.Domain.Company;
 using Spinvoice.Domain.InvoiceProcessing;
-using Spinvoice.Domain.Pdf;
 using Spinvoice.Infrastructure.DataAccess;
 using Spinvoice.IntegrationTests.Mocks;
 
