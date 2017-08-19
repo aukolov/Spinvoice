@@ -34,6 +34,10 @@
       <HintPath>..\packages\Autofac.4.6.1\lib\net45\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.4.11\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
@@ -75,6 +79,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationSatellite.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="AutofacModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -83,6 +88,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Services\ApplicationNameProvider.cs" />
     <Compile Include="Services\Bootstrapper.cs" />
     <Compile Include="Services\ClipboardService.cs" />
     <Compile Include="Services\ExchangeRatesLoader.cs" />
@@ -93,11 +99,9 @@
     <Compile Include="Services\IExchangeRatesLoader.cs" />
     <Compile Include="Services\IFileParseServiceProxy.cs" />
     <Compile Include="Services\IFileService.cs" />
-    <Compile Include="Services\ILogConfigurator.cs" />
     <Compile Include="Services\InvoiceFormatter.cs" />
     <Compile Include="Services\IServerManager.cs" />
     <Compile Include="Services\ITaskSchedulerProvider.cs" />
-    <Compile Include="Services\LogConfigurator.cs" />
     <Compile Include="Services\FileParseServiceProxy.cs" />
     <Compile Include="Services\ServerManager.cs" />
     <Compile Include="Services\TaskSchedulerProvider.cs" />
@@ -183,6 +187,10 @@
     <Compile Include="Views\WebBrowserUtility.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\Spinvoice.Server\bin\Debug\Spinvoice.Server.exe.config">
+      <Link>Spinvoice.Server.exe.config</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Service References\ServerReference\service.wsdl" />
@@ -197,6 +205,10 @@
     <ProjectReference Include="..\Spinvoice.Common.Domain\Spinvoice.Common.Domain.csproj">
       <Project>{6498b4d4-8d2a-4d47-af0b-c8345d518531}</Project>
       <Name>Spinvoice.Common.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Spinvoice.Common.Infrastructure\Spinvoice.Common.Infrastructure.csproj">
+      <Project>{54fea3d8-46e3-441d-9375-bd409fdcbef1}</Project>
+      <Name>Spinvoice.Common.Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\Spinvoice.Domain\Spinvoice.Domain.csproj">
       <Project>{1f2abff6-b597-4366-a02b-000346436312}</Project>

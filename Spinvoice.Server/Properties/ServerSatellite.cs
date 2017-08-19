@@ -1,6 +1,6 @@
 ﻿namespace Spinvoice.Server.Properties
 {
-    public static class Satellite
+    public static class ServerSatellite
     {
         public static void Include()
         {

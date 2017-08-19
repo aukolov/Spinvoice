@@ -164,6 +164,12 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Spinvoice.Application\Spinvoice.Application.csproj">
+      <Project>{e2691083-9cb7-4071-984b-abc52570ae0f}</Project>
+      <Name>Spinvoice.Application</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -7,7 +7,7 @@ namespace Spinvoice
 {
     public partial class App
     {
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public App()
         {
@@ -16,7 +16,7 @@ namespace Spinvoice
 
         private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs unhandledExceptionEventArgs)
         {
-            _logger.Error((Exception)unhandledExceptionEventArgs.ExceptionObject,
+            Logger.Error((Exception)unhandledExceptionEventArgs.ExceptionObject,
                 "Unhandled exception. {0}", unhandledExceptionEventArgs.IsTerminating ? "The application will be terminated." : "");
             MessageBox.Show(Current.MainWindow,
                 $"Something went wrong...\r\n{unhandledExceptionEventArgs.ExceptionObject}");
@@ -24,7 +24,7 @@ namespace Spinvoice
 
         private void App_OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            _logger.Error(e.Exception, "Unhandled exception.");
+            Logger.Error(e.Exception, "Unhandled exception.");
             MessageBox.Show(Current.MainWindow,
                 $"Something went wrong in dispatcher...\r\n{e.Exception}");
             e.Handled = true;

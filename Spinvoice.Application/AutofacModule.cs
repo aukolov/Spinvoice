@@ -1,7 +1,5 @@
-﻿using System.Reflection;
-using Autofac;
+﻿using Autofac;
 using Spinvoice.Application.Services;
-using Module = Autofac.Module;
 
 namespace Spinvoice.Application
 {
@@ -9,7 +7,7 @@ namespace Spinvoice.Application
     {
         protected override void Load(ContainerBuilder builder)
         {
-            var assembly = Assembly.GetExecutingAssembly();
+            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
             builder.RegisterAssemblyTypes(assembly)
                 .Where(t => t.Name.EndsWith("ViewModel"))
@@ -20,10 +18,10 @@ namespace Spinvoice.Application
             builder.RegisterType<ClipboardService>().AsImplementedInterfaces().AsSelf().SingleInstance();
             builder.RegisterType<ExchangeRatesLoader>().AsImplementedInterfaces().AsSelf().SingleInstance();
             builder.RegisterType<FileService>().AsImplementedInterfaces().AsSelf().SingleInstance();
-            builder.RegisterType<LogConfigurator>().AsImplementedInterfaces().AsSelf().SingleInstance();
             builder.RegisterType<WindowManager>().AsImplementedInterfaces().AsSelf().SingleInstance();
             builder.RegisterType<TaskSchedulerProvider>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<ServerManager>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<ApplicationNameProvider>().AsImplementedInterfaces().SingleInstance();
         }
     }
 }

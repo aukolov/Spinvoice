@@ -3,6 +3,7 @@ using System.Globalization;
 using System.IO;
 using System.Threading;
 using Autofac;
+using Spinvoice.Common.Infrastructure.Logging;
 using Spinvoice.Infrastructure.DataAccess;
 
 namespace Spinvoice.Application.Services
@@ -15,6 +16,7 @@ namespace Spinvoice.Application.Services
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
             var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterModule<Common.Infrastructure.AutofacModule>();
             containerBuilder.RegisterModule<Infrastructure.DataAccess.AutofacModule>();
             containerBuilder.RegisterModule<Infrastructure.Pdf.AutofacModule>();
             containerBuilder.RegisterModule<QuickBooks.AutofacModule>();
@@ -32,7 +34,7 @@ namespace Spinvoice.Application.Services
             container.Resolve<ILogConfigurator>().Configure();
             container.Resolve<IServerManager>().Start();
 
-            Server.Properties.Satellite.Include();
+            Server.Properties.ServerSatellite.Include();
 
             return container;
         }
