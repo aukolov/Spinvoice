@@ -22,8 +22,16 @@ namespace Spinvoice.Application.Services
 
         public void Dispose()
         {
-            _process?.Kill();
-            _process?.WaitForExit();
+            if (_process != null)
+            {
+                KillProcess(_process);
+            }
+        }
+
+        private static void KillProcess(Process process)
+        {
+            process.Kill();
+            process.WaitForExit();
         }
     }
 }

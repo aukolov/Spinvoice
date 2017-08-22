@@ -17,7 +17,8 @@
 
             <DataTemplate DataType="{x:Type fileSystem:FileViewModel}">
                 <StackPanel Orientation="Horizontal">
-                    <Ellipse Margin="0,0,5,0"
+                    <Ellipse x:Name="PART_Ellipse"
+                             Margin="0,0,5,0"
                              HorizontalAlignment="Center"
                              VerticalAlignment="Center"
                              RenderTransformOrigin="0.5,0.5"
@@ -29,35 +30,51 @@
                                 <RotateTransform />
                             </TransformGroup>
                         </Ellipse.RenderTransform>
-                        <Ellipse.Stroke>
-                            <LinearGradientBrush StartPoint="0.555,0.003" EndPoint="0.445,0.997">
-                                <GradientStop Offset="0" Color="White" />
-                                <GradientStop Offset="1" Color="#FF0052FF" />
-                            </LinearGradientBrush>
-                        </Ellipse.Stroke>
 
                         <Ellipse.Style>
                             <Style>
                                 <Style.Triggers>
+                                    <DataTrigger Binding="{Binding InvoiceListViewModel.FileProcessStatus}" Value="{x:Static invoices1:FileProcessStatus.NotScheduled}">
+                                        <DataTrigger.Setters>
+                                            <Setter Property="Ellipse.Stroke" Value="Gray" />
+                                        </DataTrigger.Setters>
+                                    </DataTrigger>
+
+                                    <DataTrigger Binding="{Binding InvoiceListViewModel.FileProcessStatus}" Value="{x:Static invoices1:FileProcessStatus.Done}">
+                                        <DataTrigger.Setters>
+                                            <Setter Property="Ellipse.Stroke" Value="LightSeaGreen" />
+                                        </DataTrigger.Setters>
+                                    </DataTrigger>
+
+                                    <DataTrigger Binding="{Binding InvoiceListViewModel.FileProcessStatus}" Value="{x:Static invoices1:FileProcessStatus.Scheduled}">
+                                        <DataTrigger.Setters>
+                                            <Setter Property="Ellipse.Stroke" Value="LightSkyBlue" />
+                                        </DataTrigger.Setters>
+                                    </DataTrigger>
+
                                     <DataTrigger Binding="{Binding InvoiceListViewModel.FileProcessStatus}" Value="{x:Static invoices1:FileProcessStatus.InProgress}">
-                                        <DataTrigger.EnterActions>
-                                            <BeginStoryboard Name="Storyboard1">
-                                                <Storyboard RepeatBehavior="Forever">
-                                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)">
-                                                        <SplineDoubleKeyFrame KeyTime="00:00:02" Value="360" />
-                                                    </DoubleAnimationUsingKeyFrames>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </DataTrigger.EnterActions>
-                                        <DataTrigger.ExitActions>
-                                            <StopStoryboard BeginStoryboardName="Storyboard1" />
-                                        </DataTrigger.ExitActions>
+                                        <DataTrigger.Setters>
+                                            <Setter Property="Ellipse.Stroke" Value="Yellow" />
+                                        </DataTrigger.Setters>
+
+                                        <!--<DataTrigger.EnterActions>
+                                                <BeginStoryboard Name="Storyboard1">
+                                                    <Storyboard RepeatBehavior="Forever">
+                                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetProperty="StrokeThickness">
+                                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0" />
+                                                            <SplineDoubleKeyFrame KeyTime="00:00:02" Value="15" />
+                                                        </DoubleAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.EnterActions>
+                                            <DataTrigger.ExitActions>
+                                                <StopStoryboard BeginStoryboardName="Storyboard1" />
+                                            </DataTrigger.ExitActions>-->
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Ellipse.Style>
                     </Ellipse>
-
                     <TextBlock Text="{Binding Path=Name}" ToolTip="{Binding Path=Path}" />
                 </StackPanel>
             </DataTemplate>
@@ -73,3 +90,4 @@
         </TreeView.ItemContainerStyle>
     </TreeView>
 </UserControl>
+

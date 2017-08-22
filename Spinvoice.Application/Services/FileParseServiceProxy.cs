@@ -12,11 +12,6 @@ namespace Spinvoice.Application.Services
             _fileParseServiceClient = new FileParseServiceClient();
         }
 
-        public int Sum(int a, int b)
-        {
-            return _fileParseServiceClient.Sum(a, b);
-        }
-
         public PdfModel Parse(string filePath)
         {
             return _fileParseServiceClient.Parse(filePath);

@@ -90,6 +90,7 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Services\ApplicationNameProvider.cs" />
+    <Compile Include="Services\BackgroundExecutor.cs" />
     <Compile Include="Services\Bootstrapper.cs" />
     <Compile Include="Services\ClipboardService.cs" />
     <Compile Include="Services\ExchangeRatesLoader.cs" />
@@ -232,10 +233,6 @@
     <ProjectReference Include="..\Spinvoice.QuickBooks\Spinvoice.QuickBooks.csproj">
       <Project>{0699b9a4-aba3-4da8-a2d1-a74ef840a2d7}</Project>
       <Name>Spinvoice.QuickBooks</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Spinvoice.Server\Spinvoice.Server.csproj">
-      <Project>{bf291ff4-1b5a-41ab-ac0d-c5889af05983}</Project>
-      <Name>Spinvoice.Server</Name>
     </ProjectReference>
     <ProjectReference Include="..\Spinvoice.Utils\Spinvoice.Utils.csproj">
       <Project>{6c5bdcda-a72f-4eba-8270-fdbd018852f1}</Project>

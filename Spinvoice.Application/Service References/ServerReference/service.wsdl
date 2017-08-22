@@ -17,12 +17,6 @@
       <xsd:import namespace="http://schemas.datacontract.org/2004/07/Spinvoice.Common.Domain.Pdf" />
     </xsd:schema>
   </wsdl:types>
-  <wsdl:message name="IFileParseService_Sum_InputMessage">
-    <wsdl:part name="parameters" element="tns:Sum" />
-  </wsdl:message>
-  <wsdl:message name="IFileParseService_Sum_OutputMessage">
-    <wsdl:part name="parameters" element="tns:SumResponse" />
-  </wsdl:message>
   <wsdl:message name="IFileParseService_Parse_InputMessage">
     <wsdl:part name="parameters" element="tns:Parse" />
   </wsdl:message>
@@ -30,10 +24,6 @@
     <wsdl:part name="parameters" element="tns:ParseResponse" />
   </wsdl:message>
   <wsdl:portType name="IFileParseService">
-    <wsdl:operation name="Sum">
-      <wsdl:input wsaw:Action="http://tempuri.org/IFileParseService/Sum" message="tns:IFileParseService_Sum_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IFileParseService/SumResponse" message="tns:IFileParseService_Sum_OutputMessage" />
-    </wsdl:operation>
     <wsdl:operation name="Parse">
       <wsdl:input wsaw:Action="http://tempuri.org/IFileParseService/Parse" message="tns:IFileParseService_Parse_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IFileParseService/ParseResponse" message="tns:IFileParseService_Parse_OutputMessage" />
@@ -43,15 +33,6 @@
     <wsp:PolicyReference URI="#NetNamedPipeBinding_IFileParseService_policy">
     </wsp:PolicyReference>
     <soap12:binding transport="http://schemas.microsoft.com/soap/named-pipe" />
-    <wsdl:operation name="Sum">
-      <soap12:operation soapAction="http://tempuri.org/IFileParseService/Sum" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="Parse">
       <soap12:operation soapAction="http://tempuri.org/IFileParseService/Parse" style="document" />
       <wsdl:input>

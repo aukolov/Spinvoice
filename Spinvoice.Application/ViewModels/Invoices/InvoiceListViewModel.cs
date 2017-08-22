@@ -99,7 +99,7 @@ namespace Spinvoice.Application.ViewModels.Invoices
             {
                 pdfModel = null;
             }
-            FileProcessStatus = FileProcessStatus.Done;
+            BackgroundExecutor.Execute(() => FileProcessStatus = FileProcessStatus.Done);
 
             PdfXrayViewModel = pdfModel != null ? new PdfXrayViewModel(pdfModel) : null;
             AddInvoiceViewModel(pdfModel, PdfXrayViewModel);
@@ -109,13 +109,11 @@ namespace Spinvoice.Application.ViewModels.Invoices
         private async Task<PdfModel> ParsePdfModel()
         {
             return await Task.Factory.StartNew(() =>
-            {
-                System.Windows.Application.Current.Dispatcher.BeginInvoke(
-                    DispatcherPriority.Background,
-                    new Action(() => FileProcessStatus = FileProcessStatus.InProgress));
-                var pdfModel = _fileParseServiceProxy.Parse(_filePath);
-                return pdfModel;
-            },
+                {
+                    BackgroundExecutor.Execute(() => FileProcessStatus = FileProcessStatus.InProgress);
+                    var pdfModel = _fileParseServiceProxy.Parse(_filePath);
+                    return pdfModel;
+                },
             CancellationToken.None,
             TaskCreationOptions.LongRunning,
             _taskSchedulerProvider.PdfParseTaskScheduler);

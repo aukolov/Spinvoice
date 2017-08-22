@@ -27,6 +27,7 @@ namespace Spinvoice.Application.ViewModels.FileSystem
         public string Name { get; }
         public string Path { get; }
         public IInvoiceListViewModel InvoiceListViewModel { get; }
+        public bool IsExpanded { get; set; }
 
         public bool IsSelected
         {

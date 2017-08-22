@@ -7,19 +7,12 @@ namespace Spinvoice.Server.Services
     public interface IFileParseService
     {
         [OperationContract]
-        int Sum(int a, int b);
-
-        [OperationContract]
         PdfModel Parse(string filePath);
     }
 
+    // ReSharper disable once UnusedMember.Global
     public class FileParseServiceMock : IFileParseService
     {
-        public int Sum(int a, int b)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public PdfModel Parse(string filePath)
         {
             throw new System.NotImplementedException();
