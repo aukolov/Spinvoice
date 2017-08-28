@@ -5,21 +5,12 @@ namespace Spinvoice.Application.Services
 {
     public class FileParseServiceProxy : IFileParseServiceProxy
     {
-        private readonly FileParseServiceClient _fileParseServiceClient;
-
-        public FileParseServiceProxy()
-        {
-            _fileParseServiceClient = new FileParseServiceClient();
-        }
-
         public PdfModel Parse(string filePath)
         {
-            return _fileParseServiceClient.Parse(filePath);
-        }
-
-        public void Dispose()
-        {
-            _fileParseServiceClient.Close();
+            var fileParseServiceClient = new FileParseServiceClient();
+            var pdfModel = fileParseServiceClient.Parse(filePath);
+            fileParseServiceClient.Close();
+            return pdfModel;
         }
     }
 }

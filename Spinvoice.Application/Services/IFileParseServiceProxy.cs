@@ -1,9 +1,8 @@
-﻿using System;
-using Spinvoice.Common.Domain.Pdf;
+﻿using Spinvoice.Common.Domain.Pdf;
 
 namespace Spinvoice.Application.Services
 {
-    public interface IFileParseServiceProxy : IDisposable
+    public interface IFileParseServiceProxy
     {
         PdfModel Parse(string filePath);
     }
