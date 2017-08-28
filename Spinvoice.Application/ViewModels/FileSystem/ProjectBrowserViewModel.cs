@@ -18,7 +18,6 @@ namespace Spinvoice.Application.ViewModels.FileSystem
 
         private string _projectDirectoryPath;
         private IDirectoryViewModel[] _directoryViewModels;
-        private readonly IFileService _fileService;
         private readonly IAppMetadataRepository _appMetadataRepository;
         private readonly Func<string, ISelectedPathListener, IDirectoryViewModel> _directoryViewModelFactory;
 
@@ -32,7 +31,6 @@ namespace Spinvoice.Application.ViewModels.FileSystem
             IAppMetadataRepository appMetadataRepository,
             Func<string, ISelectedPathListener, IDirectoryViewModel> directoryViewModelFactory)
         {
-            _fileService = fileService;
             _appMetadataRepository = appMetadataRepository;
             _directoryViewModelFactory = directoryViewModelFactory;
             OpenCommand = new RelayCommand(OpenDirectoryCommand);

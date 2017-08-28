@@ -12,7 +12,13 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <HierarchicalDataTemplate DataType="{x:Type fileSystem:DirectoryViewModel}" ItemsSource="{Binding Items}">
-                <TextBlock Text="{Binding Path=Name}" ToolTip="{Binding Path=Path}" />
+                <TextBlock Text="{Binding Path=Name}" ToolTip="{Binding Path=Path}">
+                    <TextBlock.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Command="{Binding AnalyzeCommand}" Header="Analyze" />
+                        </ContextMenu>
+                    </TextBlock.ContextMenu>
+                </TextBlock>
             </HierarchicalDataTemplate>
 
             <DataTemplate DataType="{x:Type fileSystem:FileViewModel}">
@@ -56,20 +62,6 @@
                                         <DataTrigger.Setters>
                                             <Setter Property="Ellipse.Stroke" Value="Yellow" />
                                         </DataTrigger.Setters>
-
-                                        <!--<DataTrigger.EnterActions>
-                                                <BeginStoryboard Name="Storyboard1">
-                                                    <Storyboard RepeatBehavior="Forever">
-                                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetProperty="StrokeThickness">
-                                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0" />
-                                                            <SplineDoubleKeyFrame KeyTime="00:00:02" Value="15" />
-                                                        </DoubleAnimationUsingKeyFrames>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </DataTrigger.EnterActions>
-                                            <DataTrigger.ExitActions>
-                                                <StopStoryboard BeginStoryboardName="Storyboard1" />
-                                            </DataTrigger.ExitActions>-->
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>

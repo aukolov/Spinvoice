@@ -36,6 +36,8 @@ namespace Spinvoice.Application.ViewModels.FileSystem
                     return extension != null && SupportedExtensions.Contains(extension.ToLower());
                 })
                 .Select(s => fileViewModelFactory(s, selectedPathListener)));
+
+            AnalyzeCommand = new RelayCommand(Analyze);
         }
 
         public string Name { get; }
@@ -63,6 +65,28 @@ namespace Spinvoice.Application.ViewModels.FileSystem
                 if (_isExpanded == value) return;
                 _isExpanded = value;
                 OnPropertyChanged();
+            }
+        }
+
+        public RelayCommand AnalyzeCommand { get; }
+
+        private void Analyze()
+        {
+            AnalyzeDirectory(this);
+        }
+
+        private static void AnalyzeDirectory(IDirectoryViewModel directoryViewModel)
+        {
+            foreach (var fileSystemViewModel in directoryViewModel.Items)
+            {
+                var fileViewModel = fileSystemViewModel as IFileViewModel;
+                fileViewModel?.InvoiceListViewModel.Init();
+
+                var subdirectoryViewModel = fileSystemViewModel as IDirectoryViewModel;
+                if (subdirectoryViewModel != null)
+                {
+                    AnalyzeDirectory(subdirectoryViewModel);
+                }
             }
         }
 
