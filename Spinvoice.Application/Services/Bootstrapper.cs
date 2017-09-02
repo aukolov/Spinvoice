@@ -5,6 +5,7 @@ using System.Threading;
 using Autofac;
 using Spinvoice.Common.Infrastructure.Logging;
 using Spinvoice.Infrastructure.DataAccess;
+using Spinvoice.Server.Properties;
 
 namespace Spinvoice.Application.Services
 {
@@ -31,9 +32,8 @@ namespace Spinvoice.Application.Services
             var container = containerBuilder.Build();
 
             container.Resolve<ILogConfigurator>().Configure();
-#if !DEBUG
             container.Resolve<IServerManager>().Start();
-#endif
+            ServerSatellite.Include();
             return container;
         }
     }

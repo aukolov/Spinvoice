@@ -234,6 +234,10 @@
       <Project>{0699b9a4-aba3-4da8-a2d1-a74ef840a2d7}</Project>
       <Name>Spinvoice.QuickBooks</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Spinvoice.Server\Spinvoice.Server.csproj">
+      <Project>{BF291FF4-1B5A-41AB-AC0D-C5889AF05983}</Project>
+      <Name>Spinvoice.Server</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Spinvoice.Utils\Spinvoice.Utils.csproj">
       <Project>{6c5bdcda-a72f-4eba-8270-fdbd018852f1}</Project>
       <Name>Spinvoice.Utils</Name>
