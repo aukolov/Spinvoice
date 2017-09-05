@@ -9,7 +9,7 @@ namespace Spinvoice.Application.Views
 {
     public partial class MainWindow
     {
-        private IContainer _container;
+        private readonly IContainer _container;
 
         public MainWindow()
         {

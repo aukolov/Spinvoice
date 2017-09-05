@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Threading;
 using NLog;
 
-namespace Spinvoice
+namespace Spinvoice.Application
 {
     public partial class App
     {
