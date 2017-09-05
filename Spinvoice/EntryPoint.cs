@@ -1,4 +1,5 @@
 ﻿using System;
+using Spinvoice.Application;
 
 namespace Spinvoice
 {
@@ -7,12 +8,7 @@ namespace Spinvoice
         [STAThread]
         private static void Main()
         {
-            var app = new Application.App
-            {
-                StartupUri = new Uri("pack://application:,,,/Spinvoice.Application;component/Views/MainWindow.xaml")
-            };
-            app.InitializeComponent();
-            app.Run();
+            Program.Run();
         }
     }
 }

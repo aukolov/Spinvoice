@@ -84,6 +84,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="ApplicationSatellite.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="AutofacModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
