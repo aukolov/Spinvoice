@@ -15,7 +15,6 @@ using Spinvoice.Domain.Company;
 using Spinvoice.Domain.Exchange;
 using Spinvoice.Domain.ExternalBook;
 using Spinvoice.Domain.InvoiceProcessing;
-using Spinvoice.Domain.Pdf;
 using Spinvoice.Domain.UI;
 using Spinvoice.QuickBooks.Account;
 using Spinvoice.QuickBooks.Item;
@@ -46,7 +45,7 @@ namespace Spinvoice.Application.ViewModels.Invoices
         private readonly bool _positionsAnalyzed;
         private bool _isActive;
         private readonly ISubject<InvoiceViewModel> _activated;
-        private PdfXrayViewModel _pdfXrayViewModel;
+        private readonly PdfXrayViewModel _pdfXrayViewModel;
 
         public InvoiceViewModel(
             ICompanyRepository companyRepository,

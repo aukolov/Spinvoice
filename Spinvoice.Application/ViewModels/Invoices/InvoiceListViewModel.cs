@@ -101,7 +101,7 @@ namespace Spinvoice.Application.ViewModels.Invoices
                 }
                 catch (Exception e)
                 {
-                    Logger.Error(e, "Error while parsing file");
+                    Logger.Error(e, "Error while parsing file. ");
                     BackgroundExecutor.Execute(() => FileProcessStatus = FileProcessStatus.Error);
                     return;
                 }

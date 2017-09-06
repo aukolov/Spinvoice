@@ -1,5 +1,6 @@
 ﻿using NLog;
 using NLog.Config;
+using NLog.Layouts;
 using NLog.Targets;
 using Spinvoice.Common.Domain;
 
@@ -20,7 +21,9 @@ namespace Spinvoice.Common.Infrastructure.Logging
             var fileTarget = new FileTarget("File Target")
             {
                 ArchiveEvery = FileArchivePeriod.Day,
-                FileName = "${specialfolder:folder=MyDocuments}/" + _applicationNameProvider.Name + "/logs/log.txt"
+                FileName = "${specialfolder:folder=MyDocuments}/" + _applicationNameProvider.Name + "/logs/log.txt",
+                Layout = new SimpleLayout(
+                    "${longdate}|${level:uppercase=true}|${logger}|${message}|${exception:format=tostring}")
             };
             configuration.AddTarget(fileTarget);
 

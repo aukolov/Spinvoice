@@ -41,23 +41,18 @@ namespace Spinvoice.Domain.InvoiceProcessing
 
         private Company.Company FindCompany(PdfModel pdfModel)
         {
-            Logger.Info("Matching company.");
             var companies = _companyRepository.GetAll();
-            Logger.Info($"Companies known: {companies.Length}.");
             foreach (var company in companies)
             {
-                Logger.Info($"Matching company '{company.Name}'.");
                 if (company.CompanyInvoiceStrategy == null)
                 {
-                    Logger.Info("Company strategy is empty.");
                     continue;
                 }
 
                 var value = company.CompanyInvoiceStrategy.GetValue(pdfModel);
-                Logger.Info($"Candidate value: {value}.");
                 if (value == company.Name && value != null)
                 {
-                    Logger.Info("Match found.");
+                    Logger.Info($"Match found '{company.Name}'.");
                     return company;
                 }
             }
