@@ -5,6 +5,7 @@
         NotScheduled,
         Scheduled,
         InProgress,
-        Done
+        Done,
+        Error
     }
 }

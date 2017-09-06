@@ -86,7 +86,7 @@ namespace Spinvoice.Application.ViewModels.Invoices
 
         public async void Init()
         {
-            if (FileProcessStatus != FileProcessStatus.NotScheduled)
+            if (FileProcessStatus != FileProcessStatus.NotScheduled && FileProcessStatus != FileProcessStatus.Error)
             {
                 return;
             }
@@ -102,7 +102,7 @@ namespace Spinvoice.Application.ViewModels.Invoices
                 catch (Exception e)
                 {
                     Logger.Error(e, "Error while parsing file");
-                    BackgroundExecutor.Execute(() => FileProcessStatus = FileProcessStatus.NotScheduled);
+                    BackgroundExecutor.Execute(() => FileProcessStatus = FileProcessStatus.Error);
                     return;
                 }
             }

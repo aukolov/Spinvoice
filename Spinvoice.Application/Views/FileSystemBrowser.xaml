@@ -43,24 +43,35 @@
                                     <DataTrigger Binding="{Binding InvoiceListViewModel.FileProcessStatus}" Value="{x:Static invoices1:FileProcessStatus.NotScheduled}">
                                         <DataTrigger.Setters>
                                             <Setter Property="Ellipse.Stroke" Value="Gray" />
+                                            <Setter Property="Ellipse.ToolTip" Value="File is not scheduled for processing." />
                                         </DataTrigger.Setters>
                                     </DataTrigger>
 
                                     <DataTrigger Binding="{Binding InvoiceListViewModel.FileProcessStatus}" Value="{x:Static invoices1:FileProcessStatus.Done}">
                                         <DataTrigger.Setters>
                                             <Setter Property="Ellipse.Stroke" Value="LightSeaGreen" />
+                                            <Setter Property="Ellipse.ToolTip" Value="File has been successfully processed." />
                                         </DataTrigger.Setters>
                                     </DataTrigger>
 
                                     <DataTrigger Binding="{Binding InvoiceListViewModel.FileProcessStatus}" Value="{x:Static invoices1:FileProcessStatus.Scheduled}">
                                         <DataTrigger.Setters>
                                             <Setter Property="Ellipse.Stroke" Value="LightSkyBlue" />
+                                            <Setter Property="Ellipse.ToolTip" Value="File has been scheduled for processing." />
                                         </DataTrigger.Setters>
                                     </DataTrigger>
 
                                     <DataTrigger Binding="{Binding InvoiceListViewModel.FileProcessStatus}" Value="{x:Static invoices1:FileProcessStatus.InProgress}">
                                         <DataTrigger.Setters>
                                             <Setter Property="Ellipse.Stroke" Value="Yellow" />
+                                            <Setter Property="Ellipse.ToolTip" Value="File is being processed..." />
+                                        </DataTrigger.Setters>
+                                    </DataTrigger>
+
+                                    <DataTrigger Binding="{Binding InvoiceListViewModel.FileProcessStatus}" Value="{x:Static invoices1:FileProcessStatus.Error}">
+                                        <DataTrigger.Setters>
+                                            <Setter Property="Ellipse.Stroke" Value="LightCoral" />
+                                            <Setter Property="Ellipse.ToolTip" Value="An error occurred while processing the file." />
                                         </DataTrigger.Setters>
                                     </DataTrigger>
                                 </Style.Triggers>
