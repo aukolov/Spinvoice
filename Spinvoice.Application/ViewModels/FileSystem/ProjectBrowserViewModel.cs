@@ -140,10 +140,7 @@ namespace Spinvoice.Application.ViewModels.FileSystem
             {
                 if (_selectedFileViewModel == value) return;
                 _selectedFileViewModel = value;
-                if (_selectedFileViewModel != null)
-                {
-                    SelectedFilePath = _selectedFileViewModel.Path;
-                }
+                SelectedFilePath = _selectedFileViewModel?.Path;
                 OnPropertyChanged();
                 SelectedFileChanged.Raise();
             }

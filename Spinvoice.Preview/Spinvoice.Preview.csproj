@@ -97,49 +97,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Content Include="..\Spinvoice.Infrastructure.Pdf\x64\liblept172.dll">
-      <Link>x64\liblept172.dll</Link>
-    </Content>
-    <Content Include="..\Spinvoice.Infrastructure.Pdf\x64\libtesseract304.dll">
-      <Link>x64\libtesseract304.dll</Link>
-    </Content>
-    <Content Include="..\Spinvoice.Infrastructure.Pdf\x86\liblept172.dll">
-      <Link>x86\liblept172.dll</Link>
-    </Content>
-    <Content Include="..\Spinvoice.Infrastructure.Pdf\x86\libtesseract304.dll">
-      <Link>x86\libtesseract304.dll</Link>
-    </Content>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Content Include="..\Spinvoice.Infrastructure.Pdf\tessdata\eng.cube.bigrams">
-      <Link>tessdata\eng.cube.bigrams</Link>
-    </Content>
-    <Content Include="..\Spinvoice.Infrastructure.Pdf\tessdata\eng.cube.fold">
-      <Link>tessdata\eng.cube.fold</Link>
-    </Content>
-    <Content Include="..\Spinvoice.Infrastructure.Pdf\tessdata\eng.cube.lm">
-      <Link>tessdata\eng.cube.lm</Link>
-    </Content>
-    <Content Include="..\Spinvoice.Infrastructure.Pdf\tessdata\eng.cube.nn">
-      <Link>tessdata\eng.cube.nn</Link>
-    </Content>
-    <Content Include="..\Spinvoice.Infrastructure.Pdf\tessdata\eng.cube.params">
-      <Link>tessdata\eng.cube.params</Link>
-    </Content>
-    <Content Include="..\Spinvoice.Infrastructure.Pdf\tessdata\eng.cube.size">
-      <Link>tessdata\eng.cube.size</Link>
-    </Content>
-    <Content Include="..\Spinvoice.Infrastructure.Pdf\tessdata\eng.cube.word-freq">
-      <Link>tessdata\eng.cube.word-freq</Link>
-    </Content>
-    <Content Include="..\Spinvoice.Infrastructure.Pdf\tessdata\eng.tesseract_cube.nn">
-      <Link>tessdata\eng.tesseract_cube.nn</Link>
-    </Content>
-    <Content Include="..\Spinvoice.Infrastructure.Pdf\tessdata\eng.traineddata">
-      <Link>tessdata\eng.traineddata</Link>
-    </Content>
     <Content Include="..\Spinvoice.Server\bin\Debug\Spinvoice.Server.exe.config">
       <Link>Spinvoice.Server.exe.config</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
