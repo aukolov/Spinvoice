@@ -45,7 +45,6 @@ namespace Spinvoice.Application.Services
             catch (Exception e)
             {
                 Logger.Error(e, "Unable to kill process.");
-                throw;
             }
         }
     }

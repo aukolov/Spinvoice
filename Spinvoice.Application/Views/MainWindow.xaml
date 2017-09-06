@@ -49,7 +49,7 @@
 
             <GridSplitter Grid.Column="1" />
 
-            <TabControl Grid.Column="2">
+            <TabControl Grid.Column="2" Visibility="{Binding InvoiceListViewModel, Converter={x:Static converters:NullToCollapsedConverter.Instance}}">
                 <TabItem Header="Document">
                     <WebBrowser views:WebBrowserUtility.BindableSource="{Binding ProjectBrowserViewModel.SelectedFilePath}" />
                 </TabItem>
@@ -58,7 +58,7 @@
                 </TabItem>
             </TabControl>
 
-            <GridSplitter Grid.Column="3" />
+            <GridSplitter Grid.Column="3" Visibility="{Binding InvoiceListViewModel, Converter={x:Static converters:NullToCollapsedConverter.Instance}}" />
 
             <views:InvoiceListView Grid.Column="4"
                                    DataContext="{Binding InvoiceListViewModel}"

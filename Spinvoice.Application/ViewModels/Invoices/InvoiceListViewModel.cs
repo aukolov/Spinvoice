@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using NLog;
 using Spinvoice.Application.Services;
 using Spinvoice.Common.Domain.Pdf;
 using Spinvoice.Utils;
@@ -13,6 +14,8 @@ namespace Spinvoice.Application.ViewModels.Invoices
 {
     public class InvoiceListViewModel : IInvoiceListViewModel
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly IFileParseServiceProxy _fileParseServiceProxy;
         private readonly IFileService _fileService;
         private readonly ITaskSchedulerProvider _taskSchedulerProvider;
@@ -92,7 +95,16 @@ namespace Spinvoice.Application.ViewModels.Invoices
             PdfModel pdfModel;
             if (_fileService.HasExtension(_filePath, ".pdf"))
             {
-                pdfModel = await ParsePdfModel();
+                try
+                {
+                    pdfModel = await ParsePdfModel();
+                }
+                catch (Exception e)
+                {
+                    Logger.Error(e, "Error while parsing file");
+                    BackgroundExecutor.Execute(() => FileProcessStatus = FileProcessStatus.NotScheduled);
+                    return;
+                }
             }
             else
             {
@@ -113,9 +125,9 @@ namespace Spinvoice.Application.ViewModels.Invoices
                     var pdfModel = _fileParseServiceProxy.Parse(_filePath);
                     return pdfModel;
                 },
-            CancellationToken.None,
-            TaskCreationOptions.LongRunning,
-            _taskSchedulerProvider.PdfParseTaskScheduler);
+                CancellationToken.None,
+                TaskCreationOptions.LongRunning,
+                _taskSchedulerProvider.PdfParseTaskScheduler);
         }
 
         private void AddInvoiceViewModel(PdfModel pdfModel, PdfXrayViewModel pdfXrayViewModel)

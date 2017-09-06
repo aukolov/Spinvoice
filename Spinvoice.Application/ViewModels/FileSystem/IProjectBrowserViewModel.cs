@@ -10,5 +10,6 @@ namespace Spinvoice.Application.ViewModels.FileSystem
         string ProjectDirectoryPath { get; }
         ICommand OpenCommand { get; }
         IDirectoryViewModel[] DirectoryViewModels { get; }
+        string SelectedFilePath { get; set; }
     }
 }

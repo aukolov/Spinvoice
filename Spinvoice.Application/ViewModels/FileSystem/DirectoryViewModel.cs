@@ -13,6 +13,7 @@ namespace Spinvoice.Application.ViewModels.FileSystem
     {
         private static readonly HashSet<string> SupportedExtensions = new HashSet<string> { ".pdf", ".jpg", ".jpeg" };
 
+        private readonly ISelectedPathListener _selectedPathListener;
         private bool _isExpanded;
         private bool _isSelected;
 
@@ -23,6 +24,7 @@ namespace Spinvoice.Application.ViewModels.FileSystem
             Func<string, ISelectedPathListener, IDirectoryViewModel> directoryViewModelFactory,
             Func<string, ISelectedPathListener, IFileViewModel> fileViewModelFactory)
         {
+            _selectedPathListener = selectedPathListener;
             Path = path;
             Name = System.IO.Path.GetFileName(path);
 
@@ -53,6 +55,8 @@ namespace Spinvoice.Application.ViewModels.FileSystem
             {
                 if (_isSelected == value) return;
                 _isSelected = value;
+                if (_isSelected)
+                    _selectedPathListener.SelectedFileViewModel = null;
                 OnPropertyChanged();
             }
         }
