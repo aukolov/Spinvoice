@@ -20,18 +20,18 @@ namespace Spinvoice.Domain.Pdf
 
         public Position[] GetValue(PdfModel pdfModel)
         {
-            Logger.Info($"Start analyzing file {pdfModel.FileName}.");
-            Logger.Info($"Amount header text: {AmountHeaderText}, left sentences length: {LeftSentencesLength}, " +
+            Logger.Trace($"Start analyzing file {pdfModel.FileName}.");
+            Logger.Trace($"Amount header text: {AmountHeaderText}, left sentences length: {LeftSentencesLength}, " +
                         $"name index: {NameIndex}, quantity index: {QuantityIndex}.");
             var positions = new List<Position>();
 
             foreach (var page in pdfModel.Pages)
             {
-                Logger.Info("Checking page...");
+                Logger.Trace("Checking page...");
                 var amountHeaderSentence = page.Sentences.FirstOrDefault(model => model.Text == AmountHeaderText);
                 if (amountHeaderSentence == null)
                 {
-                    Logger.Info("Amount header not found.");
+                    Logger.Trace("Amount header not found.");
                     continue;
                 }
 
@@ -40,10 +40,10 @@ namespace Spinvoice.Domain.Pdf
                     decimal amount;
                     if (!AmountParser.TryParse(underAmountSentence.Text, out amount))
                     {
-                        Logger.Info($"Unable to parse amount from '{underAmountSentence.Text}'.");
+                        Logger.Trace($"Unable to parse amount from '{underAmountSentence.Text}'.");
                         continue;
                     }
-                    Logger.Info($"Amount parsed: {amount}.");
+                    Logger.Trace($"Amount parsed: {amount}.");
 
                     string name = null;
                     var quantity = 0;
@@ -51,47 +51,47 @@ namespace Spinvoice.Domain.Pdf
                     if (LeftSentencesLength > 0)
                     {
                         var leftSentences = page.Left(underAmountSentence).ToArray();
-                        Logger.Info($"Left sentences [{leftSentences.Length}]: " +
+                        Logger.Trace($"Left sentences [{leftSentences.Length}]: " +
                                     $"{string.Join(", ", leftSentences.Select(m => m.Text).ToArray())}.");
 
                         if (leftSentences.Length != LeftSentencesLength)
                         {
-                            Logger.Info("Mismatch in count of left sentences.");
+                            Logger.Trace("Mismatch in count of left sentences.");
                             continue;
                         }
 
                         if (NameIndex.HasValue)
                         {
                             name = leftSentences[NameIndex.Value].Text;
-                            Logger.Info($"Name found: {name}.");
+                            Logger.Trace($"Name found: {name}.");
                         }
                         if (QuantityIndex.HasValue)
                         {
                             var quantityText = leftSentences[QuantityIndex.Value].Text;
                             if (!QuantityParser.TryParse(quantityText, out quantity))
                             {
-                                Logger.Info($"Could not parse quantity: {quantityText}.");
+                                Logger.Trace($"Could not parse quantity: {quantityText}.");
                             }
                             else
                             {
-                                Logger.Info($"Quantity found: {quantity}.");
+                                Logger.Trace($"Quantity found: {quantity}.");
                             }
                         }
                     }
                     positions.Add(new Position(name, quantity, amount));
                 }
             }
-            Logger.Info($"Positions found: {positions.Count}");
+            Logger.Trace($"Positions found: {positions.Count}");
 
             return positions.ToArray();
         }
 
         public bool Train(PdfModel pdfModel, RawPosition rawPosition)
         {
-            Logger.Info($"Start training with raw position: {rawPosition}.");
+            Logger.Trace($"Start training with raw position: {rawPosition}.");
             if (!rawPosition.IsFullyInitialized)
             {
-                Logger.Info("Raw position is not fully initialized.");
+                Logger.Trace("Raw position is not fully initialized.");
             }
 
             foreach (var page in pdfModel.Pages.Take(3))
@@ -108,13 +108,13 @@ namespace Spinvoice.Domain.Pdf
         {
             if (page == null)
             {
-                Logger.Info("Page not found.");
+                Logger.Trace("Page not found.");
                 return false;
             }
             var nameSentence = page.Sentences.FirstOrDefault(m => rawPosition.Name == m.Text);
             if (nameSentence == null)
             {
-                Logger.Info("Name sentence not found.");
+                Logger.Trace("Name sentence not found.");
                 return false;
             }
             var amountSentence = page.Sentences.FirstOrDefault(m =>
@@ -122,35 +122,35 @@ namespace Spinvoice.Domain.Pdf
                 && Math.Abs(nameSentence.Bottom - m.Bottom) < 5);
             if (amountSentence == null)
             {
-                Logger.Info("Amount sentence not found.");
+                Logger.Trace("Amount sentence not found.");
                 return false;
             }
 
             var amountHeader = page.Above(amountSentence);
             if (amountHeader == null)
             {
-                Logger.Info("Amount header not found.");
+                Logger.Trace("Amount header not found.");
                 return false;
             }
 
             AmountHeaderText = amountHeader.Text;
-            Logger.Info($"Amount header text: {AmountHeaderText}.");
+            Logger.Trace($"Amount header text: {AmountHeaderText}.");
 
             var leftSentences = page.Left(amountSentence).ToArray();
             LeftSentencesLength = leftSentences.Length;
-            Logger.Info($"Left sentences [{LeftSentencesLength}]: " +
+            Logger.Trace($"Left sentences [{LeftSentencesLength}]: " +
                         $"{string.Join(", ", leftSentences.Select(m => m.Text).ToArray())}.");
 
             NameIndex = leftSentences
                 .Select((m, i) => new { m, i })
                 .FirstOrDefault(x => x.m.Text == rawPosition.Name)
                 ?.i;
-            Logger.Info($"Name index: {NameIndex}.");
+            Logger.Trace($"Name index: {NameIndex}.");
             QuantityIndex = leftSentences
                 .Select((m, i) => new { m, i })
                 .FirstOrDefault(x => x.m.Text == rawPosition.Quantity)
                 ?.i;
-            Logger.Info($"Quantity index: {QuantityIndex}.");
+            Logger.Trace($"Quantity index: {QuantityIndex}.");
 
             return true;
         }
