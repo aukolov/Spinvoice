@@ -86,7 +86,7 @@ namespace Spinvoice.Application.ViewModels.Invoices
 
         public async void Init()
         {
-            if (FileProcessStatus != FileProcessStatus.NotScheduled && FileProcessStatus != FileProcessStatus.Error)
+            if (FileProcessStatus != FileProcessStatus.NotScheduled)
             {
                 return;
             }
@@ -98,19 +98,20 @@ namespace Spinvoice.Application.ViewModels.Invoices
                 try
                 {
                     pdfModel = await ParsePdfModel();
+                    BackgroundExecutor.Execute(() => FileProcessStatus = FileProcessStatus.Done);
                 }
                 catch (Exception e)
                 {
                     Logger.Error(e, "Error while parsing file. ");
                     BackgroundExecutor.Execute(() => FileProcessStatus = FileProcessStatus.Error);
-                    return;
+                    pdfModel = null;
                 }
             }
             else
             {
                 pdfModel = null;
+                BackgroundExecutor.Execute(() => FileProcessStatus = FileProcessStatus.Done);
             }
-            BackgroundExecutor.Execute(() => FileProcessStatus = FileProcessStatus.Done);
 
             PdfXrayViewModel = pdfModel != null ? new PdfXrayViewModel(pdfModel) : null;
             AddInvoiceViewModel(pdfModel, PdfXrayViewModel);

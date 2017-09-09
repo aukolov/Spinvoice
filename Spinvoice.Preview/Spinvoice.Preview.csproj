@@ -29,7 +29,7 @@
     <InstallUrl>https://raw.githubusercontent.com/aukolov/Spinvoice/dev/Spinvoice.Preview/publish/</InstallUrl>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>23</ApplicationRevision>
+    <ApplicationRevision>24</ApplicationRevision>
     <ApplicationVersion>1.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -101,9 +101,48 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Content Include="..\packages\Tesseract.3.0.2.0\content\x64\liblept172.dll">
+      <Link>x64\liblept172.dll</Link>
+    </Content>
+    <Content Include="..\packages\Tesseract.3.0.2.0\content\x64\libtesseract304.dll">
+      <Link>x64\libtesseract304.dll</Link>
+    </Content>
+    <Content Include="..\packages\Tesseract.3.0.2.0\content\x86\liblept172.dll">
+      <Link>x86\liblept172.dll</Link>
+    </Content>
+    <Content Include="..\packages\Tesseract.3.0.2.0\content\x86\libtesseract304.dll">
+      <Link>x86\libtesseract304.dll</Link>
+    </Content>
     <Content Include="..\Spinvoice.Server\bin\Debug\Spinvoice.Server.exe.config">
       <Link>Spinvoice.Server.exe.config</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Spinvoice.Infrastructure.Pdf\tessdata\eng.cube.bigrams">
+      <Link>tessdata\eng.cube.bigrams</Link>
+    </Content>
+    <Content Include="..\Spinvoice.Infrastructure.Pdf\tessdata\eng.cube.fold">
+      <Link>tessdata\eng.cube.fold</Link>
+    </Content>
+    <Content Include="..\Spinvoice.Infrastructure.Pdf\tessdata\eng.cube.lm">
+      <Link>tessdata\eng.cube.lm</Link>
+    </Content>
+    <Content Include="..\Spinvoice.Infrastructure.Pdf\tessdata\eng.cube.nn">
+      <Link>tessdata\eng.cube.nn</Link>
+    </Content>
+    <Content Include="..\Spinvoice.Infrastructure.Pdf\tessdata\eng.cube.params">
+      <Link>tessdata\eng.cube.params</Link>
+    </Content>
+    <Content Include="..\Spinvoice.Infrastructure.Pdf\tessdata\eng.cube.size">
+      <Link>tessdata\eng.cube.size</Link>
+    </Content>
+    <Content Include="..\Spinvoice.Infrastructure.Pdf\tessdata\eng.cube.word-freq">
+      <Link>tessdata\eng.cube.word-freq</Link>
+    </Content>
+    <Content Include="..\Spinvoice.Infrastructure.Pdf\tessdata\eng.tesseract_cube.nn">
+      <Link>tessdata\eng.tesseract_cube.nn</Link>
+    </Content>
+    <Content Include="..\Spinvoice.Infrastructure.Pdf\tessdata\eng.traineddata">
+      <Link>tessdata\eng.traineddata</Link>
     </Content>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -134,6 +173,7 @@
       <Name>Spinvoice.Application</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
