@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using NUnit.Framework;
 using Spinvoice.Domain.Company;
 using Spinvoice.Infrastructure.DataAccess;
@@ -174,9 +175,11 @@ namespace Spinvoice.Tests.Infrastructure.DataAccess
                 Name = "name1"
             };
             _companyDataAccess.AddOrUpdate(company);
+            Console.WriteLine($@"Company ID: {company.Id}");
 
             company.Name = "name2";
             _companyDataAccess.AddOrUpdate(company);
+            Console.WriteLine($@"Company ID: {company.Id}");
 
             var companies = _companyDataAccess.GetAll();
             Assert.AreEqual(1, companies.Length);
