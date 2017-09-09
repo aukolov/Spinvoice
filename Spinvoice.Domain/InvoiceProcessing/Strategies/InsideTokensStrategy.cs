@@ -39,7 +39,7 @@ namespace Spinvoice.Domain.Pdf
             value = " " + value;
             foreach (var sentence in pdfModel.Sentences)
             {
-                if (!sentence.Text.EndsWith(value)) continue;
+                if (!sentence.Text.TrimEnd().EndsWith(value)) continue;
                 var candidate = sentence.Text
                     .Substring(0, sentence.Text.Length - value.Length)
                     .Trim();

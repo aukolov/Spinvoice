@@ -15,8 +15,13 @@ namespace Spinvoice.Domain.Pdf
 
         public string GetValue(PdfModel pdfModel)
         {
-            Logger.Trace($"Start getting value with previous text '{PreviousText}'.");
-            if (string.IsNullOrEmpty(PreviousText))
+            return GetValue(pdfModel, PreviousText);
+        }
+
+        private string GetValue(PdfModel pdfModel, string previousText)
+        {
+            Logger.Trace($"Start getting value with previous text '{previousText}'.");
+            if (string.IsNullOrEmpty(previousText))
             {
                 return null;
             }
@@ -31,7 +36,7 @@ namespace Spinvoice.Domain.Pdf
                         Logger.Trace($"Found next: '{text}'.");
                         return text;
                     }
-                    if (text == PreviousText.Trim())
+                    if (text == previousText.Trim())
                     {
                         Logger.Trace($"Found preceeding text: '{text}'.");
                         isNext = true;
@@ -49,14 +54,16 @@ namespace Spinvoice.Domain.Pdf
                 Logger.Trace("Value is null or empty.");
                 return false;
             }
+            value = value.Trim();
             string candidate = null;
             foreach (var blockModel in pdfModel.BlockModels)
             {
                 for (var i = 0; i < blockModel.Sentences.Count; i++)
                 {
-                    if (blockModel.Sentences[i].Text.Trim() == value.Trim()
+                    if (blockModel.Sentences[i].Text.Trim() == value
                         && !TextUtils.IsNumber(candidate)
-                        && TextUtils.IsNonTrivialString(candidate))
+                        && TextUtils.IsNonTrivialString(candidate)
+                        && GetValue(pdfModel, candidate) == value)
                     {
                         Logger.Trace($"Previous text: '{candidate}'.");
                         PreviousText = candidate;
