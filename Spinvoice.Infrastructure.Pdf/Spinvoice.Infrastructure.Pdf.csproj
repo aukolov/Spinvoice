@@ -61,6 +61,7 @@
     <Compile Include="IPdfParser.cs" />
     <Compile Include="ISmartTextExtractionStrategy.cs" />
     <Compile Include="ITesseractDataPathProvider.cs" />
+    <Compile Include="IText7BasedPageParser.cs" />
     <Compile Include="ITextBasedPageParser.cs" />
     <Compile Include="PdfImageExtractor.cs" />
     <Compile Include="PdfParser.cs" />

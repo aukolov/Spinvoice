@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Spinvoice.Common.Infrastructure.Logging;
+// ReSharper disable RedundantNameQualifier
 
 namespace Spinvoice.Server
 {
@@ -8,9 +9,10 @@ namespace Spinvoice.Server
         public static IContainer Init()
         {
             var containerBuilder = new ContainerBuilder();
-            containerBuilder.RegisterModule<Common.Infrastructure.AutofacModule>();
-            containerBuilder.RegisterModule<Infrastructure.Pdf.AutofacModule>();
-            containerBuilder.RegisterModule<Server.Services.AutofacModule>();
+            containerBuilder.RegisterModule<Spinvoice.Common.Infrastructure.AutofacModule>();
+            containerBuilder.RegisterModule<Spinvoice.Infrastructure.Pdf.AutofacModule>();
+            containerBuilder.RegisterModule<Spinvoice.Server.Infrastructure.Pdf.Text7.AutofacModule>();
+            containerBuilder.RegisterModule<Spinvoice.Server.Services.AutofacModule>();
             containerBuilder.RegisterModule<AutofacModule>();
 
             var container = containerBuilder.Build();

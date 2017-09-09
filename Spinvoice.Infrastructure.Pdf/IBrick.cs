@@ -1,6 +1,6 @@
 ﻿namespace Spinvoice.Infrastructure.Pdf
 {
-    internal interface IBrick
+    public interface IBrick
     {
         string Text { get; }
         double X { get; }
@@ -9,7 +9,7 @@
         double Height { get; }
     }
 
-    internal class Brick : IBrick
+    public class Brick : IBrick
     {
         public Brick(string text, double x, double y, double width, double height)
         {

@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using Spinvoice.Common.Domain.Pdf;
-using Spinvoice.Domain.Pdf;
 
 namespace Spinvoice.Infrastructure.Pdf
 {
-    internal class BricksToSentensesTranslator : IBricksToSentensesTranslator
+    public class BricksToSentensesTranslator : IBricksToSentensesTranslator
     {
         private readonly double _xDelta;
         private readonly double _yDelta;

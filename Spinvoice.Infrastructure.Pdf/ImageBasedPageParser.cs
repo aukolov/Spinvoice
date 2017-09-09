@@ -4,7 +4,6 @@ using System.Drawing;
 using iTextSharp.text.pdf;
 using NLog;
 using Spinvoice.Common.Domain.Pdf;
-using Spinvoice.Domain.Pdf;
 using Tesseract;
 
 namespace Spinvoice.Infrastructure.Pdf
@@ -22,48 +21,52 @@ namespace Spinvoice.Infrastructure.Pdf
         {
             _tesseractDataPathProvider = tesseractDataPathProvider;
             _bricksToSentensesTranslator = new BricksToSentensesTranslator(
-                xDelta: 7, 
-                yDelta: 3, 
+                xDelta: 7,
+                yDelta: 3,
                 addSpaces: true);
             _pdfImageExtractor = new PdfImageExtractor();
         }
 
-        public List<List<SentenceModel>> Parse(PdfReader pdfReader, int pageNumber)
+        public List<List<SentenceModel>> Parse(string pdfFilePath, int pageNumber)
         {
-            var image = _pdfImageExtractor.ExtractImagesFromPdf(pdfReader, pageNumber);
-            if (image == null)
+            using (var reader = new PdfReader(pdfFilePath))
             {
-                return new List<List<SentenceModel>>();
-            }
 
-            var scale = 1d;
-            if (image.Height != 0 && image.Width != 0)
-            {
-                var widthScale = PdfPageSize.Width / image.Width;
-                var heightScale = PdfPageSize.Height / image.Height;
-
-                scale = Math.Min(widthScale, heightScale);
-            }
-
-            var engine = new TesseractEngine(_tesseractDataPathProvider.Path, "eng");
-            Page page;
-            try
-            {
-                page = engine.Process(new Bitmap(image));
-            }
-            catch (ArgumentException ex)
-            {
-                Logger.Error(ex, "Error while processing image.");
-                return new List<List<SentenceModel>>();
-            }
-
-            var bricks = ExtractBricks(page, scale);
-            var sentenceModels = _bricksToSentensesTranslator.Translate(
-                new List<IBrick[]>
+                var image = _pdfImageExtractor.ExtractImagesFromPdf(reader, pageNumber);
+                if (image == null)
                 {
-                    bricks.ToArray()
-                });
-            return sentenceModels;
+                    return new List<List<SentenceModel>>();
+                }
+
+                var scale = 1d;
+                if (image.Height != 0 && image.Width != 0)
+                {
+                    var widthScale = PdfPageSize.Width / image.Width;
+                    var heightScale = PdfPageSize.Height / image.Height;
+
+                    scale = Math.Min(widthScale, heightScale);
+                }
+
+                var engine = new TesseractEngine(_tesseractDataPathProvider.Path, "eng");
+                Page page;
+                try
+                {
+                    page = engine.Process(new Bitmap(image));
+                }
+                catch (ArgumentException ex)
+                {
+                    Logger.Error(ex, "Error while processing image.");
+                    return new List<List<SentenceModel>>();
+                }
+
+                var bricks = ExtractBricks(page, scale);
+                var sentenceModels = _bricksToSentensesTranslator.Translate(
+                    new List<IBrick[]>
+                    {
+                        bricks.ToArray()
+                    });
+                return sentenceModels;
+            }
         }
 
         private static List<IBrick> ExtractBricks(Page page, double scale)

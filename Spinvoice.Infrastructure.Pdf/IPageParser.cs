@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
-using iTextSharp.text.pdf;
 using Spinvoice.Common.Domain.Pdf;
-using Spinvoice.Domain.Pdf;
 
 namespace Spinvoice.Infrastructure.Pdf
 {
-    internal interface IPageParser
+    public interface IPageParser
     {
-        List<List<SentenceModel>> Parse(PdfReader pdfReader, int pageNumber);
+        List<List<SentenceModel>> Parse(string pdfFilePath, int pageNumber);
     }
 }
