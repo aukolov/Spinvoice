@@ -1,4 +1,5 @@
-﻿// ReSharper disable CheckNamespace
+﻿// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable CheckNamespace
 
 using NLog;
 using Spinvoice.Common.Domain.Pdf;
@@ -10,7 +11,6 @@ namespace Spinvoice.Domain.Pdf
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        // ReSharper disable once MemberCanBePrivate.Global
         public string PreviousText { get; set; }
 
         public string GetValue(PdfModel pdfModel)

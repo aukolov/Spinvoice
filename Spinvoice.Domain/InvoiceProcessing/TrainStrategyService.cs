@@ -2,6 +2,7 @@
 using NLog;
 using Spinvoice.Common.Domain.Pdf;
 using Spinvoice.Domain.Accounting;
+using Spinvoice.Domain.InvoiceProcessing.Strategies;
 using Spinvoice.Domain.Pdf;
 
 namespace Spinvoice.Domain.InvoiceProcessing
@@ -40,7 +41,7 @@ namespace Spinvoice.Domain.InvoiceProcessing
                 company.InvoiceNetAmountStrategy,
                 pdfModel,
                 rawInvoice.NetAmount,
-                GetStrategies());
+                GetAmountStrategies());
 
             Train(company, rawInvoice.FirstPosition, pdfModel);
         }
@@ -98,6 +99,13 @@ namespace Spinvoice.Domain.InvoiceProcessing
         }
 
         private static IEnumerable<IStringPdfAnalysisStrategy> GetStrategies()
+        {
+            yield return new LocationStrategy();
+            yield return new NextTokenStrategy();
+            yield return new InsideTokensStrategy();
+        }
+
+        private static IEnumerable<IStringPdfAnalysisStrategy> GetAmountStrategies()
         {
             yield return new NextTokenStrategy();
             yield return new InsideTokensStrategy();

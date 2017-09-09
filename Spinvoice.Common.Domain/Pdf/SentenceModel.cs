@@ -34,6 +34,5 @@ namespace Spinvoice.Common.Domain.Pdf
 
         public double Right => Left + Width;
         public double Top => Bottom - Height;
-        public double MidX => Left + Width / 2;
     }
 }

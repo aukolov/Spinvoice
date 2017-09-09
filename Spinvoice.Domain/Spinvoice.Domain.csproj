@@ -95,6 +95,7 @@
     <Compile Include="InvoiceProcessing\AnalyzeInvoiceService.cs" />
     <Compile Include="InvoiceProcessing\Strategies\IPdfPositionAnalysisStrategy.cs" />
     <Compile Include="InvoiceProcessing\Strategies\IStrategy.cs" />
+    <Compile Include="InvoiceProcessing\Strategies\LocationStrategy.cs" />
     <Compile Include="InvoiceProcessing\Strategies\TextUtils.cs" />
     <Compile Include="InvoiceProcessing\Strategies\UnderAmountPositionStrategy.cs" />
     <Compile Include="InvoiceProcessing\TrainStrategyService.cs" />
