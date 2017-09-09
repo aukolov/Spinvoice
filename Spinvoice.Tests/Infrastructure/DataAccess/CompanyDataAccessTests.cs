@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.IO;
+using NUnit.Framework;
 using Spinvoice.Domain.Company;
 using Spinvoice.Infrastructure.DataAccess;
 
@@ -8,12 +9,14 @@ namespace Spinvoice.Tests.Infrastructure.DataAccess
     public class CompanyDataAccessTests
     {
         private CompanyDataAccess _companyDataAccess;
+        private DataDirectoryProvider _dataDirectoryProvider;
 
         [SetUp]
         public void Setup()
         {
-            var documentStoreRepository = new DocumentStoreContainer(
-                new DataDirectoryProvider("Data"));
+            _dataDirectoryProvider = new DataDirectoryProvider("TestData");
+            DropDatabaseFiles();
+            var documentStoreRepository = new DocumentStoreContainer(_dataDirectoryProvider);
             _companyDataAccess = new CompanyDataAccess(documentStoreRepository);
             _companyDataAccess.DeleteAll();
         }
@@ -21,8 +24,16 @@ namespace Spinvoice.Tests.Infrastructure.DataAccess
         [TearDown]
         public void TearDown()
         {
-            _companyDataAccess?.DeleteAll();
             _companyDataAccess?.Dispose();
+            DropDatabaseFiles();
+        }
+
+        private void DropDatabaseFiles()
+        {
+            if (Directory.Exists(_dataDirectoryProvider.Path))
+            {
+                Directory.Delete(_dataDirectoryProvider.Path, true);
+            }
         }
 
         public string GetCaller([System.Runtime.CompilerServices.CallerMemberName] string memberName = "")
