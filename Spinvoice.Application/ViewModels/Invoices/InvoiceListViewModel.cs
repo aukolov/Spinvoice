@@ -114,7 +114,8 @@ namespace Spinvoice.Application.ViewModels.Invoices
             }
 
             PdfXrayViewModel = pdfModel != null ? new PdfXrayViewModel(pdfModel) : null;
-            AddInvoiceViewModel(pdfModel, PdfXrayViewModel);
+            var invoiceViewModel = _invoiceViewModelFactory(pdfModel, PdfXrayViewModel);
+            InvoiceViewModels.Add(invoiceViewModel);
             IsLoaded = true;
         }
 
@@ -133,11 +134,9 @@ namespace Spinvoice.Application.ViewModels.Invoices
 
         private void AddInvoiceViewModel(PdfModel pdfModel, PdfXrayViewModel pdfXrayViewModel)
         {
-            var invoiceViewModel = _invoiceViewModelFactory(
-                pdfModel,
-                pdfXrayViewModel);
-            invoiceViewModel.Activated.Subscribe(OnActivated);
+            var invoiceViewModel = _invoiceViewModelFactory(pdfModel, pdfXrayViewModel);
             InvoiceViewModels.Add(invoiceViewModel);
+            invoiceViewModel.Activated.Subscribe(OnActivated);
             invoiceViewModel.IsActive = true;
         }
 

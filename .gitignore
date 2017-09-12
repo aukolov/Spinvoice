@@ -52,3 +52,4 @@ Secret.cs
 !/packages/*/lib/*.dll
 !/packages/*/lib/*/*.dll
 !/publish/*
+.vs/
