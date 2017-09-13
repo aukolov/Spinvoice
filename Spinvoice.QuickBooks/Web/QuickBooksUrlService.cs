@@ -2,7 +2,7 @@
 {
     public static class QuickBooksUrlService
     {
-        public static string GetExternalInviceUrl(string externalId)
+        public static string GetExternalInvoiceUrl(string externalId)
         {
             // ReSharper disable once JoinDeclarationAndInitializer
             string region;

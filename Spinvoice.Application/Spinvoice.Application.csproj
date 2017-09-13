@@ -187,10 +187,6 @@
     <Compile Include="Views\QuickBooks\AccountsChartWindow.xaml.cs">
       <DependentUpon>AccountsChartWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\QuickBooks\QuickBooksConnectWindow.xaml.cs">
-      <DependentUpon>QuickBooksConnectWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\WebBrowserUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\Spinvoice.Server\bin\Debug\Spinvoice.Server.exe.config">
@@ -218,6 +214,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\QuickBooks\Spinvoice.QuickBooks.Views\Spinvoice.QuickBooks.Views.csproj">
+      <Project>{32cfae79-6c3e-4153-ba68-4eea8e51d497}</Project>
+      <Name>Spinvoice.QuickBooks.Views</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Spinvoice.Common.Domain\Spinvoice.Common.Domain.csproj">
       <Project>{6498b4d4-8d2a-4d47-af0b-c8345d518531}</Project>
       <Name>Spinvoice.Common.Domain</Name>
@@ -225,6 +225,10 @@
     <ProjectReference Include="..\Spinvoice.Common.Infrastructure\Spinvoice.Common.Infrastructure.csproj">
       <Project>{54fea3d8-46e3-441d-9375-bd409fdcbef1}</Project>
       <Name>Spinvoice.Common.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Spinvoice.Common.Presentation\Spinvoice.Common.Presentation.csproj">
+      <Project>{3e074750-19d4-438a-bb65-cc8e19c5b7c3}</Project>
+      <Name>Spinvoice.Common.Presentation</Name>
     </ProjectReference>
     <ProjectReference Include="..\Spinvoice.Domain\Spinvoice.Domain.csproj">
       <Project>{1f2abff6-b597-4366-a02b-000346436312}</Project>
@@ -305,10 +309,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\QuickBooks\AccountsChartWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\QuickBooks\QuickBooksConnectWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

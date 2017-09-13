@@ -29,8 +29,8 @@
     <InstallUrl>https://raw.githubusercontent.com/aukolov/Spinvoice/master/Spinvoice/publish/</InstallUrl>
     <UpdateUrl>https://raw.githubusercontent.com/aukolov/Spinvoice/master/Spinvoice/publish/</UpdateUrl>
     <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>43</ApplicationRevision>
-    <ApplicationVersion>1.2.0.%2a</ApplicationVersion>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>1.4.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -72,10 +72,6 @@
     <ApplicationIcon>Spinvoice.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="itext.font_asian, Version=7.0.4.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
-      <HintPath>..\packages\itext7.font-asian.7.0.4\lib\net40\itext.font_asian.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.4.11\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
@@ -200,6 +196,20 @@
       <Link>x86\liblept172.dll</Link>
     </Content>
     <Content Include="..\packages\tesseract.3.0.2.0\content\x86\libtesseract304.dll">
+      <Link>x86\libtesseract304.dll</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\spinvoice.infrastructure.pdf\x64\liblept172.dll">
+      <Link>x64\liblept172.dll</Link>
+    </Content>
+    <Content Include="..\spinvoice.infrastructure.pdf\x64\libtesseract304.dll">
+      <Link>x64\libtesseract304.dll</Link>
+    </Content>
+    <Content Include="..\spinvoice.infrastructure.pdf\x86\liblept172.dll">
+      <Link>x86\liblept172.dll</Link>
+    </Content>
+    <Content Include="..\spinvoice.infrastructure.pdf\x86\libtesseract304.dll">
       <Link>x86\libtesseract304.dll</Link>
     </Content>
   </ItemGroup>

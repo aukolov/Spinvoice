@@ -1,13 +1,9 @@
-﻿using System.Windows;
-using System.Windows.Navigation;
+﻿using System.Windows.Navigation;
 using Spinvoice.QuickBooks.ViewModels;
 
-namespace Spinvoice.Application.Views.QuickBooks
+namespace Spinvoice.QuickBooks.Views
 {
-    /// <summary>
-    /// Interaction logic for QuickBooksConnectWindow.xaml
-    /// </summary>
-    public partial class QuickBooksConnectWindow : Window
+    public partial class QuickBooksConnectWindow
     {
         public QuickBooksConnectWindow()
         {

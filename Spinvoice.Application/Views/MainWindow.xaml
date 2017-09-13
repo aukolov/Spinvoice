@@ -6,6 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:Spinvoice.Application.ViewModels"
         xmlns:views="clr-namespace:Spinvoice.Application.Views"
+        xmlns:presentation="clr-namespace:Spinvoice.Common.Presentation;assembly=Spinvoice.Common.Presentation"
         Title="Spinvoice"
         Width="525"
         Height="470"
@@ -51,7 +52,7 @@
 
             <TabControl Grid.Column="2" Visibility="{Binding InvoiceListViewModel, Converter={x:Static converters:NullToCollapsedConverter.Instance}}">
                 <TabItem Header="Document">
-                    <WebBrowser views:WebBrowserUtility.BindableSource="{Binding ProjectBrowserViewModel.SelectedFilePath}" />
+                    <WebBrowser presentation:WebBrowserUtility.BindableSource="{Binding ProjectBrowserViewModel.SelectedFilePath}" />
                 </TabItem>
                 <TabItem Header="X-Ray">
                     <views:PdfXrayView DataContext="{Binding InvoiceListViewModel.PdfXrayViewModel}" />

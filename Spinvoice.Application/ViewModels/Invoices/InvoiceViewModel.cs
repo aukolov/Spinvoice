@@ -453,7 +453,7 @@ namespace Spinvoice.Application.ViewModels.Invoices
                 return;
             }
 
-            Process.Start(QuickBooksUrlService.GetExternalInviceUrl(Invoice.ExternalId));
+            Process.Start(QuickBooksUrlService.GetExternalInvoiceUrl(Invoice.ExternalId));
         }
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)

@@ -7,6 +7,7 @@ using Spinvoice.Application.Views.Exchange;
 using Spinvoice.Application.Views.QuickBooks;
 using Spinvoice.Domain.UI;
 using Spinvoice.QuickBooks.ViewModels;
+using Spinvoice.QuickBooks.Views;
 
 namespace Spinvoice.Application.Services
 {

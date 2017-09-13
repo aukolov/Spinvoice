@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Spinvoice.Application.Views
+namespace Spinvoice.Common.Presentation
 { 
     public static class WebBrowserUtility
     {
