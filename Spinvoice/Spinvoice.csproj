@@ -29,7 +29,7 @@
     <InstallUrl>https://raw.githubusercontent.com/aukolov/Spinvoice/master/Spinvoice/publish/</InstallUrl>
     <UpdateUrl>https://raw.githubusercontent.com/aukolov/Spinvoice/master/Spinvoice/publish/</UpdateUrl>
     <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationRevision>1</ApplicationRevision>
     <ApplicationVersion>1.4.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
