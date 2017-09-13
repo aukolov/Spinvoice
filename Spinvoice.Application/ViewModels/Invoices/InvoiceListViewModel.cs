@@ -26,6 +26,7 @@ namespace Spinvoice.Application.ViewModels.Invoices
         private PdfXrayViewModel _pdfXrayViewModel;
         private bool _isLoaded;
         private FileProcessStatus _fileProcessStatus;
+        private bool _isSubscribed;
 
         public InvoiceListViewModel(
             string filePath,
@@ -117,6 +118,10 @@ namespace Spinvoice.Application.ViewModels.Invoices
             var invoiceViewModel = _invoiceViewModelFactory(pdfModel, PdfXrayViewModel);
             InvoiceViewModels.Add(invoiceViewModel);
             IsLoaded = true;
+            if (_isSubscribed)
+            {
+                Subscribe();
+            }
         }
 
         private async Task<PdfModel> ParsePdfModel()
@@ -147,6 +152,7 @@ namespace Spinvoice.Application.ViewModels.Invoices
 
         public void Subscribe()
         {
+            _isSubscribed = true;
             if (_lastActive != null && InvoiceViewModels.Contains(_lastActive))
             {
                 _lastActive.IsActive = true;
@@ -159,6 +165,7 @@ namespace Spinvoice.Application.ViewModels.Invoices
 
         public void Unsubscribe()
         {
+            _isSubscribed = false;
             _lastActive = InvoiceViewModels.FirstOrDefault(vm => vm.IsActive);
             InvoiceViewModels.ForEach(vm => vm.IsActive = false);
         }
