@@ -1,8 +1,10 @@
 ﻿using System;
+using Autofac;
 using NUnit.Framework;
 using Spinvoice.Domain.Accounting;
 using Spinvoice.Domain.Company;
 using Spinvoice.Domain.InvoiceProcessing;
+using Spinvoice.Infrastructure.DataAccess;
 using Spinvoice.Infrastructure.Pdf;
 using Spinvoice.IntegrationTests.Mocks;
 
@@ -14,7 +16,7 @@ namespace Spinvoice.IntegrationTests
         private CompanyRepository _companyRepository;
         private AnalyzeInvoiceService _analyzeInvoiceService;
         private TrainStrategyService _trainStrategyService;
-        private PdfParser _pdfParser;
+        private IPdfParser _pdfParser;
 
         [SetUp]
         public void Setup()
@@ -22,7 +24,9 @@ namespace Spinvoice.IntegrationTests
             _companyRepository = new CompanyRepository(new CompanyDataAccessMock());
             _analyzeInvoiceService = new AnalyzeInvoiceService(_companyRepository);
             _trainStrategyService = new TrainStrategyService();
-            _pdfParser = new PdfParser();
+
+            var container = TestContainer.GetBuilder().Build();
+            _pdfParser = container.Resolve<IPdfParser>();
         }
 
         private static object[] GetTestData()

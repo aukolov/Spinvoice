@@ -1,0 +1,9 @@
+﻿<Application x:Class="Spinvoice.Server.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Spinvoice.Server"
+             DispatcherUnhandledException="App_OnDispatcherUnhandledException"
+             Exit="OnExit"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources />
+</Application>

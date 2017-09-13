@@ -41,5 +41,20 @@ namespace Spinvoice.Tests.Domain.Utils
             var result = AmountParser.Parse("USD 1000");
             Assert.AreEqual(1000m, result);
         }
+
+        [Test]
+        public void ParsesMissingIntegralPartAsZero()
+        {
+            var result = AmountParser.Parse(".98");
+            Assert.AreEqual(0.98m, result);
+        }
+
+        [Test]
+        public void ParsesMissingIntegralPartWithSpacesAsZero()
+        {
+            var result = AmountParser.Parse("           .98");
+            Assert.AreEqual(0.98m, result);
+        }
+
     }
 }

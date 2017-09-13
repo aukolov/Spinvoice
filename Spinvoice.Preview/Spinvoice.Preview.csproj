@@ -29,8 +29,8 @@
     <InstallUrl>https://raw.githubusercontent.com/aukolov/Spinvoice/dev/Spinvoice.Preview/publish/</InstallUrl>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>10</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <ApplicationRevision>26</ApplicationRevision>
+    <ApplicationVersion>1.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -44,6 +44,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>x64</PlatformTarget>
@@ -73,13 +74,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -88,16 +83,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
+    <Compile Include="EntryPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -111,22 +97,26 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Content Include="..\Spinvoice.Infrastructure.Pdf\x64\liblept172.dll">
-      <Link>x64\liblept172.dll</Link>
-    </Content>
-    <Content Include="..\Spinvoice.Infrastructure.Pdf\x64\libtesseract304.dll">
-      <Link>x64\libtesseract304.dll</Link>
-    </Content>
-    <Content Include="..\Spinvoice.Infrastructure.Pdf\x86\liblept172.dll">
-      <Link>x86\liblept172.dll</Link>
-    </Content>
-    <Content Include="..\Spinvoice.Infrastructure.Pdf\x86\libtesseract304.dll">
-      <Link>x86\libtesseract304.dll</Link>
-    </Content>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Content Include="..\packages\Tesseract.3.0.2.0\content\x64\liblept172.dll">
+      <Link>x64\liblept172.dll</Link>
+    </Content>
+    <Content Include="..\packages\Tesseract.3.0.2.0\content\x64\libtesseract304.dll">
+      <Link>x64\libtesseract304.dll</Link>
+    </Content>
+    <Content Include="..\packages\Tesseract.3.0.2.0\content\x86\liblept172.dll">
+      <Link>x86\liblept172.dll</Link>
+    </Content>
+    <Content Include="..\packages\Tesseract.3.0.2.0\content\x86\libtesseract304.dll">
+      <Link>x86\libtesseract304.dll</Link>
+    </Content>
+    <Content Include="..\Spinvoice.Server\bin\Debug\Spinvoice.Server.exe.config">
+      <Link>Spinvoice.Server.exe.config</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\Spinvoice.Infrastructure.Pdf\tessdata\eng.cube.bigrams">
       <Link>tessdata\eng.cube.bigrams</Link>
     </Content>
@@ -166,12 +156,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Spinvoice\Spinvoice.csproj">
-      <Project>{cb8bcac5-e95a-4c68-95ac-081f798e91b5}</Project>
-      <Name>Spinvoice</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.5.2 %28x86 and x64%29</ProductName>
@@ -183,6 +167,13 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Spinvoice.Application\Spinvoice.Application.csproj">
+      <Project>{e2691083-9cb7-4071-984b-abc52570ae0f}</Project>
+      <Name>Spinvoice.Application</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

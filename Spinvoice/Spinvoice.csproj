@@ -44,7 +44,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>x64</PlatformTarget>
@@ -72,13 +72,11 @@
     <ApplicationIcon>Spinvoice.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.4.11\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Reactive.Core, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Reactive.Core.3.1.1\lib\net45\System.Reactive.Core.dll</HintPath>
       <Private>True</Private>
@@ -100,203 +98,16 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Windows" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="Xceed.Wpf.AvalonDock, Version=3.1.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.3.1\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero, Version=3.1.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.3.1\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro, Version=3.1.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.3.1\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010, Version=3.1.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.3.1\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Xceed.Wpf.DataGrid, Version=3.1.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.3.1\lib\net40\Xceed.Wpf.DataGrid.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Xceed.Wpf.Toolkit, Version=3.1.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.3.1\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Compile Include="Properties\Annotations3.cs" />
-    <Compile Include="Services\Bootstrapper.cs" />
-    <Compile Include="Services\ExchangeRatesLoader.cs" />
-    <Compile Include="Services\FileNamesComparer.cs" />
-    <Compile Include="Services\FileService.cs" />
-    <Compile Include="Services\IFileService.cs" />
-    <Compile Include="Services\InvoiceFormatter.cs" />
-    <Compile Include="Services\LogConfigurator.cs" />
-    <Compile Include="Services\WindowManager.cs" />
-    <Compile Include="ViewModels\Exchange\CheckExchangeRatesViewModel.cs" />
-    <Compile Include="ViewModels\Exchange\LoadExchangeRatesViewModel.cs" />
-    <Compile Include="ViewModels\Invoices\ActionSelectorViewModel.cs" />
-    <Compile Include="ViewModels\Invoices\EditField.cs" />
-    <Compile Include="ViewModels\FileSystem\DirectoryViewModel.cs" />
-    <Compile Include="ViewModels\Exchange\ExchangeRatesViewModel.cs" />
-    <Compile Include="ViewModels\FileSystem\FileViewModel.cs" />
-    <Compile Include="ViewModels\FileSystem\IFileSystemViewModel.cs" />
-    <Compile Include="ViewModels\Invoices\InvoiceEditViewModel.cs" />
-    <Compile Include="ViewModels\Invoices\InvoiceListViewModel.cs" />
-    <Compile Include="ViewModels\Invoices\PdfXrayPageViewModel.cs" />
-    <Compile Include="ViewModels\Invoices\PositionListViewModel.cs" />
-    <Compile Include="ViewModels\Invoices\InvoiceViewModel.cs" />
-    <Compile Include="ViewModels\FileSystem\ISelectedPathListener.cs" />
-    <Compile Include="ViewModels\Invoices\PositionViewModel.cs" />
-    <Compile Include="ViewModels\FileSystem\ProjectBrowserViewModel.cs" />
-    <Compile Include="ViewModels\Invoices\PdfXrayViewModel.cs" />
-    <Compile Include="ViewModels\QuickBooks\AccountsChartViewModel.cs" />
-    <Compile Include="Views\Converters\BottomToTopConverter.cs" />
-    <Compile Include="Views\Converters\DateToStringConverter.cs" />
-    <Compile Include="Views\Converters\FalseToVisibleTrueToCollapsedConverter.cs" />
-    <Compile Include="Views\Converters\NonEmptyStringToCollapsedConverter.cs" />
-    <Compile Include="Views\Converters\NullOrEmptyStringToCollapsedConverter.cs" />
-    <Compile Include="Views\Converters\NullToCollapsedConverter.cs" />
-    <Compile Include="Views\Converters\TrueToVisibleFalseToCollapsedConverter.cs" />
-    <Compile Include="Views\Exchange\CheckExchangeRatesView.xaml.cs">
-      <DependentUpon>CheckExchangeRatesView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Exchange\LoadExchangeRatesView.xaml.cs">
-      <DependentUpon>LoadExchangeRatesView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Exchange\ExchangeRatesWindow.xaml.cs">
-      <DependentUpon>ExchangeRatesWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\FileSystemBrowser.xaml.cs">
-      <DependentUpon>FileSystemBrowser.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Converters\EqualsToCheckedConverter.cs" />
-    <Compile Include="Services\Format.cs" />
-    <Compile Include="Views\InvoiceListView.xaml.cs">
-      <DependentUpon>InvoiceListView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PdfXrayPageView.xaml.cs">
-      <DependentUpon>PdfXrayPageView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PdfXrayView.xaml.cs">
-      <DependentUpon>PdfXrayView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PositionListView.xaml.cs">
-      <DependentUpon>PositionListView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PositionView.xaml.cs">
-      <DependentUpon>PositionView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ProjectBrowserView.xaml.cs">
-      <DependentUpon>ProjectBrowserView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\QuickBooks\AccountsChartWindow.xaml.cs">
-      <DependentUpon>AccountsChartWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\QuickBooks\QuickBooksConnectWindow.xaml.cs">
-      <DependentUpon>QuickBooksConnectWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\WebBrowserUtility.cs" />
-    <Page Include="Views\CommonResources.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Exchange\CheckExchangeRatesView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Exchange\LoadExchangeRatesView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Exchange\ExchangeRatesWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\FileSystemBrowser.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\InvoiceListView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\PdfXrayPageView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\PdfXrayView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\PositionListView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\InvoiceView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ViewModels\AppViewModel.cs" />
-    <Compile Include="Services\ClipboardService.cs" />
-    <Compile Include="Views\InvoiceView.xaml.cs">
-      <DependentUpon>InvoiceView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Page Include="Views\PositionView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ProjectBrowserView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\QuickBooks\AccountsChartWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\QuickBooks\QuickBooksConnectWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SharedResources.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="EntryPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -348,7 +159,7 @@
     </None>
     <AppDesigner Include="Properties\" />
     <None Include="Resources\BrowserVersion.reg" />
-    <None Include="Spinvoice.App_TemporaryKey.pfx" />
+    <None Include="Spinvoice_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -366,29 +177,27 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Spinvoice.Domain\Spinvoice.Domain.csproj">
-      <Project>{1f2abff6-b597-4366-a02b-000346436312}</Project>
-      <Name>Spinvoice.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Spinvoice.Infrastructure.DataAccess\Spinvoice.Infrastructure.DataAccess.csproj">
-      <Project>{E0C1E49D-CE0C-434C-A13E-BFB509CEC2B5}</Project>
-      <Name>Spinvoice.Infrastructure.DataAccess</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Spinvoice.Infrastructure.Pdf\Spinvoice.Infrastructure.Pdf.csproj">
-      <Project>{EE6686CA-55A6-4DA8-A707-3B6C230AEC58}</Project>
-      <Name>Spinvoice.Infrastructure.Pdf</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Spinvoice.QuickBooks\Spinvoice.QuickBooks.csproj">
-      <Project>{0699B9A4-ABA3-4DA8-A2D1-A74EF840A2D7}</Project>
-      <Name>Spinvoice.QuickBooks</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Spinvoice.Utils\Spinvoice.Utils.csproj">
-      <Project>{6c5bdcda-a72f-4eba-8270-fdbd018852f1}</Project>
-      <Name>Spinvoice.Utils</Name>
+    <Resource Include="Spinvoice.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Spinvoice.Application\Spinvoice.Application.csproj">
+      <Project>{e2691083-9cb7-4071-984b-abc52570ae0f}</Project>
+      <Name>Spinvoice.Application</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Spinvoice.ico" />
+    <Content Include="..\packages\tesseract.3.0.2.0\content\x64\liblept172.dll">
+      <Link>x64\liblept172.dll</Link>
+    </Content>
+    <Content Include="..\packages\tesseract.3.0.2.0\content\x64\libtesseract304.dll">
+      <Link>x64\libtesseract304.dll</Link>
+    </Content>
+    <Content Include="..\packages\tesseract.3.0.2.0\content\x86\liblept172.dll">
+      <Link>x86\liblept172.dll</Link>
+    </Content>
+    <Content Include="..\packages\tesseract.3.0.2.0\content\x86\libtesseract304.dll">
+      <Link>x86\libtesseract304.dll</Link>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\spinvoice.infrastructure.pdf\x64\liblept172.dll">

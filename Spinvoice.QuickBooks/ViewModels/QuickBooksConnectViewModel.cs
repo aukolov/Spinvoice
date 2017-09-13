@@ -10,7 +10,7 @@ using Spinvoice.Domain.UI;
 
 namespace Spinvoice.QuickBooks.ViewModels
 {
-    public class QuickBooksConnectViewModel : INotifyPropertyChanged
+    public class QuickBooksConnectViewModel : IQuickBooksConnectViewModel
     {
         private const string DummyProtocol = "https://";
         private const string DummyHost = "www.spinvoice-dummy-host.com";

@@ -1,0 +1,334 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E2691083-9CB7-4071-984B-ABC52570AE0F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Spinvoice.Application</RootNamespace>
+    <AssemblyName>Spinvoice.Application</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac, Version=4.6.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.6.1\lib\net45\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.4.11\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ParallelExtensionsExtras, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MSFT.ParallelExtensionsExtras.1.2.0\lib\ParallelExtensionsExtras.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Reactive.Core, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.Core.3.1.1\lib\net45\System.Reactive.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.Interfaces.3.1.1\lib\net45\System.Reactive.Interfaces.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reactive.Linq, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.Linq.3.1.1\lib\net45\System.Reactive.Linq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.PlatformServices.3.1.1\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reactive.Windows.Threading, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.Windows.Threading.3.1.1\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Windows" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationSatellite.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="AutofacModule.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service References\ServerReference\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Services\ApplicationNameProvider.cs" />
+    <Compile Include="Services\BackgroundExecutor.cs" />
+    <Compile Include="Services\Bootstrapper.cs" />
+    <Compile Include="Services\ClipboardService.cs" />
+    <Compile Include="Services\ExchangeRatesLoader.cs" />
+    <Compile Include="Services\FileNamesComparer.cs" />
+    <Compile Include="Services\FileService.cs" />
+    <Compile Include="Services\Format.cs" />
+    <Compile Include="Services\IClipboardService.cs" />
+    <Compile Include="Services\IExchangeRatesLoader.cs" />
+    <Compile Include="Services\IFileParseServiceProxy.cs" />
+    <Compile Include="Services\IFileService.cs" />
+    <Compile Include="Services\InvoiceFormatter.cs" />
+    <Compile Include="Services\IServerManager.cs" />
+    <Compile Include="Services\ITaskSchedulerProvider.cs" />
+    <Compile Include="Services\FileParseServiceProxy.cs" />
+    <Compile Include="Services\ServerManager.cs" />
+    <Compile Include="Services\TaskSchedulerProvider.cs" />
+    <Compile Include="Services\WindowManager.cs" />
+    <Compile Include="ViewModels\AppViewModel.cs" />
+    <Compile Include="ViewModels\Exchange\CheckExchangeRatesViewModel.cs" />
+    <Compile Include="ViewModels\Exchange\ExchangeRatesViewModel.cs" />
+    <Compile Include="ViewModels\Exchange\IExchangeRatesViewModel.cs" />
+    <Compile Include="ViewModels\Exchange\LoadExchangeRatesViewModel.cs" />
+    <Compile Include="ViewModels\FileSystem\DirectoryViewModel.cs" />
+    <Compile Include="ViewModels\FileSystem\FileViewModel.cs" />
+    <Compile Include="ViewModels\FileSystem\IDirectoryViewModel.cs" />
+    <Compile Include="ViewModels\FileSystem\IFileSystemViewModel.cs" />
+    <Compile Include="ViewModels\FileSystem\IFileViewModel.cs" />
+    <Compile Include="ViewModels\FileSystem\IProjectBrowserViewModel.cs" />
+    <Compile Include="ViewModels\FileSystem\ISelectedPathListener.cs" />
+    <Compile Include="ViewModels\FileSystem\ProjectBrowserViewModel.cs" />
+    <Compile Include="ViewModels\IAppViewModel.cs" />
+    <Compile Include="ViewModels\Invoices\ActionSelectorViewModel.cs" />
+    <Compile Include="ViewModels\Invoices\EditField.cs" />
+    <Compile Include="ViewModels\Invoices\FileProcessStatus.cs" />
+    <Compile Include="ViewModels\Invoices\IInvoiceListViewModel.cs" />
+    <Compile Include="ViewModels\Invoices\InvoiceEditViewModel.cs" />
+    <Compile Include="ViewModels\Invoices\InvoiceListViewModel.cs" />
+    <Compile Include="ViewModels\Invoices\InvoiceViewModel.cs" />
+    <Compile Include="ViewModels\Invoices\PdfXrayPageViewModel.cs" />
+    <Compile Include="ViewModels\Invoices\PdfXrayViewModel.cs" />
+    <Compile Include="ViewModels\Invoices\PositionListViewModel.cs" />
+    <Compile Include="ViewModels\Invoices\PositionViewModel.cs" />
+    <Compile Include="ViewModels\QuickBooks\AccountsChartViewModel.cs" />
+    <Compile Include="ViewModels\QuickBooks\IAccountsChartViewModel.cs" />
+    <Compile Include="Views\Converters\BottomToTopConverter.cs" />
+    <Compile Include="Views\Converters\DateToStringConverter.cs" />
+    <Compile Include="Views\Converters\EqualsToCheckedConverter.cs" />
+    <Compile Include="Views\Converters\FalseToVisibleTrueToCollapsedConverter.cs" />
+    <Compile Include="Views\Converters\NonEmptyStringToCollapsedConverter.cs" />
+    <Compile Include="Views\Converters\NullOrEmptyStringToCollapsedConverter.cs" />
+    <Compile Include="Views\Converters\NullToCollapsedConverter.cs" />
+    <Compile Include="Views\Converters\TrueToCollapsedFalseToVisibleConverter.cs" />
+    <Compile Include="Views\Converters\TrueToVisibleFalseToCollapsedConverter.cs" />
+    <Compile Include="Views\Exchange\CheckExchangeRatesView.xaml.cs">
+      <DependentUpon>CheckExchangeRatesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Exchange\ExchangeRatesWindow.xaml.cs">
+      <DependentUpon>ExchangeRatesWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Exchange\LoadExchangeRatesView.xaml.cs">
+      <DependentUpon>LoadExchangeRatesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FileSystemBrowser.xaml.cs">
+      <DependentUpon>FileSystemBrowser.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\InvoiceListView.xaml.cs">
+      <DependentUpon>InvoiceListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\InvoiceView.xaml.cs">
+      <DependentUpon>InvoiceView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PdfXrayPageView.xaml.cs">
+      <DependentUpon>PdfXrayPageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PdfXrayView.xaml.cs">
+      <DependentUpon>PdfXrayView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PositionListView.xaml.cs">
+      <DependentUpon>PositionListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PositionView.xaml.cs">
+      <DependentUpon>PositionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ProjectBrowserView.xaml.cs">
+      <DependentUpon>ProjectBrowserView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\QuickBooks\AccountsChartWindow.xaml.cs">
+      <DependentUpon>AccountsChartWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\QuickBooks\QuickBooksConnectWindow.xaml.cs">
+      <DependentUpon>QuickBooksConnectWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WebBrowserUtility.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Spinvoice.Server\bin\Debug\Spinvoice.Server.exe.config">
+      <Link>Spinvoice.Server.exe.config</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="Properties\DataSources\Spinvoice.Common.Domain.Pdf.PdfModel.datasource" />
+    <None Include="Service References\ServerReference\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\ServerReference\configuration.svcinfo" />
+    <None Include="Service References\ServerReference\configuration91.svcinfo" />
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="Service References\ServerReference\service.wsdl" />
+    <None Include="Service References\ServerReference\service.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServerReference\service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServerReference\Spinvoice.Common.Domain.Pdf.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Spinvoice.Common.Domain\Spinvoice.Common.Domain.csproj">
+      <Project>{6498b4d4-8d2a-4d47-af0b-c8345d518531}</Project>
+      <Name>Spinvoice.Common.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Spinvoice.Common.Infrastructure\Spinvoice.Common.Infrastructure.csproj">
+      <Project>{54fea3d8-46e3-441d-9375-bd409fdcbef1}</Project>
+      <Name>Spinvoice.Common.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Spinvoice.Domain\Spinvoice.Domain.csproj">
+      <Project>{1f2abff6-b597-4366-a02b-000346436312}</Project>
+      <Name>Spinvoice.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Spinvoice.Infrastructure.DataAccess\Spinvoice.Infrastructure.DataAccess.csproj">
+      <Project>{e0c1e49d-ce0c-434c-a13e-bfb509cec2b5}</Project>
+      <Name>Spinvoice.Infrastructure.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Spinvoice.QuickBooks\Spinvoice.QuickBooks.csproj">
+      <Project>{0699b9a4-aba3-4da8-a2d1-a74ef840a2d7}</Project>
+      <Name>Spinvoice.QuickBooks</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Spinvoice.Server\Spinvoice.Server.csproj">
+      <Project>{BF291FF4-1B5A-41AB-AC0D-C5889AF05983}</Project>
+      <Name>Spinvoice.Server</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Spinvoice.Utils\Spinvoice.Utils.csproj">
+      <Project>{6c5bdcda-a72f-4eba-8270-fdbd018852f1}</Project>
+      <Name>Spinvoice.Utils</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CommonResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Exchange\CheckExchangeRatesView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Exchange\ExchangeRatesWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Exchange\LoadExchangeRatesView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\FileSystemBrowser.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\InvoiceListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\InvoiceView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\PdfXrayPageView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\PdfXrayView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\PositionListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\PositionView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ProjectBrowserView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\QuickBooks\AccountsChartWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\QuickBooks\QuickBooksConnectWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\SharedResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\ServerReference\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

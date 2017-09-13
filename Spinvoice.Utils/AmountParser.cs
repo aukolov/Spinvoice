@@ -40,8 +40,10 @@ namespace Spinvoice.Utils
 
                 if (!integralPart.Contains(delimiter))
                 {
-                    var parsedIntegralPart = int.Parse(integralPart.Replace(",", "").Replace(".", "").Replace(" ", ""),
-                        CultureInfo.InvariantCulture);
+                    var simplifiedIntegralPart = integralPart.Replace(",", "").Replace(".", "").Replace(" ", "");
+                    var parsedIntegralPart = simplifiedIntegralPart.Length > 0 
+                        ? int.Parse(simplifiedIntegralPart,CultureInfo.InvariantCulture)
+                        : 0;
                     var parsedDecimalPart = int.Parse(decimalPart, CultureInfo.InvariantCulture);
 
                     {

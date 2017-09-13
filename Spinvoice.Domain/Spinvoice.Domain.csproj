@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=4.6.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.6.1\lib\net45\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.4.11\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
@@ -57,12 +61,6 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Windows" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -74,13 +72,12 @@
     <Compile Include="App\AppMetadata.cs" />
     <Compile Include="App\IAppMetadataDataAccess.cs" />
     <Compile Include="App\IAppMetadataRepository.cs" />
+    <Compile Include="AutofacModule.cs" />
     <Compile Include="Company\Company.cs" />
-    <Compile Include="Company\CompanyRepository.cs" />
     <Compile Include="Company\IBaseDataAccess.cs" />
     <Compile Include="Company\ICompanyDataAccess.cs" />
     <Compile Include="Company\ICompanyRepository.cs" />
     <Compile Include="Company\PdfInvoiceModel.cs" />
-    <Compile Include="Exchange\ExchangeRatesRepository.cs" />
     <Compile Include="Exchange\IExchangeRateDataAccess.cs" />
     <Compile Include="Exchange\IExchangeRatesRepository.cs" />
     <Compile Include="Exchange\Rate.cs" />
@@ -98,20 +95,13 @@
     <Compile Include="InvoiceProcessing\AnalyzeInvoiceService.cs" />
     <Compile Include="InvoiceProcessing\Strategies\IPdfPositionAnalysisStrategy.cs" />
     <Compile Include="InvoiceProcessing\Strategies\IStrategy.cs" />
+    <Compile Include="InvoiceProcessing\Strategies\TextUtils.cs" />
     <Compile Include="InvoiceProcessing\Strategies\UnderAmountPositionStrategy.cs" />
     <Compile Include="InvoiceProcessing\TrainStrategyService.cs" />
-    <Compile Include="Pdf\BlockModel.cs" />
     <Compile Include="InvoiceProcessing\Strategies\ContainsStrategy.cs" />
     <Compile Include="InvoiceProcessing\Strategies\InsideTokensStrategy.cs" />
     <Compile Include="InvoiceProcessing\Strategies\IStringPdfAnalysisStrategy.cs" />
-    <Compile Include="Pdf\Location.cs" />
-    <Compile Include="Pdf\LocationRange.cs" />
     <Compile Include="InvoiceProcessing\Strategies\NextTokenStrategy.cs" />
-    <Compile Include="Pdf\IPdfParser.cs" />
-    <Compile Include="Pdf\PageModel.cs" />
-    <Compile Include="Pdf\PdfModel.cs" />
-    <Compile Include="Pdf\SentenceModel.cs" />
-    <Compile Include="Pdf\TextUtils.cs" />
     <Compile Include="Properties\Annotations1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Accounting\RawInvoice.cs" />
@@ -119,6 +109,10 @@
     <Compile Include="UI\IWindowManager.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Spinvoice.Common.Domain\Spinvoice.Common.Domain.csproj">
+      <Project>{6498b4d4-8d2a-4d47-af0b-c8345d518531}</Project>
+      <Name>Spinvoice.Common.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Spinvoice.Utils\Spinvoice.Utils.csproj">
       <Project>{6c5bdcda-a72f-4eba-8270-fdbd018852f1}</Project>
       <Name>Spinvoice.Utils</Name>

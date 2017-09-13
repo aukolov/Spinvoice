@@ -1,6 +1,8 @@
 ﻿// ReSharper disable CheckNamespace
 
 using NLog;
+using Spinvoice.Common.Domain.Pdf;
+using Spinvoice.Domain.InvoiceProcessing.Strategies;
 
 namespace Spinvoice.Domain.Pdf
 {
@@ -13,7 +15,7 @@ namespace Spinvoice.Domain.Pdf
 
         public string GetValue(PdfModel pdfModel)
         {
-            Logger.Info($"Start getting value with previous text '{PreviousText}'.");
+            Logger.Trace($"Start getting value with previous text '{PreviousText}'.");
             if (string.IsNullOrEmpty(PreviousText))
             {
                 return null;
@@ -26,12 +28,12 @@ namespace Spinvoice.Domain.Pdf
                     var text = sentense.Text.Trim();
                     if (isNext)
                     {
-                        Logger.Info($"Found next: '{text}'.");
+                        Logger.Trace($"Found next: '{text}'.");
                         return text;
                     }
                     if (text == PreviousText.Trim())
                     {
-                        Logger.Info($"Found preceeding text: '{text}'.");
+                        Logger.Trace($"Found preceeding text: '{text}'.");
                         isNext = true;
                     }
                 }
@@ -41,10 +43,10 @@ namespace Spinvoice.Domain.Pdf
 
         public bool Train(PdfModel pdfModel, string value)
         {
-            Logger.Info($"Start training with value '{value}'.");
+            Logger.Trace($"Start training with value '{value}'.");
             if (string.IsNullOrEmpty(value))
             {
-                Logger.Info("Value is null or empty.");
+                Logger.Trace("Value is null or empty.");
                 return false;
             }
             string candidate = null;
@@ -56,7 +58,7 @@ namespace Spinvoice.Domain.Pdf
                         && !TextUtils.IsNumber(candidate)
                         && TextUtils.IsNonTrivialString(candidate))
                     {
-                        Logger.Info($"Previous text: '{candidate}'.");
+                        Logger.Trace($"Previous text: '{candidate}'.");
                         PreviousText = candidate;
                         if (i > 0)
                         {

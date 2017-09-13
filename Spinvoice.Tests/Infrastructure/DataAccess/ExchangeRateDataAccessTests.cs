@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 using NUnit.Framework;
 using Spinvoice.Domain.Exchange;
@@ -10,11 +11,14 @@ namespace Spinvoice.Tests.Infrastructure.DataAccess
     public class ExchangeRateDataAccessTests
     {
         private ExchangeRateDataAccess _dataAccess;
+        private DataDirectoryProvider _dataDirectoryProvider;
 
         [SetUp]
         public void Setup()
         {
-            var documentStoreRepository = new DocumentStoreRepository("Data");
+            _dataDirectoryProvider = new DataDirectoryProvider("TestData");
+            DropDatabaseFiles();
+            var documentStoreRepository = new DocumentStoreContainer(_dataDirectoryProvider);
             _dataAccess = new ExchangeRateDataAccess(documentStoreRepository);
             _dataAccess.DeleteAll();
         }
@@ -22,9 +26,18 @@ namespace Spinvoice.Tests.Infrastructure.DataAccess
         [TearDown]
         public void TearDown()
         {
-            _dataAccess?.DeleteAll();
             _dataAccess?.Dispose();
+            DropDatabaseFiles();
         }
+
+        private void DropDatabaseFiles()
+        {
+            if (Directory.Exists(_dataDirectoryProvider.Path))
+            {
+                Directory.Delete(_dataDirectoryProvider.Path, true);
+            }
+        }
+
 
         [Test]
         public void GetsEmptyCompanyArrayIfNothingAdded()

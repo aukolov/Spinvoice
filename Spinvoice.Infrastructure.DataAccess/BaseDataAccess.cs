@@ -15,9 +15,9 @@ namespace Spinvoice.Infrastructure.DataAccess
 
         protected readonly IDocumentStore DocumentStore;
 
-        protected BaseDataAccess(IDocumentStoreRepository documentStoreRepository)
+        protected BaseDataAccess(IDocumentStoreContainer documentStoreContainer)
         {
-            DocumentStore = documentStoreRepository.DocumentStore;
+            DocumentStore = documentStoreContainer.DocumentStore;
         }
 
         public T[] GetAll()

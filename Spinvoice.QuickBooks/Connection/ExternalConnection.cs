@@ -12,7 +12,7 @@ using Spinvoice.Utils;
 
 namespace Spinvoice.QuickBooks.Connection
 {
-    public class ExternalConnection : IExternalConnectionWatcher
+    public class ExternalConnection : IExternalConnectionWatcher, IExternalConnection
     {
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 

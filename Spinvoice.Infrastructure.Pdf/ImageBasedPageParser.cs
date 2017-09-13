@@ -3,21 +3,28 @@ using System.Collections.Generic;
 using System.Drawing;
 using iTextSharp.text.pdf;
 using NLog;
+using Spinvoice.Common.Domain.Pdf;
 using Spinvoice.Domain.Pdf;
 using Tesseract;
 
 namespace Spinvoice.Infrastructure.Pdf
 {
-    internal class ImageBasedPageParser : IPageParser
+    internal class ImageBasedPageParser : IImageBasedPageParser
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+        private readonly ITesseractDataPathProvider _tesseractDataPathProvider;
         private readonly BricksToSentensesTranslator _bricksToSentensesTranslator;
         private readonly PdfImageExtractor _pdfImageExtractor;
 
-        public ImageBasedPageParser()
+        public ImageBasedPageParser(
+            ITesseractDataPathProvider tesseractDataPathProvider)
         {
-            _bricksToSentensesTranslator = new BricksToSentensesTranslator(xDelta: 7, yDelta: 3, addSpaces: true);
+            _tesseractDataPathProvider = tesseractDataPathProvider;
+            _bricksToSentensesTranslator = new BricksToSentensesTranslator(
+                xDelta: 7, 
+                yDelta: 3, 
+                addSpaces: true);
             _pdfImageExtractor = new PdfImageExtractor();
         }
 
@@ -38,7 +45,7 @@ namespace Spinvoice.Infrastructure.Pdf
                 scale = Math.Min(widthScale, heightScale);
             }
 
-            var engine = new TesseractEngine(@"tessdata", "eng");
+            var engine = new TesseractEngine(_tesseractDataPathProvider.Path, "eng");
             Page page;
             try
             {
@@ -89,8 +96,8 @@ namespace Spinvoice.Infrastructure.Pdf
                     {
                         baseLine = baseLineCandidate;
                     }
-                    Console.WriteLine("------------------");
-                    Console.WriteLine($"Line: {lineIterator.GetText(PageIteratorLevel.TextLine)}");
+                    //Console.WriteLine("------------------");
+                    //Console.WriteLine($"Line: {lineIterator.GetText(PageIteratorLevel.TextLine)}");
                     lineIterator.Next(PageIteratorLevel.TextLine);
                 }
 
@@ -118,7 +125,7 @@ namespace Spinvoice.Infrastructure.Pdf
             {
                 //var rectText = $"{rect.X1} x {rect.Y1}, {rect.Width} x {rect.Height}";
                 //Console.WriteLine($"Word #{i}: '{word}' - {rectText}");
-                Console.Write($"{word} ");
+                //Console.Write($"{word} ");
 
                 brick = new Brick(
                     word,

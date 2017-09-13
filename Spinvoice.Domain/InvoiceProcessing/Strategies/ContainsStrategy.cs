@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using NLog;
+using Spinvoice.Common.Domain.Pdf;
 
 // ReSharper disable once CheckNamespace
 namespace Spinvoice.Domain.Pdf

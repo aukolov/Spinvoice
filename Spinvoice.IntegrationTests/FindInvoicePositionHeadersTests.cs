@@ -1,27 +1,28 @@
 ﻿using System.Linq;
+using Autofac;
 using NUnit.Framework;
-using Spinvoice.Domain.Company;
+using Spinvoice.Common.Domain.Pdf;
 using Spinvoice.Domain.InvoiceProcessing;
 using Spinvoice.Domain.Pdf;
+using Spinvoice.Infrastructure.DataAccess;
 using Spinvoice.Infrastructure.Pdf;
 using Spinvoice.IntegrationTests.Mocks;
-using Spinvoice.Services;
 
 namespace Spinvoice.IntegrationTests
 {
-    [TestFixture()]
+    [TestFixture]
     public class FindInvoicePositionHeadersTests
     {
         private CompanyRepository _companyRepository;
-        private AnalyzeInvoiceService _service;
-        private PdfParser _pdfParser;
+        private IPdfParser _pdfParser;
 
         [SetUp]
         public void Setup()
         {
             _companyRepository = new CompanyRepository(new CompanyDataAccessMock());
-            _service = new AnalyzeInvoiceService(_companyRepository);
-            _pdfParser = new PdfParser();
+
+            var container = TestContainer.GetBuilder().Build();
+            _pdfParser = container.Resolve<IPdfParser>();
         }
 
         private static object[] GetTestData()

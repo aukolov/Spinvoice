@@ -1,10 +1,13 @@
-﻿using NLog;
+﻿using Autofac;
+using NLog;
 using NLog.Config;
 using NLog.Targets;
 using NUnit.Framework;
+using Spinvoice.Common.Domain.Pdf;
 using Spinvoice.Domain.Accounting;
 using Spinvoice.Domain.Company;
 using Spinvoice.Domain.InvoiceProcessing;
+using Spinvoice.Infrastructure.DataAccess;
 using Spinvoice.Infrastructure.Pdf;
 using Spinvoice.IntegrationTests.Mocks;
 
@@ -13,7 +16,7 @@ namespace Spinvoice.IntegrationTests
     [TestFixture]
     public partial class AnalyzeInvoicePositionsTests
     {
-        private readonly PdfParser _pdfParser = new PdfParser();
+        private IPdfParser _pdfParser;
         private CompanyRepository _companyRepository;
         private AnalyzeInvoiceService _analyzeInvoiceService;
         private TrainStrategyService _trainStrategyService;
@@ -28,6 +31,9 @@ namespace Spinvoice.IntegrationTests
             LogManager.Configuration = loggingConfiguration;
             LogManager.EnableLogging();
             LogManager.ReconfigExistingLoggers();
+
+            var container = TestContainer.GetBuilder().Build();
+            _pdfParser = container.Resolve<IPdfParser>();
 
             _companyRepository = new CompanyRepository(new CompanyDataAccessMock());
             _analyzeInvoiceService = new AnalyzeInvoiceService(_companyRepository);

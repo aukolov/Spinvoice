@@ -1,0 +1,96 @@
+﻿<UserControl x:Class="Spinvoice.Application.Views.FileSystemBrowser"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:fileSystem="clr-namespace:Spinvoice.Application.ViewModels.FileSystem"
+             xmlns:invoices1="clr-namespace:Spinvoice.Application.ViewModels.Invoices"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DataContext="{d:DesignInstance Type=fileSystem:ProjectBrowserViewModel}"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <HierarchicalDataTemplate DataType="{x:Type fileSystem:DirectoryViewModel}" ItemsSource="{Binding Items}">
+                <TextBlock Text="{Binding Path=Name}" ToolTip="{Binding Path=Path}">
+                    <TextBlock.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Command="{Binding AnalyzeCommand}" Header="Analyze" />
+                        </ContextMenu>
+                    </TextBlock.ContextMenu>
+                </TextBlock>
+            </HierarchicalDataTemplate>
+
+            <DataTemplate DataType="{x:Type fileSystem:FileViewModel}">
+                <StackPanel Orientation="Horizontal">
+                    <Ellipse x:Name="PART_Ellipse"
+                             Margin="0,0,5,0"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center"
+                             RenderTransformOrigin="0.5,0.5"
+                             StrokeThickness="15">
+                        <Ellipse.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform />
+                                <SkewTransform />
+                                <RotateTransform />
+                            </TransformGroup>
+                        </Ellipse.RenderTransform>
+
+                        <Ellipse.Style>
+                            <Style>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding InvoiceListViewModel.FileProcessStatus}" Value="{x:Static invoices1:FileProcessStatus.NotScheduled}">
+                                        <DataTrigger.Setters>
+                                            <Setter Property="Ellipse.Stroke" Value="Gray" />
+                                            <Setter Property="Ellipse.ToolTip" Value="File is not scheduled for processing." />
+                                        </DataTrigger.Setters>
+                                    </DataTrigger>
+
+                                    <DataTrigger Binding="{Binding InvoiceListViewModel.FileProcessStatus}" Value="{x:Static invoices1:FileProcessStatus.Done}">
+                                        <DataTrigger.Setters>
+                                            <Setter Property="Ellipse.Stroke" Value="LightSeaGreen" />
+                                            <Setter Property="Ellipse.ToolTip" Value="File has been successfully processed." />
+                                        </DataTrigger.Setters>
+                                    </DataTrigger>
+
+                                    <DataTrigger Binding="{Binding InvoiceListViewModel.FileProcessStatus}" Value="{x:Static invoices1:FileProcessStatus.Scheduled}">
+                                        <DataTrigger.Setters>
+                                            <Setter Property="Ellipse.Stroke" Value="LightSkyBlue" />
+                                            <Setter Property="Ellipse.ToolTip" Value="File has been scheduled for processing." />
+                                        </DataTrigger.Setters>
+                                    </DataTrigger>
+
+                                    <DataTrigger Binding="{Binding InvoiceListViewModel.FileProcessStatus}" Value="{x:Static invoices1:FileProcessStatus.InProgress}">
+                                        <DataTrigger.Setters>
+                                            <Setter Property="Ellipse.Stroke" Value="Yellow" />
+                                            <Setter Property="Ellipse.ToolTip" Value="File is being processed..." />
+                                        </DataTrigger.Setters>
+                                    </DataTrigger>
+
+                                    <DataTrigger Binding="{Binding InvoiceListViewModel.FileProcessStatus}" Value="{x:Static invoices1:FileProcessStatus.Error}">
+                                        <DataTrigger.Setters>
+                                            <Setter Property="Ellipse.Stroke" Value="LightCoral" />
+                                            <Setter Property="Ellipse.ToolTip" Value="An error occurred while processing the file." />
+                                        </DataTrigger.Setters>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Ellipse.Style>
+                    </Ellipse>
+                    <TextBlock Text="{Binding Path=Name}" ToolTip="{Binding Path=Path}" />
+                </StackPanel>
+            </DataTemplate>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <TreeView ItemsSource="{Binding DirectoryViewModels}">
+        <TreeView.ItemContainerStyle>
+            <Style TargetType="{x:Type TreeViewItem}">
+                <Setter Property="IsSelected" Value="{Binding IsSelected}" />
+                <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
+            </Style>
+        </TreeView.ItemContainerStyle>
+    </TreeView>
+</UserControl>
+

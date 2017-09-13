@@ -5,11 +5,11 @@ using System.Windows;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Spinvoice.App")]
+[assembly: AssemblyTitle("Spinvoice")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Spinvoice.App")]
+[assembly: AssemblyProduct("Spinvoice")]
 [assembly: AssemblyCopyright("Copyright © Spinvoice 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=4.6.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.6.1\lib\net45\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.4.11\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
@@ -61,11 +65,16 @@
     <Compile Include="AccountsChartRepository.cs" />
     <Compile Include="AppMetadataDataAccess.cs" />
     <Compile Include="AppMetadataRepository.cs" />
+    <Compile Include="AutofacModule.cs" />
     <Compile Include="BaseDataAccess.cs" />
     <Compile Include="CompanyDataAccess.cs" />
-    <Compile Include="DocumentStoreRepository.cs" />
+    <Compile Include="CompanyRepository.cs" />
+    <Compile Include="DataDirectoryProvider.cs" />
+    <Compile Include="DocumentStoreContainer.cs" />
     <Compile Include="ExchangeRateDataAccess.cs" />
-    <Compile Include="IDocumentStoreRepository.cs" />
+    <Compile Include="ExchangeRatesRepository.cs" />
+    <Compile Include="IDataDirectoryProvider.cs" />
+    <Compile Include="IDocumentStoreContainer.cs" />
     <Compile Include="OAuthProfileDataAccess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
