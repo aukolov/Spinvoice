@@ -1,17 +1,38 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
+using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
+using Spinvoice.QuickBooks.Connection;
+using Spinvoice.QuickBooks.ViewModels;
+using Spinvoice.QuickBooks.Views;
 
 namespace QuickBooksAuth
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
+    public partial class App
     {
+        private TestOAuthProfileDataAccess _dataAccess;
+
+        private void App_OnStartup(object sender, StartupEventArgs e)
+        {
+            _dataAccess = new TestOAuthProfileDataAccess();
+            var window = new QuickBooksConnectWindow
+            {
+                ShowInTaskbar = true,
+                DataContext = new QuickBooksConnectViewModel(
+                    new OAuthRepository(_dataAccess),
+                    new TestWindowManager())
+            };
+            window.Show();
+        }
+
+        private void App_OnExit(object sender, ExitEventArgs e)
+        {
+            var profile = _dataAccess.GetAll().Single();
+            Console.WriteLine(profile.AccessToken);
+            Console.WriteLine(profile.AccessSecret);
+            Console.WriteLine(profile.RealmId);
+            Console.WriteLine(profile.DataSource);
+        }
     }
+
 }

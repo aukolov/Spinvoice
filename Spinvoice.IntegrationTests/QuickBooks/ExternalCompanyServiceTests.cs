@@ -17,7 +17,7 @@ namespace Spinvoice.IntegrationTests.QuickBooks
         public void Setup()
         {
             var oathRepositoryMock = new Mock<IOAuthRepository>();
-            oathRepositoryMock.Setup(repository => repository.Profile).Returns(Secret.GetOAuthProfile());
+            oathRepositoryMock.Setup(repository => repository.Profile).Returns(QuickBooksUtils.GetOAuthProfile());
             oathRepositoryMock.Setup(repository => repository.Params).Returns(new OAuthParams());
 
             _externalCompanyRepository = new ExternalCompanyRepository(

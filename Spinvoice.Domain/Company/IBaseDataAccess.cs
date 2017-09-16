@@ -7,7 +7,7 @@ namespace Spinvoice.Domain.Company
     {
         T[] GetAll();
         T Get(string id);
-        void AddOrUpdate(T company);
+        void AddOrUpdate(T entity);
         void DeleteAll();
         void AddOrUpdate(IEnumerable<T> entities);
     }

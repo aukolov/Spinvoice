@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:presentation="clr-namespace:Spinvoice.Common.Presentation;assembly=Spinvoice.Common.Presentation"
         xmlns:viewModels="clr-namespace:Spinvoice.QuickBooks.ViewModels;assembly=Spinvoice.QuickBooks"
+        xmlns:views="clr-namespace:Spinvoice.QuickBooks.Views"
         Title="Connect to QuickBooks"
         Width="450"
         d:DataContext="{d:DesignInstance viewModels:QuickBooksConnectViewModel}"
@@ -12,5 +12,5 @@
         WindowStartupLocation="CenterScreen"
         WindowStyle="ToolWindow"
         mc:Ignorable="d">
-    <WebBrowser presentation:WebBrowserUtility.BindableSource="{Binding Url, Mode=TwoWay}" Navigated="WebBrowser_OnNavigated" />
+    <views:QuickBooksConnectView />
 </Window>
