@@ -70,6 +70,7 @@ namespace Spinvoice.Application.ViewModels
 
                 _invoiceListViewModel?.Unsubscribe();
                 _invoiceListViewModel = value;
+                _invoiceListViewModel?.Init();
                 _invoiceListViewModel?.Subscribe();
                 OnPropertyChanged();
             }
@@ -88,7 +89,6 @@ namespace Spinvoice.Application.ViewModels
                 return;
 
             InvoiceListViewModel = ProjectBrowserViewModel.SelectedFileViewModel?.InvoiceListViewModel;
-            InvoiceListViewModel?.Init();
         }
 
         private void OpenExchangeRates()

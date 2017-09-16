@@ -152,6 +152,10 @@
     <Content Include="..\spinvoice.infrastructure.pdf\tessdata\eng.traineddata">
       <Link>tessdata\eng.traineddata</Link>
     </Content>
+    <Content Include="..\Spinvoice.Server\bin\Debug\Spinvoice.Server.exe.config">
+      <Link>Spinvoice.Server.exe.config</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
