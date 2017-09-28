@@ -8,7 +8,8 @@ using Spinvoice.Application.ViewModels.Exchange;
 using Spinvoice.Application.ViewModels.FileSystem;
 using Spinvoice.Application.ViewModels.Invoices;
 using Spinvoice.Application.ViewModels.QuickBooks;
-using Spinvoice.Domain.ExternalBook;
+using Spinvoice.Common.Presentation;
+using Spinvoice.QuickBooks.Domain;
 using Spinvoice.QuickBooks.ViewModels;
 using Spinvoice.Utils;
 

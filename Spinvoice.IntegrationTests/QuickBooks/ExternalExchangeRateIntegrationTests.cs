@@ -1,8 +1,8 @@
 ﻿using System;
 using Moq;
 using NUnit.Framework;
-using Spinvoice.Domain.ExternalBook;
 using Spinvoice.QuickBooks.Connection;
+using Spinvoice.QuickBooks.Domain;
 
 namespace Spinvoice.IntegrationTests.QuickBooks
 {

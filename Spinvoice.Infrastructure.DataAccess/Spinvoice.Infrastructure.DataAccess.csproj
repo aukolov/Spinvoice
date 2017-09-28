@@ -79,6 +79,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\QuickBooks\Spinvoice.QuickBooks.Domain\Spinvoice.QuickBooks.Domain.csproj">
+      <Project>{9d42990a-bc21-4e9e-9332-d31bdd6f71c1}</Project>
+      <Name>Spinvoice.QuickBooks.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Spinvoice.Domain\Spinvoice.Domain.csproj">
       <Project>{1F2ABFF6-B597-4366-A02B-000346436312}</Project>
       <Name>Spinvoice.Domain</Name>

@@ -1,4 +1,4 @@
-namespace Spinvoice.Domain.UI
+namespace Spinvoice.Common.Presentation
 {
     public interface IWindowManager
     {

@@ -1,8 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using Intuit.Ipp.Data;
-using Spinvoice.Domain.ExternalBook;
 using Spinvoice.QuickBooks.Connection;
+using Spinvoice.QuickBooks.Domain;
 using Spinvoice.Utils;
 
 namespace Spinvoice.QuickBooks.Company

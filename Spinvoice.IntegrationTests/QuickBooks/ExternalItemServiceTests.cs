@@ -4,8 +4,8 @@ using Intuit.Ipp.Data;
 using Moq;
 using NUnit.Framework;
 using Spinvoice.Domain.Accounting;
-using Spinvoice.Domain.ExternalBook;
 using Spinvoice.QuickBooks.Connection;
+using Spinvoice.QuickBooks.Domain;
 using Spinvoice.QuickBooks.Item;
 
 namespace Spinvoice.IntegrationTests.QuickBooks

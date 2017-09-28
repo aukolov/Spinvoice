@@ -4,9 +4,9 @@ using System.Runtime.CompilerServices;
 using System.Web;
 using DevDefined.OAuth.Consumer;
 using DevDefined.OAuth.Framework;
+using Spinvoice.Common.Presentation;
 using Spinvoice.Domain.Annotations;
-using Spinvoice.Domain.ExternalBook;
-using Spinvoice.Domain.UI;
+using Spinvoice.QuickBooks.Domain;
 
 namespace Spinvoice.QuickBooks.ViewModels
 {

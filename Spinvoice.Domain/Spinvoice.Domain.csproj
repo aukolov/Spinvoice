@@ -82,16 +82,6 @@
     <Compile Include="Exchange\IExchangeRatesRepository.cs" />
     <Compile Include="Exchange\Rate.cs" />
     <Compile Include="Accounting\Invoice.cs" />
-    <Compile Include="ExternalBook\IExternalAccount.cs" />
-    <Compile Include="ExternalBook\IExternalCompanyRepository.cs" />
-    <Compile Include="ExternalBook\IExternalCompany.cs" />
-    <Compile Include="ExternalBook\IExternalConnectionWatcher.cs" />
-    <Compile Include="ExternalBook\IExternalItem.cs" />
-    <Compile Include="ExternalBook\IOAuthParams.cs" />
-    <Compile Include="ExternalBook\IOAuthProfile.cs" />
-    <Compile Include="ExternalBook\IOAuthProfileDataAccess.cs" />
-    <Compile Include="ExternalBook\IOAuthRepository.cs" />
-    <Compile Include="ExternalBook\OAuthProfile.cs" />
     <Compile Include="InvoiceProcessing\AnalyzeInvoiceService.cs" />
     <Compile Include="InvoiceProcessing\Strategies\IPdfPositionAnalysisStrategy.cs" />
     <Compile Include="InvoiceProcessing\Strategies\IStrategy.cs" />
@@ -106,10 +96,12 @@
     <Compile Include="Properties\Annotations1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Accounting\RawInvoice.cs" />
-    <Compile Include="ExternalBook\IExternalInvoiceService.cs" />
-    <Compile Include="UI\IWindowManager.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\QuickBooks\Spinvoice.QuickBooks.Domain\Spinvoice.QuickBooks.Domain.csproj">
+      <Project>{9d42990a-bc21-4e9e-9332-d31bdd6f71c1}</Project>
+      <Name>Spinvoice.QuickBooks.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Spinvoice.Common.Domain\Spinvoice.Common.Domain.csproj">
       <Project>{6498b4d4-8d2a-4d47-af0b-c8345d518531}</Project>
       <Name>Spinvoice.Common.Domain</Name>
@@ -121,6 +113,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="UI\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

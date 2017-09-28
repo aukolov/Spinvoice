@@ -1,5 +1,4 @@
-﻿using Spinvoice.Domain.ExternalBook;
-using Spinvoice.QuickBooks.Connection;
+﻿using Spinvoice.QuickBooks.Connection;
 
 namespace Spinvoice.QuickBooks.Invoice
 {
@@ -16,7 +15,7 @@ namespace Spinvoice.QuickBooks.Invoice
             _externalConnection = externalConnection;
         }
 
-        public string Save(Domain.Accounting.Invoice invoice)
+        public string Save(Spinvoice.Domain.Accounting.Invoice invoice)
         {
             var bill = _externalInvoiceTranslator.Translate(invoice);
             var savedBill = _externalConnection.Add(bill);

@@ -18,7 +18,7 @@ namespace Spinvoice.Application
             builder.RegisterType<ClipboardService>().AsImplementedInterfaces().AsSelf().SingleInstance();
             builder.RegisterType<ExchangeRatesLoader>().AsImplementedInterfaces().AsSelf().SingleInstance();
             builder.RegisterType<FileService>().AsImplementedInterfaces().AsSelf().SingleInstance();
-            builder.RegisterType<WindowManager>().AsImplementedInterfaces().AsSelf().SingleInstance();
+            builder.RegisterType<WindowFactoryProvider>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<TaskSchedulerProvider>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<ServerManager>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<ApplicationNameProvider>().AsImplementedInterfaces().SingleInstance();

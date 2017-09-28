@@ -1,5 +1,5 @@
 ﻿using Intuit.Ipp.Data;
-using Spinvoice.Domain.ExternalBook;
+using Spinvoice.QuickBooks.Domain;
 
 namespace Spinvoice.QuickBooks.Company
 {

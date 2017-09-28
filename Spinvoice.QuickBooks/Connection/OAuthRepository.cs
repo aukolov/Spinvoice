@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Spinvoice.Domain.ExternalBook;
+using Spinvoice.QuickBooks.Domain;
 using Spinvoice.Utils;
 
 namespace Spinvoice.QuickBooks.Connection

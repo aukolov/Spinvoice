@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using Spinvoice.Domain.ExternalBook;
+using Spinvoice.QuickBooks.Domain;
 
 namespace Spinvoice.IntegrationTests.QuickBooks
 {

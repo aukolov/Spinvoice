@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows;
-using Spinvoice.Domain.UI;
+using Spinvoice.Common.Presentation;
 
 namespace QuickBooksAuth
 {

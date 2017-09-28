@@ -1,7 +1,7 @@
 ﻿using System;
 using Spinvoice.Utils;
 
-namespace Spinvoice.Domain.ExternalBook
+namespace Spinvoice.QuickBooks.Domain
 {
     public class OAuthProfile : IOAuthProfile
     {

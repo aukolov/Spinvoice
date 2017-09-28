@@ -7,7 +7,7 @@ using Intuit.Ipp.DataService;
 using Intuit.Ipp.QueryFilter;
 using Intuit.Ipp.Security;
 using NLog;
-using Spinvoice.Domain.ExternalBook;
+using Spinvoice.QuickBooks.Domain;
 using Spinvoice.Utils;
 
 namespace Spinvoice.QuickBooks.Connection

@@ -1,25 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
-using Spinvoice.Application.ViewModels.Exchange;
-using Spinvoice.Application.ViewModels.QuickBooks;
-using Spinvoice.Application.Views.Exchange;
-using Spinvoice.Application.Views.QuickBooks;
-using Spinvoice.Domain.UI;
-using Spinvoice.QuickBooks.ViewModels;
-using Spinvoice.QuickBooks.Views;
 
-namespace Spinvoice.Application.Services
+namespace Spinvoice.Common.Presentation
 {
     public class WindowManager : IWindowManager
     {
-        private readonly Dictionary<Type, Func<Window>> _windowFactories = new Dictionary<Type, Func<Window>>
-            {
-                {typeof(IExchangeRatesViewModel),() => new ExchangeRatesWindow()},
-                {typeof(IQuickBooksConnectViewModel),() => new QuickBooksConnectWindow()},
-                {typeof(IAccountsChartViewModel),() => new AccountsChartWindow()}
-            };
-        private readonly Dictionary<object, Window> _viewModelWindows = new Dictionary<object, Window>();
+        private readonly Dictionary<object, Window> _viewModelWindows 
+            = new Dictionary<object, Window>();
+        private readonly IWindowFactoryProvider _windowFactoryProvider;
+
+        public WindowManager(IWindowFactoryProvider windowFactoryProvider)
+        {
+            _windowFactoryProvider = windowFactoryProvider;
+        }
 
         public void ShowWindow<T>(T viewModel)
         {
@@ -48,10 +42,10 @@ namespace Spinvoice.Application.Services
 
         private Window CreateWindow<T>(T viewModel)
         {
-            var viewFactory = _windowFactories[typeof(T)];
+            var viewFactory = _windowFactoryProvider.GetFactory<T>();
             var window = viewFactory();
             window.DataContext = viewModel;
-            window.Owner = System.Windows.Application.Current.MainWindow;
+            window.Owner = Application.Current.MainWindow;
             window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
             _viewModelWindows.Add(viewModel, window);

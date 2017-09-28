@@ -1,6 +1,6 @@
 ﻿
 using System.Collections.ObjectModel;
-using Spinvoice.Domain.ExternalBook;
+using Spinvoice.QuickBooks.Domain;
 
 namespace Spinvoice.QuickBooks.Account
 {

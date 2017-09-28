@@ -14,7 +14,7 @@ namespace Spinvoice.QuickBooks.Invoice
             _accountsChartRepository = accountsChartRepository;
         }
 
-        public Bill Translate(Domain.Accounting.Invoice invoice)
+        public Bill Translate(Spinvoice.Domain.Accounting.Invoice invoice)
         {
             return new Bill
             {
@@ -36,7 +36,7 @@ namespace Spinvoice.QuickBooks.Invoice
             };
         }
 
-        private IEnumerable<Line> AccountLines(Domain.Accounting.Invoice invoice)
+        private IEnumerable<Line> AccountLines(Spinvoice.Domain.Accounting.Invoice invoice)
         {
             if (invoice.VatAmount != 0)
             {
@@ -73,7 +73,7 @@ namespace Spinvoice.QuickBooks.Invoice
             };
         }
 
-        private static IEnumerable<Line> ItemLines(Domain.Accounting.Invoice invoice)
+        private static IEnumerable<Line> ItemLines(Spinvoice.Domain.Accounting.Invoice invoice)
         {
             return invoice.Positions
                 .Where(position => !string.IsNullOrEmpty(position.Name))

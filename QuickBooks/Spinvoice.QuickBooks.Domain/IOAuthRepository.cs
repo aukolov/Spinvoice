@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Spinvoice.Domain.ExternalBook
+namespace Spinvoice.QuickBooks.Domain
 {
     public interface IOAuthRepository
     {

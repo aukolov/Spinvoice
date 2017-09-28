@@ -111,7 +111,7 @@
     <Compile Include="Services\FileParseServiceProxy.cs" />
     <Compile Include="Services\ServerManager.cs" />
     <Compile Include="Services\TaskSchedulerProvider.cs" />
-    <Compile Include="Services\WindowManager.cs" />
+    <Compile Include="Services\WindowFactoryProvider.cs" />
     <Compile Include="ViewModels\AppViewModel.cs" />
     <Compile Include="ViewModels\Exchange\CheckExchangeRatesViewModel.cs" />
     <Compile Include="ViewModels\Exchange\ExchangeRatesViewModel.cs" />
@@ -214,6 +214,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\QuickBooks\Spinvoice.QuickBooks.Domain\Spinvoice.QuickBooks.Domain.csproj">
+      <Project>{9d42990a-bc21-4e9e-9332-d31bdd6f71c1}</Project>
+      <Name>Spinvoice.QuickBooks.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\QuickBooks\Spinvoice.QuickBooks.Views\Spinvoice.QuickBooks.Views.csproj">
       <Project>{32cfae79-6c3e-4153-ba68-4eea8e51d497}</Project>
       <Name>Spinvoice.QuickBooks.Views</Name>

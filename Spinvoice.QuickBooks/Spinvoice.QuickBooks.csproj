@@ -120,6 +120,7 @@
     <Compile Include="ExchangeRate\ExternalExchangeRatesRepository.cs" />
     <Compile Include="Invoice\ExternalInvoiceService.cs" />
     <Compile Include="Invoice\ExternalInvoiceTranslator.cs" />
+    <Compile Include="Invoice\IExternalInvoiceService.cs" />
     <Compile Include="Item\ExternalItem.cs" />
     <Compile Include="Item\ExternalItemRepository.cs" />
     <Compile Include="Item\IExternalItemRepository.cs" />
@@ -133,6 +134,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\QuickBooks\Spinvoice.QuickBooks.Domain\Spinvoice.QuickBooks.Domain.csproj">
+      <Project>{9d42990a-bc21-4e9e-9332-d31bdd6f71c1}</Project>
+      <Name>Spinvoice.QuickBooks.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Spinvoice.Common.Presentation\Spinvoice.Common.Presentation.csproj">
+      <Project>{3E074750-19D4-438A-BB65-CC8E19C5B7C3}</Project>
+      <Name>Spinvoice.Common.Presentation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Spinvoice.Domain\Spinvoice.Domain.csproj">
       <Project>{1F2ABFF6-B597-4366-A02B-000346436312}</Project>
       <Name>Spinvoice.Domain</Name>

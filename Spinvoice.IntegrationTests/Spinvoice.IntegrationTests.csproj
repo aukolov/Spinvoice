@@ -177,6 +177,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\QuickBooks\Spinvoice.QuickBooks.Domain\Spinvoice.QuickBooks.Domain.csproj">
+      <Project>{9d42990a-bc21-4e9e-9332-d31bdd6f71c1}</Project>
+      <Name>Spinvoice.QuickBooks.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Server.Infrastructure.Pdf.Text7\Spinvoice.Server.Infrastructure.Pdf.Text7.csproj">
       <Project>{f6d97662-8afa-49e7-ae05-70e20623641e}</Project>
       <Name>Spinvoice.Server.Infrastructure.Pdf.Text7</Name>

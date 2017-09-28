@@ -3,9 +3,9 @@ using System.Collections.ObjectModel;
 using Moq;
 using NUnit.Framework;
 using Spinvoice.Domain.Accounting;
-using Spinvoice.Domain.ExternalBook;
 using Spinvoice.QuickBooks.Company;
 using Spinvoice.QuickBooks.Connection;
+using Spinvoice.QuickBooks.Domain;
 using Spinvoice.QuickBooks.Invoice;
 using Spinvoice.QuickBooks.Item;
 

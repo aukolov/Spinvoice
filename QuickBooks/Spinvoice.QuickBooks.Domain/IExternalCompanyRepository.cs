@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace Spinvoice.Domain.ExternalBook
+namespace Spinvoice.QuickBooks.Domain
 {
     public interface IExternalCompanyRepository
     {

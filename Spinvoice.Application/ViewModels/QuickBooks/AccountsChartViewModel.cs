@@ -2,10 +2,10 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Data;
+using Spinvoice.Common.Presentation;
 using Spinvoice.Domain.Accounting;
-using Spinvoice.Domain.ExternalBook;
-using Spinvoice.Domain.UI;
 using Spinvoice.QuickBooks.Account;
+using Spinvoice.QuickBooks.Domain;
 using Spinvoice.Utils;
 
 namespace Spinvoice.Application.ViewModels.QuickBooks
