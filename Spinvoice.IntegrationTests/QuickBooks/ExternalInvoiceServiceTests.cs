@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Moq;
 using NUnit.Framework;
 using Spinvoice.Domain.Accounting;
@@ -53,13 +54,14 @@ namespace Spinvoice.IntegrationTests.QuickBooks
             var externalCompany = _externalCompanyRepository.Create(companyName, "GBP");
             Assert.IsNotNull(externalCompany.Id);
 
+            var invoiceNumber = "INV NO " + new Random(Environment.TickCount).Next();
             var invoice = new Invoice
             {
                 CompanyName = companyName,
                 ExternalCompanyId = externalCompany.Id,
                 Currency = "GBP",
                 Date = new DateTime(2017, 5, 17),
-                InvoiceNumber = "INV NO 123",
+                InvoiceNumber = invoiceNumber,
                 ExchangeRate = 1.05123m,
                 NetAmount = 1000,
                 Positions = new ObservableCollection<Position>
@@ -81,7 +83,12 @@ namespace Spinvoice.IntegrationTests.QuickBooks
                 }
             };
 
-            _externalInvoiceService.Save(invoice);
+            var externalInvoiceId = _externalInvoiceService.Save(invoice);
+
+            var bill = _externalInvoiceService.GetById(externalInvoiceId);
+            Assert.AreEqual(invoiceNumber, bill.DocNumber);
+            var bills = _externalInvoiceService.GetByExternalCompany(externalCompany.Id);
+            Assert.AreEqual(invoiceNumber, bills.Single().DocNumber);
         }
 
         [Test]

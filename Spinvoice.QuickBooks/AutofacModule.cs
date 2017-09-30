@@ -19,7 +19,7 @@ namespace Spinvoice.QuickBooks
             builder.RegisterAssemblyTypes(assembly)
                 .Where(t => t.Name.EndsWith("ViewModel"))
                 .AsImplementedInterfaces().AsSelf()
-                .SingleInstance();
+                .InstancePerDependency();
             builder.RegisterType<ExternalConnection>().AsImplementedInterfaces().AsSelf().SingleInstance();
             builder.RegisterType<ExternalInvoiceTranslator>().AsImplementedInterfaces().AsSelf().InstancePerDependency();
             builder.RegisterType<ExternalInvoiceService>().AsImplementedInterfaces().AsSelf().InstancePerDependency();

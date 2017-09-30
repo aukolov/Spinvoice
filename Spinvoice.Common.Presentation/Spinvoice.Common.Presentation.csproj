@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutofacModule.cs" />
+    <Compile Include="InvertBooleanConverter.cs" />
     <Compile Include="IWindowFactoryProvider.cs" />
     <Compile Include="IWindowManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

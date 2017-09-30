@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using Intuit.Ipp.Data;
 
 namespace Spinvoice.QuickBooks.Connection
@@ -8,5 +9,8 @@ namespace Spinvoice.QuickBooks.Connection
         T Add<T>(T entity) where T : IEntity;
         T[] GetAll<T>() where T : IEntity, new();
         Intuit.Ipp.Data.ExchangeRate GetExchangeRate(DateTime date, string sourceCurrency);
+        Bill GetBill(string externalInvoiceId);
+        ReadOnlyCollection<Bill> GetBillsByCompany(string externalCompanyId);
+        T Update<T>(T entity) where T : IEntity;
     }
 }

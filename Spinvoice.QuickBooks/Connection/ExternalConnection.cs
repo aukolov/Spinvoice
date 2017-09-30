@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Intuit.Ipp.Core;
 using Intuit.Ipp.Data;
@@ -18,7 +19,8 @@ namespace Spinvoice.QuickBooks.Connection
 
         private readonly IOAuthRepository _oauthRepository;
         private DataService _dataService;
-        private QueryService<Intuit.Ipp.Data.ExchangeRate> _queryService;
+        private QueryService<Intuit.Ipp.Data.ExchangeRate> _exchangeRateQueryService;
+        private QueryService<Bill> _billQueryService;
 
         public ExternalConnection(
             IOAuthRepository oauthRepository)
@@ -37,6 +39,12 @@ namespace Spinvoice.QuickBooks.Connection
         {
             if (!IsConnected) throw new InvalidOperationException();
             return _dataService.Add(entity);
+        }
+
+        public T Update<T>(T entity) where T : IEntity
+        {
+            if (!IsConnected) throw new InvalidOperationException();
+            return _dataService.Update(entity);
         }
 
         public T[] GetAll<T>() where T : IEntity, new()
@@ -89,17 +97,33 @@ namespace Spinvoice.QuickBooks.Connection
             }
 
             _dataService = dataService;
-            _queryService = new QueryService<Intuit.Ipp.Data.ExchangeRate>(serviceContext);
+            _exchangeRateQueryService = new QueryService<Intuit.Ipp.Data.ExchangeRate>(serviceContext);
+            _billQueryService = new QueryService<Intuit.Ipp.Data.Bill>(serviceContext);
             Connected.Raise();
         }
 
         public Intuit.Ipp.Data.ExchangeRate GetExchangeRate(DateTime date, string sourceCurrency)
         {
-            var items = _queryService.ExecuteIdsQuery(
+            var items = _exchangeRateQueryService.ExecuteIdsQuery(
                 "select * from exchangerate " +
                 $"where sourcecurrencycode='{sourceCurrency}' " +
                 $"and asofdate='{date:yyyy-MM-dd}'");
             return items.FirstOrDefault();
         }
+
+        public Bill GetBill(string externalInvoiceId)
+        {
+            var bills = _billQueryService.ExecuteIdsQuery(
+                $"select * from bill where Id = '{externalInvoiceId}'");
+            return bills.SingleOrDefault();
+        }
+
+        public ReadOnlyCollection<Bill> GetBillsByCompany(string externalCompanyId)
+        {
+            var bills = _billQueryService.ExecuteIdsQuery(
+                $"select * from bill where VendorRef = '{externalCompanyId}'");
+            return bills;
+        }
+
     }
 }
