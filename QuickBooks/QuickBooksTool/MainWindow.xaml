@@ -28,7 +28,9 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Button Margin="5"
+        <Button Grid.Row="0"
+                Grid.Column="1"
+                Margin="5"
                 Command="{Binding ConnectCommand}"
                 Content="Connect" />
 
@@ -103,7 +105,7 @@
         </ComboBox>
 
         <Button Grid.Row="5"
-                Grid.Column="0"
+                Grid.Column="1"
                 Margin="5"
                 Command="{Binding PositionsToAccountItemCommand}"
                 Content="Convert Positions to Account Item" />

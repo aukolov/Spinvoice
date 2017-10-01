@@ -147,7 +147,7 @@ namespace QuickBooksTool
                     AmountSpecified = true,
                     DetailType = LineDetailTypeEnum.AccountBasedExpenseLineDetail,
                     DetailTypeSpecified = true,
-                    Description = "special",
+                    Description = "INV " + bill.DocNumber,
                     AnyIntuitObject = new AccountBasedExpenseLineDetail
                     {
                         AccountRef = new ReferenceType
