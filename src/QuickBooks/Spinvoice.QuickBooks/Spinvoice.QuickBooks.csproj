@@ -31,75 +31,75 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac, Version=4.6.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.4.6.1\lib\net45\Autofac.dll</HintPath>
+      <HintPath>..\..\..\packages\Autofac.4.6.1\lib\net45\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DevDefined.OAuth, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a3261f5b4697e67d, processorArchitecture=MSIL">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.9.1\lib\DevDefined.OAuth.dll</HintPath>
+      <HintPath>..\..\..\packages\IppDotNetSdkForQuickBooksApiV3.2.9.1\lib\DevDefined.OAuth.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Intuit.Ipp.Core, Version=2.9.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.9.1\lib\Intuit.Ipp.Core.dll</HintPath>
+      <HintPath>..\..\..\packages\IppDotNetSdkForQuickBooksApiV3.2.9.1\lib\Intuit.Ipp.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Intuit.Ipp.Data, Version=2.9.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.9.1\lib\Intuit.Ipp.Data.dll</HintPath>
+      <HintPath>..\..\..\packages\IppDotNetSdkForQuickBooksApiV3.2.9.1\lib\Intuit.Ipp.Data.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Intuit.Ipp.DataService, Version=2.9.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.9.1\lib\Intuit.Ipp.DataService.dll</HintPath>
+      <HintPath>..\..\..\packages\IppDotNetSdkForQuickBooksApiV3.2.9.1\lib\Intuit.Ipp.DataService.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Intuit.Ipp.Diagnostics, Version=2.9.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.9.1\lib\Intuit.Ipp.Diagnostics.dll</HintPath>
+      <HintPath>..\..\..\packages\IppDotNetSdkForQuickBooksApiV3.2.9.1\lib\Intuit.Ipp.Diagnostics.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Intuit.Ipp.Exception, Version=2.9.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.9.1\lib\Intuit.Ipp.Exception.dll</HintPath>
+      <HintPath>..\..\..\packages\IppDotNetSdkForQuickBooksApiV3.2.9.1\lib\Intuit.Ipp.Exception.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Intuit.Ipp.GlobalTaxService, Version=2.9.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.9.1\lib\Intuit.Ipp.GlobalTaxService.dll</HintPath>
+      <HintPath>..\..\..\packages\IppDotNetSdkForQuickBooksApiV3.2.9.1\lib\Intuit.Ipp.GlobalTaxService.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Intuit.Ipp.LinqExtender, Version=2.9.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.9.1\lib\Intuit.Ipp.LinqExtender.dll</HintPath>
+      <HintPath>..\..\..\packages\IppDotNetSdkForQuickBooksApiV3.2.9.1\lib\Intuit.Ipp.LinqExtender.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Intuit.Ipp.PlatformService, Version=2.9.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.9.1\lib\Intuit.Ipp.PlatformService.dll</HintPath>
+      <HintPath>..\..\..\packages\IppDotNetSdkForQuickBooksApiV3.2.9.1\lib\Intuit.Ipp.PlatformService.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Intuit.Ipp.QueryFilter, Version=2.9.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.9.1\lib\Intuit.Ipp.QueryFilter.dll</HintPath>
+      <HintPath>..\..\..\packages\IppDotNetSdkForQuickBooksApiV3.2.9.1\lib\Intuit.Ipp.QueryFilter.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Intuit.Ipp.ReportService, Version=2.9.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.9.1\lib\Intuit.Ipp.ReportService.dll</HintPath>
+      <HintPath>..\..\..\packages\IppDotNetSdkForQuickBooksApiV3.2.9.1\lib\Intuit.Ipp.ReportService.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Intuit.Ipp.Retry, Version=2.9.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.9.1\lib\Intuit.Ipp.Retry.dll</HintPath>
+      <HintPath>..\..\..\packages\IppDotNetSdkForQuickBooksApiV3.2.9.1\lib\Intuit.Ipp.Retry.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Intuit.Ipp.Security, Version=2.9.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.9.1\lib\Intuit.Ipp.Security.dll</HintPath>
+      <HintPath>..\..\..\packages\IppDotNetSdkForQuickBooksApiV3.2.9.1\lib\Intuit.Ipp.Security.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Intuit.Ipp.Utility, Version=2.9.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.9.1\lib\Intuit.Ipp.Utility.dll</HintPath>
+      <HintPath>..\..\..\packages\IppDotNetSdkForQuickBooksApiV3.2.9.1\lib\Intuit.Ipp.Utility.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Intuit.Ipp.WebHooksService, Version=2.9.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.2.9.1\lib\Intuit.Ipp.WebHooksService.dll</HintPath>
+      <HintPath>..\..\..\packages\IppDotNetSdkForQuickBooksApiV3.2.9.1\lib\Intuit.Ipp.WebHooksService.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.4.11\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\..\..\packages\NLog.4.4.11\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -134,19 +134,19 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\QuickBooks\Spinvoice.QuickBooks.Domain\Spinvoice.QuickBooks.Domain.csproj">
+    <ProjectReference Include="..\Spinvoice.QuickBooks.Domain\Spinvoice.QuickBooks.Domain.csproj">
       <Project>{9d42990a-bc21-4e9e-9332-d31bdd6f71c1}</Project>
       <Name>Spinvoice.QuickBooks.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Spinvoice.Common.Presentation\Spinvoice.Common.Presentation.csproj">
+    <ProjectReference Include="..\..\Common\Spinvoice.Common.Presentation\Spinvoice.Common.Presentation.csproj">
       <Project>{3E074750-19D4-438A-BB65-CC8E19C5B7C3}</Project>
       <Name>Spinvoice.Common.Presentation</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Spinvoice.Domain\Spinvoice.Domain.csproj">
+    <ProjectReference Include="..\..\Application\Spinvoice.Domain\Spinvoice.Domain.csproj">
       <Project>{1F2ABFF6-B597-4366-A02B-000346436312}</Project>
       <Name>Spinvoice.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Spinvoice.Utils\Spinvoice.Utils.csproj">
+    <ProjectReference Include="..\..\Common\Spinvoice.Utils\Spinvoice.Utils.csproj">
       <Project>{6C5BDCDA-A72F-4EBA-8270-FDBD018852F1}</Project>
       <Name>Spinvoice.Utils</Name>
     </ProjectReference>

@@ -4,35 +4,31 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A9205C7F-0BE4-49EF-8CE8-8212B6EE2E2E}</ProjectGuid>
+    <ProjectGuid>{BF291FF4-1B5A-41AB-AC0D-C5889AF05983}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Spinvoice.Preview</RootNamespace>
-    <AssemblyName>Spinvoice.Preview</AssemblyName>
+    <RootNamespace>Spinvoice.Server</RootNamespace>
+    <AssemblyName>Spinvoice.Server</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
-    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
-    <InstallFrom>Web</InstallFrom>
-    <UpdateEnabled>true</UpdateEnabled>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
     <UpdateMode>Foreground</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>https://raw.githubusercontent.com/aukolov/Spinvoice/dev/Spinvoice.Preview/publish/</InstallUrl>
-    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
-    <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>26</ApplicationRevision>
-    <ApplicationVersion>1.1.0.%2a</ApplicationVersion>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
-    <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -44,7 +40,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>x64</PlatformTarget>
@@ -54,31 +49,37 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>0CD858C0CB24BC47ABEEA73786D098986FA7D253</ManifestCertificateThumbprint>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ManifestKeyFile>Spinvoice.Preview_TemporaryKey.pfx</ManifestKeyFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <GenerateManifests>true</GenerateManifests>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=4.6.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Autofac.4.6.1\lib\net45\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Autofac.Integration.Wcf, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Autofac.Wcf.4.0.0\lib\net45\Autofac.Integration.Wcf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="itext.font_asian, Version=7.0.4.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
-      <HintPath>..\packages\itext7.font-asian.7.0.4\lib\net40\itext.font_asian.dll</HintPath>
+      <HintPath>..\..\..\packages\itext7.font-asian.7.0.4\lib\net40\itext.font_asian.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.4.11\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\..\..\packages\NLog.4.4.11\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -87,7 +88,28 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EntryPoint.cs" />
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="ApplicationNameProvider.cs" />
+    <Compile Include="AutofacModule.cs" />
+    <Compile Include="Properties\ServerSatellite.cs" />
+    <Compile Include="ServerBootstrapper.cs" />
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -101,63 +123,82 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Content Include="..\spinvoice.infrastructure.pdf\x64\liblept172.dll">
+      <Link>x64\liblept172.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\spinvoice.infrastructure.pdf\x64\libtesseract304.dll">
+      <Link>x64\libtesseract304.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\spinvoice.infrastructure.pdf\x86\liblept172.dll">
+      <Link>x86\liblept172.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\spinvoice.infrastructure.pdf\x86\libtesseract304.dll">
+      <Link>x86\libtesseract304.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Content Include="..\packages\Tesseract.3.0.2.0\content\x64\liblept172.dll">
-      <Link>x64\liblept172.dll</Link>
-    </Content>
-    <Content Include="..\packages\Tesseract.3.0.2.0\content\x64\libtesseract304.dll">
-      <Link>x64\libtesseract304.dll</Link>
-    </Content>
-    <Content Include="..\packages\Tesseract.3.0.2.0\content\x86\liblept172.dll">
-      <Link>x86\liblept172.dll</Link>
-    </Content>
-    <Content Include="..\packages\Tesseract.3.0.2.0\content\x86\libtesseract304.dll">
-      <Link>x86\libtesseract304.dll</Link>
-    </Content>
-    <Content Include="..\Spinvoice.Server\bin\Debug\Spinvoice.Server.exe.config">
-      <Link>Spinvoice.Server.exe.config</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\Spinvoice.Infrastructure.Pdf\tessdata\eng.cube.bigrams">
+    <Content Include="..\spinvoice.infrastructure.pdf\tessdata\eng.cube.bigrams">
       <Link>tessdata\eng.cube.bigrams</Link>
     </Content>
-    <Content Include="..\Spinvoice.Infrastructure.Pdf\tessdata\eng.cube.fold">
+    <Content Include="..\spinvoice.infrastructure.pdf\tessdata\eng.cube.fold">
       <Link>tessdata\eng.cube.fold</Link>
     </Content>
-    <Content Include="..\Spinvoice.Infrastructure.Pdf\tessdata\eng.cube.lm">
+    <Content Include="..\spinvoice.infrastructure.pdf\tessdata\eng.cube.lm">
       <Link>tessdata\eng.cube.lm</Link>
     </Content>
-    <Content Include="..\Spinvoice.Infrastructure.Pdf\tessdata\eng.cube.nn">
+    <Content Include="..\spinvoice.infrastructure.pdf\tessdata\eng.cube.nn">
       <Link>tessdata\eng.cube.nn</Link>
     </Content>
-    <Content Include="..\Spinvoice.Infrastructure.Pdf\tessdata\eng.cube.params">
+    <Content Include="..\spinvoice.infrastructure.pdf\tessdata\eng.cube.params">
       <Link>tessdata\eng.cube.params</Link>
     </Content>
-    <Content Include="..\Spinvoice.Infrastructure.Pdf\tessdata\eng.cube.size">
+    <Content Include="..\spinvoice.infrastructure.pdf\tessdata\eng.cube.size">
       <Link>tessdata\eng.cube.size</Link>
     </Content>
-    <Content Include="..\Spinvoice.Infrastructure.Pdf\tessdata\eng.cube.word-freq">
+    <Content Include="..\spinvoice.infrastructure.pdf\tessdata\eng.cube.word-freq">
       <Link>tessdata\eng.cube.word-freq</Link>
     </Content>
-    <Content Include="..\Spinvoice.Infrastructure.Pdf\tessdata\eng.tesseract_cube.nn">
+    <Content Include="..\spinvoice.infrastructure.pdf\tessdata\eng.tesseract_cube.nn">
       <Link>tessdata\eng.tesseract_cube.nn</Link>
     </Content>
-    <Content Include="..\Spinvoice.Infrastructure.Pdf\tessdata\eng.traineddata">
+    <Content Include="..\spinvoice.infrastructure.pdf\tessdata\eng.traineddata">
       <Link>tessdata\eng.traineddata</Link>
     </Content>
+    <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="Spinvoice.Preview_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <ProjectReference Include="..\Server.Infrastructure.Pdf.Text7\Spinvoice.Server.Infrastructure.Pdf.Text7.csproj">
+      <Project>{f6d97662-8afa-49e7-ae05-70e20623641e}</Project>
+      <Name>Spinvoice.Server.Infrastructure.Pdf.Text7</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Spinvoice.Common.Domain\Spinvoice.Common.Domain.csproj">
+      <Project>{6498b4d4-8d2a-4d47-af0b-c8345d518531}</Project>
+      <Name>Spinvoice.Common.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Spinvoice.Common.Infrastructure\Spinvoice.Common.Infrastructure.csproj">
+      <Project>{54fea3d8-46e3-441d-9375-bd409fdcbef1}</Project>
+      <Name>Spinvoice.Common.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Spinvoice.Infrastructure.Pdf\Spinvoice.Infrastructure.Pdf.csproj">
+      <Project>{ee6686ca-55a6-4da8-a707-3b6c230aec58}</Project>
+      <Name>Spinvoice.Infrastructure.Pdf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Spinvoice.Server.Services\Spinvoice.Server.Services.csproj">
+      <Project>{8ab4f1c2-c8c4-493d-a5f7-f7bc4fc307ea}</Project>
+      <Name>Spinvoice.Server.Services</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
@@ -171,13 +212,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Spinvoice.Application\Spinvoice.Application.csproj">
-      <Project>{e2691083-9cb7-4071-984b-abc52570ae0f}</Project>
-      <Name>Spinvoice.Application</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

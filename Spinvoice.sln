@@ -3,27 +3,27 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice", "Spinvoice\Spinvoice.csproj", "{CB8BCAC5-E95A-4C68-95AC-081F798E91B5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice", "src\Application\Spinvoice\Spinvoice.csproj", "{CB8BCAC5-E95A-4C68-95AC-081F798E91B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Domain", "Spinvoice.Domain\Spinvoice.Domain.csproj", "{1F2ABFF6-B597-4366-A02B-000346436312}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Domain", "src\Application\Spinvoice.Domain\Spinvoice.Domain.csproj", "{1F2ABFF6-B597-4366-A02B-000346436312}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Infrastructure.DataAccess", "Spinvoice.Infrastructure.DataAccess\Spinvoice.Infrastructure.DataAccess.csproj", "{E0C1E49D-CE0C-434C-A13E-BFB509CEC2B5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Infrastructure.DataAccess", "src\Application\Spinvoice.Infrastructure.DataAccess\Spinvoice.Infrastructure.DataAccess.csproj", "{E0C1E49D-CE0C-434C-A13E-BFB509CEC2B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Tests", "Spinvoice.Tests\Spinvoice.Tests.csproj", "{A4DEB100-7806-43DE-9474-497BF3FB08F0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Tests", "src\Tests\Spinvoice.Tests\Spinvoice.Tests.csproj", "{A4DEB100-7806-43DE-9474-497BF3FB08F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Infrastructure.Pdf", "Spinvoice.Infrastructure.Pdf\Spinvoice.Infrastructure.Pdf.csproj", "{EE6686CA-55A6-4DA8-A707-3B6C230AEC58}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Infrastructure.Pdf", "src\Server\Spinvoice.Infrastructure.Pdf\Spinvoice.Infrastructure.Pdf.csproj", "{EE6686CA-55A6-4DA8-A707-3B6C230AEC58}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.IntegrationTests", "Spinvoice.IntegrationTests\Spinvoice.IntegrationTests.csproj", "{06C406E7-5C3D-4BC1-BAB1-12CCC61DA933}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.IntegrationTests", "src\Tests\Spinvoice.IntegrationTests\Spinvoice.IntegrationTests.csproj", "{06C406E7-5C3D-4BC1-BAB1-12CCC61DA933}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Utils", "Spinvoice.Utils\Spinvoice.Utils.csproj", "{6C5BDCDA-A72F-4EBA-8270-FDBD018852F1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Utils", "src\Common\Spinvoice.Utils\Spinvoice.Utils.csproj", "{6C5BDCDA-A72F-4EBA-8270-FDBD018852F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.QuickBooks", "Spinvoice.QuickBooks\Spinvoice.QuickBooks.csproj", "{0699B9A4-ABA3-4DA8-A2D1-A74EF840A2D7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.QuickBooks", "src\QuickBooks\Spinvoice.QuickBooks\Spinvoice.QuickBooks.csproj", "{0699B9A4-ABA3-4DA8-A2D1-A74EF840A2D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Preview", "Spinvoice.Preview\Spinvoice.Preview.csproj", "{A9205C7F-0BE4-49EF-8CE8-8212B6EE2E2E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Preview", "src\Application\Spinvoice.Preview\Spinvoice.Preview.csproj", "{A9205C7F-0BE4-49EF-8CE8-8212B6EE2E2E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Server", "Spinvoice.Server\Spinvoice.Server.csproj", "{BF291FF4-1B5A-41AB-AC0D-C5889AF05983}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Server", "src\Server\Spinvoice.Server\Spinvoice.Server.csproj", "{BF291FF4-1B5A-41AB-AC0D-C5889AF05983}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Application", "Spinvoice.Application\Spinvoice.Application.csproj", "{E2691083-9CB7-4071-984B-ABC52570AE0F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Application", "src\Application\Spinvoice.Application\Spinvoice.Application.csproj", "{E2691083-9CB7-4071-984B-ABC52570AE0F}"
 	ProjectSection(ProjectDependencies) = postProject
 		{8AB4F1C2-C8C4-493D-A5F7-F7BC4FC307EA} = {8AB4F1C2-C8C4-493D-A5F7-F7BC4FC307EA}
 	EndProjectSection
@@ -38,17 +38,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{1DCDC9
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Server.Services", "Spinvoice.Server.Services\Spinvoice.Server.Services.csproj", "{8AB4F1C2-C8C4-493D-A5F7-F7BC4FC307EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Common.Domain", "Spinvoice.Common.Domain\Spinvoice.Common.Domain.csproj", "{6498B4D4-8D2A-4D47-AF0B-C8345D518531}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Common.Domain", "src\Common\Spinvoice.Common.Domain\Spinvoice.Common.Domain.csproj", "{6498B4D4-8D2A-4D47-AF0B-C8345D518531}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Common.Infrastructure", "Spinvoice.Common.Infrastructure\Spinvoice.Common.Infrastructure.csproj", "{54FEA3D8-46E3-441D-9375-BD409FDCBEF1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Common.Infrastructure", "src\Common\Spinvoice.Common.Infrastructure\Spinvoice.Common.Infrastructure.csproj", "{54FEA3D8-46E3-441D-9375-BD409FDCBEF1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Server.Infrastructure.Pdf.Text7", "Server.Infrastructure.Pdf.Text7\Spinvoice.Server.Infrastructure.Pdf.Text7.csproj", "{F6D97662-8AFA-49E7-AE05-70E20623641E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Server.Infrastructure.Pdf.Text7", "src\Server\Server.Infrastructure.Pdf.Text7\Spinvoice.Server.Infrastructure.Pdf.Text7.csproj", "{F6D97662-8AFA-49E7-AE05-70E20623641E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{AAA42658-F28E-44AA-B78D-EAEDB15DBAFF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickBooksAuth", "Tests\Tools\QuickBooksAuth\QuickBooksAuth.csproj", "{F0DA7BD0-96F0-4E1C-A9B8-33D11E1993ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Common.Presentation", "Spinvoice.Common.Presentation\Spinvoice.Common.Presentation.csproj", "{3E074750-19D4-438A-BB65-CC8E19C5B7C3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Common.Presentation", "src\Common\Spinvoice.Common.Presentation\Spinvoice.Common.Presentation.csproj", "{3E074750-19D4-438A-BB65-CC8E19C5B7C3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.QuickBooks.Views", "QuickBooks\Spinvoice.QuickBooks.Views\Spinvoice.QuickBooks.Views.csproj", "{32CFAE79-6C3E-4153-BA68-4EEA8E51D497}"
 EndProject
