@@ -20,7 +20,7 @@ namespace Spinvoice.IntegrationTests.QuickBooks
             var path = Path.Combine(
                 Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
                 @"..\..\..\",
-                @"Tests\Tools\QuickBooksAuth\bin\Debug\QuickBooksAuth.exe");
+                @"Tools\QuickBooksAuth\bin\Debug\QuickBooksAuth.exe");
             var process = new Process
             {
                 StartInfo =

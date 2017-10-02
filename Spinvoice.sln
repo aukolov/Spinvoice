@@ -36,7 +36,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{664D2E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{1DCDC972-9C1B-4140-A7F0-F7FE499F422F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Server.Services", "Spinvoice.Server.Services\Spinvoice.Server.Services.csproj", "{8AB4F1C2-C8C4-493D-A5F7-F7BC4FC307EA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Server.Services", "src\Server\Spinvoice.Server.Services\Spinvoice.Server.Services.csproj", "{8AB4F1C2-C8C4-493D-A5F7-F7BC4FC307EA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Common.Domain", "src\Common\Spinvoice.Common.Domain\Spinvoice.Common.Domain.csproj", "{6498B4D4-8D2A-4D47-AF0B-C8345D518531}"
 EndProject
