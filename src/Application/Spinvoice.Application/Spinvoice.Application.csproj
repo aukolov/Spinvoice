@@ -31,19 +31,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac, Version=4.6.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.4.6.1\lib\net45\Autofac.dll</HintPath>
+      <HintPath>..\..\..\packages\Autofac.4.6.1\lib\net45\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.4.11\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\..\..\packages\NLog.4.4.11\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="ParallelExtensionsExtras, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MSFT.ParallelExtensionsExtras.1.2.0\lib\ParallelExtensionsExtras.dll</HintPath>
+      <HintPath>..\..\..\packages\MSFT.ParallelExtensionsExtras.1.2.0\lib\ParallelExtensionsExtras.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="PresentationCore" />
@@ -51,23 +51,23 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Reactive.Core, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Reactive.Core.3.1.1\lib\net45\System.Reactive.Core.dll</HintPath>
+      <HintPath>..\..\..\packages\System.Reactive.Core.3.1.1\lib\net45\System.Reactive.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Reactive.Interfaces, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Reactive.Interfaces.3.1.1\lib\net45\System.Reactive.Interfaces.dll</HintPath>
+      <HintPath>..\..\..\packages\System.Reactive.Interfaces.3.1.1\lib\net45\System.Reactive.Interfaces.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Reactive.Linq, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Reactive.Linq.3.1.1\lib\net45\System.Reactive.Linq.dll</HintPath>
+      <HintPath>..\..\..\packages\System.Reactive.Linq.3.1.1\lib\net45\System.Reactive.Linq.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Reactive.PlatformServices, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Reactive.PlatformServices.3.1.1\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
+      <HintPath>..\..\..\packages\System.Reactive.PlatformServices.3.1.1\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Reactive.Windows.Threading, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Reactive.Windows.Threading.3.1.1\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
+      <HintPath>..\..\..\packages\System.Reactive.Windows.Threading.3.1.1\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
@@ -189,10 +189,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\Spinvoice.Server\bin\Debug\Spinvoice.Server.exe.config">
-      <Link>Spinvoice.Server.exe.config</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Include="Properties\DataSources\Spinvoice.Common.Domain.Pdf.PdfModel.datasource" />
     <None Include="Service References\ServerReference\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
@@ -214,23 +210,23 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\QuickBooks\Spinvoice.QuickBooks.Domain\Spinvoice.QuickBooks.Domain.csproj">
+    <ProjectReference Include="..\..\QuickBooks\Spinvoice.QuickBooks.Domain\Spinvoice.QuickBooks.Domain.csproj">
       <Project>{9d42990a-bc21-4e9e-9332-d31bdd6f71c1}</Project>
       <Name>Spinvoice.QuickBooks.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\QuickBooks\Spinvoice.QuickBooks.Views\Spinvoice.QuickBooks.Views.csproj">
+    <ProjectReference Include="..\..\QuickBooks\Spinvoice.QuickBooks.Views\Spinvoice.QuickBooks.Views.csproj">
       <Project>{32cfae79-6c3e-4153-ba68-4eea8e51d497}</Project>
       <Name>Spinvoice.QuickBooks.Views</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Spinvoice.Common.Domain\Spinvoice.Common.Domain.csproj">
+    <ProjectReference Include="..\..\Common\Spinvoice.Common.Domain\Spinvoice.Common.Domain.csproj">
       <Project>{6498b4d4-8d2a-4d47-af0b-c8345d518531}</Project>
       <Name>Spinvoice.Common.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Spinvoice.Common.Infrastructure\Spinvoice.Common.Infrastructure.csproj">
+    <ProjectReference Include="..\..\Common\Spinvoice.Common.Infrastructure\Spinvoice.Common.Infrastructure.csproj">
       <Project>{54fea3d8-46e3-441d-9375-bd409fdcbef1}</Project>
       <Name>Spinvoice.Common.Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Spinvoice.Common.Presentation\Spinvoice.Common.Presentation.csproj">
+    <ProjectReference Include="..\..\Common\Spinvoice.Common.Presentation\Spinvoice.Common.Presentation.csproj">
       <Project>{3e074750-19d4-438a-bb65-cc8e19c5b7c3}</Project>
       <Name>Spinvoice.Common.Presentation</Name>
     </ProjectReference>
@@ -242,15 +238,15 @@
       <Project>{e0c1e49d-ce0c-434c-a13e-bfb509cec2b5}</Project>
       <Name>Spinvoice.Infrastructure.DataAccess</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Spinvoice.QuickBooks\Spinvoice.QuickBooks.csproj">
+    <ProjectReference Include="..\..\QuickBooks\Spinvoice.QuickBooks\Spinvoice.QuickBooks.csproj">
       <Project>{0699b9a4-aba3-4da8-a2d1-a74ef840a2d7}</Project>
       <Name>Spinvoice.QuickBooks</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Spinvoice.Server\Spinvoice.Server.csproj">
+    <ProjectReference Include="..\..\Server\Spinvoice.Server\Spinvoice.Server.csproj">
       <Project>{BF291FF4-1B5A-41AB-AC0D-C5889AF05983}</Project>
       <Name>Spinvoice.Server</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Spinvoice.Utils\Spinvoice.Utils.csproj">
+    <ProjectReference Include="..\..\Common\Spinvoice.Utils\Spinvoice.Utils.csproj">
       <Project>{6c5bdcda-a72f-4eba-8270-fdbd018852f1}</Project>
       <Name>Spinvoice.Utils</Name>
     </ProjectReference>

@@ -63,11 +63,11 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Spinvoice.Common.Presentation\Spinvoice.Common.Presentation.csproj">
+    <ProjectReference Include="..\..\Common\Spinvoice.Common.Presentation\Spinvoice.Common.Presentation.csproj">
       <Project>{3e074750-19d4-438a-bb65-cc8e19c5b7c3}</Project>
       <Name>Spinvoice.Common.Presentation</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Spinvoice.QuickBooks\Spinvoice.QuickBooks.csproj">
+    <ProjectReference Include="..\Spinvoice.QuickBooks\Spinvoice.QuickBooks.csproj">
       <Project>{0699B9A4-ABA3-4DA8-A2D1-A74EF840A2D7}</Project>
       <Name>Spinvoice.QuickBooks</Name>
     </ProjectReference>

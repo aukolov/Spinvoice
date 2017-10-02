@@ -31,43 +31,43 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac, Version=4.6.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.4.6.1\lib\net45\Autofac.dll</HintPath>
+      <HintPath>..\..\..\packages\Autofac.4.6.1\lib\net45\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="itext.barcodes, Version=7.0.4.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
-      <HintPath>..\packages\itext7.7.0.4\lib\net40\itext.barcodes.dll</HintPath>
+      <HintPath>..\..\..\packages\itext7.7.0.4\lib\net40\itext.barcodes.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="itext.font_asian, Version=7.0.4.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
-      <HintPath>..\packages\itext7.font-asian.7.0.4\lib\net40\itext.font_asian.dll</HintPath>
+      <HintPath>..\..\..\packages\itext7.font-asian.7.0.4\lib\net40\itext.font_asian.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="itext.forms, Version=7.0.4.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
-      <HintPath>..\packages\itext7.7.0.4\lib\net40\itext.forms.dll</HintPath>
+      <HintPath>..\..\..\packages\itext7.7.0.4\lib\net40\itext.forms.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="itext.io, Version=7.0.4.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
-      <HintPath>..\packages\itext7.7.0.4\lib\net40\itext.io.dll</HintPath>
+      <HintPath>..\..\..\packages\itext7.7.0.4\lib\net40\itext.io.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="itext.kernel, Version=7.0.4.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
-      <HintPath>..\packages\itext7.7.0.4\lib\net40\itext.kernel.dll</HintPath>
+      <HintPath>..\..\..\packages\itext7.7.0.4\lib\net40\itext.kernel.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="itext.layout, Version=7.0.4.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
-      <HintPath>..\packages\itext7.7.0.4\lib\net40\itext.layout.dll</HintPath>
+      <HintPath>..\..\..\packages\itext7.7.0.4\lib\net40\itext.layout.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="itext.pdfa, Version=7.0.4.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
-      <HintPath>..\packages\itext7.7.0.4\lib\net40\itext.pdfa.dll</HintPath>
+      <HintPath>..\..\..\packages\itext7.7.0.4\lib\net40\itext.pdfa.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="itext.sign, Version=7.0.4.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
-      <HintPath>..\packages\itext7.7.0.4\lib\net40\itext.sign.dll</HintPath>
+      <HintPath>..\..\..\packages\itext7.7.0.4\lib\net40\itext.sign.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.4.11\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\..\..\packages\NLog.4.4.11\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -89,7 +89,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Spinvoice.Common.Domain\Spinvoice.Common.Domain.csproj">
+    <ProjectReference Include="..\..\Common\Spinvoice.Common.Domain\Spinvoice.Common.Domain.csproj">
       <Project>{6498B4D4-8D2A-4D47-AF0B-C8345D518531}</Project>
       <Name>Spinvoice.Common.Domain</Name>
     </ProjectReference>

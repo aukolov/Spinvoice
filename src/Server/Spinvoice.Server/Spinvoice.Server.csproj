@@ -183,11 +183,11 @@
       <Project>{f6d97662-8afa-49e7-ae05-70e20623641e}</Project>
       <Name>Spinvoice.Server.Infrastructure.Pdf.Text7</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Spinvoice.Common.Domain\Spinvoice.Common.Domain.csproj">
+    <ProjectReference Include="..\..\Common\Spinvoice.Common.Domain\Spinvoice.Common.Domain.csproj">
       <Project>{6498b4d4-8d2a-4d47-af0b-c8345d518531}</Project>
       <Name>Spinvoice.Common.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Spinvoice.Common.Infrastructure\Spinvoice.Common.Infrastructure.csproj">
+    <ProjectReference Include="..\..\Common\Spinvoice.Common.Infrastructure\Spinvoice.Common.Infrastructure.csproj">
       <Project>{54fea3d8-46e3-441d-9375-bd409fdcbef1}</Project>
       <Name>Spinvoice.Common.Infrastructure</Name>
     </ProjectReference>

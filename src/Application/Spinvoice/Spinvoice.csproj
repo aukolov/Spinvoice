@@ -73,28 +73,28 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.4.11\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\..\..\packages\NLog.4.4.11\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Reactive.Core, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Reactive.Core.3.1.1\lib\net45\System.Reactive.Core.dll</HintPath>
+      <HintPath>..\..\..\packages\System.Reactive.Core.3.1.1\lib\net45\System.Reactive.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Reactive.Interfaces, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Reactive.Interfaces.3.1.1\lib\net45\System.Reactive.Interfaces.dll</HintPath>
+      <HintPath>..\..\..\packages\System.Reactive.Interfaces.3.1.1\lib\net45\System.Reactive.Interfaces.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Reactive.Linq, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Reactive.Linq.3.1.1\lib\net45\System.Reactive.Linq.dll</HintPath>
+      <HintPath>..\..\..\packages\System.Reactive.Linq.3.1.1\lib\net45\System.Reactive.Linq.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Reactive.PlatformServices, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Reactive.PlatformServices.3.1.1\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
+      <HintPath>..\..\..\packages\System.Reactive.PlatformServices.3.1.1\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Reactive.Windows.Threading, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Reactive.Windows.Threading.3.1.1\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
+      <HintPath>..\..\..\packages\System.Reactive.Windows.Threading.3.1.1\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Windows" />
@@ -125,34 +125,34 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Content Include="..\spinvoice.infrastructure.pdf\tessdata\eng.cube.bigrams">
+    <Content Include="..\..\Server\spinvoice.infrastructure.pdf\tessdata\eng.cube.bigrams">
       <Link>tessdata\eng.cube.bigrams</Link>
     </Content>
-    <Content Include="..\spinvoice.infrastructure.pdf\tessdata\eng.cube.fold">
+    <Content Include="..\..\Server\spinvoice.infrastructure.pdf\tessdata\eng.cube.fold">
       <Link>tessdata\eng.cube.fold</Link>
     </Content>
-    <Content Include="..\spinvoice.infrastructure.pdf\tessdata\eng.cube.lm">
+    <Content Include="..\..\Server\spinvoice.infrastructure.pdf\tessdata\eng.cube.lm">
       <Link>tessdata\eng.cube.lm</Link>
     </Content>
-    <Content Include="..\spinvoice.infrastructure.pdf\tessdata\eng.cube.nn">
+    <Content Include="..\..\Server\spinvoice.infrastructure.pdf\tessdata\eng.cube.nn">
       <Link>tessdata\eng.cube.nn</Link>
     </Content>
-    <Content Include="..\spinvoice.infrastructure.pdf\tessdata\eng.cube.params">
+    <Content Include="..\..\Server\spinvoice.infrastructure.pdf\tessdata\eng.cube.params">
       <Link>tessdata\eng.cube.params</Link>
     </Content>
-    <Content Include="..\spinvoice.infrastructure.pdf\tessdata\eng.cube.size">
+    <Content Include="..\..\Server\spinvoice.infrastructure.pdf\tessdata\eng.cube.size">
       <Link>tessdata\eng.cube.size</Link>
     </Content>
-    <Content Include="..\spinvoice.infrastructure.pdf\tessdata\eng.cube.word-freq">
+    <Content Include="..\..\Server\spinvoice.infrastructure.pdf\tessdata\eng.cube.word-freq">
       <Link>tessdata\eng.cube.word-freq</Link>
     </Content>
-    <Content Include="..\spinvoice.infrastructure.pdf\tessdata\eng.tesseract_cube.nn">
+    <Content Include="..\..\Server\spinvoice.infrastructure.pdf\tessdata\eng.tesseract_cube.nn">
       <Link>tessdata\eng.tesseract_cube.nn</Link>
     </Content>
-    <Content Include="..\spinvoice.infrastructure.pdf\tessdata\eng.traineddata">
+    <Content Include="..\..\Server\spinvoice.infrastructure.pdf\tessdata\eng.traineddata">
       <Link>tessdata\eng.traineddata</Link>
     </Content>
-    <Content Include="..\Spinvoice.Server\bin\Debug\Spinvoice.Server.exe.config">
+    <Content Include="..\..\Server\Spinvoice.Server\bin\Debug\Spinvoice.Server.exe.config">
       <Link>Spinvoice.Server.exe.config</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -190,30 +190,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\packages\tesseract.3.0.2.0\content\x64\liblept172.dll">
+    <Content Include="..\..\..\packages\tesseract.3.0.2.0\content\x64\liblept172.dll">
       <Link>x64\liblept172.dll</Link>
     </Content>
-    <Content Include="..\packages\tesseract.3.0.2.0\content\x64\libtesseract304.dll">
+    <Content Include="..\..\..\packages\tesseract.3.0.2.0\content\x64\libtesseract304.dll">
       <Link>x64\libtesseract304.dll</Link>
     </Content>
-    <Content Include="..\packages\tesseract.3.0.2.0\content\x86\liblept172.dll">
+    <Content Include="..\..\..\packages\tesseract.3.0.2.0\content\x86\liblept172.dll">
       <Link>x86\liblept172.dll</Link>
     </Content>
-    <Content Include="..\packages\tesseract.3.0.2.0\content\x86\libtesseract304.dll">
-      <Link>x86\libtesseract304.dll</Link>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="..\spinvoice.infrastructure.pdf\x64\liblept172.dll">
-      <Link>x64\liblept172.dll</Link>
-    </Content>
-    <Content Include="..\spinvoice.infrastructure.pdf\x64\libtesseract304.dll">
-      <Link>x64\libtesseract304.dll</Link>
-    </Content>
-    <Content Include="..\spinvoice.infrastructure.pdf\x86\liblept172.dll">
-      <Link>x86\liblept172.dll</Link>
-    </Content>
-    <Content Include="..\spinvoice.infrastructure.pdf\x86\libtesseract304.dll">
+    <Content Include="..\..\..\packages\tesseract.3.0.2.0\content\x86\libtesseract304.dll">
       <Link>x86\libtesseract304.dll</Link>
     </Content>
   </ItemGroup>

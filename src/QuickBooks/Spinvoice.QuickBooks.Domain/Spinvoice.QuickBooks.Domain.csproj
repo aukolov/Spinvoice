@@ -47,7 +47,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Spinvoice.Utils\Spinvoice.Utils.csproj">
+    <ProjectReference Include="..\..\Common\Spinvoice.Utils\Spinvoice.Utils.csproj">
       <Project>{6c5bdcda-a72f-4eba-8270-fdbd018852f1}</Project>
       <Name>Spinvoice.Utils</Name>
     </ProjectReference>

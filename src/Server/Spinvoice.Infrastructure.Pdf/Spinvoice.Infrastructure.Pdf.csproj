@@ -31,22 +31,22 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac, Version=4.6.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.4.6.1\lib\net45\Autofac.dll</HintPath>
+      <HintPath>..\..\..\packages\Autofac.4.6.1\lib\net45\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="itextsharp, Version=5.5.11.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
-      <HintPath>..\packages\iTextSharp.5.5.11\lib\itextsharp.dll</HintPath>
+      <HintPath>..\..\..\packages\iTextSharp.5.5.11\lib\itextsharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.4.11\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\..\..\packages\NLog.4.4.11\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="Tesseract, Version=3.0.2.0, Culture=neutral, PublicKeyToken=ebeb3d86bef60cbe, processorArchitecture=MSIL">
-      <HintPath>..\packages\Tesseract.3.0.2.0\lib\net451\Tesseract.dll</HintPath>
+      <HintPath>..\..\..\packages\Tesseract.3.0.2.0\lib\net451\Tesseract.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -103,11 +103,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Spinvoice.Common.Domain\Spinvoice.Common.Domain.csproj">
+    <ProjectReference Include="..\..\Common\Spinvoice.Common.Domain\Spinvoice.Common.Domain.csproj">
       <Project>{6498b4d4-8d2a-4d47-af0b-c8345d518531}</Project>
       <Name>Spinvoice.Common.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Spinvoice.Domain\Spinvoice.Domain.csproj">
+    <ProjectReference Include="..\..\Application\Spinvoice.Domain\Spinvoice.Domain.csproj">
       <Project>{1F2ABFF6-B597-4366-A02B-000346436312}</Project>
       <Name>Spinvoice.Domain</Name>
     </ProjectReference>

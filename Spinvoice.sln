@@ -50,13 +50,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickBooksAuth", "Tests\Too
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.Common.Presentation", "src\Common\Spinvoice.Common.Presentation\Spinvoice.Common.Presentation.csproj", "{3E074750-19D4-438A-BB65-CC8E19C5B7C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.QuickBooks.Views", "QuickBooks\Spinvoice.QuickBooks.Views\Spinvoice.QuickBooks.Views.csproj", "{32CFAE79-6C3E-4153-BA68-4EEA8E51D497}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.QuickBooks.Views", "src\QuickBooks\Spinvoice.QuickBooks.Views\Spinvoice.QuickBooks.Views.csproj", "{32CFAE79-6C3E-4153-BA68-4EEA8E51D497}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickBooksTool", "QuickBooks\QuickBooksTool\QuickBooksTool.csproj", "{B6B6EAF4-6AAB-442B-8921-74466407C2C1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickBooksTool", "src\QuickBooks\QuickBooksTool\QuickBooksTool.csproj", "{B6B6EAF4-6AAB-442B-8921-74466407C2C1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "QuickBooks", "QuickBooks", "{47E9EF10-1137-47C6-BF96-E570EAC86B87}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.QuickBooks.Domain", "QuickBooks\Spinvoice.QuickBooks.Domain\Spinvoice.QuickBooks.Domain.csproj", "{9D42990A-BC21-4E9E-9332-D31BDD6F71C1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spinvoice.QuickBooks.Domain", "src\QuickBooks\Spinvoice.QuickBooks.Domain\Spinvoice.QuickBooks.Domain.csproj", "{9D42990A-BC21-4E9E-9332-D31BDD6F71C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
