@@ -25,7 +25,6 @@ namespace QuickBooksTool
         private readonly IWindowManager _windowManager;
         private readonly Func<IQuickBooksConnectViewModel> _connectViewModelFactory;
         private IExternalCompany _selectedCompany;
-        private bool _updateAllInvoices;
 
         public MainViewModel(
             IExternalCompanyRepository externalCompanyRepository,
@@ -43,6 +42,8 @@ namespace QuickBooksTool
             _connectViewModelFactory = connectViewModelFactory;
             ConnectCommand = new RelayCommand(ShowConnectDialog);
             PositionsToAccountItemCommand = new RelayCommand(PositionsToAccountItem);
+            AddInvoiceCommand = new RelayCommand(AddInvoice);
+            RemoveInvoiceCommand = new RelayCommand(RemoveInvoice);
         }
 
         public ICommand ConnectCommand { get; }
@@ -55,30 +56,33 @@ namespace QuickBooksTool
             set
             {
                 _selectedCompany = value;
-                Invoices.Clear();
-                if (_selectedCompany != null)
-                {
-                    Invoices.AddRange(_externalInvoiceService.GetByExternalCompany(_selectedCompany.Id));
-                }
+                UpdateInvoice();
                 OnPropertyChanged();
             }
         }
 
-        public ObservableCollection<Bill> Invoices { get; } = new ObservableCollection<Bill>();
-
-        public bool UpdateAllInvoices
+        private void UpdateInvoice()
         {
-            get { return _updateAllInvoices; }
-            set
+            AvailableInvoices.Clear();
+            SelectedInvoices.Clear();
+            if (_selectedCompany != null)
             {
-                _updateAllInvoices = value;
-                OnPropertyChanged();
+                AvailableInvoices.AddRange(_externalInvoiceService.GetByExternalCompany(_selectedCompany.Id));
             }
         }
 
-        public Bill SelectedInvoice { get; set; }
         public ObservableCollection<IExternalAccount> Accounts { get; } = new ObservableCollection<IExternalAccount>();
         public IExternalAccount SelectedAccount { get; set; }
+
+        public ObservableCollection<Bill> AvailableInvoices { get; } = new ObservableCollection<Bill>();
+        public Bill InvoiceToAdd { get; set; }
+        public ICommand AddInvoiceCommand { get; }
+
+        public ObservableCollection<Bill> SelectedInvoices { get; } = new ObservableCollection<Bill>();
+        public Bill InvoiceToRemove { get; set; }
+        public ICommand RemoveInvoiceCommand { get; }
+
+        public DateTime SelectedDate { get; set; }
 
         private void ShowConnectDialog()
         {
@@ -97,11 +101,11 @@ namespace QuickBooksTool
 
         private void PositionsToAccountItem()
         {
-            if (UpdateAllInvoices && !Invoices.Any())
+            if (!SelectedInvoices.Any())
             {
                 return;
             }
-            if (!UpdateAllInvoices && SelectedInvoice == null)
+            if (SelectedAccount == null)
             {
                 return;
             }
@@ -112,42 +116,17 @@ namespace QuickBooksTool
                 return;
             }
 
-            if (UpdateAllInvoices)
-            {
-                foreach (var invoice in Invoices)
-                {
-                    UpdateInvoice(invoice.Id);
-                }
-            }
-            else
-            {
-                UpdateInvoice(SelectedInvoice.Id);
-            }
+            var totalAmount = SelectedInvoices.Sum(bill => bill.TotalAmt);
 
-            MessageBox.Show("Done!", "Update Invoices", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-
-        private void UpdateInvoice(string externalInvoiceId)
-        {
-            var bill = _externalInvoiceService.GetById(externalInvoiceId);
-            var positions = bill.Line.Where(line => line.DetailType == LineDetailTypeEnum.ItemBasedExpenseLineDetail).ToArray();
-            if (!positions.Any())
+            _externalInvoiceService.Add(new Bill
             {
-                return;
-            }
-            var positionSum = positions
-                .Where(line => line.AmountSpecified)
-                .Sum(line => line.Amount);
-            var newLines = bill.Line.Where(line => line.DetailType != LineDetailTypeEnum.ItemBasedExpenseLineDetail).ToList();
-            if (positionSum > 0)
-            {
-                newLines.Add(new Line
+                TotalAmt = totalAmount,
+                Line = new[] {new Line
                 {
-                    Amount = positionSum,
+                    Amount = totalAmount,
                     AmountSpecified = true,
                     DetailType = LineDetailTypeEnum.AccountBasedExpenseLineDetail,
                     DetailTypeSpecified = true,
-                    Description = "INV " + bill.DocNumber,
                     AnyIntuitObject = new AccountBasedExpenseLineDetail
                     {
                         AccountRef = new ReferenceType
@@ -155,12 +134,30 @@ namespace QuickBooksTool
                             Value = SelectedAccount.Id
                         }
                     }
+                }},
+                CurrencyRef = SelectedInvoices.First().CurrencyRef,
+                VendorRef = new ReferenceType
+                {
+                    Value = SelectedCompany.Id
+                },
+                ExchangeRateSpecified = false,
+                TxnDate = SelectedDate,
+                TxnDateSpecified = true,
+                PrivateNote = string.Join(", ", SelectedInvoices.Select(x => x.DocNumber))
+            });
+
+            foreach (var selectedInvoice in SelectedInvoices)
+            {
+                _externalInvoiceService.Delete(new Bill
+                {
+                    Id = selectedInvoice.Id,
+                    SyncToken = "0"
                 });
             }
-            bill.Line = newLines.ToArray();
 
-            _externalInvoiceService.Update(bill);
-            return;
+            MessageBox.Show("Done!", "Update Invoices", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            UpdateInvoice();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -169,6 +166,28 @@ namespace QuickBooksTool
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void AddInvoice()
+        {
+            if (InvoiceToAdd == null)
+            {
+                return;
+            }
+
+            SelectedInvoices.Add(InvoiceToAdd);
+            AvailableInvoices.Remove(InvoiceToAdd);
+        }
+
+        private void RemoveInvoice()
+        {
+            if (InvoiceToRemove == null)
+            {
+                return;
+            }
+
+            AvailableInvoices.Add(InvoiceToRemove);
+            SelectedInvoices.Remove(InvoiceToRemove);
         }
     }
 }

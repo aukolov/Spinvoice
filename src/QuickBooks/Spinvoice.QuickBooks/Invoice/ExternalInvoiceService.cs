@@ -34,9 +34,19 @@ namespace Spinvoice.QuickBooks.Invoice
             return _externalConnection.GetBill(externalInvoiceId);
         }
 
+        public void Add(Bill bill)
+        {
+            _externalConnection.Add(bill);
+        }
+
         public void Update(Bill bill)
         {
             _externalConnection.Update(bill);
+        }
+
+        public void Delete(Bill bill)
+        {
+            _externalConnection.Delete(bill);
         }
     }
 }

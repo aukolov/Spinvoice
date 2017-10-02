@@ -12,5 +12,6 @@ namespace Spinvoice.QuickBooks.Connection
         Bill GetBill(string externalInvoiceId);
         ReadOnlyCollection<Bill> GetBillsByCompany(string externalCompanyId);
         T Update<T>(T entity) where T : IEntity;
+        void Delete<T>(T entity) where T : IEntity;
     }
 }

@@ -7,6 +7,7 @@ using Intuit.Ipp.Data;
 using Intuit.Ipp.DataService;
 using Intuit.Ipp.QueryFilter;
 using Intuit.Ipp.Security;
+using Intuit.Ipp.WebhooksService;
 using NLog;
 using Spinvoice.QuickBooks.Domain;
 using Spinvoice.Utils;
@@ -45,6 +46,12 @@ namespace Spinvoice.QuickBooks.Connection
         {
             if (!IsConnected) throw new InvalidOperationException();
             return _dataService.Update(entity);
+        }
+
+        public void Delete<T>(T entity) where T : IEntity
+        {
+            if (!IsConnected) throw new InvalidOperationException();
+            _dataService.Delete(entity);
         }
 
         public T[] GetAll<T>() where T : IEntity, new()
