@@ -28,8 +28,8 @@
     <InstallUrl>https://raw.githubusercontent.com/aukolov/QuickBooksToolSetup/master/</InstallUrl>
     <WebPage>publish.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>8</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <ApplicationRevision>9</ApplicationRevision>
+    <ApplicationVersion>1.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -181,6 +181,7 @@
     </ApplicationDefinition>
     <Compile Include="DataAccess\AccountsChartRepository.cs" />
     <Compile Include="DataAccess\OAuthProfileDataAccess.cs" />
+    <Compile Include="InvoiceViewModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="WindowFactoryProvider.cs" />
     <Page Include="MainWindow.xaml">

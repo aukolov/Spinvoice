@@ -67,19 +67,20 @@ namespace QuickBooksTool
             SelectedInvoices.Clear();
             if (_selectedCompany != null)
             {
-                AvailableInvoices.AddRange(_externalInvoiceService.GetByExternalCompany(_selectedCompany.Id));
+                AvailableInvoices.AddRange(
+                    _externalInvoiceService
+                        .GetByExternalCompany(_selectedCompany.Id)
+                        .Select(bill => new InvoiceViewModel(bill)));
             }
         }
 
         public ObservableCollection<IExternalAccount> Accounts { get; } = new ObservableCollection<IExternalAccount>();
         public IExternalAccount SelectedAccount { get; set; }
 
-        public ObservableCollection<Bill> AvailableInvoices { get; } = new ObservableCollection<Bill>();
-        public Bill InvoiceToAdd { get; set; }
+        public ObservableCollection<InvoiceViewModel> AvailableInvoices { get; } = new ObservableCollection<InvoiceViewModel>();
         public ICommand AddInvoiceCommand { get; }
 
-        public ObservableCollection<Bill> SelectedInvoices { get; } = new ObservableCollection<Bill>();
-        public Bill InvoiceToRemove { get; set; }
+        public ObservableCollection<InvoiceViewModel> SelectedInvoices { get; } = new ObservableCollection<InvoiceViewModel>();
         public ICommand RemoveInvoiceCommand { get; }
 
         public DateTime SelectedDate { get; set; }
@@ -116,7 +117,7 @@ namespace QuickBooksTool
                 return;
             }
 
-            var totalAmount = SelectedInvoices.Sum(bill => bill.TotalAmt);
+            var totalAmount = SelectedInvoices.Sum(bill => bill.Invoice.TotalAmt);
 
             _externalInvoiceService.Add(new Bill
             {
@@ -135,7 +136,7 @@ namespace QuickBooksTool
                         }
                     }
                 }},
-                CurrencyRef = SelectedInvoices.First().CurrencyRef,
+                CurrencyRef = SelectedInvoices.First().Invoice.CurrencyRef,
                 VendorRef = new ReferenceType
                 {
                     Value = SelectedCompany.Id
@@ -143,14 +144,14 @@ namespace QuickBooksTool
                 ExchangeRateSpecified = false,
                 TxnDate = SelectedDate,
                 TxnDateSpecified = true,
-                PrivateNote = string.Join(", ", SelectedInvoices.Select(x => x.DocNumber))
+                PrivateNote = string.Join(", ", SelectedInvoices.Select(x => x.Invoice.DocNumber))
             });
 
             foreach (var selectedInvoice in SelectedInvoices)
             {
                 _externalInvoiceService.Delete(new Bill
                 {
-                    Id = selectedInvoice.Id,
+                    Id = selectedInvoice.Invoice.Id,
                     SyncToken = "0"
                 });
             }
@@ -170,24 +171,20 @@ namespace QuickBooksTool
 
         private void AddInvoice()
         {
-            if (InvoiceToAdd == null)
+            foreach (var invoice in AvailableInvoices.Where(model => model.IsSelected).ToArray())
             {
-                return;
+                SelectedInvoices.Add(invoice);
+                AvailableInvoices.Remove(invoice);
             }
-
-            SelectedInvoices.Add(InvoiceToAdd);
-            AvailableInvoices.Remove(InvoiceToAdd);
         }
 
         private void RemoveInvoice()
         {
-            if (InvoiceToRemove == null)
+            foreach (var invoice in SelectedInvoices.Where(model => model.IsSelected).ToArray())
             {
-                return;
+                AvailableInvoices.Add(invoice);
+                SelectedInvoices.Remove(invoice);
             }
-
-            AvailableInvoices.Add(InvoiceToRemove);
-            SelectedInvoices.Remove(InvoiceToRemove);
         }
     }
 }
