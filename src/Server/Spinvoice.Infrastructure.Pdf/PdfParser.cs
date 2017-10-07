@@ -59,10 +59,6 @@ namespace Spinvoice.Infrastructure.Pdf
             var blockModels = (sentenceModels ?? new List<List<SentenceModel>>())
                 .Select((sentences, j) => new BlockModel(j, sentences))
                 .ToList();
-            foreach (var sentence in blockModels.SelectMany(model => model.Sentences))
-            {
-                Logger.Info($"---> {sentence.Text}");
-            }
 
             return new PageModel(i - 1, blockModels);
         }

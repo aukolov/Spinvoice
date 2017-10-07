@@ -50,7 +50,7 @@ namespace Spinvoice.Infrastructure.Pdf
         public SentenceModel Build()
         {
             return new SentenceModel(
-                _sb.ToString(),
+                _sb.ToString().Trim(),
                 Left,
                 Bottom,
                 Right - Left,
