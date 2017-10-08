@@ -25,6 +25,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Button Grid.Row="0"
@@ -234,11 +235,9 @@
         <Button Grid.Row="5"
                 Margin="0,10,0,0"
                 Command="{Binding SaveToQuickBooksCommand}"
-                Content="Save to QB"
-                Visibility="{Binding Invoice.ExternalId,
-                                     Converter={x:Static converters1:NonEmptyStringToCollapsedConverter.Instance}}" />
+                Content="Save to QB" />
 
-        <Button Grid.Row="5"
+        <Button Grid.Row="6"
                 Margin="0,10,0,0"
                 Command="{Binding OpenInQuickBooksCommand}"
                 Content="Open in QB"
