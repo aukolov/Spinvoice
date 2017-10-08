@@ -48,6 +48,7 @@
     <Compile Include="Pdf\PageModel.cs" />
     <Compile Include="Pdf\PdfModel.cs" />
     <Compile Include="Pdf\PdfPageSize.cs" />
+    <Compile Include="Pdf\FuzzyYComparer.cs" />
     <Compile Include="Pdf\SentenceModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -16,6 +16,8 @@ namespace Spinvoice.Common.Domain.Pdf
             Blocks = blocks;
             Sentences = blocks
                 .SelectMany(bm => bm.Sentences)
+                .OrderBy(model => model.Bottom, new FuzzyYComparer())
+                .ThenBy(model => model.Left)
                 .ToList();
             for (var i = 0; i < Sentences.Count; i++)
             {

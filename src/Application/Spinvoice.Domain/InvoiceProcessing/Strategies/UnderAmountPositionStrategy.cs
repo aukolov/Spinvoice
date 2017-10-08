@@ -14,6 +14,8 @@ namespace Spinvoice.Domain.Pdf
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public string AmountHeaderText { get; private set; }
+        public double AmountHeaderLeft { get; private set; }
+        public double AmountHeaderBottom { get; private set; }
         public int LeftSentencesLength { get; private set; }
         public int? NameIndex { get; private set; }
         public int? QuantityIndex { get; private set; }
@@ -28,7 +30,10 @@ namespace Spinvoice.Domain.Pdf
             foreach (var page in pdfModel.Pages)
             {
                 Logger.Trace("Checking page...");
-                var amountHeaderSentence = page.Sentences.FirstOrDefault(model => model.Text == AmountHeaderText);
+                var amountHeaderSentence = page.Sentences
+                    .Where(x => x.Text == AmountHeaderText)
+                    .MinBy(x => Math.Pow(x.Left - AmountHeaderLeft, 2) 
+                        + Math.Pow(x.Bottom - AmountHeaderBottom, 2));
                 if (amountHeaderSentence == null)
                 {
                     Logger.Trace("Amount header not found.");
@@ -134,6 +139,8 @@ namespace Spinvoice.Domain.Pdf
             }
 
             AmountHeaderText = amountHeader.Text;
+            AmountHeaderLeft = amountHeader.Left;
+            AmountHeaderBottom = amountHeader.Bottom;
             Logger.Trace($"Amount header text: {AmountHeaderText}.");
 
             var leftSentences = page.Left(amountSentence).ToArray();

@@ -26,7 +26,7 @@ namespace Spinvoice.IntegrationTests
             var loggingConfiguration = new LoggingConfiguration();
             var consoleTarget = new ConsoleTarget("console target");
             loggingConfiguration.AddTarget(consoleTarget);
-            loggingConfiguration.LoggingRules.Add(new LoggingRule("*", LogLevel.Info, consoleTarget));
+            loggingConfiguration.LoggingRules.Add(new LoggingRule("*", LogLevel.Trace, consoleTarget));
             LogManager.Configuration = loggingConfiguration;
             LogManager.EnableLogging();
             LogManager.ReconfigExistingLoggers();
