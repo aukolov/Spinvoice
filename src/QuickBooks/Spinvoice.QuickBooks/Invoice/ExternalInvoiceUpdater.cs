@@ -5,35 +5,32 @@ using Spinvoice.Domain.Accounting;
 
 namespace Spinvoice.QuickBooks.Invoice
 {
-    public class ExternalInvoiceTranslator
+    public class ExternalInvoiceUpdater
     {
         private readonly IAccountsChartRepository _accountsChartRepository;
 
-        public ExternalInvoiceTranslator(IAccountsChartRepository accountsChartRepository)
+        public ExternalInvoiceUpdater(IAccountsChartRepository accountsChartRepository)
         {
             _accountsChartRepository = accountsChartRepository;
         }
 
-        public Bill Translate(Spinvoice.Domain.Accounting.Invoice invoice)
+        public void Update(Spinvoice.Domain.Accounting.Invoice invoice, Bill bill)
         {
-            return new Bill
+            bill.TotalAmt = invoice.TotalAmount;
+            bill.Line = AccountLines(invoice).Concat(ItemLines(invoice)).ToArray();
+            bill.CurrencyRef = new ReferenceType
             {
-                TotalAmt = invoice.TotalAmount,
-                Line = AccountLines(invoice).Concat(ItemLines(invoice)).ToArray(),
-                CurrencyRef = new ReferenceType
-                {
-                    Value = invoice.Currency
-                },
-                VendorRef = new ReferenceType
-                {
-                    Value = invoice.ExternalCompanyId
-                },
-                ExchangeRate = invoice.ExchangeRate,
-                ExchangeRateSpecified = invoice.ExchangeRate != 0,
-                DocNumber = invoice.InvoiceNumber,
-                TxnDate = invoice.Date,
-                TxnDateSpecified = true
+                Value = invoice.Currency
             };
+            bill.VendorRef = new ReferenceType
+            {
+                Value = invoice.ExternalCompanyId
+            };
+            bill.ExchangeRate = invoice.ExchangeRate;
+            bill.ExchangeRateSpecified = invoice.ExchangeRate != 0;
+            bill.DocNumber = invoice.InvoiceNumber;
+            bill.TxnDate = invoice.Date;
+            bill.TxnDateSpecified = true;
         }
 
         private IEnumerable<Line> AccountLines(Spinvoice.Domain.Accounting.Invoice invoice)

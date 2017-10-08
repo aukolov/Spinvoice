@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Intuit.Ipp.Data;
 using Moq;
 using NUnit.Framework;
 using Spinvoice.Domain.Accounting;
@@ -9,6 +10,7 @@ using Spinvoice.QuickBooks.Connection;
 using Spinvoice.QuickBooks.Domain;
 using Spinvoice.QuickBooks.Invoice;
 using Spinvoice.QuickBooks.Item;
+using Invoice = Spinvoice.Domain.Accounting.Invoice;
 
 namespace Spinvoice.IntegrationTests.QuickBooks
 {
@@ -35,7 +37,7 @@ namespace Spinvoice.IntegrationTests.QuickBooks
                 accountsChartRepositoryMock.Object,
                 externalConnection);
             _externalInvoiceService = new ExternalInvoiceService(
-                new ExternalInvoiceTranslator(accountsChartRepositoryMock.Object),
+                new ExternalInvoiceUpdater(accountsChartRepositoryMock.Object),
                 externalConnection);
         }
 
@@ -54,24 +56,22 @@ namespace Spinvoice.IntegrationTests.QuickBooks
             var externalCompany = _externalCompanyRepository.Create(companyName, "GBP");
             Assert.IsNotNull(externalCompany.Id);
 
-            for (var i = 1; i <= 10; i++)
+            var invoiceNumber = "INV NO " + new Random(Environment.TickCount).Next();
+            var invoice = new Invoice
             {
-                var invoiceNumber = "INV NO " + new Random(Environment.TickCount).Next();
-                var invoice = new Invoice
-                {
-                    CompanyName = companyName,
-                    ExternalCompanyId = externalCompany.Id,
-                    Currency = "GBP",
-                    Date = new DateTime(2017, 5, 17),
-                    InvoiceNumber = invoiceNumber,
-                    ExchangeRate = 1.05123m,
-                    NetAmount = i * 1000,
-                    Positions = new ObservableCollection<Position>
+                CompanyName = companyName,
+                ExternalCompanyId = externalCompany.Id,
+                Currency = "GBP",
+                Date = new DateTime(2017, 5, 17),
+                InvoiceNumber = invoiceNumber,
+                ExchangeRate = 1.05123m,
+                NetAmount = 1000,
+                Positions = new ObservableCollection<Position>
                     {
                         new Position
                         {
                             Name = applesName,
-                            Amount = i * 700,
+                            Amount =  700,
                             Quantity = 100,
                             ExternalId = externalApples.Id
                         },
@@ -79,19 +79,18 @@ namespace Spinvoice.IntegrationTests.QuickBooks
                         {
                             Name = orangesName,
                             Amount = 300,
-                            Quantity = i * 110,
+                            Quantity =  110,
                             ExternalId = externalOranges.Id
                         }
                     }
-                };
+            };
 
-                var externalInvoiceId = _externalInvoiceService.Save(invoice);
+            var externalInvoiceId = _externalInvoiceService.Save(invoice);
 
-                var bill = _externalInvoiceService.GetById(externalInvoiceId);
-                Assert.AreEqual(invoiceNumber, bill.DocNumber);
-                //var bills = _externalInvoiceService.GetByExternalCompany(externalCompany.Id);
-                //Assert.AreEqual(invoiceNumber, bills.Single().DocNumber);
-            }
+            var bill = _externalInvoiceService.GetById(externalInvoiceId);
+            Assert.AreEqual(invoiceNumber, bill.DocNumber);
+            var bills = _externalInvoiceService.GetByExternalCompany(externalCompany.Id);
+            Assert.AreEqual(invoiceNumber, bills.Single().DocNumber);
         }
 
         [Test]
@@ -118,5 +117,94 @@ namespace Spinvoice.IntegrationTests.QuickBooks
             _externalInvoiceService.Save(invoice);
         }
 
+        [Test]
+        public void UpdatesBill()
+        {
+            // Setup.
+            var applesName = "Apples " + Guid.NewGuid();
+            var externalApples = _externalItemRepository.Add(applesName);
+            Assert.IsNotNull(externalApples.Id);
+
+            var orangesName = "Oranges " + Guid.NewGuid();
+            var externalOranges = _externalItemRepository.Add(orangesName);
+            Assert.IsNotNull(externalOranges.Id);
+
+            var companyName1 = "Test Co " + Guid.NewGuid();
+            var externalCompany1 = _externalCompanyRepository.Create(companyName1, "GBP");
+            Assert.IsNotNull(externalCompany1.Id);
+
+            var companyName2 = "Test Co " + Guid.NewGuid();
+            var externalCompany2 = _externalCompanyRepository.Create(companyName2, "EUR");
+            Assert.IsNotNull(externalCompany2.Id);
+
+            // Create invoice.
+            var invoiceNumber1 = "INV NO " + new Random(Environment.TickCount).Next();
+            var invoice = new Invoice
+            {
+                CompanyName = companyName1,
+                ExternalCompanyId = externalCompany1.Id,
+                Currency = "GBP",
+                Date = new DateTime(2017, 5, 17),
+                InvoiceNumber = invoiceNumber1,
+                ExchangeRate = 1.05123m,
+                NetAmount = 700,
+                Positions = new ObservableCollection<Position>
+                {
+                    new Position
+                    {
+                        Name = applesName,
+                        Amount =  700,
+                        Quantity = 100,
+                        ExternalId = externalApples.Id
+                    }
+                }
+            };
+
+            var externalInvoiceId1 = _externalInvoiceService.Save(invoice);
+            invoice.ExternalId = externalInvoiceId1;
+
+            // Update invoice.
+            var invoiceNumber2 = invoiceNumber1 + "*";
+            invoice.CompanyName = companyName2;
+            invoice.ExternalCompanyId = externalCompany2.Id;
+            invoice.Currency = "EUR";
+            invoice.Date = new DateTime(2017, 5, 18);
+            invoice.InvoiceNumber = invoiceNumber2;
+            invoice.ExchangeRate = 1.06234m;
+            invoice.NetAmount = 2000;
+            invoice.Positions.Single().Amount = 1500;
+            invoice.Positions.Single().Quantity = 250;
+            invoice.Positions.Add(new Position
+            {
+                Name = orangesName,
+                Amount = 500,
+                Quantity = 110,
+                ExternalId = externalOranges.Id
+            });
+
+            var externalInvoiceId2 = _externalInvoiceService.Save(invoice);
+
+            // Verify.
+            Assert.AreEqual(externalInvoiceId1, externalInvoiceId2);
+
+            var bill = _externalInvoiceService.GetById(externalInvoiceId2);
+            Assert.AreEqual(externalCompany2.Id, bill.VendorRef.Value);
+            Assert.AreEqual("Euro", bill.CurrencyRef.name);
+            Assert.AreEqual(new DateTime(2017, 5, 18), bill.TxnDate);
+            Assert.AreEqual(invoiceNumber2, bill.DocNumber);
+            Assert.AreEqual(1.06234m, bill.ExchangeRate);
+            Assert.AreEqual(2000, bill.TotalAmt);
+            Assert.AreEqual(2, bill.Line.Length);
+
+            Assert.AreEqual(1500, bill.Line[0].Amount);
+            Assert.AreEqual(250, ((ItemBasedExpenseLineDetail)bill.Line[0].AnyIntuitObject).Qty);
+            Assert.AreEqual(externalApples.Id, ((ItemBasedExpenseLineDetail)bill.Line[0].AnyIntuitObject).ItemRef.Value);
+            Assert.AreEqual(applesName, ((ItemBasedExpenseLineDetail)bill.Line[0].AnyIntuitObject).ItemRef.name);
+
+            Assert.AreEqual(500, bill.Line[1].Amount);
+            Assert.AreEqual(110, ((ItemBasedExpenseLineDetail)bill.Line[1].AnyIntuitObject).Qty);
+            Assert.AreEqual(externalOranges.Id, ((ItemBasedExpenseLineDetail)bill.Line[1].AnyIntuitObject).ItemRef.Value);
+            Assert.AreEqual(orangesName, ((ItemBasedExpenseLineDetail)bill.Line[1].AnyIntuitObject).ItemRef.name);
+        }
     }
 }

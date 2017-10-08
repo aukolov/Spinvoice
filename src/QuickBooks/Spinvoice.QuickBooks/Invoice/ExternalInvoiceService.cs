@@ -6,22 +6,35 @@ namespace Spinvoice.QuickBooks.Invoice
 {
     public class ExternalInvoiceService : IExternalInvoiceService
     {
-        private readonly ExternalInvoiceTranslator _externalInvoiceTranslator;
+        private readonly ExternalInvoiceUpdater _externalInvoiceUpdater;
         private readonly IExternalConnection _externalConnection;
 
         public ExternalInvoiceService(
-            ExternalInvoiceTranslator externalInvoiceTranslator, 
+            ExternalInvoiceUpdater externalInvoiceUpdater,
             IExternalConnection externalConnection)
         {
-            _externalInvoiceTranslator = externalInvoiceTranslator;
+            _externalInvoiceUpdater = externalInvoiceUpdater;
             _externalConnection = externalConnection;
         }
 
         public string Save(Spinvoice.Domain.Accounting.Invoice invoice)
         {
-            var bill = _externalInvoiceTranslator.Translate(invoice);
-            var savedBill = _externalConnection.Add(bill);
-            return savedBill.Id;
+            return invoice.ExternalId == null ? Add(invoice) : Update(invoice);
+        }
+
+        private string Add(Spinvoice.Domain.Accounting.Invoice invoice)
+        {
+            var bill = new Bill();
+            _externalInvoiceUpdater.Update(invoice, bill);
+            return _externalConnection.Add(bill).Id;
+        }
+
+        private string Update(Spinvoice.Domain.Accounting.Invoice invoice)
+        {
+            var bill = _externalConnection.GetBill(invoice.ExternalId);
+            _externalInvoiceUpdater.Update(invoice, bill);
+            _externalConnection.Update(bill);
+            return invoice.ExternalId;
         }
 
         public ReadOnlyCollection<Bill> GetByExternalCompany(string externalCompanyId)
