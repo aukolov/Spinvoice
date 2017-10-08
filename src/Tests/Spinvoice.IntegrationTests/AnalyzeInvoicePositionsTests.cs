@@ -3,7 +3,6 @@ using NLog;
 using NLog.Config;
 using NLog.Targets;
 using NUnit.Framework;
-using Spinvoice.Common.Domain.Pdf;
 using Spinvoice.Domain.Accounting;
 using Spinvoice.Domain.Company;
 using Spinvoice.Domain.InvoiceProcessing;
@@ -14,7 +13,7 @@ using Spinvoice.IntegrationTests.Mocks;
 namespace Spinvoice.IntegrationTests
 {
     [TestFixture]
-    public partial class AnalyzeInvoicePositionsTests
+    public class AnalyzeInvoicePositionsTests
     {
         private IPdfParser _pdfParser;
         private CompanyRepository _companyRepository;
@@ -40,60 +39,45 @@ namespace Spinvoice.IntegrationTests
             _trainStrategyService = new TrainStrategyService();
         }
 
+        private static object[] GetTestData()
+        {
+            return TestInputProvider.GetTestData(nameof(AnalyzeInvoicePositionsTests));
+        }
+
         [Test]
         [TestCaseSource(nameof(GetTestData))]
-        public void Test(TestCase testCase)
+        public void Test(string testName)
         {
-            Company company;
-            using (_companyRepository.GetByNameForUpdateOrCreate(testCase.RawInvoice.CompanyName, out company))
+            foreach (var input in TestInputProvider.GetInput(testName, "learn"))
             {
-                var pdfModel = _pdfParser.Parse(TestInputProvider.GetTestPath(
-                    nameof(AnalyzeInvoicePositionsTests), testCase.Name, "learn.pdf"));
-                _trainStrategyService.Train(company, testCase.RawInvoice, pdfModel);
+                var rawInvoice = JsonUtils.Deserialize<RawInvoice>(input.JsonPath);
+                Company company;
+                using (_companyRepository.GetByNameForUpdateOrCreate(rawInvoice.CompanyName, out company))
+                {
+                    _trainStrategyService.Train(company, rawInvoice, _pdfParser.Parse(input.PdfPath));
+                }
             }
 
-            var testPdfPath = TestInputProvider.GetTestPath(
-                nameof(AnalyzeInvoicePositionsTests), testCase.Name, testCase.TestFileName);
-            var invoice = new Invoice();
-            _analyzeInvoiceService.Analyze(_pdfParser.Parse(testPdfPath), invoice);
-
-            for (var i = 0; i < testCase.ExpectedPositions.Length; i++)
+            foreach (var input in TestInputProvider.GetInput(testName, "test"))
             {
-                var expectedPosition = testCase.ExpectedPositions[i];
-                Assert.IsTrue(invoice.Positions.Count > i);
-                var actualPosition = invoice.Positions[i];
+                var invoice = new Invoice();
+                _analyzeInvoiceService.Analyze(_pdfParser.Parse(input.PdfPath), invoice);
+                var expectedPositions = JsonUtils.Deserialize<Position[]>(input.JsonPath);
 
-                Assert.AreEqual(expectedPosition.Name, actualPosition.Name, $"Name mismatch. Index: {i}");
-                Assert.AreEqual(expectedPosition.Quantity, actualPosition.Quantity, $"Quantity mismatch. Index: {i}");
-                Assert.AreEqual(expectedPosition.Amount, actualPosition.Amount, $"Amount mismatch. Index: {i}");
-            }
-            Assert.AreEqual(testCase.ExpectedPositions.Length, invoice.Positions.Count);
-        }
+                for (var i = 0; i < expectedPositions.Length; i++)
+                {
+                    var expectedPosition = expectedPositions[i];
+                    Assert.IsTrue(invoice.Positions.Count > i, $"Not enough positions: {i}/{expectedPositions.Length}.");
+                    var actualPosition = invoice.Positions[i];
 
-        public class TestCase
-        {
-            public string Name { get; }
-            public RawInvoice RawInvoice { get; }
-            public string TestFileName { get; }
-            public Position[] ExpectedPositions { get; }
+                    Assert.AreEqual(expectedPosition.Name, actualPosition.Name, $"Name mismatch. Index: {i}");
+                    Assert.AreEqual(expectedPosition.Quantity, actualPosition.Quantity,
+                        $"Quantity mismatch. Index: {i}");
+                    Assert.AreEqual(expectedPosition.Amount, actualPosition.Amount, $"Amount mismatch. Index: {i}");
+                }
 
-            public TestCase(
-                string name,
-                RawInvoice rawInvoice,
-                string testFileName,
-                Position[] expectedPositions)
-            {
-                Name = name;
-                RawInvoice = rawInvoice;
-                TestFileName = testFileName;
-                ExpectedPositions = expectedPositions;
-            }
-
-            public override string ToString()
-            {
-                return $"{Name} {TestFileName}";
+                Assert.AreEqual(expectedPositions.Length, invoice.Positions.Count);
             }
         }
-
     }
 }
