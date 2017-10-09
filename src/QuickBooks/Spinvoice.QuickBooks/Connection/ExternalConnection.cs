@@ -21,6 +21,7 @@ namespace Spinvoice.QuickBooks.Connection
         private DataService _dataService;
         private QueryService<Intuit.Ipp.Data.ExchangeRate> _exchangeRateQueryService;
         private QueryService<Bill> _billQueryService;
+        private QueryService<Intuit.Ipp.Data.Invoice> _invoiceQueryService;
 
         public ExternalConnection(
             IOAuthRepository oauthRepository)
@@ -37,25 +38,25 @@ namespace Spinvoice.QuickBooks.Connection
 
         public T Add<T>(T entity) where T : IEntity
         {
-            if (!IsConnected) throw new InvalidOperationException();
+            VerifyConnected();
             return _dataService.Add(entity);
         }
 
         public T Update<T>(T entity) where T : IEntity
         {
-            if (!IsConnected) throw new InvalidOperationException();
+            VerifyConnected();
             return _dataService.Update(entity);
         }
 
         public void Delete<T>(T entity) where T : IEntity
         {
-            if (!IsConnected) throw new InvalidOperationException();
+            VerifyConnected();
             _dataService.Delete(entity);
         }
 
         public T[] GetAll<T>() where T : IEntity, new()
         {
-            if (!IsConnected) throw new InvalidOperationException();
+            VerifyConnected();
             var allItems = new List<T>();
             var i = 1;
             var maxResults = 1000;
@@ -104,12 +105,15 @@ namespace Spinvoice.QuickBooks.Connection
 
             _dataService = dataService;
             _exchangeRateQueryService = new QueryService<Intuit.Ipp.Data.ExchangeRate>(serviceContext);
-            _billQueryService = new QueryService<Intuit.Ipp.Data.Bill>(serviceContext);
+            _billQueryService = new QueryService<Bill>(serviceContext);
+            _invoiceQueryService = new QueryService<Intuit.Ipp.Data.Invoice>(serviceContext);
             Connected.Raise();
         }
 
         public Intuit.Ipp.Data.ExchangeRate GetExchangeRate(DateTime date, string sourceCurrency)
         {
+            VerifyConnected();
+
             var items = _exchangeRateQueryService.ExecuteIdsQuery(
                 "select * from exchangerate " +
                 $"where sourcecurrencycode='{sourceCurrency}' " +
@@ -119,6 +123,8 @@ namespace Spinvoice.QuickBooks.Connection
 
         public Bill GetBill(string externalInvoiceId)
         {
+            VerifyConnected();
+
             var bills = _billQueryService.ExecuteIdsQuery(
                 $"select * from bill where Id = '{externalInvoiceId}'");
             return bills.SingleOrDefault();
@@ -126,10 +132,35 @@ namespace Spinvoice.QuickBooks.Connection
 
         public ReadOnlyCollection<Bill> GetBillsByCompany(string externalCompanyId)
         {
+            VerifyConnected();
+
             var bills = _billQueryService.ExecuteIdsQuery(
                 $"select * from bill where VendorRef = '{externalCompanyId}'");
             return bills;
         }
 
+        public Intuit.Ipp.Data.Invoice GetInvoice(string externalInvoiceId)
+        {
+            var invoices = _invoiceQueryService.ExecuteIdsQuery(
+                $"select * from invoice where Id = '{externalInvoiceId}'");
+            return invoices.SingleOrDefault();
+        }
+
+        public ReadOnlyCollection<Intuit.Ipp.Data.Invoice> GetInvoicesByCompany(string externalCompanyId)
+        {
+            VerifyConnected();
+
+            var invoices = _invoiceQueryService.ExecuteIdsQuery(
+                $"select * from invoice where CustomerRef = '{externalCompanyId}'");
+            return invoices;
+        }
+
+        private void VerifyConnected()
+        {
+            if (!IsConnected)
+            {
+                throw new InvalidOperationException("Not connected.");
+            }
+        }
     }
 }

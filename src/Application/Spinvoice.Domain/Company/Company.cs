@@ -1,4 +1,6 @@
-﻿using Spinvoice.Domain.Pdf;
+﻿using Spinvoice.Domain.Accounting;
+using Spinvoice.Domain.Pdf;
+using Spinvoice.QuickBooks.Domain;
 
 namespace Spinvoice.Domain.Company
 {
@@ -6,6 +8,7 @@ namespace Spinvoice.Domain.Company
     {
         public string Id { get; set; }
         public string Name { get; set; }
+        public Side Side { get; set; }
         public string Country { get; set; }
         public string Currency { get; set; }
         public bool IsEuropeanUnion { get; set; }

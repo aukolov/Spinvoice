@@ -2,6 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Spinvoice.QuickBooks.Domain;
 using Spinvoice.Utils;
 
 namespace Spinvoice.Domain.Accounting
@@ -28,7 +29,10 @@ namespace Spinvoice.Domain.Accounting
         public Invoice()
         {
             Positions = new ObservableCollection<Position>();
+            Side = Side.Vendor;
         }
+
+        public Side Side { get; set; }
 
         public DateTime Date
         {

@@ -118,9 +118,14 @@
     <Compile Include="Company\ExternalCompanyRepository.cs" />
     <Compile Include="Connection\OAuthRepository.cs" />
     <Compile Include="ExchangeRate\ExternalExchangeRatesRepository.cs" />
-    <Compile Include="Invoice\ExternalInvoiceService.cs" />
+    <Compile Include="Invoice\ExternalBillCrudService.cs" />
+    <Compile Include="Invoice\ExternalInvoiceCrudService.cs" />
+    <Compile Include="Invoice\ExternalInvoiceAndBillService.cs" />
     <Compile Include="Invoice\ExternalInvoiceUpdater.cs" />
-    <Compile Include="Invoice\IExternalInvoiceService.cs" />
+    <Compile Include="Invoice\IExternalBillCrudService.cs" />
+    <Compile Include="Invoice\IExternalInvoiceCrudService.cs" />
+    <Compile Include="Invoice\IExternalInvoiceAndBillService.cs" />
+    <Compile Include="Invoice\IExternalInvoiceUpdater.cs" />
     <Compile Include="Item\ExternalItem.cs" />
     <Compile Include="Item\ExternalItemRepository.cs" />
     <Compile Include="Item\IExternalItemRepository.cs" />

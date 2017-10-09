@@ -5,23 +5,22 @@ namespace Spinvoice.QuickBooks.Company
 {
     public class ExternalCompany : IExternalCompany
     {
-        private readonly Vendor _vendor;
+        private readonly NameBase _nameBase;
 
         public ExternalCompany(Vendor vendor)
         {
-            _vendor = vendor;
+            _nameBase = vendor;
+            Side = Side.Vendor;
         }
 
-        public string Id
+        public ExternalCompany(Customer customer)
         {
-            get { return _vendor.Id; }
-            set { _vendor.Id = value; }
+            _nameBase = customer;
+            Side = Side.Customer;
         }
 
-        public string Name
-        {
-            get { return _vendor.DisplayName; }
-            set { _vendor.DisplayName = value; }
-        }
+        public string Id => _nameBase.Id;
+        public string Name => _nameBase.DisplayName;
+        public Side Side { get; }
     }
 }

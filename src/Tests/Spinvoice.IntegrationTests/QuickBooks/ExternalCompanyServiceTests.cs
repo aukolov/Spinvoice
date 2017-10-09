@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
+using Spinvoice.Domain.Accounting;
 using Spinvoice.QuickBooks.Company;
 using Spinvoice.QuickBooks.Connection;
 using Spinvoice.QuickBooks.Domain;
@@ -29,7 +30,7 @@ namespace Spinvoice.IntegrationTests.QuickBooks
         {
             var companyName = "Test Co " + Guid.NewGuid().ToString("N");
 
-            var externalCompany = _externalCompanyRepository.Create(companyName, "USD");
+            var externalCompany = _externalCompanyRepository.Create(companyName, Side.Vendor, "USD");
 
             Assert.IsFalse(string.IsNullOrEmpty(externalCompany.Id));
             var loadedExternalCompany = _externalCompanyRepository.GetAll()

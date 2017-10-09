@@ -2,7 +2,8 @@
 {
     public interface IExternalCompany
     {
-        string Id { get; set; }
-        string Name { get; set; }
+        string Id { get; }
+        string Name { get; }
+        Side Side { get; }
     }
 }

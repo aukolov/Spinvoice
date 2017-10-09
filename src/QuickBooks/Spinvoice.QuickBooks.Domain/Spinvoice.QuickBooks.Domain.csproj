@@ -45,6 +45,7 @@
     <Compile Include="IOAuthRepository.cs" />
     <Compile Include="OAuthProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Side.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Spinvoice.Utils\Spinvoice.Utils.csproj">

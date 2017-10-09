@@ -30,7 +30,7 @@ namespace Spinvoice.Application.ViewModels.Invoices
 
         private readonly AnalyzeInvoiceService _analyzeInvoiceService;
         private readonly TrainStrategyService _trainStrategyService;
-        private readonly IExternalInvoiceService _externalInvoiceService;
+        private readonly IExternalInvoiceAndBillService _externalInvoiceAndBillService;
         private readonly IExternalCompanyRepository _externalCompanyRepository;
         private readonly IExternalAccountRepository _externalAccountRepository;
         private readonly IWindowManager _windowManager;
@@ -58,7 +58,7 @@ namespace Spinvoice.Application.ViewModels.Invoices
             PdfXrayViewModel pdfXrayViewModel,
             AnalyzeInvoiceService analyzeInvoiceService,
             TrainStrategyService trainStrategyService,
-            IExternalInvoiceService externalInvoiceService,
+            IExternalInvoiceAndBillService externalInvoiceAndBillService,
             IExternalCompanyRepository externalCompanyRepository,
             IExternalAccountRepository externalAccountRepository,
             IExternalConnectionWatcher externalConnectionWatcher,
@@ -72,7 +72,7 @@ namespace Spinvoice.Application.ViewModels.Invoices
             _analyzeInvoiceService = analyzeInvoiceService;
             _trainStrategyService = trainStrategyService;
 
-            _externalInvoiceService = externalInvoiceService;
+            _externalInvoiceAndBillService = externalInvoiceAndBillService;
             _externalCompanyRepository = externalCompanyRepository;
             _externalAccountRepository = externalAccountRepository;
             _windowManager = windowManager;
@@ -154,6 +154,7 @@ namespace Spinvoice.Application.ViewModels.Invoices
 
             var externalCompany = _externalCompanyRepository.Create(
                 Invoice.CompanyName,
+                Invoice.Side,
                 Invoice.Currency);
             Invoice.ExternalCompanyId = externalCompany.Id;
         }
@@ -441,7 +442,7 @@ namespace Spinvoice.Application.ViewModels.Invoices
                     ?? _externalItemRepository.Add(invoicePosition.Name);
                 invoicePosition.ExternalId = externalItem.Id;
             }
-            var externalInvoiceId = _externalInvoiceService.Save(Invoice);
+            var externalInvoiceId = _externalInvoiceAndBillService.Save(Invoice);
             Invoice.ExternalId = externalInvoiceId;
 
             TrainAboutCompany();

@@ -3,13 +3,12 @@ using Intuit.Ipp.Data;
 
 namespace Spinvoice.QuickBooks.Invoice
 {
-    public interface IExternalInvoiceService
+    public interface IExternalBillCrudService
     {
-        string Save(Spinvoice.Domain.Accounting.Invoice invoice);
+        ReadOnlyCollection<Bill> GetByExternalCompany(string externalCompanyId);
         Bill GetById(string externalInvoiceId);
         void Add(Bill bill);
         void Update(Bill bill);
-        ReadOnlyCollection<Bill> GetByExternalCompany(string externalCompanyId);
         void Delete(Bill bill);
     }
 }

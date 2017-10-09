@@ -15,11 +15,12 @@ using Invoice = Spinvoice.Domain.Accounting.Invoice;
 namespace Spinvoice.IntegrationTests.QuickBooks
 {
     [TestFixture]
-    public class ExternalInvoiceServiceTests
+    public class ExternalInvoiceTests
     {
-        private ExternalInvoiceService _externalInvoiceService;
-        private ExternalItemRepository _externalItemRepository;
-        private ExternalCompanyRepository _externalCompanyRepository;
+        private IExternalInvoiceAndBillService _externalInvoiceAndBillService;
+        private IExternalItemRepository _externalItemRepository;
+        private IExternalCompanyRepository _externalCompanyRepository;
+        private IExternalInvoiceCrudService _externalInvoiceCrudService;
 
         [SetUp]
         public void Setup()
@@ -36,13 +37,14 @@ namespace Spinvoice.IntegrationTests.QuickBooks
             _externalItemRepository = new ExternalItemRepository(
                 accountsChartRepositoryMock.Object,
                 externalConnection);
-            _externalInvoiceService = new ExternalInvoiceService(
+            _externalInvoiceAndBillService = new ExternalInvoiceAndBillService(
                 new ExternalInvoiceUpdater(accountsChartRepositoryMock.Object),
                 externalConnection);
+            _externalInvoiceCrudService = new ExternalInvoiceCrudService(externalConnection);
         }
 
         [Test]
-        public void CreatesBill()
+        public void CreatesInvoice()
         {
             var applesName = "Apples " + Guid.NewGuid();
             var externalApples = _externalItemRepository.Add(applesName);
@@ -53,12 +55,13 @@ namespace Spinvoice.IntegrationTests.QuickBooks
             Assert.IsNotNull(externalOranges.Id);
 
             var companyName = "Test Co " + Guid.NewGuid();
-            var externalCompany = _externalCompanyRepository.Create(companyName, "GBP");
+            var externalCompany = _externalCompanyRepository.Create(companyName, Side.Customer, "GBP");
             Assert.IsNotNull(externalCompany.Id);
 
             var invoiceNumber = "INV NO " + new Random(Environment.TickCount).Next();
             var invoice = new Invoice
             {
+                Side = Side.Customer,
                 CompanyName = companyName,
                 ExternalCompanyId = externalCompany.Id,
                 Currency = "GBP",
@@ -67,41 +70,42 @@ namespace Spinvoice.IntegrationTests.QuickBooks
                 ExchangeRate = 1.05123m,
                 NetAmount = 1000,
                 Positions = new ObservableCollection<Position>
+                {
+                    new Position
                     {
-                        new Position
-                        {
-                            Name = applesName,
-                            Amount =  700,
-                            Quantity = 100,
-                            ExternalId = externalApples.Id
-                        },
-                        new Position
-                        {
-                            Name = orangesName,
-                            Amount = 300,
-                            Quantity =  110,
-                            ExternalId = externalOranges.Id
-                        }
+                        Name = applesName,
+                        Amount =  700,
+                        Quantity = 100,
+                        ExternalId = externalApples.Id
+                    },
+                    new Position
+                    {
+                        Name = orangesName,
+                        Amount = 300,
+                        Quantity =  110,
+                        ExternalId = externalOranges.Id
                     }
+                }
             };
 
-            var externalInvoiceId = _externalInvoiceService.Save(invoice);
+            var externalInvoiceId = _externalInvoiceAndBillService.Save(invoice);
 
-            var bill = _externalInvoiceService.GetById(externalInvoiceId);
-            Assert.AreEqual(invoiceNumber, bill.DocNumber);
-            var bills = _externalInvoiceService.GetByExternalCompany(externalCompany.Id);
+            var externalInvoice = _externalInvoiceCrudService.GetById(externalInvoiceId);
+            Assert.AreEqual(invoiceNumber, externalInvoice.DocNumber);
+            var bills = _externalInvoiceCrudService.GetByExternalCompany(externalCompany.Id);
             Assert.AreEqual(invoiceNumber, bills.Single().DocNumber);
         }
 
         [Test]
-        public void CreatesBillWithVatAndTransportationCosts()
+        public void CreatesInvoiceWithVatAndTransportationCosts()
         {
             var companyName = "Test Co " + Guid.NewGuid();
-            var externalCompany = _externalCompanyRepository.Create(companyName, "GBP");
+            var externalCompany = _externalCompanyRepository.Create(companyName, Side.Customer, "GBP");
             Assert.IsNotNull(externalCompany.Id);
 
             var invoice = new Invoice
             {
+                Side = Side.Customer,
                 CompanyName = companyName,
                 ExternalCompanyId = externalCompany.Id,
                 Currency = "GBP",
@@ -114,11 +118,11 @@ namespace Spinvoice.IntegrationTests.QuickBooks
                 TransportationCosts = 54.33m
             };
 
-            _externalInvoiceService.Save(invoice);
+            _externalInvoiceAndBillService.Save(invoice);
         }
 
         [Test]
-        public void UpdatesBill()
+        public void UpdatesInvoice()
         {
             // Setup.
             var applesName = "Apples " + Guid.NewGuid();
@@ -130,17 +134,18 @@ namespace Spinvoice.IntegrationTests.QuickBooks
             Assert.IsNotNull(externalOranges.Id);
 
             var companyName1 = "Test Co " + Guid.NewGuid();
-            var externalCompany1 = _externalCompanyRepository.Create(companyName1, "GBP");
+            var externalCompany1 = _externalCompanyRepository.Create(companyName1, Side.Customer, "GBP");
             Assert.IsNotNull(externalCompany1.Id);
 
             var companyName2 = "Test Co " + Guid.NewGuid();
-            var externalCompany2 = _externalCompanyRepository.Create(companyName2, "EUR");
+            var externalCompany2 = _externalCompanyRepository.Create(companyName2, Side.Customer, "EUR");
             Assert.IsNotNull(externalCompany2.Id);
 
             // Create invoice.
             var invoiceNumber1 = "INV NO " + new Random(Environment.TickCount).Next();
             var invoice = new Invoice
             {
+                Side = Side.Customer,
                 CompanyName = companyName1,
                 ExternalCompanyId = externalCompany1.Id,
                 Currency = "GBP",
@@ -160,7 +165,7 @@ namespace Spinvoice.IntegrationTests.QuickBooks
                 }
             };
 
-            var externalInvoiceId1 = _externalInvoiceService.Save(invoice);
+            var externalInvoiceId1 = _externalInvoiceAndBillService.Save(invoice);
             invoice.ExternalId = externalInvoiceId1;
 
             // Update invoice.
@@ -182,13 +187,13 @@ namespace Spinvoice.IntegrationTests.QuickBooks
                 ExternalId = externalOranges.Id
             });
 
-            var externalInvoiceId2 = _externalInvoiceService.Save(invoice);
+            var externalInvoiceId2 = _externalInvoiceAndBillService.Save(invoice);
 
             // Verify.
             Assert.AreEqual(externalInvoiceId1, externalInvoiceId2);
 
-            var bill = _externalInvoiceService.GetById(externalInvoiceId2);
-            Assert.AreEqual(externalCompany2.Id, bill.VendorRef.Value);
+            var bill = _externalInvoiceCrudService.GetById(externalInvoiceId2);
+            Assert.AreEqual(externalCompany2.Id, bill.CustomerRef.Value);
             Assert.AreEqual("Euro", bill.CurrencyRef.name);
             Assert.AreEqual(new DateTime(2017, 5, 18), bill.TxnDate);
             Assert.AreEqual(invoiceNumber2, bill.DocNumber);

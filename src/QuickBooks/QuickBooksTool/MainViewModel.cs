@@ -20,7 +20,7 @@ namespace QuickBooksTool
     {
         private readonly IExternalCompanyRepository _externalCompanyRepository;
         private readonly IExternalAccountRepository _externalAccountRepository;
-        private readonly IExternalInvoiceService _externalInvoiceService;
+        private readonly IExternalBillCrudService _externalBillCrudService;
         private readonly IExternalConnectionWatcher _externalConnectionWatcher;
         private readonly IWindowManager _windowManager;
         private readonly Func<IQuickBooksConnectViewModel> _connectViewModelFactory;
@@ -29,14 +29,14 @@ namespace QuickBooksTool
         public MainViewModel(
             IExternalCompanyRepository externalCompanyRepository,
             IExternalAccountRepository externalAccountRepository,
-            IExternalInvoiceService externalInvoiceService,
+            IExternalBillCrudService externalBillCrudService,
             IExternalConnectionWatcher externalConnectionWatcher,
             IWindowManager windowManager,
             Func<IQuickBooksConnectViewModel> connectViewModelFactory)
         {
             _externalCompanyRepository = externalCompanyRepository;
             _externalAccountRepository = externalAccountRepository;
-            _externalInvoiceService = externalInvoiceService;
+            _externalBillCrudService = externalBillCrudService;
             _externalConnectionWatcher = externalConnectionWatcher;
             _windowManager = windowManager;
             _connectViewModelFactory = connectViewModelFactory;
@@ -68,7 +68,7 @@ namespace QuickBooksTool
             if (_selectedCompany != null)
             {
                 AvailableInvoices.AddRange(
-                    _externalInvoiceService
+                    _externalBillCrudService
                         .GetByExternalCompany(_selectedCompany.Id)
                         .Select(bill => new InvoiceViewModel(bill)));
             }
@@ -119,7 +119,7 @@ namespace QuickBooksTool
 
             var totalAmount = SelectedInvoices.Sum(bill => bill.Invoice.TotalAmt);
 
-            _externalInvoiceService.Add(new Bill
+            _externalBillCrudService.Add(new Bill
             {
                 TotalAmt = totalAmount,
                 Line = new[] {new Line
@@ -149,7 +149,7 @@ namespace QuickBooksTool
 
             foreach (var selectedInvoice in SelectedInvoices)
             {
-                _externalInvoiceService.Delete(new Bill
+                _externalBillCrudService.Delete(new Bill
                 {
                     Id = selectedInvoice.Invoice.Id,
                     SyncToken = "0"
