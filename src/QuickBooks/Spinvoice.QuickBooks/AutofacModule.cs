@@ -21,6 +21,7 @@ namespace Spinvoice.QuickBooks
                 .AsImplementedInterfaces().AsSelf()
                 .InstancePerDependency();
             builder.RegisterType<ExternalConnection>().AsImplementedInterfaces().AsSelf().SingleInstance();
+            builder.RegisterType<ExternalAuthService>().AsImplementedInterfaces().AsSelf().SingleInstance();
             builder.RegisterType<ExternalInvoiceUpdater>().AsImplementedInterfaces().AsSelf().InstancePerDependency();
             builder.RegisterType<ExternalInvoiceAndBillService>().AsImplementedInterfaces().AsSelf().InstancePerDependency();
             builder.RegisterType<ExternalBillCrudService>().AsImplementedInterfaces().SingleInstance();

@@ -22,7 +22,7 @@ namespace Spinvoice.IntegrationTests.QuickBooks
             oathRepositoryMock.Setup(repository => repository.Params).Returns(new OAuthParams());
 
             _externalCompanyRepository = new ExternalCompanyRepository(
-                new ExternalConnection(oathRepositoryMock.Object));
+                new ExternalConnection(oathRepositoryMock.Object, new ExternalAuthService()));
         }
 
         [Test]

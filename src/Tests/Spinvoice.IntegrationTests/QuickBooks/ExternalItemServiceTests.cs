@@ -23,7 +23,7 @@ namespace Spinvoice.IntegrationTests.QuickBooks
             oathRepositoryMock.Setup(repository => repository.Profile).Returns(QuickBooksUtils.GetOAuthProfile());
             oathRepositoryMock.Setup(repository => repository.Params).Returns(new OAuthParams());
 
-            _externalConnection = new ExternalConnection(oathRepositoryMock.Object);
+            _externalConnection = new ExternalConnection(oathRepositoryMock.Object, new ExternalAuthService());
             var accountsChartRepositoryMock = new Mock<IAccountsChartRepository>();
             accountsChartRepositoryMock.Setup(repository => repository.AccountsChart)
                 .Returns(SandboxAccountChartProvider.Get());

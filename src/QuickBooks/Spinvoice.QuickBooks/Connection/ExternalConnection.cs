@@ -6,8 +6,6 @@ using Intuit.Ipp.Core;
 using Intuit.Ipp.Data;
 using Intuit.Ipp.DataService;
 using Intuit.Ipp.QueryFilter;
-using Intuit.Ipp.Security;
-using NLog;
 using Spinvoice.QuickBooks.Domain;
 using Spinvoice.Utils;
 
@@ -15,18 +13,19 @@ namespace Spinvoice.QuickBooks.Connection
 {
     public class ExternalConnection : IExternalConnectionWatcher, IExternalConnection
     {
-        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-
         private readonly IOAuthRepository _oauthRepository;
+        private readonly IExternalAuthService _externalAuthService;
         private DataService _dataService;
         private QueryService<Intuit.Ipp.Data.ExchangeRate> _exchangeRateQueryService;
         private QueryService<Bill> _billQueryService;
         private QueryService<Intuit.Ipp.Data.Invoice> _invoiceQueryService;
 
         public ExternalConnection(
-            IOAuthRepository oauthRepository)
+            IOAuthRepository oauthRepository,
+            IExternalAuthService externalAuthService)
         {
             _oauthRepository = oauthRepository;
+            _externalAuthService = externalAuthService;
 
             _oauthRepository.Profile.Updated += TryConnect;
             TryConnect();
@@ -78,32 +77,13 @@ namespace Spinvoice.QuickBooks.Connection
 
         private void TryConnect()
         {
-            if (!_oauthRepository.Profile.IsReady)
+            ServiceContext serviceContext;
+            if (!_externalAuthService.TryConnect(out serviceContext, _oauthRepository.Profile, _oauthRepository.Params))
             {
                 return;
             }
-            var oauthRequestValidator = new OAuthRequestValidator(
-                _oauthRepository.Profile.AccessToken,
-                _oauthRepository.Profile.AccessSecret,
-                _oauthRepository.Params.ConsumerKey,
-                _oauthRepository.Params.ConsumerSecret);
-            var serviceContext = new ServiceContext(
-                _oauthRepository.Profile.RealmId,
-                IntuitServicesType.QBO,
-                oauthRequestValidator);
-            var dataService = new DataService(serviceContext);
 
-            try
-            {
-                dataService.FindAll(new Intuit.Ipp.Data.Account());
-            }
-            catch (Exception e)
-            {
-                _logger.Error(e, "Error when testing connection with QuickBooks.");
-                return;
-            }
-
-            _dataService = dataService;
+            _dataService = new DataService(serviceContext);
             _exchangeRateQueryService = new QueryService<Intuit.Ipp.Data.ExchangeRate>(serviceContext);
             _billQueryService = new QueryService<Bill>(serviceContext);
             _invoiceQueryService = new QueryService<Intuit.Ipp.Data.Invoice>(serviceContext);

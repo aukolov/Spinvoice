@@ -29,7 +29,7 @@ namespace Spinvoice.IntegrationTests.QuickBooks
             oathRepositoryMock.Setup(repository => repository.Profile).Returns(QuickBooksUtils.GetOAuthProfile());
             oathRepositoryMock.Setup(repository => repository.Params).Returns(new OAuthParams());
 
-            var externalConnection = new ExternalConnection(oathRepositoryMock.Object);
+            var externalConnection = new ExternalConnection(oathRepositoryMock.Object, new ExternalAuthService());
             var accountsChartRepositoryMock = new Mock<IAccountsChartRepository>();
             accountsChartRepositoryMock.Setup(repository => repository.AccountsChart)
                 .Returns(SandboxAccountChartProvider.Get());
@@ -192,24 +192,24 @@ namespace Spinvoice.IntegrationTests.QuickBooks
             // Verify.
             Assert.AreEqual(externalInvoiceId1, externalInvoiceId2);
 
-            var bill = _externalInvoiceCrudService.GetById(externalInvoiceId2);
-            Assert.AreEqual(externalCompany2.Id, bill.CustomerRef.Value);
-            Assert.AreEqual("Euro", bill.CurrencyRef.name);
-            Assert.AreEqual(new DateTime(2017, 5, 18), bill.TxnDate);
-            Assert.AreEqual(invoiceNumber2, bill.DocNumber);
-            Assert.AreEqual(1.06234m, bill.ExchangeRate);
-            Assert.AreEqual(2000, bill.TotalAmt);
-            Assert.AreEqual(2, bill.Line.Length);
+            var externalInvoice = _externalInvoiceCrudService.GetById(externalInvoiceId2);
+            Assert.AreEqual(externalCompany2.Id, externalInvoice.CustomerRef.Value);
+            Assert.AreEqual("Euro", externalInvoice.CurrencyRef.name);
+            Assert.AreEqual(new DateTime(2017, 5, 18), externalInvoice.TxnDate);
+            Assert.AreEqual(invoiceNumber2, externalInvoice.DocNumber);
+            Assert.AreEqual(1.06234m, externalInvoice.ExchangeRate);
+            Assert.AreEqual(2000, externalInvoice.TotalAmt);
+            Assert.AreEqual(2, externalInvoice.Line.Length);
 
-            Assert.AreEqual(1500, bill.Line[0].Amount);
-            Assert.AreEqual(250, ((ItemBasedExpenseLineDetail)bill.Line[0].AnyIntuitObject).Qty);
-            Assert.AreEqual(externalApples.Id, ((ItemBasedExpenseLineDetail)bill.Line[0].AnyIntuitObject).ItemRef.Value);
-            Assert.AreEqual(applesName, ((ItemBasedExpenseLineDetail)bill.Line[0].AnyIntuitObject).ItemRef.name);
+            Assert.AreEqual(1500, externalInvoice.Line[0].Amount);
+            Assert.AreEqual(250, ((ItemBasedExpenseLineDetail)externalInvoice.Line[0].AnyIntuitObject).Qty);
+            Assert.AreEqual(externalApples.Id, ((ItemBasedExpenseLineDetail)externalInvoice.Line[0].AnyIntuitObject).ItemRef.Value);
+            Assert.AreEqual(applesName, ((ItemBasedExpenseLineDetail)externalInvoice.Line[0].AnyIntuitObject).ItemRef.name);
 
-            Assert.AreEqual(500, bill.Line[1].Amount);
-            Assert.AreEqual(110, ((ItemBasedExpenseLineDetail)bill.Line[1].AnyIntuitObject).Qty);
-            Assert.AreEqual(externalOranges.Id, ((ItemBasedExpenseLineDetail)bill.Line[1].AnyIntuitObject).ItemRef.Value);
-            Assert.AreEqual(orangesName, ((ItemBasedExpenseLineDetail)bill.Line[1].AnyIntuitObject).ItemRef.name);
+            Assert.AreEqual(500, externalInvoice.Line[1].Amount);
+            Assert.AreEqual(110, ((ItemBasedExpenseLineDetail)externalInvoice.Line[1].AnyIntuitObject).Qty);
+            Assert.AreEqual(externalOranges.Id, ((ItemBasedExpenseLineDetail)externalInvoice.Line[1].AnyIntuitObject).ItemRef.Value);
+            Assert.AreEqual(orangesName, ((ItemBasedExpenseLineDetail)externalInvoice.Line[1].AnyIntuitObject).ItemRef.name);
         }
     }
 }
