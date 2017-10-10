@@ -199,17 +199,17 @@ namespace Spinvoice.IntegrationTests.QuickBooks
             Assert.AreEqual(invoiceNumber2, externalInvoice.DocNumber);
             Assert.AreEqual(1.06234m, externalInvoice.ExchangeRate);
             Assert.AreEqual(2000, externalInvoice.TotalAmt);
-            Assert.AreEqual(2, externalInvoice.Line.Length);
+            Assert.AreEqual(2, externalInvoice.Line.Count(x => x.DetailType == LineDetailTypeEnum.SalesItemLineDetail));
 
             Assert.AreEqual(1500, externalInvoice.Line[0].Amount);
-            Assert.AreEqual(250, ((ItemBasedExpenseLineDetail)externalInvoice.Line[0].AnyIntuitObject).Qty);
-            Assert.AreEqual(externalApples.Id, ((ItemBasedExpenseLineDetail)externalInvoice.Line[0].AnyIntuitObject).ItemRef.Value);
-            Assert.AreEqual(applesName, ((ItemBasedExpenseLineDetail)externalInvoice.Line[0].AnyIntuitObject).ItemRef.name);
+            Assert.AreEqual(250, ((SalesItemLineDetail)externalInvoice.Line[0].AnyIntuitObject).Qty);
+            Assert.AreEqual(externalApples.Id, ((SalesItemLineDetail)externalInvoice.Line[0].AnyIntuitObject).ItemRef.Value);
+            Assert.AreEqual(applesName, ((SalesItemLineDetail)externalInvoice.Line[0].AnyIntuitObject).ItemRef.name);
 
             Assert.AreEqual(500, externalInvoice.Line[1].Amount);
-            Assert.AreEqual(110, ((ItemBasedExpenseLineDetail)externalInvoice.Line[1].AnyIntuitObject).Qty);
-            Assert.AreEqual(externalOranges.Id, ((ItemBasedExpenseLineDetail)externalInvoice.Line[1].AnyIntuitObject).ItemRef.Value);
-            Assert.AreEqual(orangesName, ((ItemBasedExpenseLineDetail)externalInvoice.Line[1].AnyIntuitObject).ItemRef.name);
+            Assert.AreEqual(110, ((SalesItemLineDetail)externalInvoice.Line[1].AnyIntuitObject).Qty);
+            Assert.AreEqual(externalOranges.Id, ((SalesItemLineDetail)externalInvoice.Line[1].AnyIntuitObject).ItemRef.Value);
+            Assert.AreEqual(orangesName, ((SalesItemLineDetail)externalInvoice.Line[1].AnyIntuitObject).ItemRef.name);
         }
     }
 }
