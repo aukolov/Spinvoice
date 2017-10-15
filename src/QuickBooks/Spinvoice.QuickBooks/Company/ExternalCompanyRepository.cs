@@ -11,37 +11,58 @@ namespace Spinvoice.QuickBooks.Company
     public class ExternalCompanyRepository : IExternalCompanyRepository
     {
         private readonly ExternalConnection _externalConnection;
-        private readonly ObservableCollection<IExternalCompany> _externalCompanies;
+        private readonly ObservableCollection<IExternalCompany> _externalVendors;
+        private readonly ObservableCollection<IExternalCompany> _externalCustomers;
 
         public ExternalCompanyRepository(
             ExternalConnection externalConnection)
         {
             _externalConnection = externalConnection;
-            _externalCompanies = new ObservableCollection<IExternalCompany>();
-            _externalConnection.Connected += () => GetAll();
+            _externalVendors = new ObservableCollection<IExternalCompany>();
+            _externalCustomers = new ObservableCollection<IExternalCompany>();
+            _externalConnection.Connected += () =>
+            {
+                GetAllVendors();
+                GetAllCustomers();
+            };
         }
 
-        public ObservableCollection<IExternalCompany> GetAll()
+        public ObservableCollection<IExternalCompany> GetAllVendors()
         {
             if (!_externalConnection.IsConnected
-                || _externalCompanies.Any())
+                || _externalVendors.Any())
             {
-                return _externalCompanies;
+                return _externalVendors;
             }
 
             var externalVendors = _externalConnection
                 .GetAll<Vendor>()
                 .Select(x => new ExternalCompany(x));
+
+            _externalVendors.Clear();
+            _externalVendors.AddRange(externalVendors);
+
+            return _externalVendors;
+        }
+
+        public ObservableCollection<IExternalCompany> GetAllCustomers()
+        {
+            if (!_externalConnection.IsConnected
+                || _externalCustomers.Any())
+            {
+                return _externalCustomers;
+            }
+
             var externalCustomers = _externalConnection
                 .GetAll<Customer>()
                 .Select(x => new ExternalCompany(x));
 
-            _externalCompanies.Clear();
-            _externalCompanies.AddRange(externalVendors);
-            _externalCompanies.AddRange(externalCustomers);
+            _externalCustomers.Clear();
+            _externalCustomers.AddRange(externalCustomers);
 
-            return _externalCompanies;
+            return _externalCustomers;
         }
+
 
         public IExternalCompany Create(
             string externalCompanyName,
@@ -73,7 +94,7 @@ namespace Spinvoice.QuickBooks.Company
             var addedVendor = _externalConnection.Add(vendor);
 
             var externalCompany = new ExternalCompany(addedVendor);
-            _externalCompanies.Add(externalCompany);
+            _externalVendors.Add(externalCompany);
             return externalCompany;
         }
 
@@ -90,7 +111,7 @@ namespace Spinvoice.QuickBooks.Company
             var addedCustomer = _externalConnection.Add(customer);
 
             var externalCompany = new ExternalCompany(addedCustomer);
-            _externalCompanies.Add(externalCompany);
+            _externalCustomers.Add(externalCompany);
             return externalCompany;
         }
     }

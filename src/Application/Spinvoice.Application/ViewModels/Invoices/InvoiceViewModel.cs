@@ -95,8 +95,6 @@ namespace Spinvoice.Application.ViewModels.Invoices
 
             _pdfXrayViewModel = pdfXrayViewModel;
 
-            ExternalCompanies = externalCompanyRepository.GetAll();
-
             if (_pdfModel != null)
             {
                 analyzeInvoiceService.Analyze(_pdfModel, Invoice);
@@ -121,6 +119,12 @@ namespace Spinvoice.Application.ViewModels.Invoices
             };
 
             _activated = new Subject<InvoiceViewModel>();
+            Invoice.SideChanged += OnSideChanged;
+        }
+
+        private void OnSideChanged()
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ExternalCompanies)));
         }
 
         public Invoice Invoice { get; }
@@ -128,7 +132,20 @@ namespace Spinvoice.Application.ViewModels.Invoices
         public InvoiceEditViewModel InvoiceEditViewModel { get; }
         public ActionSelectorViewModel ActionSelectorViewModel { get; }
         public PositionListViewModel PositionListViewModel { get; }
-        public ObservableCollection<IExternalCompany> ExternalCompanies { get; }
+        public ObservableCollection<IExternalCompany> ExternalCompanies
+        {
+            get {
+                switch (Invoice.Side)
+                {
+                    case Side.Vendor:
+                        return _externalCompanyRepository.GetAllVendors();
+                    case Side.Customer:
+                        return _externalCompanyRepository.GetAllCustomers();
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+        }
 
         public IObservable<InvoiceViewModel> Activated => _activated;
 

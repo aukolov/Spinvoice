@@ -33,7 +33,7 @@ namespace Spinvoice.IntegrationTests.QuickBooks
             var externalCompany = _externalCompanyRepository.Create(companyName, Side.Vendor, "USD");
 
             Assert.IsFalse(string.IsNullOrEmpty(externalCompany.Id));
-            var loadedExternalCompany = _externalCompanyRepository.GetAll()
+            var loadedExternalCompany = _externalCompanyRepository.GetAllVendors()
                 .SingleOrDefault(company => company.Id == externalCompany.Id);
             Assert.IsNotNull(loadedExternalCompany);
             Assert.AreEqual(companyName, loadedExternalCompany.Name);

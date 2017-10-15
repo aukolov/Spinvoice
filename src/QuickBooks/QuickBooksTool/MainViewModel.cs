@@ -95,7 +95,7 @@ namespace QuickBooksTool
             }
 
             Companies.Clear();
-            Companies.AddRange(_externalCompanyRepository.GetAll()
+            Companies.AddRange(_externalCompanyRepository.GetAllVendors()
                 .Where(company => company.Side == Side.Vendor)
                 .OrderBy(company => company.Name));
             Accounts.Clear();

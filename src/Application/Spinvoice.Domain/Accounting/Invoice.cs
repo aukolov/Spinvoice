@@ -26,6 +26,7 @@ namespace Spinvoice.Domain.Accounting
 
         public event Action CurrencyChanged;
         public event Action DateChanged;
+        public event Action SideChanged;
 
         public Invoice()
         {
@@ -41,6 +42,7 @@ namespace Spinvoice.Domain.Accounting
                 if (_side == value) return;
                 _side = value;
                 OnPropertyChanged();
+                SideChanged.Raise();
             }
         }
 
@@ -213,8 +215,8 @@ namespace Spinvoice.Domain.Accounting
             Currency = company.Currency;
             VatNumber = company.VatNumber;
             IsEuropeanUnion = company.IsEuropeanUnion;
-            ExternalCompanyId = company.ExternalId;
             Side = company.Side;
+            ExternalCompanyId = company.ExternalId;
         }
 
         public void Clear()
