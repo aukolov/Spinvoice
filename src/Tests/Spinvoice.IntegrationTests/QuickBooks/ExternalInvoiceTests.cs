@@ -97,31 +97,6 @@ namespace Spinvoice.IntegrationTests.QuickBooks
         }
 
         [Test]
-        public void CreatesInvoiceWithVatAndTransportationCosts()
-        {
-            var companyName = "Test Co " + Guid.NewGuid();
-            var externalCompany = _externalCompanyRepository.Create(companyName, Side.Customer, "GBP");
-            Assert.IsNotNull(externalCompany.Id);
-
-            var invoice = new Invoice
-            {
-                Side = Side.Customer,
-                CompanyName = companyName,
-                ExternalCompanyId = externalCompany.Id,
-                Currency = "GBP",
-                Date = new DateTime(2017, 5, 17),
-                InvoiceNumber = "INV NO 123",
-                ExchangeRate = 1.05123m,
-                NetAmount = 1000,
-                Positions = new ObservableCollection<Position>(),
-                VatAmount = 15.12m,
-                TransportationCosts = 54.33m
-            };
-
-            _externalInvoiceAndBillService.Save(invoice);
-        }
-
-        [Test]
         public void UpdatesInvoice()
         {
             // Setup.

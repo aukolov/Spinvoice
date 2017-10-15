@@ -2,7 +2,7 @@
 {
     public enum Side
     {
-        Vendor = 1,
-        Customer = 2
+        Vendor = 0,
+        Customer = 1
     }
 }

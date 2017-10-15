@@ -29,11 +29,17 @@ namespace Spinvoice.QuickBooks.Company
                 return _externalCompanies;
             }
 
-            var externalCompanies = _externalConnection
+            var externalVendors = _externalConnection
                 .GetAll<Vendor>()
-                .Select(vendor => new ExternalCompany(vendor));
+                .Select(x => new ExternalCompany(x));
+            var externalCustomers = _externalConnection
+                .GetAll<Customer>()
+                .Select(x => new ExternalCompany(x));
+
             _externalCompanies.Clear();
-            _externalCompanies.AddRange(externalCompanies);
+            _externalCompanies.AddRange(externalVendors);
+            _externalCompanies.AddRange(externalCustomers);
+
             return _externalCompanies;
         }
 

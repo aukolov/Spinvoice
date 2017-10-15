@@ -1,5 +1,4 @@
-﻿using Spinvoice.Domain.Accounting;
-using Spinvoice.Domain.Pdf;
+﻿using Spinvoice.Domain.Pdf;
 using Spinvoice.QuickBooks.Domain;
 
 namespace Spinvoice.Domain.Company

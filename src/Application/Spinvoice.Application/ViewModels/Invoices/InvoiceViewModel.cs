@@ -383,6 +383,7 @@ namespace Spinvoice.Application.ViewModels.Invoices
                 company.VatNumber = Invoice.VatNumber;
                 company.IsEuropeanUnion = Invoice.IsEuropeanUnion;
                 company.ExternalId = Invoice.ExternalCompanyId;
+                company.Side = Invoice.Side;
 
                 if (_pdfModel != null)
                 {
@@ -455,7 +456,7 @@ namespace Spinvoice.Application.ViewModels.Invoices
                 return;
             }
 
-            Process.Start(QuickBooksUrlService.GetExternalInvoiceUrl(Invoice.ExternalId));
+            Process.Start(QuickBooksUrlService.GetExternalInvoiceUrl(Invoice.Side, Invoice.ExternalId));
         }
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)

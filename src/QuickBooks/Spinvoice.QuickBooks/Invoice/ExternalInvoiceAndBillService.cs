@@ -23,7 +23,7 @@ namespace Spinvoice.QuickBooks.Invoice
             switch (invoice.Side)
             {
                 case Side.Vendor:
-                    return invoice.ExternalId == null ? AddIBill(invoice) : UpdateBill(invoice);
+                    return invoice.ExternalId == null ? AddBill(invoice) : UpdateBill(invoice);
                 case Side.Customer:
                     return invoice.ExternalId == null ? AddInvoice(invoice) : UpdateInvoice(invoice);
                 default:
@@ -31,7 +31,7 @@ namespace Spinvoice.QuickBooks.Invoice
             }
         }
 
-        private string AddIBill(Spinvoice.Domain.Accounting.Invoice invoice)
+        private string AddBill(Spinvoice.Domain.Accounting.Invoice invoice)
         {
             var bill = new Bill();
             _externalInvoiceUpdater.Update(invoice, bill);

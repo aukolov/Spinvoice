@@ -22,6 +22,7 @@ namespace Spinvoice.Domain.Accounting
         private string _externalCompanyId;
         private string _externalId;
         private decimal _transportationCosts;
+        private Side _side;
 
         public event Action CurrencyChanged;
         public event Action DateChanged;
@@ -32,7 +33,16 @@ namespace Spinvoice.Domain.Accounting
             Side = Side.Vendor;
         }
 
-        public Side Side { get; set; }
+        public Side Side
+        {
+            get { return _side; }
+            set
+            {
+                if (_side == value) return;
+                _side = value;
+                OnPropertyChanged();
+            }
+        }
 
         public DateTime Date
         {
@@ -204,6 +214,7 @@ namespace Spinvoice.Domain.Accounting
             VatNumber = company.VatNumber;
             IsEuropeanUnion = company.IsEuropeanUnion;
             ExternalCompanyId = company.ExternalId;
+            Side = company.Side;
         }
 
         public void Clear()
@@ -219,6 +230,7 @@ namespace Spinvoice.Domain.Accounting
             _vatNumber = null;
             _isEuropeanUnion = false;
             _externalCompanyId = null;
+            
             Positions.Clear();
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(""));
         }
