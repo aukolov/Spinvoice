@@ -18,10 +18,6 @@ namespace Spinvoice.QuickBooks.ExchangeRate
 
         public decimal? GetRate(string currency, DateTime date)
         {
-            if (currency == "EUR")
-            {
-                return 1;
-            }
             if (!_externalConnection.IsConnected)
             {
                 return null;
