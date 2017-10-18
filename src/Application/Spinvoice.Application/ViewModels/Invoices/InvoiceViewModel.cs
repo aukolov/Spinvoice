@@ -55,6 +55,7 @@ namespace Spinvoice.Application.ViewModels.Invoices
             IAccountsChartRepository accountsChartRepository,
             ClipboardService clipboardService,
             PdfModel pdfModel,
+            ActionSelectorViewModel actionSelectorViewModel,
             PdfXrayViewModel pdfXrayViewModel,
             AnalyzeInvoiceService analyzeInvoiceService,
             TrainStrategyService trainStrategyService,
@@ -62,7 +63,8 @@ namespace Spinvoice.Application.ViewModels.Invoices
             IExternalCompanyRepository externalCompanyRepository,
             IExternalAccountRepository externalAccountRepository,
             IExternalConnectionWatcher externalConnectionWatcher,
-            IWindowManager windowManager)
+            IWindowManager windowManager,
+            Func<ObservableCollection<Position>, ActionSelectorViewModel, PositionListViewModel> positionListViewModelFactory)
         {
             _clipboardService = clipboardService;
             _companyRepository = companyRepository;
@@ -84,8 +86,8 @@ namespace Spinvoice.Application.ViewModels.Invoices
             CopyPositionsCommand = new RelayCommand(CopyPositions);
             ClearCommand = new RelayCommand(Reset);
 
-            ActionSelectorViewModel = new ActionSelectorViewModel();
-            PositionListViewModel = new PositionListViewModel(Invoice.Positions, ActionSelectorViewModel);
+            ActionSelectorViewModel = actionSelectorViewModel;
+            PositionListViewModel = positionListViewModelFactory(Invoice.Positions, ActionSelectorViewModel);
             InvoiceEditViewModel = new InvoiceEditViewModel(
                 Invoice,
                 ActionSelectorViewModel,
@@ -456,14 +458,31 @@ namespace Spinvoice.Application.ViewModels.Invoices
             }
             foreach (var invoicePosition in invoicePositions)
             {
-                var externalItem = _externalItemRepository.Get(invoicePosition.Name)
-                    ?? _externalItemRepository.Add(invoicePosition.Name);
+                var externalItem = GetOrCreateExternalItem(invoicePosition);
                 invoicePosition.ExternalId = externalItem.Id;
             }
             var externalInvoiceId = _externalInvoiceAndBillService.Save(Invoice);
             Invoice.ExternalId = externalInvoiceId;
 
             TrainAboutCompany();
+        }
+
+        private IExternalItem GetOrCreateExternalItem(Position position)
+        {
+            if (_externalItemRepository.Get(position.Name) != null)
+            {
+                return _externalItemRepository.Get(position.Name);
+            }
+
+            switch (position.PositionType)
+            {
+                case PositionType.Inventory:
+                    return _externalItemRepository.AddInventory(position.Name);
+                case PositionType.Service:
+                    return _externalItemRepository.AddService(position.Name, position.ExternalAccountId, Invoice.Side);
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         private void OpenInQuickBooks()

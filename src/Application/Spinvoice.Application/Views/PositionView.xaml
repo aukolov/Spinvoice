@@ -23,6 +23,8 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -31,7 +33,7 @@
 
         <RadioButton Grid.Row="0"
                      Grid.Column="0"
-                     Content="Name"
+                     Content="Name:"
                      GroupName="{Binding ActionSelectorViewModel.GroupName}"
                      IsChecked="{Binding ActionSelectorViewModel.EditField,
                                          Converter={x:Static converters1:EqualsToCheckedConverter.Instance},
@@ -41,26 +43,48 @@
                  Margin="{StaticResource GridLinesMargin}"
                  Text="{Binding Position.Name}" />
 
-        <RadioButton Grid.Row="1"
+        <StackPanel Grid.Row="1"
+                    Grid.Column="1"
+                    Orientation="Horizontal">
+            <RadioButton Content="Inventory" IsChecked="{Binding Position.PositionType, Converter={x:Static converters1:TrueToInventoryFalseToServiceConverter.Instance}}" />
+            <RadioButton Content="Service" IsChecked="{Binding Position.PositionType, Converter={x:Static converters1:TrueToServiceFalseToInventoryConverter.Instance}}" />
+        </StackPanel>
+
+        <TextBlock Grid.Row="2"
+                   Grid.Column="0"
+                   Text="Account:"
+                   Visibility="{Binding Position.PositionType,
+                                        Converter={x:Static converters1:ServiceToVisibleOtherviseCollapsedConverter.Instance}}" />
+        <ComboBox Grid.Row="2"
+                  Grid.Column="1"
+                  Margin="0,5,0,0"
+                  DisplayMemberPath="Name"
+                  ItemsSource="{Binding ExternalAccounts}"
+                  SelectedValue="{Binding Position.ExternalAccountId}"
+                  SelectedValuePath="Id"
+                  Visibility="{Binding Position.PositionType,
+                                       Converter={x:Static converters1:ServiceToVisibleOtherviseCollapsedConverter.Instance}}" />
+
+        <RadioButton Grid.Row="3"
                      Grid.Column="0"
-                     Content="Quantity"
+                     Content="Quantity:"
                      GroupName="{Binding ActionSelectorViewModel.GroupName}"
                      IsChecked="{Binding ActionSelectorViewModel.EditField,
                                          Converter={x:Static converters1:EqualsToCheckedConverter.Instance},
                                          ConverterParameter={x:Static invoices:EditField.PositionQuantity}}" />
-        <TextBox Grid.Row="1"
+        <TextBox Grid.Row="3"
                  Grid.Column="1"
                  Margin="{StaticResource GridLinesMargin}"
                  Text="{Binding Position.Quantity}" />
 
-        <RadioButton Grid.Row="2"
+        <RadioButton Grid.Row="4"
                      Grid.Column="0"
-                     Content="Amount"
+                     Content="Amount:"
                      GroupName="{Binding ActionSelectorViewModel.GroupName}"
                      IsChecked="{Binding ActionSelectorViewModel.EditField,
                                          Converter={x:Static converters1:EqualsToCheckedConverter.Instance},
                                          ConverterParameter={x:Static invoices:EditField.PositionAmount}}" />
-        <TextBox Grid.Row="2"
+        <TextBox Grid.Row="4"
                  Grid.Column="1"
                  Margin="{StaticResource GridLinesMargin}"
                  Text="{Binding Position.Amount}" />

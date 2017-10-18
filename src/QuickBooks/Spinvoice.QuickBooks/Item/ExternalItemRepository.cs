@@ -52,7 +52,7 @@ namespace Spinvoice.QuickBooks.Item
             return item;
         }
 
-        public IExternalItem Add(string name)
+        public IExternalItem AddInventory(string name)
         {
             var item = new Intuit.Ipp.Data.Item
             {
@@ -84,5 +84,40 @@ namespace Spinvoice.QuickBooks.Item
             _externalItemsByName.Add(name, externalItem);
             return externalItem;
         }
+
+        public IExternalItem AddService(string name, string externalAccountId, Side side)
+        {
+            var item = new Intuit.Ipp.Data.Item
+            {
+                Name = name,
+                Type = ItemTypeEnum.Service,
+                TypeSpecified = true
+            };
+
+            switch (side)
+            {
+                case Side.Vendor:
+                    item.ExpenseAccountRef = new ReferenceType
+                    {
+                        Value = externalAccountId
+                    };
+                    break;
+                case Side.Customer:
+                    item.IncomeAccountRef = new ReferenceType
+                    {
+                        Value = externalAccountId
+                    };
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(side), side, null);
+            }
+
+            var addedItem = _externalConnection.Add(item);
+
+            var externalItem = new ExternalItem(addedItem);
+            _externalItemsByName.Add(name, externalItem);
+            return externalItem;
+        }
+
     }
 }

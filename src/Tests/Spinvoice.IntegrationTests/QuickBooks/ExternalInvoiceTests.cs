@@ -47,11 +47,11 @@ namespace Spinvoice.IntegrationTests.QuickBooks
         public void CreatesInvoice()
         {
             var applesName = "Apples " + Guid.NewGuid();
-            var externalApples = _externalItemRepository.Add(applesName);
+            var externalApples = _externalItemRepository.AddInventory(applesName);
             Assert.IsNotNull(externalApples.Id);
 
             var orangesName = "Oranges " + Guid.NewGuid();
-            var externalOranges = _externalItemRepository.Add(orangesName);
+            var externalOranges = _externalItemRepository.AddInventory(orangesName);
             Assert.IsNotNull(externalOranges.Id);
 
             var companyName = "Test Co " + Guid.NewGuid();
@@ -101,11 +101,11 @@ namespace Spinvoice.IntegrationTests.QuickBooks
         {
             // Setup.
             var applesName = "Apples " + Guid.NewGuid();
-            var externalApples = _externalItemRepository.Add(applesName);
+            var externalApples = _externalItemRepository.AddInventory(applesName);
             Assert.IsNotNull(externalApples.Id);
 
             var orangesName = "Oranges " + Guid.NewGuid();
-            var externalOranges = _externalItemRepository.Add(orangesName);
+            var externalOranges = _externalItemRepository.AddInventory(orangesName);
             Assert.IsNotNull(externalOranges.Id);
 
             var companyName1 = "Test Co " + Guid.NewGuid();

@@ -4,6 +4,7 @@ using Intuit.Ipp.Data;
 using Moq;
 using NUnit.Framework;
 using Spinvoice.Domain.Accounting;
+using Spinvoice.QuickBooks.Account;
 using Spinvoice.QuickBooks.Connection;
 using Spinvoice.QuickBooks.Domain;
 using Spinvoice.QuickBooks.Item;
@@ -11,10 +12,11 @@ using Spinvoice.QuickBooks.Item;
 namespace Spinvoice.IntegrationTests.QuickBooks
 {
     [TestFixture]
-    public class ExternalItemServiceTests
+    public class ExternalItemRepositoryTests
     {
         private ExternalConnection _externalConnection;
         private ExternalItemRepository _externalItemRepository;
+        private ExternalAccountRepository _externalAccountRepository;
 
         [SetUp]
         public void Setup()
@@ -27,6 +29,7 @@ namespace Spinvoice.IntegrationTests.QuickBooks
             var accountsChartRepositoryMock = new Mock<IAccountsChartRepository>();
             accountsChartRepositoryMock.Setup(repository => repository.AccountsChart)
                 .Returns(SandboxAccountChartProvider.Get());
+            _externalAccountRepository = new ExternalAccountRepository(_externalConnection);
             _externalItemRepository = new ExternalItemRepository(
                 accountsChartRepositoryMock.Object,
                 _externalConnection);
@@ -40,9 +43,37 @@ namespace Spinvoice.IntegrationTests.QuickBooks
         }
 
         [Test]
-        public void CreatesItem()
+        public void CreatesInventoryItem()
         {
-            var externalItem = _externalItemRepository.Add("Test Item " + Guid.NewGuid());
+            var externalItem = _externalItemRepository.AddInventory("Test Inventory " + Guid.NewGuid());
+
+            Assert.IsTrue(!string.IsNullOrEmpty(externalItem.Id));
+        }
+
+        [Test]
+        public void CreatesIncomeServiceItem()
+        {
+            var externalAccount = _externalAccountRepository.GetAll().FirstOrDefault(account => account.Name == "Services");
+            Assert.IsNotNull(externalAccount);
+
+            var externalItem = _externalItemRepository.AddService(
+                "Test Service " + Guid.NewGuid(), 
+                externalAccount.Id, 
+                Side.Customer);
+
+            Assert.IsTrue(!string.IsNullOrEmpty(externalItem.Id));
+        }
+
+        [Test]
+        public void CreatesExpenseServiceItem()
+        {
+            var externalAccount = _externalAccountRepository.GetAll().FirstOrDefault(account => account.Name == "Purchases");
+            Assert.IsNotNull(externalAccount);
+
+            var externalItem = _externalItemRepository.AddService(
+                "Test Service " + Guid.NewGuid(),
+                externalAccount.Id,
+                Side.Vendor);
 
             Assert.IsTrue(!string.IsNullOrEmpty(externalItem.Id));
         }

@@ -1,6 +1,9 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Spinvoice.Domain.Accounting;
+using Spinvoice.QuickBooks.Account;
+using Spinvoice.QuickBooks.Domain;
 using Spinvoice.Utils;
 
 namespace Spinvoice.Application.ViewModels.Invoices
@@ -9,15 +12,18 @@ namespace Spinvoice.Application.ViewModels.Invoices
     {
         public PositionViewModel(
             Position position,
-            ActionSelectorViewModel actionSelectorViewModel)
+            ActionSelectorViewModel actionSelectorViewModel,
+            IExternalAccountRepository externalAccountRepository)
         {
             Position = position;
             ActionSelectorViewModel = actionSelectorViewModel;
             RawPosition = new RawPosition();
+            ExternalAccounts = externalAccountRepository.GetAll();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public ObservableCollection<IExternalAccount> ExternalAccounts { get; }
         public Position Position { get; }
         public ActionSelectorViewModel ActionSelectorViewModel { get; }
         public RawPosition RawPosition { get; }

@@ -21,14 +21,15 @@ namespace Spinvoice.Application.ViewModels.Invoices
 
         public PositionListViewModel(
             ObservableCollection<Position> positions,
-            ActionSelectorViewModel actionSelectorViewModel)
+            ActionSelectorViewModel actionSelectorViewModel,
+            Func<Position, ActionSelectorViewModel, PositionViewModel> positionViewModelFactory)
         {
             _positions = positions;
             _positions.CollectionChanged += OnPositionCollectionChanged;
             _positions.ForEach(Subscribe);
             Positions = new ListCollectionProxyView<Position, PositionViewModel, ObservableCollection<Position>>(
                 positions,
-                p => new PositionViewModel(p, actionSelectorViewModel),
+                p => positionViewModelFactory(p, actionSelectorViewModel),
                 (p, vm) => vm.Position == p);
             AddCommand = new RelayCommand(AddPosition);
             RemoveCommand = new RelayCommand(RemovePosition);

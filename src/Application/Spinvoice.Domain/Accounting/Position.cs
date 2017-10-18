@@ -14,6 +14,8 @@ namespace Spinvoice.Domain.Accounting
         private int _quantity;
         private string _externalId;
         private readonly Subject<Position> _amountChanged;
+        private string _externalAccountId;
+        private PositionType _positionType;
 
         public Position()
         {
@@ -26,6 +28,7 @@ namespace Spinvoice.Domain.Accounting
             _name = name;
             _quantity = quantity;
             _amount = amount;
+            _positionType = PositionType.Inventory;
         }
 
         public IObservable<Position> AmountChanged { get; }
@@ -37,6 +40,17 @@ namespace Spinvoice.Domain.Accounting
             {
                 if (_name == value) return;
                 _name = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public PositionType PositionType
+        {
+            get { return _positionType; }
+            set
+            {
+                if (_positionType == value) return;
+                _positionType = value;
                 OnPropertyChanged();
             }
         }
@@ -71,6 +85,17 @@ namespace Spinvoice.Domain.Accounting
             {
                 if (_externalId == value) return;
                 _externalId = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string ExternalAccountId
+        {
+            get { return _externalAccountId; }
+            set
+            {
+                if (_externalAccountId == value) return;
+                _externalAccountId = value;
                 OnPropertyChanged();
             }
         }

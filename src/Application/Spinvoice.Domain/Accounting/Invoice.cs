@@ -232,6 +232,7 @@ namespace Spinvoice.Domain.Accounting
             _vatNumber = null;
             _isEuropeanUnion = false;
             _externalCompanyId = null;
+            _side = Side.Vendor;
             
             Positions.Clear();
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(""));

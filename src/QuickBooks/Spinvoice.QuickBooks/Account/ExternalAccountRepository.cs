@@ -31,7 +31,7 @@ namespace Spinvoice.QuickBooks.Account
                 .ToArray();
 
             _externalAccounts.Clear();
-            _externalAccounts.AddRange(accounts.Select(account => new ExternalAccount(account)));
+            _externalAccounts.AddRange(accounts.Select(account => new ExternalAccount(account)).OrderBy(account => account.Name));
         }
 
         public ObservableCollection<IExternalAccount> GetAll()
