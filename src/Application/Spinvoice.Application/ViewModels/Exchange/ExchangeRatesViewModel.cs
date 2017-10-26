@@ -4,6 +4,7 @@ using System.Windows.Input;
 using Spinvoice.Application.Services;
 using Spinvoice.Common.Presentation;
 using Spinvoice.Domain.Exchange;
+using Spinvoice.QuickBooks.Domain;
 using Spinvoice.Utils;
 
 namespace Spinvoice.Application.ViewModels.Exchange
@@ -14,10 +15,11 @@ namespace Spinvoice.Application.ViewModels.Exchange
             ExchangeRatesLoader exchangeRatesLoader, 
             WindowManager windowManager, 
             IExchangeRatesRepository exchangeRatesRepository,
+            IExternalCompanyPreferencesRepository externalCompanyPreferencesRepository,
             IClipboardService clipboardService)
         {
             LoadExchangeRatesViewModel = new LoadExchangeRatesViewModel(exchangeRatesLoader);
-            CheckExchangeRatesViewModel = new CheckExchangeRatesViewModel(exchangeRatesRepository, clipboardService);
+            CheckExchangeRatesViewModel = new CheckExchangeRatesViewModel(exchangeRatesRepository, externalCompanyPreferencesRepository, clipboardService);
             CloseCommand = new RelayCommand(() => windowManager.Close(this));
         }
 

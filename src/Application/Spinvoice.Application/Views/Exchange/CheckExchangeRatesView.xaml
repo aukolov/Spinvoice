@@ -49,15 +49,20 @@
                         SelectedDate="{Binding Date,
                                                UpdateSourceTrigger=PropertyChanged}" />
 
-            <TextBlock Grid.Row="2"
-                       Grid.Column="0"
-                       Text="{Binding Currency,
-                                      StringFormat='{}1 EUR in {0}:'}" />
+            <TextBlock Grid.Row="2" Grid.Column="0">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}1 {0} in {1}:">
+                        <Binding Path="HomeCurrency" />
+                        <Binding Path="Currency" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+
             <TextBox Grid.Row="2"
                      Grid.Column="1"
                      Margin="{StaticResource GridLinesMargin}"
                      IsReadOnly="True"
-                     Text="{Binding ToEuroRate,
+                     Text="{Binding ToHomeCurrencyRate,
                                     Mode=OneWay}" />
             <Button Grid.Row="2"
                     Grid.Column="2"
@@ -67,10 +72,14 @@
                     Command="{Binding CopyToEuroRateCommand}"
                     Content="Copy" />
 
-            <TextBlock Grid.Row="3"
-                       Grid.Column="0"
-                       Text="{Binding Currency,
-                                      StringFormat='{}1 {0} in EUR:'}" />
+            <TextBlock Grid.Row="3" Grid.Column="0">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}1 {0} in {1}:">
+                        <Binding Path="Currency" />
+                        <Binding Path="HomeCurrency" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
             <TextBox Grid.Row="3"
                      Grid.Column="1"
                      Margin="{StaticResource GridLinesMargin}"

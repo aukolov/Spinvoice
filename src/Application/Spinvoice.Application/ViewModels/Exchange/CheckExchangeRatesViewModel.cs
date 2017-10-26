@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Spinvoice.Application.Services;
 using Spinvoice.Domain.Exchange;
+using Spinvoice.QuickBooks.Domain;
 using Spinvoice.Utils;
 
 namespace Spinvoice.Application.ViewModels.Exchange
@@ -12,6 +13,7 @@ namespace Spinvoice.Application.ViewModels.Exchange
     public class CheckExchangeRatesViewModel : INotifyPropertyChanged
     {
         private readonly IExchangeRatesRepository _exchangeRatesRepository;
+        private readonly IExternalCompanyPreferencesRepository _externalCompanyPreferencesRepository;
 
         private string _currency;
         private DateTime _date;
@@ -19,13 +21,15 @@ namespace Spinvoice.Application.ViewModels.Exchange
 
         public CheckExchangeRatesViewModel(
             IExchangeRatesRepository exchangeRatesRepository,
+            IExternalCompanyPreferencesRepository externalCompanyPreferencesRepository,
             IClipboardService clipboardService)
         {
             _currency = "USD";
             _date = new DateTime(2017, 1, 17);
             _exchangeRatesRepository = exchangeRatesRepository;
+            _externalCompanyPreferencesRepository = externalCompanyPreferencesRepository;
             CopyToEuroRateCommand = new RelayCommand(() => clipboardService.TrySetText(
-                ToEuroRate.ToString(CultureInfo.InvariantCulture)));
+                ToHomeCurrencyRate.ToString(CultureInfo.InvariantCulture)));
             CopyToCurrnecyRateCommand = new RelayCommand(() => clipboardService.TrySetText(
                 ToCurrencyRate.ToString(CultureInfo.InvariantCulture)));
         }
@@ -38,9 +42,11 @@ namespace Spinvoice.Application.ViewModels.Exchange
                 _currency = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(ToCurrencyRate));
-                OnPropertyChanged(nameof(ToEuroRate));
+                OnPropertyChanged(nameof(ToHomeCurrencyRate));
             }
         }
+
+        public string HomeCurrency => _externalCompanyPreferencesRepository.HomeCurrency;
 
         public DateTime Date
         {
@@ -50,11 +56,11 @@ namespace Spinvoice.Application.ViewModels.Exchange
                 if (_date == value) return;
                 _date = value;
                 OnPropertyChanged(nameof(ToCurrencyRate));
-                OnPropertyChanged(nameof(ToEuroRate));
+                OnPropertyChanged(nameof(ToHomeCurrencyRate));
             }
         }
 
-        public decimal ToEuroRate
+        public decimal ToHomeCurrencyRate
         {
             get
             {

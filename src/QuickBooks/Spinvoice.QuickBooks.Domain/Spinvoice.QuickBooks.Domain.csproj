@@ -36,6 +36,7 @@
   <ItemGroup>
     <Compile Include="IExternalAccount.cs" />
     <Compile Include="IExternalCompany.cs" />
+    <Compile Include="IExternalCompanyPreferencesRepository.cs" />
     <Compile Include="IExternalCompanyRepository.cs" />
     <Compile Include="IExternalConnectionWatcher.cs" />
     <Compile Include="IExternalItem.cs" />
