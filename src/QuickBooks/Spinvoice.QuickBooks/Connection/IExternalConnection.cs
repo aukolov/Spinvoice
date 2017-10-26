@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using Intuit.Ipp.Data;
+using Spinvoice.QuickBooks.Domain;
 
 namespace Spinvoice.QuickBooks.Connection
 {
-    public interface IExternalConnection
+    public interface IExternalConnection : IExternalConnectionWatcher
     {
         T Add<T>(T entity) where T : IEntity;
         T[] GetAll<T>() where T : IEntity, new();

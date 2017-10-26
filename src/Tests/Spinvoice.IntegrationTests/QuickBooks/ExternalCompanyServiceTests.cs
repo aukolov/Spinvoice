@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
-using Spinvoice.Domain.Accounting;
 using Spinvoice.QuickBooks.Company;
 using Spinvoice.QuickBooks.Connection;
 using Spinvoice.QuickBooks.Domain;

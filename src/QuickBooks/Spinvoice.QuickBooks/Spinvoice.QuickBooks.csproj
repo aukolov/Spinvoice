@@ -111,6 +111,7 @@
     <Compile Include="Account\ExternalAccountRepository.cs" />
     <Compile Include="Account\IExternalAccountRepository.cs" />
     <Compile Include="AutofacModule.cs" />
+    <Compile Include="Company\ExternalCompanyPreferencesRepository.cs" />
     <Compile Include="Connection\ExternalAuthService.cs" />
     <Compile Include="Connection\ExternalConnection.cs" />
     <Compile Include="Connection\IExternalAuthService.cs" />

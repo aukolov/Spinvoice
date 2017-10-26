@@ -160,6 +160,7 @@
     <Compile Include="Pdf\PdfParserTests.cs" />
     <Compile Include="Pdf\Text7BasePdfParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QuickBooks\ExternalCompanyPreferencesRepositoryTests.cs" />
     <Compile Include="QuickBooks\ExternalCompanyServiceTests.cs" />
     <Compile Include="QuickBooks\ExternalExchangeRateIntegrationTests.cs" />
     <Compile Include="QuickBooks\ExternalBillTests.cs" />
