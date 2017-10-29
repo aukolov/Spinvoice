@@ -16,9 +16,10 @@ namespace Spinvoice.Application.Services
                 $"{invoice.Currency}\t" +
                 $"{invoice.NetAmount}\t" +
                 $"{invoice.ExchangeRate}\t" +
-                $"{invoice.NetAmountInEuro}\t" +
                 $"{invoice.VatAmount}\t" +
+                $"{invoice.TransportationCosts}\t" +
                 $"{invoice.TotalAmount}\t" +
+                $"{invoice.TotalAmountInHomeCurrency}\t" +
                 $"{invoice.Country}\t" +
                 $"{(invoice.IsEuropeanUnion ? "Y" : "N")}";
             return text;
