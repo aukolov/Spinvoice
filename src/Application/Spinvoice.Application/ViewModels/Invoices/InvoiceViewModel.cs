@@ -39,6 +39,7 @@ namespace Spinvoice.Application.ViewModels.Invoices
         private readonly ICompanyRepository _companyRepository;
         private readonly IExternalItemRepository _externalItemRepository;
         private readonly IAccountsChartRepository _accountsChartRepository;
+        private readonly IExternalCompanyPreferencesRepository _externalCompanyPreferencesRepository;
         private readonly PdfModel _pdfModel;
         private string _clipboardText;
         private volatile string _textToIgnore;
@@ -53,6 +54,7 @@ namespace Spinvoice.Application.ViewModels.Invoices
             IExchangeRatesRepository exchangeRatesRepository,
             IExternalItemRepository externalItemRepository,
             IAccountsChartRepository accountsChartRepository,
+            IExternalCompanyPreferencesRepository externalCompanyPreferencesRepository,
             ClipboardService clipboardService,
             PdfModel pdfModel,
             ActionSelectorViewModel actionSelectorViewModel,
@@ -70,6 +72,7 @@ namespace Spinvoice.Application.ViewModels.Invoices
             _companyRepository = companyRepository;
             _externalItemRepository = externalItemRepository;
             _accountsChartRepository = accountsChartRepository;
+            _externalCompanyPreferencesRepository = externalCompanyPreferencesRepository;
             _pdfModel = pdfModel;
             _analyzeInvoiceService = analyzeInvoiceService;
             _trainStrategyService = trainStrategyService;
@@ -122,6 +125,7 @@ namespace Spinvoice.Application.ViewModels.Invoices
 
             _activated = new Subject<InvoiceViewModel>();
             Invoice.SideChanged += OnSideChanged;
+            _externalCompanyPreferencesRepository.Updated += () => OnPropertyChanged(nameof(HomeCurrency));
         }
 
         private void OnSideChanged()
@@ -150,6 +154,8 @@ namespace Spinvoice.Application.ViewModels.Invoices
         }
 
         public IObservable<InvoiceViewModel> Activated => _activated;
+
+        public string HomeCurrency => _externalCompanyPreferencesRepository.HomeCurrency;
 
         public RelayCommand CopyInvoiceCommand { get; }
         public RelayCommand CopyPositionsCommand { get; }

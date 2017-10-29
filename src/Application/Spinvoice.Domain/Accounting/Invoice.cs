@@ -96,8 +96,8 @@ namespace Spinvoice.Domain.Accounting
             {
                 _exchangeRate = value;
                 OnPropertyChanged();
-                OnOtherPropertyChanged(nameof(NetAmountInEuro));
                 OnOtherPropertyChanged(nameof(TotalAmount));
+                OnOtherPropertyChanged(nameof(TotalAmountInHomeCurrency));
             }
         }
 
@@ -118,16 +118,9 @@ namespace Spinvoice.Domain.Accounting
             {
                 _netAmount = value;
                 OnPropertyChanged();
-                OnOtherPropertyChanged(nameof(NetAmountInEuro));
                 OnOtherPropertyChanged(nameof(TotalAmount));
+                OnOtherPropertyChanged(nameof(TotalAmountInHomeCurrency));
             }
-        }
-
-        public decimal NetAmountInEuro => Round(_netAmount * _exchangeRate);
-
-        private static decimal Round(decimal value)
-        {
-            return Math.Round(value, 2, MidpointRounding.AwayFromZero);
         }
 
         public decimal VatAmount
@@ -138,6 +131,7 @@ namespace Spinvoice.Domain.Accounting
                 _vatAmount = value;
                 OnPropertyChanged();
                 OnOtherPropertyChanged(nameof(TotalAmount));
+                OnOtherPropertyChanged(nameof(TotalAmountInHomeCurrency));
             }
         }
 
@@ -148,10 +142,18 @@ namespace Spinvoice.Domain.Accounting
             {
                 _transportationCosts = value;
                 OnPropertyChanged();
+                OnOtherPropertyChanged(nameof(TotalAmount));
+                OnOtherPropertyChanged(nameof(TotalAmountInHomeCurrency));
             }
         }
 
-        public decimal TotalAmount => NetAmountInEuro + VatAmount;
+        public decimal TotalAmount => NetAmount + VatAmount + TransportationCosts;
+        public decimal TotalAmountInHomeCurrency => Round(TotalAmount * _exchangeRate);
+
+        private static decimal Round(decimal value)
+        {
+            return Math.Round(value, 2, MidpointRounding.AwayFromZero);
+        }
 
         public bool IsEuropeanUnion
         {
@@ -233,7 +235,7 @@ namespace Spinvoice.Domain.Accounting
             _isEuropeanUnion = false;
             _externalCompanyId = null;
             _side = Side.Vendor;
-            
+
             Positions.Clear();
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(""));
         }

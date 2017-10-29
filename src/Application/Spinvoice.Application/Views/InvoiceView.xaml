@@ -181,48 +181,49 @@
                      Margin="{StaticResource GridLinesMargin}"
                      Text="{Binding Invoice.NetAmount}" />
 
-            <TextBlock Grid.Row="10"
-                       Grid.Column="0"
-                       Text="NET Amount (EUR):" />
-            <TextBox Grid.Row="10"
-                     Grid.Column="1"
-                     Margin="{StaticResource GridLinesMargin}"
-                     IsReadOnly="True"
-                     Text="{Binding Invoice.NetAmountInEuro,
-                                    Mode=OneWay}" />
-
-            <RadioButton Grid.Row="11"
+            <RadioButton Grid.Row="10"
                          Grid.Column="0"
                          Content="VAT:"
                          GroupName="{Binding ActionSelectorViewModel.GroupName}"
                          IsChecked="{Binding ActionSelectorViewModel.EditField,
                                              Converter={x:Static converters1:EqualsToCheckedConverter.Instance},
                                              ConverterParameter={x:Static invoices:EditField.InvoiceVatAmount}}" />
-            <TextBox Grid.Row="11"
+            <TextBox Grid.Row="10"
                      Grid.Column="1"
                      Margin="{StaticResource GridLinesMargin}"
                      Text="{Binding Invoice.VatAmount}" />
 
-            <RadioButton Grid.Row="12"
+            <RadioButton Grid.Row="11"
                          Grid.Column="0"
                          Content="Transportation:"
                          GroupName="{Binding ActionSelectorViewModel.GroupName}"
                          IsChecked="{Binding ActionSelectorViewModel.EditField,
                                              Converter={x:Static converters1:EqualsToCheckedConverter.Instance},
                                              ConverterParameter={x:Static invoices:EditField.InvoiceTransportationCosts}}" />
-            <TextBox Grid.Row="12"
+            <TextBox Grid.Row="11"
                      Grid.Column="1"
                      Margin="{StaticResource GridLinesMargin}"
                      Text="{Binding Invoice.TransportationCosts}" />
 
-            <TextBlock Grid.Row="13"
+            <TextBlock Grid.Row="12"
                        Grid.Column="0"
                        Text="Total Amount:" />
-            <TextBox Grid.Row="13"
+            <TextBox Grid.Row="12"
                      Grid.Column="1"
                      Margin="{StaticResource GridLinesMargin}"
                      IsReadOnly="True"
                      Text="{Binding Invoice.TotalAmount,
+                                    Mode=OneWay}" />
+
+            <TextBlock Grid.Row="13"
+                       Grid.Column="0"
+                       Text="{Binding HomeCurrency,
+                                      StringFormat='Total Amount ({0}):'}" />
+            <TextBox Grid.Row="13"
+                     Grid.Column="1"
+                     Margin="{StaticResource GridLinesMargin}"
+                     IsReadOnly="True"
+                     Text="{Binding Invoice.TotalAmountInHomeCurrency,
                                     Mode=OneWay}" />
 
         </Grid>

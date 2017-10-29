@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Intuit.Ipp.Data;
 using Spinvoice.QuickBooks.Connection;
 using Spinvoice.QuickBooks.Domain;
+using Spinvoice.Utils;
 
 namespace Spinvoice.QuickBooks.Company
 {
@@ -14,11 +16,18 @@ namespace Spinvoice.QuickBooks.Company
         {
             _externalConnection = externalConnection;
             externalConnection.Connected += LoadHomeCurrency;
+            if (externalConnection.IsConnected)
+            {
+                LoadHomeCurrency();
+            }
         }
+
+        public event Action Updated;
 
         private void LoadHomeCurrency()
         {
             _homeCurrency = _externalConnection.GetAll<Preferences>().Single().CurrencyPrefs.HomeCurrency.Value;
+            Updated.Raise();
         }
 
         public string HomeCurrency
