@@ -17,11 +17,37 @@ namespace Spinvoice.Utils
             this IEnumerable<T> items,
             Func<T, TProperty> selector)
         {
+            bool minFound;
+            var result = MinByInternal(items, selector, out minFound);
+
+            if (!minFound)
+            {
+                throw new InvalidOperationException("Enumerable does not have any items.");
+            }
+            return result;
+        }
+
+        public static T MinByOrDefault<T, TProperty>(
+            this IEnumerable<T> items,
+            Func<T, TProperty> selector)
+        {
+            bool minFound;
+            var result = MinByInternal(items, selector, out minFound);
+
+            if (!minFound)
+            {
+                return default(T);
+            }
+            return result;
+        }
+
+        private static T MinByInternal<T, TProperty>(IEnumerable<T> items, Func<T, TProperty> selector, out bool minFound)
+        {
             if (items == null)
             {
                 throw new ArgumentNullException(nameof(items));
             }
-            var minFound = false;
+            minFound = false;
             TProperty currentMin = default(TProperty);
             T currentItem = default(T);
             var comparer = Comparer<TProperty>.Default;
@@ -42,11 +68,6 @@ namespace Spinvoice.Utils
                         currentItem = item;
                     }
                 }
-            }
-
-            if (!minFound)
-            {
-                throw new InvalidOperationException("Enumerable does not have any items.");
             }
             return currentItem;
         }

@@ -32,7 +32,7 @@ namespace Spinvoice.Domain.Pdf
                 Logger.Trace("Checking page...");
                 var amountHeaderSentence = page.Sentences
                     .Where(x => x.Text == AmountHeaderText)
-                    .MinBy(x => Math.Pow(x.Left - AmountHeaderLeft, 2) 
+                    .MinByOrDefault(x => Math.Pow(x.Left - AmountHeaderLeft, 2) 
                         + Math.Pow(x.Bottom - AmountHeaderBottom, 2));
                 if (amountHeaderSentence == null)
                 {
