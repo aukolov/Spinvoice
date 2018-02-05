@@ -27,9 +27,9 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <InstallUrl>https://raw.githubusercontent.com/aukolov/SpinvoiceSetup/master/</InstallUrl>
-    <UpdateUrl>https://raw.githubusercontent.com/aukolov/Spinvoice/master/Spinvoice/publish/</UpdateUrl>
+    <UpdateUrl>https://raw.githubusercontent.com/aukolov/SpinvoiceSetup/master/</UpdateUrl>
     <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationRevision>6</ApplicationRevision>
     <ApplicationVersion>1.5.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
