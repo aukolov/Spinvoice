@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+    <startup> 
+        <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.5.2" />
+    </startup>
+  <runtime>
+    <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
+      <dependentAssembly>
+        <assemblyIdentity name="Newtonsoft.Json" publicKeyToken="30ad4fe6b2a6aeed" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-10.0.0.0" newVersion="10.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Autofac" publicKeyToken="17863af14b0044da" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-4.6.1.0" newVersion="4.6.1.0" />
+      </dependentAssembly>
+    </assemblyBinding>
+  </runtime>
+
+  <system.serviceModel>
+    <bindings>
+      <netNamedPipeBinding>
+        <binding name="NetNamedPipeBinding_IFileParseService" maxReceivedMessageSize="100000000" sendTimeout="00:10:00">
+          <security mode="None" />
+        </binding>
+      </netNamedPipeBinding>
+    </bindings>
+    <client>
+      <endpoint address="net.pipe://localhost/Spinvoice.Server.Services/FileParseService" binding="netNamedPipeBinding" bindingConfiguration="NetNamedPipeBinding_IFileParseService" contract="ServerReference.IFileParseService" name="NetNamedPipeBinding_IFileParseService" />
+    </client>
+  </system.serviceModel>
+
+</configuration>
