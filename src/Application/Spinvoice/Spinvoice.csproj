@@ -60,13 +60,13 @@
     <ManifestCertificateThumbprint>4DAF7D0C79A27A78D4CA17BE834626B23D0BB40B</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>Spinvoice.App_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>Spinvoice_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Spinvoice.ico</ApplicationIcon>

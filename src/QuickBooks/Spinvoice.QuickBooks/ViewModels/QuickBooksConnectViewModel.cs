@@ -36,7 +36,7 @@ namespace Spinvoice.QuickBooks.ViewModels
 
         public string Url
         {
-            get { return _url; }
+            get => _url;
             set
             {
                 if (_url == value) return;
@@ -70,8 +70,7 @@ namespace Spinvoice.QuickBooks.ViewModels
             else if (_caughtCallback)
             {
                 var accessToken = ExchangeRequestTokenForAccessToken(_requestToken);
-                IOAuthProfile profile;
-                using (_oauthRepository.GetProfileForUpdate(out profile))
+                using (_oauthRepository.GetProfileForUpdate(out var profile))
                 {
                     profile.UpdateAccess(
                         accessToken.Token,
