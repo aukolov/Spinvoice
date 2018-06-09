@@ -34,11 +34,15 @@ namespace Spinvoice.QuickBooks.Invoice
             {
                 Value = invoice.ExternalCompanyId
             };
+            externalInvoice.GlobalTaxCalculation = GlobalTaxCalculationEnum.NotApplicable;
+            externalInvoice.GlobalTaxCalculationSpecified = true;
             externalInvoice.Line = AccountLines(invoice).Concat(ItemLines(invoice)).ToArray();
             UpdateCommon(invoice, externalInvoice);
         }
 
-        private static void UpdateCommon(Spinvoice.Domain.Accounting.Invoice invoice, Transaction transaction)
+        private static void UpdateCommon(
+            Spinvoice.Domain.Accounting.Invoice invoice,
+            Transaction transaction)
         {
             transaction.CurrencyRef = new ReferenceType
             {
