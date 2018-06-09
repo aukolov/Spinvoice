@@ -71,6 +71,12 @@
   <PropertyGroup>
     <ApplicationIcon>Spinvoice.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Spinvoice.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\NLog.4.4.11\lib\net45\NLog.dll</HintPath>
@@ -163,6 +169,7 @@
     </None>
     <AppDesigner Include="Properties\" />
     <None Include="Resources\BrowserVersion.reg" />
+    <None Include="Spinvoice.pfx" />
     <None Include="Spinvoice_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
