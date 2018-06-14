@@ -29,7 +29,7 @@
     <InstallUrl>https://raw.githubusercontent.com/aukolov/SpinvoiceSetup/master/</InstallUrl>
     <UpdateUrl>https://raw.githubusercontent.com/aukolov/SpinvoiceSetup/master/</UpdateUrl>
     <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationRevision>2</ApplicationRevision>
     <ApplicationVersion>1.6.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -57,7 +57,7 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>4DAF7D0C79A27A78D4CA17BE834626B23D0BB40B</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>490FD89A90A7450E1C8BFDD01B3712436796471C</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>Spinvoice_TemporaryKey.pfx</ManifestKeyFile>
@@ -66,16 +66,16 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>false</SignManifests>
+    <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Spinvoice.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>Spinvoice.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>Spinvoice_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
@@ -169,7 +169,6 @@
     </None>
     <AppDesigner Include="Properties\" />
     <None Include="Resources\BrowserVersion.reg" />
-    <None Include="Spinvoice.pfx" />
     <None Include="Spinvoice_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
