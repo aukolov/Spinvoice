@@ -18,14 +18,14 @@ namespace Spinvoice.QuickBooks.Item
 
         public string Id
         {
-            get { return InternalItem.Id; }
-            set { InternalItem.Id = value; }
+            get => InternalItem.Id;
+            set => InternalItem.Id = value;
         }
 
         public string Name
         {
-            get { return InternalItem.Name; }
-            set { InternalItem.Name = value; }
+            get => InternalItem.Name;
+            set => InternalItem.Name = value;
         }
     }
 }

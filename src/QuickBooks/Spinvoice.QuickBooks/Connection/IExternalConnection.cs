@@ -19,5 +19,6 @@ namespace Spinvoice.QuickBooks.Connection
 
         Intuit.Ipp.Data.Invoice GetInvoice(string externalInvoiceId);
         ReadOnlyCollection<Intuit.Ipp.Data.Invoice> GetInvoicesByCompany(string externalCompanyId);
+        Report GetInventoryValuation(DateTime date);
     }
 }

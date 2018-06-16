@@ -166,6 +166,7 @@
     <Compile Include="QuickBooks\ExternalBillTests.cs" />
     <Compile Include="QuickBooks\ExternalInvoiceTests.cs" />
     <Compile Include="QuickBooks\ExternalItemRepositoryTests.cs" />
+    <Compile Include="QuickBooks\InventoryValuationReportTests.cs" />
     <Compile Include="QuickBooks\QuickBooksUtils.cs" />
     <Compile Include="QuickBooks\SandboxAccountChartProvider.cs" />
     <Compile Include="Server\FileParseServiceProxyTests.cs" />

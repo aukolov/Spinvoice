@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Intuit.Ipp.Core;
 using Intuit.Ipp.Data;
 using Intuit.Ipp.DataService;
 using Intuit.Ipp.QueryFilter;
+using Intuit.Ipp.ReportService;
 using Spinvoice.QuickBooks.Domain;
 using Spinvoice.Utils;
 
 namespace Spinvoice.QuickBooks.Connection
 {
-    public class ExternalConnection : IExternalConnectionWatcher, IExternalConnection
+    public class ExternalConnection : IExternalConnection
     {
         private readonly IOAuthRepository _oauthRepository;
         private readonly IExternalAuthService _externalAuthService;
@@ -19,6 +19,7 @@ namespace Spinvoice.QuickBooks.Connection
         private QueryService<Intuit.Ipp.Data.ExchangeRate> _exchangeRateQueryService;
         private QueryService<Bill> _billQueryService;
         private QueryService<Intuit.Ipp.Data.Invoice> _invoiceQueryService;
+        private ReportService _reportService;
 
         public ExternalConnection(
             IOAuthRepository oauthRepository,
@@ -77,8 +78,7 @@ namespace Spinvoice.QuickBooks.Connection
 
         private void TryConnect()
         {
-            ServiceContext serviceContext;
-            if (!_externalAuthService.TryConnect(out serviceContext, _oauthRepository.Profile, _oauthRepository.Params))
+            if (!_externalAuthService.TryConnect(out var serviceContext, _oauthRepository.Profile, _oauthRepository.Params))
             {
                 return;
             }
@@ -87,6 +87,7 @@ namespace Spinvoice.QuickBooks.Connection
             _exchangeRateQueryService = new QueryService<Intuit.Ipp.Data.ExchangeRate>(serviceContext);
             _billQueryService = new QueryService<Bill>(serviceContext);
             _invoiceQueryService = new QueryService<Intuit.Ipp.Data.Invoice>(serviceContext);
+            _reportService = new ReportService(serviceContext);
             Connected.Raise();
         }
 
@@ -133,6 +134,14 @@ namespace Spinvoice.QuickBooks.Connection
             var invoices = _invoiceQueryService.ExecuteIdsQuery(
                 $"select * from invoice where CustomerRef = '{externalCompanyId}'");
             return invoices;
+        }
+
+        public Report GetInventoryValuation(DateTime date)
+        {
+            var stringDate = date.ToString("yyyy-MM-dd");
+            _reportService.start_date = stringDate;
+            _reportService.end_date = stringDate;
+            return _reportService.ExecuteReport("InventoryValuationSummary");
         }
 
         private void VerifyConnected()

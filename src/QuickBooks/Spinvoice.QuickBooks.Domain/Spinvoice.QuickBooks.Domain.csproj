@@ -40,6 +40,7 @@
     <Compile Include="IExternalCompanyRepository.cs" />
     <Compile Include="IExternalConnectionWatcher.cs" />
     <Compile Include="IExternalItem.cs" />
+    <Compile Include="IInventoryValuationItem.cs" />
     <Compile Include="IOAuthParams.cs" />
     <Compile Include="IOAuthProfile.cs" />
     <Compile Include="IOAuthProfileDataAccess.cs" />
