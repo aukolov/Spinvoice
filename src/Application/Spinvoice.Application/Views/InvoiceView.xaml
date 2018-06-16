@@ -22,6 +22,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -70,7 +71,7 @@
                         Grid.Column="1"
                         Orientation="Horizontal">
                 <RadioButton Content="Bill" IsChecked="{Binding Invoice.Side, Converter={x:Static converters1:TrueToVendorFalseToCustomerConverter.Instance}}" />
-                <RadioButton Content="Invoice" IsChecked="{Binding Invoice.Side, Converter={x:Static converters1:TrueToCustomerFalseToVendorConverter.Instance}}" />
+                <RadioButton x:Name="InvoiceRadioButton" Content="Invoice" IsChecked="{Binding Invoice.Side, Converter={x:Static converters1:TrueToCustomerFalseToVendorConverter.Instance}}" />
             </StackPanel>
 
             <RadioButton Grid.Row="2"
@@ -232,21 +233,27 @@
                 Command="{Binding CopyInvoiceCommand}"
                 Content="Copy Invoice" />
 
-        <views:PositionListView Grid.Row="3"
+        <Button
+            Margin="0,10,0,0"
+            Grid.Row="3" Content="I am feeling lucky!" 
+            Command="{Binding FillPositionsFromInventoryCommand}" 
+            Visibility="{Binding ElementName=InvoiceRadioButton, Path=IsChecked, Converter={x:Static converters1:TrueToVisibleFalseToCollapsedConverter.Instance}}"/>
+
+        <views:PositionListView Grid.Row="4"
                                 Margin="0,10,0,0"
                                 DataContext="{Binding PositionListViewModel}" />
 
-        <Button Grid.Row="4"
+        <Button Grid.Row="5"
                 Margin="0,10,0,0"
                 Command="{Binding CopyPositionsCommand}"
                 Content="Copy Positions" />
 
-        <Button Grid.Row="5"
+        <Button Grid.Row="6"
                 Margin="0,10,0,0"
                 Command="{Binding SaveToQuickBooksCommand}"
                 Content="Save to QB" />
 
-        <Button Grid.Row="6"
+        <Button Grid.Row="7"
                 Margin="0,10,0,0"
                 Command="{Binding OpenInQuickBooksCommand}"
                 Content="Open in QB"

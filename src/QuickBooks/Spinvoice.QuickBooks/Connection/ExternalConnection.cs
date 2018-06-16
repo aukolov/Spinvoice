@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Intuit.Ipp.Core;
 using Intuit.Ipp.Data;
 using Intuit.Ipp.DataService;
 using Intuit.Ipp.QueryFilter;
@@ -19,7 +20,7 @@ namespace Spinvoice.QuickBooks.Connection
         private QueryService<Intuit.Ipp.Data.ExchangeRate> _exchangeRateQueryService;
         private QueryService<Bill> _billQueryService;
         private QueryService<Intuit.Ipp.Data.Invoice> _invoiceQueryService;
-        private ReportService _reportService;
+        private ServiceContext _serviceContext;
 
         public ExternalConnection(
             IOAuthRepository oauthRepository,
@@ -78,16 +79,15 @@ namespace Spinvoice.QuickBooks.Connection
 
         private void TryConnect()
         {
-            if (!_externalAuthService.TryConnect(out var serviceContext, _oauthRepository.Profile, _oauthRepository.Params))
+            if (!_externalAuthService.TryConnect(out _serviceContext, _oauthRepository.Profile, _oauthRepository.Params))
             {
                 return;
             }
 
-            _dataService = new DataService(serviceContext);
-            _exchangeRateQueryService = new QueryService<Intuit.Ipp.Data.ExchangeRate>(serviceContext);
-            _billQueryService = new QueryService<Bill>(serviceContext);
-            _invoiceQueryService = new QueryService<Intuit.Ipp.Data.Invoice>(serviceContext);
-            _reportService = new ReportService(serviceContext);
+            _dataService = new DataService(_serviceContext);
+            _exchangeRateQueryService = new QueryService<Intuit.Ipp.Data.ExchangeRate>(_serviceContext);
+            _billQueryService = new QueryService<Bill>(_serviceContext);
+            _invoiceQueryService = new QueryService<Intuit.Ipp.Data.Invoice>(_serviceContext);
             Connected.Raise();
         }
 
@@ -138,10 +138,18 @@ namespace Spinvoice.QuickBooks.Connection
 
         public Report GetInventoryValuation(DateTime date)
         {
+            if (_serviceContext == null)
+            {
+                throw new InvalidOperationException("Not connected.");
+            }
+
             var stringDate = date.ToString("yyyy-MM-dd");
-            _reportService.start_date = stringDate;
-            _reportService.end_date = stringDate;
-            return _reportService.ExecuteReport("InventoryValuationSummary");
+            var reportService = new ReportService(_serviceContext)
+            {
+                start_date = stringDate,
+                end_date = stringDate
+            };
+            return reportService.ExecuteReport("InventoryValuationSummary");
         }
 
         private void VerifyConnected()

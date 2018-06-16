@@ -7,11 +7,11 @@ using Spinvoice.QuickBooks.Domain;
 
 namespace Spinvoice.QuickBooks.Reporting
 {
-    public class InventoryValudationReportService : IInventoryValudationReportService
+    public class InventoryValuationReportService : IInventoryValuationReportService
     {
         private readonly IExternalConnection _externalConnection;
 
-        public InventoryValudationReportService(IExternalConnection externalConnection)
+        public InventoryValuationReportService(IExternalConnection externalConnection)
         {
             _externalConnection = externalConnection;
         }
@@ -21,7 +21,9 @@ namespace Spinvoice.QuickBooks.Reporting
             var report = _externalConnection.GetInventoryValuation(date);
             var items = report.Rows.Select(row => row.AnyIntuitObjects[0])
                 .Cast<ColData[]>()
+                .Where(x => x[0].id != null)
                 .Select(x => new InventoryValuationItem(
+                    x[0].id,
                     x[0].value,
                     ParseDecimal(x[2]),
                     ParseDecimal(x[3])))

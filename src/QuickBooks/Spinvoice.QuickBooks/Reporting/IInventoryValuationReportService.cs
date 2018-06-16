@@ -3,7 +3,7 @@ using Spinvoice.QuickBooks.Domain;
 
 namespace Spinvoice.QuickBooks.Reporting
 {
-    public interface IInventoryValudationReportService
+    public interface IInventoryValuationReportService
     {
         IInventoryValuationItem[] Execute(DateTime date);
     }

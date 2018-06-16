@@ -2,6 +2,7 @@
 using Autofac;
 using Spinvoice.QuickBooks.Connection;
 using Spinvoice.QuickBooks.Invoice;
+using Spinvoice.QuickBooks.Reporting;
 using Module = Autofac.Module;
 
 namespace Spinvoice.QuickBooks
@@ -25,6 +26,7 @@ namespace Spinvoice.QuickBooks
             builder.RegisterType<ExternalInvoiceUpdater>().AsImplementedInterfaces().AsSelf().InstancePerDependency();
             builder.RegisterType<ExternalInvoiceAndBillService>().AsImplementedInterfaces().AsSelf().InstancePerDependency();
             builder.RegisterType<ExternalBillCrudService>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<InventoryValuationReportService>().AsImplementedInterfaces().SingleInstance();
         }
     }
 }

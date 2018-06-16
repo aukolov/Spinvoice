@@ -4,8 +4,9 @@ namespace Spinvoice.QuickBooks.Item
 {
     public interface IExternalItemRepository
     {
-        IExternalItem Get(string name);
+        IExternalItem GetByName(string name);
         IExternalItem AddInventory(string name);
         IExternalItem AddService(string name, string externalAccountId, Side side);
+        IExternalItem GetById(string id);
     }
 }

@@ -16,6 +16,7 @@ namespace Spinvoice.QuickBooks.Item
         private readonly ExternalConnection _externalConnection;
         private readonly ObservableCollection<IExternalItem> _externalItems;
         private Dictionary<string, IExternalItem> _externalItemsByName;
+        private Dictionary<string, IExternalItem> _externalItemsById;
 
         public ExternalItemRepository(
             IAccountsChartRepository accountsChartRepository,
@@ -25,6 +26,7 @@ namespace Spinvoice.QuickBooks.Item
             _externalConnection = externalConnection;
             _externalItems = new ObservableCollection<IExternalItem>();
             _externalItemsByName = new Dictionary<string, IExternalItem>();
+            _externalItemsById = new Dictionary<string, IExternalItem>();
             _externalConnection.Connected += TryLoad;
             TryLoad();
         }
@@ -43,12 +45,18 @@ namespace Spinvoice.QuickBooks.Item
             _externalItems.Clear();
             _externalItems.AddRange(externalItem);
             _externalItemsByName = _externalItems.ToDictionary(item => item.Name);
+            _externalItemsById = _externalItems.ToDictionary(item => item.Id);
         }
 
-        public IExternalItem Get(string name)
+        public IExternalItem GetByName(string name)
         {
-            IExternalItem item;
-            _externalItemsByName.TryGetValue(name, out item);
+            _externalItemsByName.TryGetValue(name, out var item);
+            return item;
+        }
+
+        public IExternalItem GetById(string id)
+        {
+            _externalItemsById.TryGetValue(id, out var item);
             return item;
         }
 
@@ -82,6 +90,7 @@ namespace Spinvoice.QuickBooks.Item
 
             var externalItem = new ExternalItem(addedItem);
             _externalItemsByName.Add(name, externalItem);
+            _externalItemsById.Add(externalItem.Id, externalItem);
             return externalItem;
         }
 
@@ -116,6 +125,7 @@ namespace Spinvoice.QuickBooks.Item
 
             var externalItem = new ExternalItem(addedItem);
             _externalItemsByName.Add(name, externalItem);
+            _externalItemsById.Add(externalItem.Id, externalItem);
             return externalItem;
         }
 

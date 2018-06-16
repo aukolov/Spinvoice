@@ -132,9 +132,9 @@
     <Compile Include="Item\ExternalItem.cs" />
     <Compile Include="Item\ExternalItemRepository.cs" />
     <Compile Include="Item\IExternalItemRepository.cs" />
-    <Compile Include="Reporting\IInventoryValudationReportService.cs" />
+    <Compile Include="Reporting\IInventoryValuationReportService.cs" />
     <Compile Include="Reporting\InventoryValuationItem.cs" />
-    <Compile Include="Reporting\InventoryValudationReportService.cs" />
+    <Compile Include="Reporting\InventoryValuationReportService.cs" />
     <Compile Include="ViewModels\IQuickBooksConnectViewModel.cs" />
     <Compile Include="ViewModels\QuickBooksConnectViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

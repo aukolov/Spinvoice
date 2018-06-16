@@ -19,6 +19,7 @@ using Spinvoice.QuickBooks.Account;
 using Spinvoice.QuickBooks.Domain;
 using Spinvoice.QuickBooks.Invoice;
 using Spinvoice.QuickBooks.Item;
+using Spinvoice.QuickBooks.Reporting;
 using Spinvoice.QuickBooks.Web;
 using Spinvoice.Utils;
 
@@ -33,6 +34,7 @@ namespace Spinvoice.Application.ViewModels.Invoices
         private readonly IExternalInvoiceAndBillService _externalInvoiceAndBillService;
         private readonly IExternalCompanyRepository _externalCompanyRepository;
         private readonly IExternalAccountRepository _externalAccountRepository;
+        private readonly IInventoryValuationReportService _inventoryValuationReportService;
         private readonly IWindowManager _windowManager;
         private readonly ClipboardService _clipboardService;
 
@@ -64,6 +66,7 @@ namespace Spinvoice.Application.ViewModels.Invoices
             IExternalInvoiceAndBillService externalInvoiceAndBillService,
             IExternalCompanyRepository externalCompanyRepository,
             IExternalAccountRepository externalAccountRepository,
+            IInventoryValuationReportService inventoryValuationReportService,
             IExternalConnectionWatcher externalConnectionWatcher,
             IWindowManager windowManager,
             Func<ObservableCollection<Position>, ActionSelectorViewModel, PositionListViewModel> positionListViewModelFactory)
@@ -80,12 +83,14 @@ namespace Spinvoice.Application.ViewModels.Invoices
             _externalInvoiceAndBillService = externalInvoiceAndBillService;
             _externalCompanyRepository = externalCompanyRepository;
             _externalAccountRepository = externalAccountRepository;
+            _inventoryValuationReportService = inventoryValuationReportService;
             _windowManager = windowManager;
 
             Invoice = new Invoice();
             _rawInvoice = new RawInvoice();
 
             CopyInvoiceCommand = new RelayCommand(CopyInvoice);
+            FillPositionsFromInventoryCommand = new RelayCommand(FillPositionsFromInventory);
             CopyPositionsCommand = new RelayCommand(CopyPositions);
             ClearCommand = new RelayCommand(Reset);
 
@@ -140,7 +145,8 @@ namespace Spinvoice.Application.ViewModels.Invoices
         public PositionListViewModel PositionListViewModel { get; }
         public ObservableCollection<IExternalCompany> ExternalCompanies
         {
-            get {
+            get
+            {
                 switch (Invoice.Side)
                 {
                     case Side.Vendor:
@@ -163,6 +169,7 @@ namespace Spinvoice.Application.ViewModels.Invoices
         public RelayCommand SaveToQuickBooksCommand { get; set; }
         public RelayCommand OpenInQuickBooksCommand { get; }
         public RelayCommand CreateExternalCompanyCommand { get; }
+        public RelayCommand FillPositionsFromInventoryCommand { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -366,6 +373,35 @@ namespace Spinvoice.Application.ViewModels.Invoices
             }
         }
 
+        private void FillPositionsFromInventory()
+        {
+            var invoiceDate = Invoice.Date;
+            if (invoiceDate == new DateTime())
+            {
+                MessageBox.Show("Invalid invoice date.");
+                return;
+            }
+
+            var invoiceAmount = Invoice.TotalAmount;
+            if (invoiceAmount <= 0)
+            {
+                MessageBox.Show("Invalid total amount.");
+                return;
+            }
+
+            var items = _inventoryValuationReportService.Execute(invoiceDate);
+            var amount = 0m;
+            Invoice.Positions.Clear();
+            foreach (var item in items.Where(item => item.Quantity > 0 && item.Amount > 0))
+            {
+                var position = new Position(item.Name, (int)item.Quantity, item.Amount);
+                Invoice.Positions.Add(position);
+
+                amount += item.Amount;
+                if (amount > invoiceAmount) break;
+            }
+        }
+
         private void CopyInvoice()
         {
             var text = InvoiceFormatter.GetInvoiceText(Invoice);
@@ -400,8 +436,7 @@ namespace Spinvoice.Application.ViewModels.Invoices
         private void TrainAboutCompany()
         {
             Logger.Info($"Start training company '{Invoice.CompanyName}'.");
-            Company company;
-            using (_companyRepository.GetByNameForUpdateOrCreate(Invoice.CompanyName, out company))
+            using (_companyRepository.GetByNameForUpdateOrCreate(Invoice.CompanyName, out var company))
             {
                 company.Country = Invoice.Country;
                 company.Currency = Invoice.Currency;
@@ -475,9 +510,9 @@ namespace Spinvoice.Application.ViewModels.Invoices
 
         private IExternalItem GetOrCreateExternalItem(Position position)
         {
-            if (_externalItemRepository.Get(position.Name) != null)
+            if (_externalItemRepository.GetByName(position.Name) != null)
             {
-                return _externalItemRepository.Get(position.Name);
+                return _externalItemRepository.GetByName(position.Name);
             }
 
             switch (position.PositionType)
