@@ -389,15 +389,23 @@ namespace Spinvoice.Application.ViewModels.Invoices
                 return;
             }
 
+            var exchangeRate = Invoice.ExchangeRate;
+            if (exchangeRate == 0)
+            {
+                MessageBox.Show("Invalid exchange rate.");
+                return;
+            }
+
             var items = _inventoryValuationReportService.Execute(invoiceDate);
             var amount = 0m;
             Invoice.Positions.Clear();
             foreach (var item in items.Where(item => item.Quantity > 0 && item.Amount > 0))
             {
-                var position = new Position(item.Name, (int)item.Quantity, item.Amount);
+                var positionAmount = (item.Amount / exchangeRate) * 1.01m;
+                var position = new Position(item.Name, (int)item.Quantity, positionAmount);
                 Invoice.Positions.Add(position);
 
-                amount += item.Amount;
+                amount += positionAmount;
                 if (amount > invoiceAmount) break;
             }
         }
