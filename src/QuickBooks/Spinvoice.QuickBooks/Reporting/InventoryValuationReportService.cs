@@ -20,7 +20,7 @@ namespace Spinvoice.QuickBooks.Reporting
         {
             var report = _externalConnection.GetInventoryValuation(date);
             var items = report.Rows.Select(row => row.AnyIntuitObjects[0])
-                .Cast<ColData[]>()
+                .OfType<ColData[]>()
                 .Where(x => x[0].id != null)
                 .Select(x => new InventoryValuationItem(
                     x[0].id,
