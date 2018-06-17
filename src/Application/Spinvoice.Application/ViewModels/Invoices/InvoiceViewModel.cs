@@ -401,7 +401,7 @@ namespace Spinvoice.Application.ViewModels.Invoices
             Invoice.Positions.Clear();
             foreach (var item in items.Where(item => item.Quantity > 0 && item.Amount > 0))
             {
-                var positionAmount = (item.Amount / exchangeRate) * 1.01m;
+                var positionAmount =  Math.Round(item.Amount / exchangeRate * 1.01m, 2);
                 var position = new Position(item.Name, (int)item.Quantity, positionAmount);
                 Invoice.Positions.Add(position);
 
