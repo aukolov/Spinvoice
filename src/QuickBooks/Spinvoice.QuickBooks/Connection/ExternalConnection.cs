@@ -147,7 +147,8 @@ namespace Spinvoice.QuickBooks.Connection
             var reportService = new ReportService(_serviceContext)
             {
                 start_date = stringDate,
-                end_date = stringDate
+                end_date = stringDate,
+                report_date = stringDate
             };
             return reportService.ExecuteReport("InventoryValuationSummary");
         }
