@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Spinvoice.Domain.InvoiceProcessing;
+using Spinvoice.Domain.Invoices;
 
 namespace Spinvoice.Domain
 {
@@ -9,6 +10,7 @@ namespace Spinvoice.Domain
         {
             builder.RegisterType<AnalyzeInvoiceService>().AsImplementedInterfaces().InstancePerDependency().AsSelf();
             builder.RegisterType<TrainStrategyService>().AsImplementedInterfaces().InstancePerDependency().AsSelf();
+            builder.RegisterType<PositionAutoFill>().AsImplementedInterfaces().SingleInstance();
         }
     }
 }

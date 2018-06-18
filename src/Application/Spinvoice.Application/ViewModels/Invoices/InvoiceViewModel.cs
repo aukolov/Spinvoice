@@ -15,6 +15,7 @@ using Spinvoice.Domain.Accounting;
 using Spinvoice.Domain.Company;
 using Spinvoice.Domain.Exchange;
 using Spinvoice.Domain.InvoiceProcessing;
+using Spinvoice.Domain.Invoices;
 using Spinvoice.QuickBooks.Account;
 using Spinvoice.QuickBooks.Domain;
 using Spinvoice.QuickBooks.Invoice;
@@ -35,6 +36,7 @@ namespace Spinvoice.Application.ViewModels.Invoices
         private readonly IExternalCompanyRepository _externalCompanyRepository;
         private readonly IExternalAccountRepository _externalAccountRepository;
         private readonly IInventoryValuationReportService _inventoryValuationReportService;
+        private readonly IPositionAutoFill _positionAutoFill;
         private readonly IWindowManager _windowManager;
         private readonly ClipboardService _clipboardService;
 
@@ -68,6 +70,7 @@ namespace Spinvoice.Application.ViewModels.Invoices
             IExternalAccountRepository externalAccountRepository,
             IInventoryValuationReportService inventoryValuationReportService,
             IExternalConnectionWatcher externalConnectionWatcher,
+            IPositionAutoFill positionAutoFill,
             IWindowManager windowManager,
             Func<ObservableCollection<Position>, ActionSelectorViewModel, PositionListViewModel> positionListViewModelFactory)
         {
@@ -84,6 +87,7 @@ namespace Spinvoice.Application.ViewModels.Invoices
             _externalCompanyRepository = externalCompanyRepository;
             _externalAccountRepository = externalAccountRepository;
             _inventoryValuationReportService = inventoryValuationReportService;
+            _positionAutoFill = positionAutoFill;
             _windowManager = windowManager;
 
             Invoice = new Invoice();
@@ -397,17 +401,14 @@ namespace Spinvoice.Application.ViewModels.Invoices
             }
 
             var items = _inventoryValuationReportService.Execute(invoiceDate);
-            var amount = 0m;
+            var random = new Random((int)DateTime.Now.TimeOfDay.TotalSeconds);
+            var positions = _positionAutoFill.FillPositions(
+                items.OrderBy(x => random.Next()), 
+                invoiceAmount, 
+                exchangeRate, 
+                0.01m);
             Invoice.Positions.Clear();
-            foreach (var item in items.Where(item => item.Quantity > 0 && item.Amount > 0))
-            {
-                var positionAmount =  Math.Round(item.Amount / exchangeRate * 1.01m, 2);
-                var position = new Position(item.Name, (int)item.Quantity, positionAmount);
-                Invoice.Positions.Add(position);
-
-                amount += positionAmount;
-                if (amount > invoiceAmount) break;
-            }
+            Invoice.Positions.AddRange(positions.OrderBy(x => x.Name));
         }
 
         private void CopyInvoice()

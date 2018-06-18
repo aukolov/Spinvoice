@@ -94,6 +94,8 @@
     <Compile Include="InvoiceProcessing\Strategies\InsideTokensStrategy.cs" />
     <Compile Include="InvoiceProcessing\Strategies\IStringPdfAnalysisStrategy.cs" />
     <Compile Include="InvoiceProcessing\Strategies\NextTokenStrategy.cs" />
+    <Compile Include="Invoices\IPositionAutoFill.cs" />
+    <Compile Include="Invoices\PositionAutoFill.cs" />
     <Compile Include="Properties\Annotations1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Accounting\RawInvoice.cs" />
