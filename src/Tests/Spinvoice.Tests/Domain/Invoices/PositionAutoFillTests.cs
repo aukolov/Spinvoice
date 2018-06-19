@@ -95,12 +95,12 @@ namespace Spinvoice.Tests.Domain.Invoices
         [Test]
         public void FillsPartiallyFromFirstItemAndAddsDelta()
         {
-            var positions = FillPositions(1670,
+            var positions = FillPositions(1630,
                 Createitem("test1", 10, 1000),
                 Createitem("test2", 1, 1200));
 
             positions.Should().HaveCount(2);
-            AssertPosition(positions[0], 4, 470);
+            AssertPosition(positions[0], 4, 430);
             AssertPosition(positions[1], 1, 1200);
         }
 

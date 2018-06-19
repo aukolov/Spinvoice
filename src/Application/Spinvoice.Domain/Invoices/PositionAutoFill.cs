@@ -46,6 +46,7 @@ namespace Spinvoice.Domain.Invoices
                     var newQuantity = x.Quantity - deltaQuantity;
                     return new
                     {
+                        ItemPrice = itemPrice,
                         Position = x,
                         NewQuatity = newQuantity,
                         DeltaAdjustment = deltaAmount - newQuantity * itemPrice
@@ -54,8 +55,14 @@ namespace Spinvoice.Domain.Invoices
                 .MinByOrDefault(x => x.DeltaAdjustment);
 
             if (adjustable == null) return;
+            if (totalAmount - positions.Sum(
+                    x => x != adjustable.Position 
+                        ? x.Amount 
+                        : adjustable.ItemPrice * adjustable.NewQuatity) 
+                > totalAmount * 0.02m) return;
+
             adjustable.Position.Quantity = adjustable.NewQuatity;
             adjustable.Position.Amount -= deltaAmount;
         }
-    }
+    }   
 }
