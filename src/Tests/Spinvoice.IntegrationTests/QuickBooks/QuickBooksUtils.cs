@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using Intuit.Ipp.Core;
 using Spinvoice.QuickBooks.Connection;
 using Spinvoice.QuickBooks.Domain;
 
@@ -104,8 +103,7 @@ namespace Spinvoice.IntegrationTests.QuickBooks
 
         private static bool CheckProfile(OAuthProfile authProfile)
         {
-            ServiceContext serviceContext;
-            return ExternalAuthService.TryConnect(out serviceContext, authProfile, AuthParams);
+            return ExternalAuthService.TryConnect(out _, authProfile, AuthParams);
         }
 
         private static void StoreProfile(OAuthProfile authProfile)

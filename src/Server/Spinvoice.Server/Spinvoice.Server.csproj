@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Spinvoice.Server</RootNamespace>
     <AssemblyName>Spinvoice.Server</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -179,6 +179,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\Spinvoice.Common.Infrastructure\Spinvoice.Common.Infrastructure.csproj">
+      <Project>{54fea3d8-46e3-441d-9375-bd409fdcbef1}</Project>
+      <Name>Spinvoice.Common.Infrastructure</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Server.Infrastructure.Pdf.Text7\Spinvoice.Server.Infrastructure.Pdf.Text7.csproj">
       <Project>{f6d97662-8afa-49e7-ae05-70e20623641e}</Project>
       <Name>Spinvoice.Server.Infrastructure.Pdf.Text7</Name>
@@ -186,10 +190,6 @@
     <ProjectReference Include="..\..\Common\Spinvoice.Common.Domain\Spinvoice.Common.Domain.csproj">
       <Project>{6498b4d4-8d2a-4d47-af0b-c8345d518531}</Project>
       <Name>Spinvoice.Common.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Common\Spinvoice.Common.Infrastructure\Spinvoice.Common.Infrastructure.csproj">
-      <Project>{54fea3d8-46e3-441d-9375-bd409fdcbef1}</Project>
-      <Name>Spinvoice.Common.Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\Spinvoice.Infrastructure.Pdf\Spinvoice.Infrastructure.Pdf.csproj">
       <Project>{ee6686ca-55a6-4da8-a707-3b6c230aec58}</Project>

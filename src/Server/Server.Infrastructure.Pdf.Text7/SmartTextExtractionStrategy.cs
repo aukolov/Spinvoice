@@ -85,6 +85,5 @@ namespace Spinvoice.Server.Infrastructure.Pdf.Text7
                 EventType.RENDER_TEXT
             };
         }
-
     }
 }
