@@ -92,8 +92,8 @@ namespace Spinvoice.QuickBooks.ViewModels
             return new OAuthSession(
                 new OAuthConsumerContext
                 {
-                    ConsumerKey = _oauthRepository.Params.ConsumerKey,
-                    ConsumerSecret = _oauthRepository.Params.ConsumerSecret,
+                    ConsumerKey = _oauthRepository.Params.ClientId,
+                    ConsumerSecret = _oauthRepository.Params.ClientSecret,
                     SignatureMethod = SignatureMethod.HmacSha1
                 },
                 _oauthRepository.Params.RequestTokenUrl,

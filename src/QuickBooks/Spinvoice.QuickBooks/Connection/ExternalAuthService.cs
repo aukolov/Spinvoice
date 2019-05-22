@@ -21,8 +21,8 @@ namespace Spinvoice.QuickBooks.Connection
             var oauthRequestValidator = new OAuthRequestValidator(
                 oauthRepositoryProfile.AccessToken,
                 oauthRepositoryProfile.AccessSecret,
-                oauthRepositoryParams.ConsumerKey,
-                oauthRepositoryParams.ConsumerSecret);
+                oauthRepositoryParams.ClientId,
+                oauthRepositoryParams.ClientSecret);
             serviceContext = new ServiceContext(
                 oauthRepositoryProfile.RealmId,
                 IntuitServicesType.QBO,
