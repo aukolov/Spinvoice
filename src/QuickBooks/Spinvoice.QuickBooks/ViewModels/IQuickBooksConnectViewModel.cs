@@ -6,6 +6,6 @@ namespace Spinvoice.QuickBooks.ViewModels
     public interface IQuickBooksConnectViewModel : INotifyPropertyChanged
     {
         string Url { get; set; }
-        void OnNavigated(Uri uri);
+        void OnNavigating(Uri uri, out bool cancel);
     }
 }

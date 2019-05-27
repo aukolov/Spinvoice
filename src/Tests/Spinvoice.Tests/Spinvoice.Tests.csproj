@@ -80,6 +80,7 @@
     <Compile Include="Domain\Utils\TextDecoderTests.cs" />
     <Compile Include="Infrastructure\DataAccess\CompanyDataAccessTests.cs" />
     <Compile Include="Infrastructure\DataAccess\ExchangeRateDataAccessTests.cs" />
+    <Compile Include="Infrastructure\DataAccess\OAuthProfileDataAccessTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

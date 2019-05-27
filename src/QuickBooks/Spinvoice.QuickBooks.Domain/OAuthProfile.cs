@@ -6,36 +6,33 @@ namespace Spinvoice.QuickBooks.Domain
     public class OAuthProfile : IOAuthProfile
     {
         public string AccessToken { get; set; }
-        public string AccessSecret { get; set; }
+        public string RefreshToken { get; set; }
+        public string IdentityToken { get; set; }
         public string RealmId { get; set; }
-        public string DataSource { get; set; }
         public DateTime ExpirationDateTime { get; set; }
 
         public event Action Updated;
 
         public bool IsReady => !string.IsNullOrEmpty(AccessToken)
-                               && !string.IsNullOrEmpty(AccessSecret)
+                               && !string.IsNullOrEmpty(RefreshToken)
                                && !string.IsNullOrEmpty(RealmId)
-                               && !string.IsNullOrEmpty(DataSource)
                                && DateTime.Now < ExpirationDateTime.AddDays(-7);
 
-        public void UpdateRealm(
-            string realmId,
-            string dataSource)
+        public void UpdateRealm(string realmId)
         {
             RealmId = realmId;
-            DataSource = dataSource;
-
             Updated.Raise();
         }
 
         public void UpdateAccess(
             string accessToken,
-            string accessSecret,
+            string refreshToken,
+            string identityToken,
             DateTime expirationDateTime)
         {
             AccessToken = accessToken;
-            AccessSecret = accessSecret;
+            RefreshToken = refreshToken;
+            IdentityToken = identityToken;
             ExpirationDateTime = expirationDateTime;
 
             Updated.Raise();

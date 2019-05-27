@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using Spinvoice.QuickBooks.Connection;
@@ -29,9 +28,9 @@ namespace QuickBooksAuth
         {
             var profile = _dataAccess.GetAll().Single();
             Console.WriteLine(profile.AccessToken);
-            Console.WriteLine(profile.AccessSecret);
+            Console.WriteLine(profile.RefreshToken);
+            Console.WriteLine(profile.IdentityToken);
             Console.WriteLine(profile.RealmId);
-            Console.WriteLine(profile.DataSource);
         }
     }
 

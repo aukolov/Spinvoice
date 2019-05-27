@@ -1,9 +1,14 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Security.Policy;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using DevDefined.OAuth.Consumer;
 using DevDefined.OAuth.Framework;
+using Intuit.Ipp.OAuth2PlatformClient;
 using Spinvoice.Common.Presentation;
 using Spinvoice.Domain.Annotations;
 using Spinvoice.QuickBooks.Domain;
@@ -12,15 +17,14 @@ namespace Spinvoice.QuickBooks.ViewModels
 {
     public class QuickBooksConnectViewModel : IQuickBooksConnectViewModel
     {
-        private const string DummyProtocol = "https://";
-        private const string DummyHost = "www.spinvoice-dummy-host.com";
+        private const string RedirectUrl = "https://developer.intuit.com/v2/OAuth2Playground/RedirectUrl";
         private readonly IOAuthRepository _oauthRepository;
         private readonly IWindowManager _windowManager;
         private bool _caughtCallback;
-        private string _oauthVerifier = "";
 
-        private IToken _requestToken;
         private string _url;
+        private readonly OAuth2Client _oAuth2Client;
+        private string _code;
 
         public QuickBooksConnectViewModel(
             IOAuthRepository oauthRepository,
@@ -29,7 +33,14 @@ namespace Spinvoice.QuickBooks.ViewModels
             _oauthRepository = oauthRepository;
             _windowManager = windowManager;
 
-            StartOAuthHandshake();
+            _oAuth2Client = new OAuth2Client(
+                _oauthRepository.Params.ClientId,
+                _oauthRepository.Params.ClientSecret,
+                RedirectUrl,
+                "sandbox");
+            var scopes = new List<OidcScopes> { OidcScopes.Accounting };
+            var authorizeUrl = _oAuth2Client.GetAuthorizationURL(scopes);
+            Url = authorizeUrl;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -45,46 +56,45 @@ namespace Spinvoice.QuickBooks.ViewModels
             }
         }
 
-        private void StartOAuthHandshake()
+        public void OnNavigating(Uri uri, out bool cancel)
         {
-            var oauthSession = CreateOAuthSession();
-            _requestToken = oauthSession.GetRequestToken();
-
-            Url = _oauthRepository.Params.UserAuthUrl
-                  + "?oauth_token=" + _requestToken.Token
-                  + "&oauth_callback=" + UriUtility.UrlEncode(DummyProtocol + DummyHost);
-        }
-
-        public void OnNavigated(Uri uri)
-        {
-            if (uri.Host == DummyHost)
+            if (uri.AbsoluteUri.StartsWith(RedirectUrl))
             {
                 var query = HttpUtility.ParseQueryString(uri.Query);
-                _oauthVerifier = query["oauth_verifier"];
-                _oauthRepository.Profile.UpdateRealm(
-                    query["realmId"],
-                    query["dataSource"]);
+                _oauthRepository.Profile.UpdateRealm(query["realmId"]);
+                _code = query["code"];
                 _caughtCallback = true;
                 Url = "about:blank";
-            }
-            else if (_caughtCallback)
-            {
-                var accessToken = ExchangeRequestTokenForAccessToken(_requestToken);
-                using (_oauthRepository.GetProfileForUpdate(out var profile))
-                {
-                    profile.UpdateAccess(
-                        accessToken.Token,
-                        accessToken.TokenSecret,
-                        DateTime.Now.AddMonths(6));
-                }
+
+                var accessTokenTask = ExchangeRequestTokenForAccessToken();
+                accessTokenTask.ContinueWith(
+                    x =>
+                    {
+                        using (_oauthRepository.GetProfileForUpdate(out var profile))
+                        {
+                            profile.UpdateAccess(
+                                x.Result.AccessToken,
+                                x.Result.RefreshToken,
+                                x.Result.IdentityToken,
+                                DateTime.Now.AddMonths(6));
+                        }
+                    },
+                    CancellationToken.None,
+                    TaskContinuationOptions.OnlyOnRanToCompletion,
+                    TaskScheduler.FromCurrentSynchronizationContext());
+
                 _windowManager.Close(this);
+                cancel = true;
+                return;
             }
+
+            cancel = false;
         }
 
-        private IToken ExchangeRequestTokenForAccessToken(IToken requestToken)
+        private async Task<TokenResponse> ExchangeRequestTokenForAccessToken()
         {
-            var oauthSession = CreateOAuthSession();
-            return oauthSession.ExchangeRequestTokenForAccessToken(requestToken, _oauthVerifier);
+            var token = await _oAuth2Client.GetBearerTokenAsync(_code);
+            return token;
         }
 
         private IOAuthSession CreateOAuthSession()

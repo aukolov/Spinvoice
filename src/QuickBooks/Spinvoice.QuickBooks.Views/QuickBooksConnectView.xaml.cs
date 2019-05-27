@@ -10,10 +10,12 @@ namespace Spinvoice.QuickBooks.Views
             InitializeComponent();
         }
 
-        private void WebBrowser_OnNavigated(object sender, NavigationEventArgs e)
+        private void WebBrowser_OnNavigating(object sender, NavigatingCancelEventArgs e)
         {
-            var viewModel = DataContext as QuickBooksConnectViewModel;
-            viewModel?.OnNavigated(e.Uri);
+            if (!(DataContext is QuickBooksConnectViewModel viewModel)) return;
+
+            viewModel.OnNavigating(e.Uri, out var cancel);
+            e.Cancel = cancel;
         }
     }
 }

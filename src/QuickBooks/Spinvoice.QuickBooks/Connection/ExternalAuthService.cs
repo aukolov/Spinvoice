@@ -11,18 +11,17 @@ namespace Spinvoice.QuickBooks.Connection
     {
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public bool TryConnect(out ServiceContext serviceContext, IOAuthProfile oauthRepositoryProfile, IOAuthParams oauthRepositoryParams)
+        public bool TryConnect(
+            out ServiceContext serviceContext,
+            IOAuthProfile oauthRepositoryProfile,
+            IOAuthParams oauthRepositoryParams)
         {
             if (!oauthRepositoryProfile.IsReady)
             {
                 serviceContext = null;
                 return false;
             }
-            var oauthRequestValidator = new OAuthRequestValidator(
-                oauthRepositoryProfile.AccessToken,
-                oauthRepositoryProfile.AccessSecret,
-                oauthRepositoryParams.ClientId,
-                oauthRepositoryParams.ClientSecret);
+            var oauthRequestValidator = new OAuth2RequestValidator(oauthRepositoryProfile.AccessToken);
             serviceContext = new ServiceContext(
                 oauthRepositoryProfile.RealmId,
                 IntuitServicesType.QBO,

@@ -9,5 +9,5 @@
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">
-    <WebBrowser presentation:WebBrowserUtility.BindableSource="{Binding Url, Mode=TwoWay}" Navigated="WebBrowser_OnNavigated" />
+    <WebBrowser presentation:WebBrowserUtility.BindableSource="{Binding Url, Mode=TwoWay}" Navigating="WebBrowser_OnNavigating" />
 </UserControl>
