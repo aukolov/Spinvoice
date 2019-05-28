@@ -5,6 +5,6 @@ namespace Spinvoice.QuickBooks.Connection
 {
     public interface IExternalAuthService
     {
-        bool TryConnect(out ServiceContext serviceContext, IOAuthProfile oauthRepositoryProfile, IOAuthParams oauthRepositoryParams);
+        bool TryConnect(out ServiceContext serviceContext, IOAuthProfile authProfile, IOAuthParams oauthParams);
     }
 }

@@ -34,28 +34,25 @@ namespace Spinvoice.IntegrationTests.QuickBooks
             return null;
         }
 
-        private static OAuthProfile RestoreProfile()
+        private static AuthProfile RestoreProfile()
         {
             var accessToken = Environment.GetEnvironmentVariable("QBU_ACCESS_TOKEN", EnvironmentVariableTarget.User);
             var refreshToken = Environment.GetEnvironmentVariable("QBU_REFRESH_TOKEN", EnvironmentVariableTarget.User);
-            var identityToken = Environment.GetEnvironmentVariable("QBU_IDENTITY_TOKEN", EnvironmentVariableTarget.User);
             var realmId = Environment.GetEnvironmentVariable("QBU_REALM_ID", EnvironmentVariableTarget.User);
             var dataSource = Environment.GetEnvironmentVariable("QBU_DATA_SOURCE", EnvironmentVariableTarget.User);
 
             if (accessToken == null
                 || refreshToken == null
-                || identityToken == null
                 || realmId == null
                 || dataSource == null)
             {
                 return null;
             }
 
-            var authProfile = new OAuthProfile
+            var authProfile = new AuthProfile
             {
                 AccessToken = accessToken,
                 RefreshToken = refreshToken,
-                IdentityToken = identityToken,
                 RealmId = realmId,
                 ExpirationDateTime = DateTime.Now.AddMonths(1)
             };
@@ -67,7 +64,7 @@ namespace Spinvoice.IntegrationTests.QuickBooks
         }
 
 
-        private static OAuthProfile AuthenticateWithApp()
+        private static AuthProfile AuthenticateWithApp()
         {
             var path = Path.Combine(
                 Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
@@ -88,7 +85,7 @@ namespace Spinvoice.IntegrationTests.QuickBooks
             var identityToken = process.StandardOutput.ReadLine();
             var realmId = process.StandardOutput.ReadLine();
 
-            var authProfile = new OAuthProfile
+            var authProfile = new AuthProfile
             {
                 AccessToken = accessToken,
                 RefreshToken = refreshToken,
@@ -103,12 +100,12 @@ namespace Spinvoice.IntegrationTests.QuickBooks
             return authProfile;
         }
 
-        private static bool CheckProfile(OAuthProfile authProfile)
+        private static bool CheckProfile(AuthProfile authProfile)
         {
             return ExternalAuthService.TryConnect(out _, authProfile, AuthParams);
         }
 
-        private static void StoreProfile(OAuthProfile authProfile)
+        private static void StoreProfile(AuthProfile authProfile)
         {
             Environment.SetEnvironmentVariable("QBU_ACCESS_TOKEN", authProfile.AccessToken, EnvironmentVariableTarget.User);
             Environment.SetEnvironmentVariable("QBU_REFRESH_TOKEN", authProfile.RefreshToken, EnvironmentVariableTarget.User);

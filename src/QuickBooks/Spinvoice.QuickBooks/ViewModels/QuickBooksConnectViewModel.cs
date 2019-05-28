@@ -2,12 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Security.Policy;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
-using DevDefined.OAuth.Consumer;
-using DevDefined.OAuth.Framework;
 using Intuit.Ipp.OAuth2PlatformClient;
 using Spinvoice.Common.Presentation;
 using Spinvoice.Domain.Annotations;
@@ -20,7 +17,6 @@ namespace Spinvoice.QuickBooks.ViewModels
         private const string RedirectUrl = "https://developer.intuit.com/v2/OAuth2Playground/RedirectUrl";
         private readonly IOAuthRepository _oauthRepository;
         private readonly IWindowManager _windowManager;
-        private bool _caughtCallback;
 
         private string _url;
         private readonly OAuth2Client _oAuth2Client;
@@ -58,57 +54,43 @@ namespace Spinvoice.QuickBooks.ViewModels
 
         public void OnNavigating(Uri uri, out bool cancel)
         {
-            if (uri.AbsoluteUri.StartsWith(RedirectUrl))
+            if (!uri.AbsoluteUri.StartsWith(RedirectUrl))
             {
-                var query = HttpUtility.ParseQueryString(uri.Query);
-                _oauthRepository.Profile.UpdateRealm(query["realmId"]);
-                _code = query["code"];
-                _caughtCallback = true;
-                Url = "about:blank";
-
-                var accessTokenTask = ExchangeRequestTokenForAccessToken();
-                accessTokenTask.ContinueWith(
-                    x =>
-                    {
-                        using (_oauthRepository.GetProfileForUpdate(out var profile))
-                        {
-                            profile.UpdateAccess(
-                                x.Result.AccessToken,
-                                x.Result.RefreshToken,
-                                x.Result.IdentityToken,
-                                DateTime.Now.AddMonths(6));
-                        }
-                    },
-                    CancellationToken.None,
-                    TaskContinuationOptions.OnlyOnRanToCompletion,
-                    TaskScheduler.FromCurrentSynchronizationContext());
-
-                _windowManager.Close(this);
-                cancel = true;
+                cancel = false;
                 return;
             }
 
-            cancel = false;
+            var query = HttpUtility.ParseQueryString(uri.Query);
+            _oauthRepository.Profile.UpdateRealm(query["realmId"]);
+            _code = query["code"];
+            Url = "about:blank";
+
+            var accessTokenTask = ExchangeRequestTokenForAccessToken();
+            accessTokenTask.ContinueWith(
+                x =>
+                {
+                    using (_oauthRepository.GetProfileForUpdate(out var profile))
+                    {
+                        profile.UpdateAccess(
+                            x.Result.AccessToken,
+                            x.Result.RefreshToken,
+                            x.Result.IdentityToken,
+                            DateTime.Now.AddMonths(6));
+                    }
+
+                    _windowManager.Close(this);
+                },
+                CancellationToken.None,
+                TaskContinuationOptions.OnlyOnRanToCompletion,
+                TaskScheduler.FromCurrentSynchronizationContext());
+
+            cancel = true;
         }
 
         private async Task<TokenResponse> ExchangeRequestTokenForAccessToken()
         {
             var token = await _oAuth2Client.GetBearerTokenAsync(_code);
             return token;
-        }
-
-        private IOAuthSession CreateOAuthSession()
-        {
-            return new OAuthSession(
-                new OAuthConsumerContext
-                {
-                    ConsumerKey = _oauthRepository.Params.ClientId,
-                    ConsumerSecret = _oauthRepository.Params.ClientSecret,
-                    SignatureMethod = SignatureMethod.HmacSha1
-                },
-                _oauthRepository.Params.RequestTokenUrl,
-                _oauthRepository.Params.UserAuthUrl,
-                _oauthRepository.Params.AccessTokenUrl);
         }
 
         [NotifyPropertyChangedInvocator]

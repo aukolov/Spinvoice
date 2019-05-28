@@ -9,7 +9,7 @@ namespace QuickBooksTool
         {
             builder.RegisterType<MainViewModel>().AsImplementedInterfaces();
             builder.RegisterType<WindowFactoryProvider>().AsImplementedInterfaces().SingleInstance();
-            builder.RegisterType<OAuthProfileDataAccess>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<AuthProfileDataAccess>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<AccountsChartRepository>().AsImplementedInterfaces().SingleInstance();
         }
     }

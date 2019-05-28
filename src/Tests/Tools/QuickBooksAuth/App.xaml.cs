@@ -9,11 +9,11 @@ namespace QuickBooksAuth
 {
     public partial class App
     {
-        private TestOAuthProfileDataAccess _dataAccess;
+        private TestAuthProfileDataAccess _dataAccess;
 
         private void App_OnStartup(object sender, StartupEventArgs e)
         {
-            _dataAccess = new TestOAuthProfileDataAccess();
+            _dataAccess = new TestAuthProfileDataAccess();
             var window = new QuickBooksConnectWindow
             {
                 ShowInTaskbar = true,

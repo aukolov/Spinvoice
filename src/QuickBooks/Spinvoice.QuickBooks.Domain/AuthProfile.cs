@@ -3,7 +3,7 @@ using Spinvoice.Utils;
 
 namespace Spinvoice.QuickBooks.Domain
 {
-    public class OAuthProfile : IOAuthProfile
+    public class AuthProfile : IOAuthProfile
     {
         public string AccessToken { get; set; }
         public string RefreshToken { get; set; }

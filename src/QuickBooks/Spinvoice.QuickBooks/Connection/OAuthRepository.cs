@@ -7,10 +7,10 @@ namespace Spinvoice.QuickBooks.Connection
 {
     public class OAuthRepository : IOAuthRepository
     {
-        private readonly IOAuthProfileDataAccess _oauthProfileDataAccess;
-        private readonly OAuthProfile _profile;
+        private readonly IAuthProfileDataAccess _oauthProfileDataAccess;
+        private readonly AuthProfile _profile;
 
-        public OAuthRepository(IOAuthProfileDataAccess oauthProfileDataAccess)
+        public OAuthRepository(IAuthProfileDataAccess oauthProfileDataAccess)
         {
             _oauthProfileDataAccess = oauthProfileDataAccess;
             var profiles = _oauthProfileDataAccess.GetAll();
@@ -19,7 +19,7 @@ namespace Spinvoice.QuickBooks.Connection
                 _oauthProfileDataAccess.DeleteAll();
                 profiles = _oauthProfileDataAccess.GetAll();
             }
-            _profile = profiles.SingleOrDefault() ?? new OAuthProfile();
+            _profile = profiles.SingleOrDefault() ?? new AuthProfile();
             Params = new OAuthParams();
         }
 

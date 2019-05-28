@@ -44,9 +44,9 @@
     <Compile Include="IInventoryValuationItem.cs" />
     <Compile Include="IOAuthParams.cs" />
     <Compile Include="IOAuthProfile.cs" />
-    <Compile Include="IOAuthProfileDataAccess.cs" />
+    <Compile Include="IAuthProfileDataAccess.cs" />
     <Compile Include="IOAuthRepository.cs" />
-    <Compile Include="OAuthProfile.cs" />
+    <Compile Include="AuthProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Side.cs" />
   </ItemGroup>

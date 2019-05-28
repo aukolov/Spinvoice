@@ -76,7 +76,7 @@
     <Compile Include="ExchangeRatesRepository.cs" />
     <Compile Include="IDataDirectoryProvider.cs" />
     <Compile Include="IDocumentStoreContainer.cs" />
-    <Compile Include="OAuthProfileDataAccess.cs" />
+    <Compile Include="AuthProfileDataAccess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

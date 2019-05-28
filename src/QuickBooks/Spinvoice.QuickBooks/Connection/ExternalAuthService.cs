@@ -13,19 +13,21 @@ namespace Spinvoice.QuickBooks.Connection
 
         public bool TryConnect(
             out ServiceContext serviceContext,
-            IOAuthProfile oauthRepositoryProfile,
-            IOAuthParams oauthRepositoryParams)
+            IOAuthProfile authProfile,
+            IOAuthParams oauthParams)
         {
-            if (!oauthRepositoryProfile.IsReady)
+            if (!authProfile.IsReady)
             {
                 serviceContext = null;
                 return false;
             }
-            var oauthRequestValidator = new OAuth2RequestValidator(oauthRepositoryProfile.AccessToken);
+            var oauthRequestValidator = new OAuth2RequestValidator(authProfile.AccessToken);
             serviceContext = new ServiceContext(
-                oauthRepositoryProfile.RealmId,
+                authProfile.RealmId,
                 IntuitServicesType.QBO,
                 oauthRequestValidator);
+            serviceContext.IppConfiguration.MinorVersion.Qbo = "23";
+
             var dataService = new DataService(serviceContext);
 
             try

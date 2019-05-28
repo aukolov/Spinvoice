@@ -174,7 +174,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DataAccess\AccountsChartRepository.cs" />
-    <Compile Include="DataAccess\OAuthProfileDataAccess.cs" />
+    <Compile Include="DataAccess\AuthProfileDataAccess.cs" />
     <Compile Include="InvoiceViewModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="WindowFactoryProvider.cs" />
