@@ -80,14 +80,12 @@ namespace Spinvoice.IntegrationTests.QuickBooks
             process.Start();
             var accessToken = process.StandardOutput.ReadLine();
             var refreshToken = process.StandardOutput.ReadLine();
-            var identityToken = process.StandardOutput.ReadLine();
             var realmId = process.StandardOutput.ReadLine();
 
             var authProfile = new AuthProfile
             {
                 AccessToken = accessToken,
                 RefreshToken = refreshToken,
-                IdentityToken = identityToken,
                 RealmId = realmId,
                 ExpirationDateTime = DateTime.Now.AddMonths(1)
             };

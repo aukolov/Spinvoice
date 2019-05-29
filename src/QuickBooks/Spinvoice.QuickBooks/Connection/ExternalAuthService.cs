@@ -26,8 +26,8 @@ namespace Spinvoice.QuickBooks.Connection
                 authProfile.RealmId,
                 IntuitServicesType.QBO,
                 oauthRequestValidator);
-            serviceContext.IppConfiguration.BaseUrl.Qbo = "https://sandbox-quickbooks.api.intuit.com/";
-            serviceContext.IppConfiguration.MinorVersion.Qbo = "12";
+            serviceContext.IppConfiguration.BaseUrl.Qbo = oauthParams.BaseUrl;
+            serviceContext.IppConfiguration.MinorVersion.Qbo = "28";
 
             var dataService = new DataService(serviceContext);
 

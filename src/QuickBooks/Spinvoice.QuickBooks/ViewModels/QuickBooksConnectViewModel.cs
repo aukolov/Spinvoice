@@ -73,7 +73,6 @@ namespace Spinvoice.QuickBooks.ViewModels
                         profile.UpdateAccess(
                             x.Result.AccessToken,
                             x.Result.RefreshToken,
-                            x.Result.IdentityToken,
                             DateTime.Now.AddMonths(6));
                     }
 

@@ -29,7 +29,6 @@ namespace QuickBooksAuth
             var profile = _dataAccess.GetAll().Single();
             Console.WriteLine(profile.AccessToken);
             Console.WriteLine(profile.RefreshToken);
-            Console.WriteLine(profile.IdentityToken);
             Console.WriteLine(profile.RealmId);
         }
     }

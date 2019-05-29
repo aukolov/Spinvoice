@@ -29,7 +29,7 @@ namespace Spinvoice.QuickBooks.Connection
         public IDisposable GetProfileForUpdate(out IOAuthProfile profile)
         {
             profile = _profile;
-            return new RelayDisposable(() => _oauthProfileDataAccess.AddOrUpdate(_profile));
+            return new RelayDisposable(() => {});
         }
     }
 }

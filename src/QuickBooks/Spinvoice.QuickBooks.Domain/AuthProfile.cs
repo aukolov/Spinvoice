@@ -5,9 +5,9 @@ namespace Spinvoice.QuickBooks.Domain
 {
     public class AuthProfile : IOAuthProfile
     {
+        public string Id { get; set; }
         public string AccessToken { get; set; }
         public string RefreshToken { get; set; }
-        public string IdentityToken { get; set; }
         public string RealmId { get; set; }
         public DateTime ExpirationDateTime { get; set; }
 
@@ -27,12 +27,10 @@ namespace Spinvoice.QuickBooks.Domain
         public void UpdateAccess(
             string accessToken,
             string refreshToken,
-            string identityToken,
             DateTime expirationDateTime)
         {
             AccessToken = accessToken;
             RefreshToken = refreshToken;
-            IdentityToken = identityToken;
             ExpirationDateTime = expirationDateTime;
 
             Updated.Raise();

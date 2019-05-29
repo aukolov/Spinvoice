@@ -6,7 +6,6 @@ namespace Spinvoice.QuickBooks.Domain
     {
         string AccessToken { get; }
         string RefreshToken { get; }
-        string IdentityToken { get; }
         string RealmId { get; }
         DateTime ExpirationDateTime { get; }
         bool IsReady { get; }
@@ -17,7 +16,6 @@ namespace Spinvoice.QuickBooks.Domain
         void UpdateAccess(
             string accessToken,
             string refreshToken,
-            string identityToken,
             DateTime expirationDateTime);
     }
 }
