@@ -20,7 +20,6 @@ namespace Spinvoice.QuickBooks.ViewModels
 
         private string _url;
         private readonly OAuth2Client _oAuth2Client;
-        private string _code;
 
         public QuickBooksConnectViewModel(
             IOAuthRepository oauthRepository,
@@ -62,10 +61,10 @@ namespace Spinvoice.QuickBooks.ViewModels
 
             var query = HttpUtility.ParseQueryString(uri.Query);
             _oauthRepository.Profile.UpdateRealm(query["realmId"]);
-            _code = query["code"];
+            var code = query["code"];
             Url = "about:blank";
 
-            var accessTokenTask = ExchangeRequestTokenForAccessToken();
+            var accessTokenTask = ExchangeRequestTokenForAccessToken(code);
             accessTokenTask.ContinueWith(
                 x =>
                 {
@@ -87,9 +86,9 @@ namespace Spinvoice.QuickBooks.ViewModels
             cancel = true;
         }
 
-        private async Task<TokenResponse> ExchangeRequestTokenForAccessToken()
+        private async Task<TokenResponse> ExchangeRequestTokenForAccessToken(string code)
         {
-            var token = await _oAuth2Client.GetBearerTokenAsync(_code);
+            var token = await _oAuth2Client.GetBearerTokenAsync(code);
             return token;
         }
 

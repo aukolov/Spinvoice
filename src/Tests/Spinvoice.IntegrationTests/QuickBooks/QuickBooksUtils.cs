@@ -39,12 +39,10 @@ namespace Spinvoice.IntegrationTests.QuickBooks
             var accessToken = Environment.GetEnvironmentVariable("QBU_ACCESS_TOKEN", EnvironmentVariableTarget.User);
             var refreshToken = Environment.GetEnvironmentVariable("QBU_REFRESH_TOKEN", EnvironmentVariableTarget.User);
             var realmId = Environment.GetEnvironmentVariable("QBU_REALM_ID", EnvironmentVariableTarget.User);
-            var dataSource = Environment.GetEnvironmentVariable("QBU_DATA_SOURCE", EnvironmentVariableTarget.User);
 
             if (accessToken == null
                 || refreshToken == null
-                || realmId == null
-                || dataSource == null)
+                || realmId == null)
             {
                 return null;
             }
@@ -109,7 +107,6 @@ namespace Spinvoice.IntegrationTests.QuickBooks
         {
             Environment.SetEnvironmentVariable("QBU_ACCESS_TOKEN", authProfile.AccessToken, EnvironmentVariableTarget.User);
             Environment.SetEnvironmentVariable("QBU_REFRESH_TOKEN", authProfile.RefreshToken, EnvironmentVariableTarget.User);
-            Environment.SetEnvironmentVariable("QBU_IDENTITY_TOKEN", authProfile.IdentityToken, EnvironmentVariableTarget.User);
             Environment.SetEnvironmentVariable("QBU_REALM_ID", authProfile.RealmId, EnvironmentVariableTarget.User);
         }
     }
