@@ -32,7 +32,7 @@ namespace Spinvoice.QuickBooks.ViewModels
                 _oauthRepository.Params.ClientId,
                 _oauthRepository.Params.ClientSecret,
                 RedirectUrl,
-                "sandbox");
+                _oauthRepository.Params.Region);
             var scopes = new List<OidcScopes> { OidcScopes.Accounting };
             var authorizeUrl = _oAuth2Client.GetAuthorizationURL(scopes);
             Url = authorizeUrl;
