@@ -1,5 +1,8 @@
 ﻿using System;
 using Autofac;
+using NLog;
+using NLog.Config;
+using NLog.Targets;
 using NUnit.Framework;
 using Spinvoice.Domain.Accounting;
 using Spinvoice.Domain.Company;
@@ -21,6 +24,14 @@ namespace Spinvoice.IntegrationTests
         [SetUp]
         public void Setup()
         {
+            var loggingConfiguration = new LoggingConfiguration();
+            var consoleTarget = new ConsoleTarget("console target");
+            loggingConfiguration.AddTarget(consoleTarget);
+            loggingConfiguration.LoggingRules.Add(new LoggingRule("*", LogLevel.Trace, consoleTarget));
+            LogManager.Configuration = loggingConfiguration;
+            LogManager.EnableLogging();
+            LogManager.ReconfigExistingLoggers();
+
             _companyRepository = new CompanyRepository(new CompanyDataAccessMock());
             _analyzeInvoiceService = new AnalyzeInvoiceService(_companyRepository);
             _trainStrategyService = new TrainStrategyService();
