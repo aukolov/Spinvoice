@@ -60,7 +60,7 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>1713A9E465ABE141AAEF5AE02FDB8E5992A59C08</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>B3C0DB138EC5EFDEC931030C0F05011B6AA03546</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>Spinvoice.Preview_TemporaryKey.pfx</ManifestKeyFile>

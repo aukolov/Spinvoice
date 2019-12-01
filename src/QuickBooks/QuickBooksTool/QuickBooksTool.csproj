@@ -58,7 +58,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>CE22E1815B51219B7931F20B95314CBC586CB152</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>4BB85E698B8E2D5119CFDEF22C9685307BE9E8F2</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>QuickBooksTool_TemporaryKey.pfx</ManifestKeyFile>
