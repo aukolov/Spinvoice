@@ -29,7 +29,12 @@ namespace Spinvoice.Utils
             var currency = Currencies.FirstOrDefault(text.Contains);
             if (currency != null)
             {
-                text = text.Replace(currency, "");
+                text = text.Replace(currency, "").Trim();
+            }
+
+            if (text.EndsWith(" -"))
+            {
+                text = text.Remove(text.Length - 2);
             }
             var match = AmountRegex.Match(text);
             if (match.Success)
@@ -41,8 +46,8 @@ namespace Spinvoice.Utils
                 if (!integralPart.Contains(delimiter))
                 {
                     var simplifiedIntegralPart = integralPart.Replace(",", "").Replace(".", "").Replace(" ", "");
-                    var parsedIntegralPart = simplifiedIntegralPart.Length > 0 
-                        ? int.Parse(simplifiedIntegralPart,CultureInfo.InvariantCulture)
+                    var parsedIntegralPart = simplifiedIntegralPart.Length > 0
+                        ? int.Parse(simplifiedIntegralPart, CultureInfo.InvariantCulture)
                         : 0;
                     var parsedDecimalPart = int.Parse(decimalPart, CultureInfo.InvariantCulture);
 

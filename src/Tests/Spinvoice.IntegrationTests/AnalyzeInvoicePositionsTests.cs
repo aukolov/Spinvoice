@@ -4,7 +4,6 @@ using NLog.Config;
 using NLog.Targets;
 using NUnit.Framework;
 using Spinvoice.Domain.Accounting;
-using Spinvoice.Domain.Company;
 using Spinvoice.Domain.InvoiceProcessing;
 using Spinvoice.Infrastructure.DataAccess;
 using Spinvoice.Infrastructure.Pdf;
@@ -51,8 +50,7 @@ namespace Spinvoice.IntegrationTests
             foreach (var input in TestInputProvider.GetInput(testName, "learn"))
             {
                 var rawInvoice = JsonUtils.Deserialize<RawInvoice>(input.JsonPath);
-                Company company;
-                using (_companyRepository.GetByNameForUpdateOrCreate(rawInvoice.CompanyName, out company))
+                using (_companyRepository.GetByNameForUpdateOrCreate(rawInvoice.CompanyName, out var company))
                 {
                     _trainStrategyService.Train(company, rawInvoice, _pdfParser.Parse(input.PdfPath));
                 }
