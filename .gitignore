@@ -50,3 +50,4 @@ Secret.cs
 
 packages/**
 .vs/
+.idea/

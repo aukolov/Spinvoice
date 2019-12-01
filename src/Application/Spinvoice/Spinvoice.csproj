@@ -60,7 +60,7 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>490FD89A90A7450E1C8BFDD01B3712436796471C</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>8951955D1D0F47486F901781DA84CD59835EFDF9</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>Spinvoice_TemporaryKey.pfx</ManifestKeyFile>
@@ -78,7 +78,8 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>Spinvoice_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DevDefined.OAuth, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a3261f5b4697e67d, processorArchitecture=MSIL">
