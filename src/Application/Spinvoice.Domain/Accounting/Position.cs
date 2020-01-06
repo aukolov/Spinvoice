@@ -25,7 +25,7 @@ namespace Spinvoice.Domain.Accounting
 
         public Position(string name, int quantity, decimal amount) : this()
         {
-            _name = name;
+            Name = name;
             _quantity = quantity;
             _amount = amount;
             _positionType = PositionType.Inventory;
@@ -38,8 +38,12 @@ namespace Spinvoice.Domain.Accounting
             get { return _name; }
             set
             {
-                if (_name == value) return;
-                _name = value;
+                var name = value;
+                if (_name == name) return;
+                var prefix = "PART: ";
+                if (name != null && name.StartsWith(prefix))
+                    name = name.Substring(prefix.Length);
+                _name = name;
                 OnPropertyChanged();
             }
         }
