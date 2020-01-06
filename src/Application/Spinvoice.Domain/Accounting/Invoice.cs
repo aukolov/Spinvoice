@@ -148,7 +148,14 @@ namespace Spinvoice.Domain.Accounting
         }
 
         public decimal TotalAmount => NetAmount + VatAmount + TransportationCosts;
-        public decimal TotalAmountInHomeCurrency => Round(TotalAmount * _exchangeRate);
+
+        public decimal NetAmountInHomeCurrency => Round(NetAmount * _exchangeRate);
+        public decimal VatAmountInHomeCurrency => Round(VatAmount * _exchangeRate);
+        public decimal TransportationCostsInHomeCurrency => Round(TransportationCosts * _exchangeRate);
+
+        public decimal TotalAmountInHomeCurrency => NetAmountInHomeCurrency
+                                                    + VatAmountInHomeCurrency
+                                                    + TransportationCostsInHomeCurrency;
 
         private static decimal Round(decimal value)
         {

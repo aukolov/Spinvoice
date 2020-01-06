@@ -15,10 +15,13 @@ namespace Spinvoice.Application.Services
                 $"{invoice.InvoiceNumber}\t" +
                 $"{invoice.Currency}\t" +
                 $"{invoice.NetAmount}\t" +
-                $"{invoice.ExchangeRate}\t" +
                 $"{invoice.VatAmount}\t" +
                 $"{invoice.TransportationCosts}\t" +
                 $"{invoice.TotalAmount}\t" +
+                $"{invoice.ExchangeRate}\t" +
+                $"{invoice.NetAmountInHomeCurrency}\t" +
+                $"{invoice.VatAmountInHomeCurrency}\t" +
+                $"{invoice.TransportationCostsInHomeCurrency}\t" +
                 $"{invoice.TotalAmountInHomeCurrency}\t" +
                 $"{invoice.Country}\t" +
                 $"{(invoice.IsEuropeanUnion ? "Y" : "N")}";

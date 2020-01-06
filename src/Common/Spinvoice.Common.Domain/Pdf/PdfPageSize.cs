@@ -2,7 +2,7 @@
 {
     public class PdfPageSize
     {
-        public const double Height = 595;
-        public const double Width = 842;
+        public const double Height = 842;
+        public const double Width = 595;
     }
 }
