@@ -32,8 +32,8 @@
     <InstallUrl>https://raw.githubusercontent.com/aukolov/SpinvoiceSetup/master/</InstallUrl>
     <UpdateUrl>https://raw.githubusercontent.com/aukolov/SpinvoiceSetup/master/</UpdateUrl>
     <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>3</ApplicationRevision>
-    <ApplicationVersion>2.0.0.%2a</ApplicationVersion>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>2.1.0.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
