@@ -88,6 +88,7 @@ namespace Spinvoice.QuickBooks.Connection
             _exchangeRateQueryService = new QueryService<Intuit.Ipp.Data.ExchangeRate>(_serviceContext);
             _billQueryService = new QueryService<Bill>(_serviceContext);
             _invoiceQueryService = new QueryService<Intuit.Ipp.Data.Invoice>(_serviceContext);
+
             Connected.Raise();
         }
 
@@ -152,7 +153,7 @@ namespace Spinvoice.QuickBooks.Connection
             };
             return reportService.ExecuteReport("InventoryValuationSummary");
         }
-
+        
         private void VerifyConnected()
         {
             if (!IsConnected)

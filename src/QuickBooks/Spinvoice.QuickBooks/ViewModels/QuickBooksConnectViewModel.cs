@@ -2,23 +2,25 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
+using System.Windows;
 using Intuit.Ipp.OAuth2PlatformClient;
 using Spinvoice.Common.Presentation;
 using Spinvoice.Domain.Annotations;
 using Spinvoice.QuickBooks.Domain;
+using Spinvoice.Utils;
 
 namespace Spinvoice.QuickBooks.ViewModels
 {
     public class QuickBooksConnectViewModel : IQuickBooksConnectViewModel
     {
-        private const string RedirectUrl = "https://developer.intuit.com/v2/OAuth2Playground/RedirectUrl";
+        private const string RedirectUrl = "https://ushkita.com:3107/Auth";
+
         private readonly IOAuthRepository _oauthRepository;
         private readonly IWindowManager _windowManager;
 
-        private string _url;
         private readonly OAuth2Client _oAuth2Client;
 
         public QuickBooksConnectViewModel(
@@ -27,42 +29,44 @@ namespace Spinvoice.QuickBooks.ViewModels
         {
             _oauthRepository = oauthRepository;
             _windowManager = windowManager;
+            ApplyCommand = new RelayCommand(OnApply);
 
             _oAuth2Client = new OAuth2Client(
                 _oauthRepository.Params.ClientId,
                 _oauthRepository.Params.ClientSecret,
                 RedirectUrl,
                 _oauthRepository.Params.Region);
-            var scopes = new List<OidcScopes> { OidcScopes.Accounting };
-            var authorizeUrl = _oAuth2Client.GetAuthorizationURL(scopes);
-            Url = authorizeUrl;
+            OpenBrowserCommand = new RelayCommand(() =>
+            {
+                var scopes = new List<OidcScopes> {OidcScopes.Accounting};
+                var authorizeUrl = _oAuth2Client.GetAuthorizationURL(scopes);
+                System.Diagnostics.Process.Start(authorizeUrl);
+            });
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public string Url
-        {
-            get => _url;
-            set
-            {
-                if (_url == value) return;
-                _url = value;
-                OnPropertyChanged();
-            }
-        }
+        public RelayCommand ApplyCommand { get; }
+        public RelayCommand OpenBrowserCommand { get; }
+        public string AuthKey { get; set; }
 
-        public void OnNavigating(Uri uri, out bool cancel)
+        private void OnApply()
         {
-            if (!uri.AbsoluteUri.StartsWith(RedirectUrl))
+            if (string.IsNullOrEmpty(AuthKey))
             {
-                cancel = false;
+                ShowError("Auth Key is empty...");
                 return;
             }
 
-            var query = HttpUtility.ParseQueryString(uri.Query);
-            _oauthRepository.Profile.UpdateRealm(query["realmId"]);
-            var code = query["code"];
-            Url = "about:blank";
+            var match = Regex.Match(AuthKey, @"(?<code>[A-Za-z0-9]+)\.(?<realmId>\d+)");
+            if (!match.Success)
+            {
+                ShowError("Auth Key is malformed...");
+                return;
+            }
+
+            _oauthRepository.Profile.UpdateRealm(match.Groups["realmId"].Value);
+            var code = match.Groups["code"].Value;
 
             var accessTokenTask = ExchangeRequestTokenForAccessToken(code);
             accessTokenTask.ContinueWith(
@@ -81,8 +85,16 @@ namespace Spinvoice.QuickBooks.ViewModels
                 CancellationToken.None,
                 TaskContinuationOptions.OnlyOnRanToCompletion,
                 TaskScheduler.FromCurrentSynchronizationContext());
+        }
 
-            cancel = true;
+        private static void ShowError(string message)
+        {
+            MessageBox.Show(
+                System.Windows.Application.Current.MainWindow,
+                message,
+                "Error",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
         }
 
         private async Task<TokenResponse> ExchangeRequestTokenForAccessToken(string code)

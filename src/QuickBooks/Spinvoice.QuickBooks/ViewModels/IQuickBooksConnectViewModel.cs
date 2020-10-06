@@ -1,11 +1,13 @@
 using System;
 using System.ComponentModel;
+using Spinvoice.Utils;
 
 namespace Spinvoice.QuickBooks.ViewModels
 {
     public interface IQuickBooksConnectViewModel : INotifyPropertyChanged
     {
-        string Url { get; set; }
-        void OnNavigating(Uri uri, out bool cancel);
+        RelayCommand ApplyCommand { get; }
+        RelayCommand OpenBrowserCommand { get; }
+        string AuthKey { get; set; }
     }
 }

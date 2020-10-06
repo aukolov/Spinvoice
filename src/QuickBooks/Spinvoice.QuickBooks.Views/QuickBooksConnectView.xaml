@@ -3,11 +3,22 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:presentation="clr-namespace:Spinvoice.Common.Presentation;assembly=Spinvoice.Common.Presentation"
              xmlns:viewModels="clr-namespace:Spinvoice.QuickBooks.ViewModels;assembly=Spinvoice.QuickBooks"
              d:DataContext="{d:DesignInstance viewModels:QuickBooksConnectViewModel}"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">
-    <WebBrowser presentation:WebBrowserUtility.BindableSource="{Binding Url, Mode=TwoWay}" Navigating="WebBrowser_OnNavigating" />
+    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+        <Button Command="{Binding OpenBrowserCommand}">Authenticate in QuickBooks... (opens browser)</Button>
+        <Label>Paste auth key from Spinvoice Auth web page.</Label>
+        <StackPanel Orientation="Horizontal">
+            <Label>Auth Key:</Label>
+            <DockPanel LastChildFill="True">
+                <TextBox VerticalScrollBarVisibility="Auto"
+                         Width="450"
+                         Text="{Binding AuthKey}" />
+            </DockPanel>
+        </StackPanel>
+        <Button Margin="0,10,0,0" Command="{Binding ApplyCommand}">Apply</Button>
+    </StackPanel>
 </UserControl>
