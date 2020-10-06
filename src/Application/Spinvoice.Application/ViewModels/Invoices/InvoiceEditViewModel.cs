@@ -43,6 +43,7 @@ namespace Spinvoice.Application.ViewModels.Invoices
                 Invoice.ApplyCompany(company);
                 ActionSelectorViewModel.Advance();
                 ActionSelectorViewModel.Advance();
+                ActionSelectorViewModel.Advance();
             }
         }
 
